@@ -173,7 +173,11 @@ function OnKey(e)
 	local state, result = pcall(ProcessKey,key,code,e)
 	if( IsInGame() and not IsChatBoxOpen() and PressedKeys[key]~=2) then
 		if( code ==1) then
-			PressedKeys[key] = 1
+			if(PressedKeys[key]) then
+				PressedKeys[key] = 1
+			else
+				PressedKeys[key] = 0
+			end
 		else
 			PressedKeys[key] = nil
 		end
