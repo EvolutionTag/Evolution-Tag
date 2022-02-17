@@ -8,14 +8,21 @@ local function RunKey(e)
 	return OnKey(e)
 end
 
+
+local function ReRunKey()
+	return ProcessKeys()
+end
 Chatcommands["key"] = function() 
 	if(not keyevent) then
 		--gprint('registring keys')
 		keyevent = event:new(EVENT_ID_KEY_INPUT, RunKey)
+		periodickey = event:new(EVENT_ID_SCREEN_UPDATE,ReRunKey)
 	else
 		--gprint('unregistring keys')
 		event.disconnect(keyevent)
+		event.disconnect(periodickey)
 		keyevent = nil
+		periodickey = nil
 	end
 end
 
@@ -83,6 +90,12 @@ Chatcommands["ui2"] = function(s)
 	CommandBar()
 end
 
+Chatcommands["h"] = function(s)
+	HoldKey(s)
+end
+Chatcommands["uh"] = function(s)
+	UnHoldKey(s)
+end
 
 
 chatcommands = event:new(EVENT_ID_CHAT_COMMAND,function(e)

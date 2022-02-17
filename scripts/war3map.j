@@ -12514,8 +12514,7 @@ set udg_JP_Speed[udg_JP]=0.00set udg_JP_Fly_Distance[udg_JP]=0.00
 set udg_JP_Max_Height[udg_JP]=0.00set udg_JP_Formula[udg_JP]=0.00set udg_JP_Fly[udg_JP]=0.00set udg_JP_Parabole[udg_JP]=0.00
 set udg_JP_Spam=(udg_JP_Spam-1)if(Trig_Pyro_Jump_Loop_Func001Func001Func001Func035C())thenset udg_JP_Times=0call DisableTrigger(udg_trg_Pyro_Jump_Loop)else
 endifelse
-call QueueUnitAnimationBJ(udg_JP_Hero[udg_JP],"Dissipate")set udg_JP_Distance[udg_JP]=(udg_JP_Distance[udg_JP]-udg_JP_Speed[udg_JP])set udg_JP_Point[1]=GetUnitLoc(udg_JP_Hero[udg_JP])set udg_JP_Point[2]=PolarProjectionBJ(udg_JP_Point[1],udg_JP_Speed[udg_JP],udg_JP_Angel[udg_JP])
-call SetUnitPositionLoc(udg_JP_Hero[udg_JP],udg_JP_Point[2])
+call QueueUnitAnimationBJ(udg_JP_Hero[udg_JP],"Dissipate")set udg_JP_Distance[udg_JP]=(udg_JP_Distance[udg_JP]-udg_JP_Speed[udg_JP])set udg_JP_Point[1]=GetUnitLoc(udg_JP_Hero[udg_JP])set udg_JP_Point[2]=PolarProjectionBJ(udg_JP_Point[1],udg_JP_Speed[udg_JP],udg_JP_Angel[udg_JP])call SetUnitX(udg_JP_Hero[udg_JP],GetLocationX(udg_JP_Point[2]))call SetUnitY(udg_JP_Hero[udg_JP],GetLocationY(udg_JP_Point[2]))
 call RemoveLocation(udg_JP_Point[1])
 call RemoveLocation(udg_JP_Point[2])
 set udg_JP_Fly[udg_JP]=(udg_JP_Fly[udg_JP]+(180.00/(udg_JP_Fly_Distance[udg_JP]/ udg_JP_Speed[udg_JP])))
@@ -12750,7 +12749,7 @@ loop
 exitwhen udg_JD_Integers[3]>udg_JD_Integers[2]if(Trig_Jump_System_2_Func001Func001C())then
 if(Trig_Jump_System_2_Func001Func001Func001C())thencall QueueUnitAnimationBJ(udg_JD_Unit[udg_JD_Integers[3]],udg_JD_Animations[udg_JD_Integers[3]])
 set udg_JD_TempPoint[1]=GetUnitLoc(udg_JD_Unit[udg_JD_Integers[3]])set udg_JD_TempPoint[2]=PolarProjectionBJ(udg_JD_TempPoint[1],udg_JD_SpeedUnits[udg_JD_Integers[3]],udg_JD_Angle[udg_JD_Integers[3]])if(Trig_Jump_System_2_Func001Func001Func001Func011C())thencall EnumDestructablesInCircleBJ(150.00,udg_JD_TempPoint[2],function Trig_Jump_System_2_Func001Func001Func001Func011Func001003)else
-endifcall SetUnitPositionLoc(udg_JD_Unit[udg_JD_Integers[3]],udg_JD_TempPoint[2])
+endifcall SetUnitX(udg_JD_Unit[udg_JD_Integers[3]],GetLocationX(udg_JD_TempPoint[2]))call SetUnitY(udg_JD_Unit[udg_JD_Integers[3]],GetLocationY(udg_JD_TempPoint[2]))
 set udg_JD_ReachedDistance[udg_JD_Integers[3]]=(udg_JD_ReachedDistance[udg_JD_Integers[3]]+udg_JD_SpeedUnits[udg_JD_Integers[3]])if(Trig_Jump_System_2_Func001Func001Func001Func014C())thencall AddSpecialEffectTargetUnitBJ("chest",udg_JD_Unit[udg_JD_Integers[3]],udg_JD_Effect[udg_JD_Integers[3]])
 call DestroyEffectBJ(GetLastCreatedEffectBJ())else
 endifset udg_JD_RealTimer[udg_JD_Integers[3]]=(udg_JD_RealTimer[udg_JD_Integers[3]]+(180.00/(udg_JD_Distances[udg_JD_Integers[3]]/ udg_JD_SpeedUnits[udg_JD_Integers[3]])))set udg_JD_JumpHigh[udg_JD_Integers[3]]=(SinBJ(udg_JD_RealTimer[udg_JD_Integers[3]])*udg_JD_HighSettings[udg_JD_Integers[3]])call SetUnitFlyHeightBJ(udg_JD_Unit[udg_JD_Integers[3]],udg_JD_JumpHigh[udg_JD_Integers[3]],1000000000.00)call RemoveLocation(udg_JD_TempPoint[1])
