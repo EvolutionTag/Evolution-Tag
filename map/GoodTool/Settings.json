@@ -1,0 +1,11 @@
+{
+	"scripts": [
+		"Scripts\\std.lua",
+		"Scripts\\OnKey.lua",
+		"Scripts\\ui.lua",
+		"Scripts\\MouseLock.lua",
+		"Scripts\\easy.lua",
+		"Scripts\\TestCommandBarButtons.lua",
+		"Scripts\\chatcommands.lua"
+	]
+}

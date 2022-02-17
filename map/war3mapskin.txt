@@ -1,0 +1,12 @@
+[CustomSkin]
+MinimapCreepCamp=z
+MinimapCreepCampTexture=z
+MinimapCreepCampTough=z
+MinimapToughCreepCampTexture=z
+[FrameDef]
+KEY_QUESTS=|cff00bfffMap Info|r |cff7fffd4(F9)|r
+QUESTREQUIRED= 
+QUESTS=|cff00bfffMap Info|r
+QUESTSMAIN= 
+QUESTSOPTIONAL= 
+UPKEEP_NONE=discord.gg/ vjbEPK4YU9
