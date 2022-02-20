@@ -65,9 +65,9 @@ function ProcessKey(key,code,e)
 	local bmode = ReadRealMemory(ui+0x220)
 	local tmode = ReadRealMemory(ui+0x210)
 	local smode = ReadRealMemory(ui+0x214)
-	if(curr == bmode) then e:cancel(); return end
-	if(not IsSelectMode()) then CancelCurrentMode()  end
-	if(not IsSelectMode()) then return  end
+	if(not IsSelectMode() and (curr ~= bmode)) then CancelCurrentMode()  end
+	curr = ReadRealMemory(ui+0x1b4)
+	if(not IsSelectMode() and (curr ~= bmode)) then return  end
 	--gprint(10)
 	 
 	local btn

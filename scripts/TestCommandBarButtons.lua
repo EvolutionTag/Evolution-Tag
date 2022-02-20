@@ -61,6 +61,8 @@ end
 function GetSimpleAbilityCooldown(pAbility)
 	local pTimer = pAbility+0xD0
 	local id = GetAbilityId(pAbility)
+	local pdata = ReadInt(pTimer)
+	if(pData<500) then return 0 end
 	return AnyTimerGetTimeElapsed(pTimer,id)
 end
 
