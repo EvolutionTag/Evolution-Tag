@@ -3,7 +3,6 @@ constant boolean LIBRARY_APIAllTypecast=true
 code Code
 code l__Code
 integer Int
-boolean isreplay = false
 integer l__Int
 string Str
 string l__Str
@@ -14,7 +13,6 @@ handle l__Handle
 unit Unit
 unit l__Unit
 trigger udg_trg_Finger_of_Death_2
-
 ability Abil
 ability l__Abil
 location array ResurrectionLocations
@@ -3563,7 +3561,7 @@ integer protects_with_abilcode='ACC6'
 string array fmode
 trigger array temp_disabled_triggs
 integer temp_disabled_triggs_cnt
-unit DamagingSheep = null
+unit DamagingSheep = nullboolean isreplay = falseboolean DoNotRemovePlayerAfterLeave = false
 endglobals
 native MergeUnits takes integer qty,integer a,integer b,integer make returns boolean
 native ConvertUnits takes integer qty,integer id returns boolean
@@ -3571,36 +3569,36 @@ native IgnoredUnits takes integer unitid returns integer
 native UnitAlive takes unit id returns boolean
 
 function CheckTrigger takes trigger t returns nothing
-	if(IsTriggerEnabled(t)) then
-		set temp_disabled_triggs[temp_disabled_triggs_cnt] = t
-		set temp_disabled_triggs_cnt = temp_disabled_triggs_cnt + 1
-		call DisableTrigger(t)
-	endif
+    if(IsTriggerEnabled(t)) then
+        set temp_disabled_triggs[temp_disabled_triggs_cnt] = t
+        set temp_disabled_triggs_cnt = temp_disabled_triggs_cnt + 1
+        call DisableTrigger(t)
+    endif
 endfunction
 
 function CheckTriggers takes nothing returns nothing
-	set temp_disabled_triggs_cnt = 0
-	call CheckTrigger(udg_trg_Builder_Lumber_Income_Every_Seccond)
-	call CheckTrigger(udg_trg_Builder_Lumber_Income_Every_Five_Secconds)
-	call CheckTrigger(udg_trg_Undead_Gold_Income)
-	call CheckTrigger(udg_trg_Naga_Spawns)
-	call CheckTrigger(udg_trg_Gnoll_Spawn)
-	call CheckTrigger(udg_trg_Ice_Spawn)
-	call CheckTrigger(udg_trg_Pirate_Spawn)
-	call CheckTrigger(udg_trg_Spawn_Golden_Chickens)
-	call CheckTrigger(udg_trg_Tortle_Spawn)
-	call CheckTrigger(udg_trg_coins)
+    set temp_disabled_triggs_cnt = 0
+    call CheckTrigger(udg_trg_Builder_Lumber_Income_Every_Seccond)
+    call CheckTrigger(udg_trg_Builder_Lumber_Income_Every_Five_Secconds)
+    call CheckTrigger(udg_trg_Undead_Gold_Income)
+    call CheckTrigger(udg_trg_Naga_Spawns)
+    call CheckTrigger(udg_trg_Gnoll_Spawn)
+    call CheckTrigger(udg_trg_Ice_Spawn)
+    call CheckTrigger(udg_trg_Pirate_Spawn)
+    call CheckTrigger(udg_trg_Spawn_Golden_Chickens)
+    call CheckTrigger(udg_trg_Tortle_Spawn)
+    call CheckTrigger(udg_trg_coins)
 endfunction
 
 function RestoreTriggers takes nothing returns nothing
-	if(temp_disabled_triggs_cnt==0) then
-		return
-	endif
-	loop
-		set temp_disabled_triggs_cnt = temp_disabled_triggs_cnt - 1
-		call EnableTrigger(temp_disabled_triggs[temp_disabled_triggs_cnt])
-		exitwhen temp_disabled_triggs_cnt<=0
-	endloop
+    if(temp_disabled_triggs_cnt==0) then
+        return
+    endif
+    loop
+        set temp_disabled_triggs_cnt = temp_disabled_triggs_cnt - 1
+        call EnableTrigger(temp_disabled_triggs[temp_disabled_triggs_cnt])
+        exitwhen temp_disabled_triggs_cnt<=0
+    endloop
 endfunction
 
 function InitBytecode takes integer id,integer k returns nothing
@@ -10285,7 +10283,7 @@ local integer cmode=LoadInteger(AH_ADDRESS_TABLE,hid,StringHash("Check_Mode"))
 local integer addr=LoadInteger(AH_ADDRESS_TABLE,hid,StringHash("Addr_"+I2S(i)))
 local integer value=LoadInteger(AH_ADDRESS_TABLE,hid,StringHash("Value_"+I2S(i)))
 if(isreplay) then
-	return
+    return
 endif
 if cmode==2 then
 set value=pGameDLL+value
@@ -12217,9 +12215,9 @@ function InitGlobals takes nothing returns nothing
 local integer i=0
 set i = 0
 loop
-	set ResurrectionLocations[i] = null
-	set i = i + 1
-	exitwhen i>17
+    set ResurrectionLocations[i] = null
+    set i = i + 1
+    exitwhen i>17
 endloop
 set udg_BOSSes = CreateGroup()
 set i=0
@@ -16751,19 +16749,19 @@ endif
 return false
 endfunction
 function Trig_Spawnpoint_Rune_Actions takes nothing returns nothing
-	local location loc
-	local integer id = GetPlayerId(GetOwningPlayer(GetTriggerUnit()))
-	if(GetTriggerUnit()==null) then
-		return
-	endif
-	set loc = ResurrectionLocations[id]
-	if(loc!=null) then
-		call RemoveLocation(loc)
-		set loc = null
-	endif
-	set ResurrectionLocations[id] = GetUnitLoc(GetTriggerUnit())
-	call DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Human\\Resurrect\\ResurrectCaster.mdl",GetTriggerUnit(),"origin"))
-	call RemoveItem(GetManipulatedItem())
+    local location loc
+    local integer id = GetPlayerId(GetOwningPlayer(GetTriggerUnit()))
+    if(GetTriggerUnit()==null) then
+        return
+    endif
+    set loc = ResurrectionLocations[id]
+    if(loc!=null) then
+        call RemoveLocation(loc)
+        set loc = null
+    endif
+    set ResurrectionLocations[id] = GetUnitLoc(GetTriggerUnit())
+    call DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Human\\Resurrect\\ResurrectCaster.mdl",GetTriggerUnit(),"origin"))
+    call RemoveItem(GetManipulatedItem())
 endfunction
 function InitTrig_Spawnpoint_Rune takes nothing returns nothing
 set udg_trg_Spawnpoint_Rune=CreateTrigger()
@@ -16778,19 +16776,19 @@ endif
 return false
 endfunction
 function Trig_Spawnpoint_Rune_reset_Actions takes nothing returns nothing
-	local integer id = GetPlayerId(GetOwningPlayer(GetTriggerUnit()))
-	local location loc
-	if(GetTriggerUnit()==null) then
-		return
-	endif
-	set loc = ResurrectionLocations[id]
-	if(loc!=null) then
-		call RemoveLocation(loc)
-		set loc = null
-	endif
-	set ResurrectionLocations[id] = null
-	call DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Undead\\AnimateDead\\AnimateDeadTarget.mdl",GetTriggerUnit(),"origin"))
-	call RemoveItem(GetManipulatedItem())
+    local integer id = GetPlayerId(GetOwningPlayer(GetTriggerUnit()))
+    local location loc
+    if(GetTriggerUnit()==null) then
+        return
+    endif
+    set loc = ResurrectionLocations[id]
+    if(loc!=null) then
+        call RemoveLocation(loc)
+        set loc = null
+    endif
+    set ResurrectionLocations[id] = null
+    call DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Undead\\AnimateDead\\AnimateDeadTarget.mdl",GetTriggerUnit(),"origin"))
+    call RemoveItem(GetManipulatedItem())
 endfunction
 function InitTrig_Spawnpoint_Rune_reset takes nothing returns nothing
 set udg_trg_Spawnpoint_Rune_reset=CreateTrigger()
@@ -16984,8 +16982,7 @@ call Init_MemHackTrackableAPI()
 call Init_MemHackMouseAPI()
 call Init_MemHackItemAPI()
 call Init_AntiHack()
-call DisableSaveGameMenu()
-set isreplay = IsReplay()
+call DisableSaveGameMenu()set isreplay = IsReplay()
 
 if PatchVersion=="1.26a" then
 endif
@@ -17588,8 +17585,8 @@ if(GetUnitAbilityLevel(u,'ACCF')>0)then
 set mult=0.1
 endif
 if((GetOwningPlayer(u))!=null) then
-	call AddWhiteDamage(u,R2I(mult*damageBonuses[GetPlayerId(GetOwningPlayer(u))]))
-	call AddHPCustom(u,R2I(mult*HPBonuses[GetPlayerId(GetOwningPlayer(u))]))
+    call AddWhiteDamage(u,R2I(mult*damageBonuses[GetPlayerId(GetOwningPlayer(u))]))
+    call AddHPCustom(u,R2I(mult*HPBonuses[GetPlayerId(GetOwningPlayer(u))]))
 endif
 endfunction
 function ApplyBookDmgBonuses takes unit u returns nothing
@@ -17618,9 +17615,9 @@ endif
 endfunction
 
 function AddSpecialEffectIfNotBuilding takes string name, unit u, string attach returns nothing
-	if(not IsUnitType(u,UNIT_TYPE_STRUCTURE))then
-		call AddSpecialEffectTarget(name,u,attach)
-	endif
+    if(not IsUnitType(u,UNIT_TYPE_STRUCTURE))then
+        call AddSpecialEffectTarget(name,u,attach)
+    endif
 endfunction
 
 function ChangeUnit2 takes unit u,integer uid returns unit
@@ -17660,8 +17657,8 @@ return u
 endfunction
 
 function ChangeUnit2Test takes unit u,integer uid returns unit
-	call MorphUnitToTypeIdNotSaveAbils(u,uid)
-	return u
+    call MorphUnitToTypeIdNotSaveAbils(u,uid)
+    return u
 
 endfunction
 function CreateUnitBonuses takes player p,integer id,real x,real y,real facing returns unit
@@ -17802,12 +17799,12 @@ function AddLivesP takes player p,integer l__cnt returns boolean
 return SetLives(GetPlayerId(p),lives[GetPlayerId(p)]+l__cnt)
 endfunction
 function morelives takes nothing returns nothing
-	local integer i = 0
-	loop
-		set lives[i] = 100
-		set i = i + 1
-		exitwhen i>15
-	endloop
+    local integer i = 0
+    loop
+        set lives[i] = 100
+        set i = i + 1
+        exitwhen i>15
+    endloop
 endfunction
 function InitTrig_lives takes nothing returns nothing
 local integer idx=0
@@ -17958,7 +17955,7 @@ endif
 else
 call PlaySoundBJ(snd_UndedadDies)
 if(respoint==null) then
-	set respoint = GetRectCenter(udg_rct_Dead_area_entry)
+    set respoint = GetRectCenter(udg_rct_Dead_area_entry)
 endif
 set udg_CS_Unit=RecreateUnitPosBonusesNotRemove(GetDyingUnit(),GetLocationX(respoint),GetLocationY(respoint))
 call DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Human\\Resurrect\\ResurrectCaster.mdl",udg_CS_Unit,"origin"))
@@ -17982,7 +17979,7 @@ call GroupAddUnit(Psychos,udg_CS_Unit)
 endif
 else
 if(respoint==null) then
-	set respoint = GetRectCenter(udg_rct_The_ring_of_trees)
+    set respoint = GetRectCenter(udg_rct_The_ring_of_trees)
 endif
 set udg_CS_Unit=RecreateUnitPosBonusesNotRemove(GetDyingUnit(),GetLocationX(respoint),GetLocationY(respoint))
 call DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Human\\Resurrect\\ResurrectCaster.mdl",udg_CS_Unit,"origin"))
@@ -25074,7 +25071,7 @@ call AdjustPlayerStateBJ(LeaverGold,GetEnumPlayer(),PLAYER_STATE_RESOURCE_GOLD)
 call AdjustPlayerStateBJ(LeaverLumber,GetEnumPlayer(),PLAYER_STATE_RESOURCE_LUMBER)
 endfunction
 function Trig_Check_Leavers_Actions takes nothing returns nothing
-local integer playerscount=0
+local integer playerscount=0if(DoNotRemovePlayerAfterLeave) then    returnendif
 call ForGroupBJ(GetUnitsOfPlayerAll(GetTriggerPlayer()),function Trig_Check_Leavers_Func001002)
 if((IsPlayerInForce(GetTriggerPlayer(),udg_Evil)==true))then
 call ForceRemovePlayerSimple(GetTriggerPlayer(),udg_Evil)
@@ -46547,8 +46544,8 @@ else
 endif
 
 if(not IsTerrainPathable(GetLocationX(udg_KB_TempPoint[2]),GetLocationY(udg_KB_TempPoint[2]),PATHING_TYPE_WALKABILITY)) then
-	call SetUnitX(udg_KB_Units[udg_KB_GeneralIntegers[1]],GetLocationX(udg_KB_TempPoint[2]))
-	call SetUnitY(udg_KB_Units[udg_KB_GeneralIntegers[1]],GetLocationY(udg_KB_TempPoint[2]))
+    call SetUnitX(udg_KB_Units[udg_KB_GeneralIntegers[1]],GetLocationX(udg_KB_TempPoint[2]))
+    call SetUnitY(udg_KB_Units[udg_KB_GeneralIntegers[1]],GetLocationY(udg_KB_TempPoint[2]))
 endif
 call RemoveLocation(udg_KB_TempPoint[1])
 call RemoveLocation(udg_KB_TempPoint[2])
@@ -49982,7 +49979,7 @@ endif
 call RemoveLocation(udg_ES_Point[1])
 call CreateNUnitsAtLoc(1,'H0SD',GetOwningPlayer(udg_ES_Cast),udg_ES_Point[2],bj_UNIT_FACING)
 if(GetUnitTypeId(udg_ES_Cast)!=0) then
-	call SetHeroInt(GetLastCreatedUnit(),GetHeroInt(udg_ES_Cast,true),true)
+    call SetHeroInt(GetLastCreatedUnit(),GetHeroInt(udg_ES_Cast,true),true)
 endif
 call RemoveLocation(udg_ES_Point[2])
 call GroupAddUnitSimple(GetLastCreatedUnit(),udg_ES_Sheeps)
@@ -54005,7 +54002,7 @@ if(not(GetPlayerColor(GetTriggerPlayer())==PLAYER_COLOR_RED))then
 return false
 endif
 return true
-endfunction
+endfunctionfunction DoNotRemovePlayerAfterLeaveEnable takes nothing returns nothing    set DoNotRemovePlayerAfterLeave = trueendfunctionfunction DoNotRemovePlayerAfterLeaveDisable takes nothing returns nothing    set DoNotRemovePlayerAfterLeave = falseendfunction
 function Trig_Game_settings_6_NEW_Func006A takes nothing returns nothing
 call RemoveUnit(GetEnumUnit())
 endfunction
