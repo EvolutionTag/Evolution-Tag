@@ -90,3 +90,16 @@ function CamRot(s)
 	local i = getarg(s)
 	SetCameraField(CAMERA_FIELD_ROTATION,tonumber(i),0)
 end
+
+function HoldKey(s)
+	local i = getarg(s)
+	local key = VK[i]
+	if(not key) then return end
+	PressedKeys[key] = 2
+end
+function UnHoldKey(s)
+	local i = getarg(s)
+	local key = VK[i]
+	if(not key) then return end
+	PressedKeys[key] = nil
+end

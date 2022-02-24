@@ -108,13 +108,14 @@ function ProcessKey(key,code,e)
 	curr = ReadRealMemory(ui+0x1b4)
 	if(ClickableFrames[target] or ClickableFrames[pUbertipTarget] or ClickableFrames[TargetVF]) then
 	else
-		if((not IsSelectMode()) and curr~=bmode and curr~=tmode) then 
+		if((not IsSelectMode()) and curr~=bmode) then 
 			CancelCurrentMode()
 			return;
 		end
 		if(curr == bmode) then
 			return;
 		end
+		return
 	end
 	--gprint(12)
 	curr = ReadRealMemory(ui+0x1b4)

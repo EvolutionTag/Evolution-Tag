@@ -1,5 +1,9 @@
+local INTBUFFER = malloc(4)
+
 function IsCommandBarButtonShown(pCommandBarButton)
-	return (pCommandBarButton==0 or (ReadInt(pCommandBarButton+0x90)~=0))
+	if(pCommandBarButton==0) then return false end
+	local data = ReadInt(pCommandBarButton+0x90)
+	return (data~=0)
 end
 
 function GetCommandBarButtonData(pCommandBarButton)
@@ -61,8 +65,6 @@ end
 function GetSimpleAbilityCooldown(pAbility)
 	local pTimer = pAbility+0xD0
 	local id = GetAbilityId(pAbility)
-	local pdata = ReadInt(pTimer)
-	if(pData<500) then return 0 end
 	return AnyTimerGetTimeElapsed(pTimer,id)
 end
 
@@ -91,6 +93,7 @@ local Asel = id2i('Asel')
 local Asei = id2i('Asei')
 local Asid = id2i('Asid')
 local Asud = id2i('Asud')
+local Amai = id2i('Amai')
 
 local CDFuncs = {}
 
@@ -162,6 +165,7 @@ end
 
 CDFuncs[Asel] = GetSellAbilityCD
 CDFuncs[Asei] = GetSellAbilityCD
+CDFuncs[Amai] = GetSellDynamicAbilityCD
 CDFuncs[Asid] = GetSellDynamicAbilityCD
 CDFuncs[Asud] = GetSellDynamicAbilityCD
 
@@ -172,7 +176,7 @@ function GetSpecialAbilityCDFunc(AbilId)
 	return cdfunc
 end
 
-function GetAbilityCd(pAbil,Order)
+function GetAbilityCdOld(pAbil,Order)
 	if(not pAbil or pAbil == 0) then return nil end
 	local abilid = GetAbilityId(pAvil)
 	local cdfunc = GetSpecialAbilityCDFunc(GetAbilityId(pAbil))
@@ -184,12 +188,29 @@ function GetAbilityCd(pAbil,Order)
 	return cdfunc(pAbil,Order)
 end
 
+function GetAbilityCd(pButton,pAbil,Order)
+	if(not pAbil or pAbil == 0) then return nil end
+	local abilid = GetAbilityId(pAbil)
+	local pVFtable = ReadInt(pAbil)
+	if(pVFtable<500) then return nil end
+	local pfunc = ReadInt(pVFtable+183*4)
+	if(pfunc<500) then return nil end
+	WriteInt(INTBUFFER,pButton)
+	local pres = thiscall3(pfunc,pAbil,INTBUFFER,Order)
+	--gprint(i2id(abilid),ReadFloat(pres))
+	if(pres<500) then return nil end
+	return ReadFloat(pres)
+end
+
 function GetAbyButtonCD(pButton)
 	if(not pButton or pButton==0) then return 0 end
 	--if(not(IsButtonOnCD(pButton))) then return 0 end
 	local ability = GetCommandBarButtonAbility( pButton)
 	local Order = GetCommandBarButtonOrderId(pButton)
-	local cooldown = GetAbilityCd(ability,Order)
+	local cooldown = GetAbilityCd(pButton,ability,Order)
+	--gprint(ability)
+	if(ability~=0) then
+	end
 	if(not cooldown) then cooldown = 0 end
 	return cooldown
 end
@@ -221,6 +242,7 @@ end
 function PrintCdForIBtn(i)
 	local btn = GetItemBarButton(i)
 	if(IsCommandBarButtonShown(btn)) then
+		--gprint(1)
 		local cd = GetAbyButtonCD(btn)
 		if(cd and cd>0) then
 			SetFrameText(CDFrames[2][i],tostring(BeatifyCooldown(cd)))
