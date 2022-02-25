@@ -36652,6 +36652,7 @@ local unit ut=ChangeUnit2(u,uid)
 if(GetLocalPlayer()==GetOwningPlayer(ut))then
 call SelectUnitSingle(ut)
 endif
+call RemoveItem(GetManipulatedItem())
 endfunction
 function Trig_the_ultimate_upgrade_item_Actions takes nothing returns nothing
 if(IsUnitInGroup(GetTriggerUnit(),morphs))then
@@ -36744,7 +36745,6 @@ call UltimateUpgrade(GetTriggerUnit(),'N021')
 else
 return
 endif
-call RemoveItem(GetManipulatedItem())
 endfunction
 function InitTrig_the_ultimate_upgrade_item takes nothing returns nothing
 set udg_trg_the_ultimate_upgrade_item=CreateTrigger()
@@ -52707,6 +52707,7 @@ call InitCustomTriggers2()
 call RunInitializationTriggers2()
 call UpdateNeutrals()
 call SetMapFlag(MAP_LOCK_RESOURCE_TRADING,true)
+call SetMapFlag(MAP_FOG_MAP_EXPLORED,true)
 set general_tp_dispatcher = CreateUnit(Player(15),'h07U',6656.0,-5408.0,0)
 set general_tp_respawn_buffer = CreateUnit(Player(15),'dDUM',6656.0,-5408.0,0)
 call UnitAddAbility(general_tp_respawn_buffer,'A0LV')
@@ -53416,10 +53417,10 @@ set udg_Neutral_Alliance_Chance=0
 call DialogDisplayBJ(false,udg_CHOOSE_SETTINGS_2,GetEnumPlayer())
 call DisplayTimedTextToForce(GetPlayersAll(),30,"|cff32cd32Neutral allies disabled|r")
 call DialogSetMessageBJ(udg_CHOOSE_SETTINGS_3,"|cff32cd32Game Mode:|r")
-call DialogAddButtonBJ(udg_CHOOSE_SETTINGS_3,"Normal")
-set udg_SETTINGS3_CHOICE1=GetLastCreatedButtonBJ()
 call DialogAddButtonBJ(udg_CHOOSE_SETTINGS_3,"Hard")
 set udg_SETTINGS3_CHOICE2=GetLastCreatedButtonBJ()
+call DialogAddButtonBJ(udg_CHOOSE_SETTINGS_3,"Normal")
+set udg_SETTINGS3_CHOICE1=GetLastCreatedButtonBJ()
 call DialogAddButtonBJ(udg_CHOOSE_SETTINGS_3,"EXTREME (+1 lives)")
 set udg_SETTINGS3_CHOICE3=GetLastCreatedButtonBJ()
 call DialogDisplayBJ(true,udg_CHOOSE_SETTINGS_3,GetEnumPlayer())
@@ -53434,10 +53435,10 @@ call SetUnitOwner(udg_unit_ngno_0062,Player(bj_PLAYER_NEUTRAL_EXTRA),true)
 call ReplaceUnitBJ(udg_unit_ngno_0003,'nmcf',bj_UNIT_STATE_METHOD_RELATIVE)
 call ReplaceUnitBJ(udg_unit_ngno_0005,'nmcf',bj_UNIT_STATE_METHOD_RELATIVE)
 call DialogSetMessageBJ(udg_CHOOSE_SETTINGS_3,"|cff32cd32Game Mode:|r")
-call DialogAddButtonBJ(udg_CHOOSE_SETTINGS_3,"Normal")
-set udg_SETTINGS3_CHOICE1=GetLastCreatedButtonBJ()
 call DialogAddButtonBJ(udg_CHOOSE_SETTINGS_3,"Hard")
 set udg_SETTINGS3_CHOICE2=GetLastCreatedButtonBJ()
+call DialogAddButtonBJ(udg_CHOOSE_SETTINGS_3,"Normal")
+set udg_SETTINGS3_CHOICE1=GetLastCreatedButtonBJ()
 call DialogAddButtonBJ(udg_CHOOSE_SETTINGS_3,"EXTREME (+1 lives)")
 set udg_SETTINGS3_CHOICE3=GetLastCreatedButtonBJ()
 call DialogDisplayBJ(true,udg_CHOOSE_SETTINGS_3,GetEnumPlayer())
