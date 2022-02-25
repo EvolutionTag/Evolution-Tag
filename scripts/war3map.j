@@ -103,6 +103,9 @@ integer pc_call_3=0
 integer pc_call_4=0
 integer pc_call_5=0
 integer pc_call_6=0
+trigger gg_trg_GandalfTeleport= null
+trigger gg_trg_GandalfTeleport_Effect= null
+trigger gg_trg_ForceFieldTLF = null
 unit general_tp_dispatcher = null
 unit general_tp_respawn_buffer = null
 constant boolean LIBRARY_APIMemoryForString=true
@@ -26160,7 +26163,15 @@ endif
 return true
 endfunction
 function Trig_Remove_Selling_Unit_HERO_SHOP_HUMAN_Func002C takes nothing returns boolean
-if(not(GetUnitTypeId(GetSoldUnit())=='H073'))then
+if((GetUnitTypeId(GetSoldUnit())=='H073'))then
+return true
+endif
+return false
+endfunction
+function Trig_Remove_Selling_Unit_HERO_SHOP_HUMAN_Func002C_2 takes nothing returns boolean
+if(not (GetUnitTypeId(GetSoldUnit())=='H07W'))then
+return false
+elseif(GetUnitAbilityLevel(GetBuyingUnit(),'ACCM')==0) then
 return false
 endif
 return true
@@ -26171,15 +26182,15 @@ call AdjustPlayerStateSimpleBJ(GetOwningPlayer(GetBuyingUnit()),PLAYER_STATE_RES
 call RemoveUnit(GetSoldUnit())
 return
 endif
-if(Trig_Remove_Selling_Unit_HERO_SHOP_HUMAN_Func002C())then
-if(Trig_Remove_Selling_Unit_HERO_SHOP_HUMAN_Func002Func001C())then
+if(Trig_Remove_Selling_Unit_HERO_SHOP_HUMAN_Func002Func001C() and Trig_Remove_Selling_Unit_HERO_SHOP_HUMAN_Func002C())then
 call UnitAddItemByIdSwapped('I03N',ChangeUnit2(GetBuyingUnit(),GetUnitTypeId(GetSoldUnit())))
 call RemoveUnit(GetSoldUnit())
+elseif(Trig_Remove_Selling_Unit_HERO_SHOP_HUMAN_Func002C_2()) then
+call RemoveUnit(GetSoldUnit())
+call ChangeUnit2(GetBuyingUnit(),'H07W')
 else
 call AdjustPlayerStateSimpleBJ(GetOwningPlayer(GetBuyingUnit()),PLAYER_STATE_RESOURCE_GOLD,50)
 call RemoveUnit(GetSoldUnit())
-endif
-else
 endif
 endfunction
 function InitTrig_Remove_Selling_Unit_HERO_SHOP_HUMAN takes nothing returns nothing
@@ -36955,6 +36966,10 @@ elseif(Trig_the_ultimate_upgrade_2_Func006C())then
 call UltimateUpgrade(GetTriggerUnit(),'H06G')
 elseif(Trig_the_ultimate_upgrade_2_Func008C())then
 call UltimateUpgrade(GetTriggerUnit(),'H06S')
+elseif(GetUnitTypeId(GetManipulatingUnit())=='H07W')then
+call UltimateUpgrade(GetTriggerUnit(),'H07V')
+call DisplayTextToPlayer(GetOwningPlayer(GetTriggerUnit()),0,0,"|cffff0000Death is but the next great adventure|r")
+call AddLives(GetPlayerId(GetOwningPlayer(GetTriggerUnit())),1)
 elseif(Trig_the_ultimate_upgrade_2_Func010C())then
 call UltimateUpgrade(GetTriggerUnit(),'H07A')
 elseif(Trig_the_ultimate_upgrade_2_Func012C())then
@@ -47892,6 +47907,101 @@ call TriggerRegisterAnyUnitEventBJ(udg_trg_OOW_Main,EVENT_PLAYER_UNIT_SPELL_EFFE
 call TriggerAddCondition(udg_trg_OOW_Main,Condition(function Trig_OOW_Main_Conditions))
 call TriggerAddAction(udg_trg_OOW_Main,function Trig_OOW_Main_Actions)
 endfunction
+function Trig_GandalfTeleport_Conditions takes nothing returns boolean
+    if ( not ( GetSpellAbilityId() == 'A0LY' ) ) then
+        return false
+    endif
+    if ( not ( GetUnitAbilityLevelSwapped('ACC1', GetSpellTargetUnit()) == 0 ) ) then
+        return false
+    endif
+    if ( not ( GetUnitAbilityLevelSwapped('ACC6', GetSpellTargetUnit()) == 0 ) ) then
+        return false
+    endif
+    if ( not ( GetUnitAbilityLevelSwapped('ACC5', GetSpellTargetUnit()) == 0 ) ) then
+        return false
+    endif
+    return true
+endfunction
+
+function Trig_GandalfTeleport_Func002C takes nothing returns boolean
+    if ( not ( GetOwningPlayer(GetTriggerUnit()) == GetLocalPlayer() ) ) then
+        return false
+    endif
+    return true
+endfunction
+
+function Trig_GandalfTeleport_Actions takes nothing returns nothing
+    call IssueImmediateOrder(GetSpellAbilityUnit(), "stop")
+    if ( Trig_GandalfTeleport_Func002C() ) then
+        call DisplayTextToPlayer(GetLocalPlayer(), 0, 0, "Incorrect target. Must swap with allied boss or hero that costs lives")
+    else
+    endif
+endfunction
+
+//===========================================================================
+function InitTrig_GandalfTeleport takes nothing returns nothing
+    set gg_trg_GandalfTeleport=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_GandalfTeleport, EVENT_PLAYER_UNIT_SPELL_CHANNEL)
+    call TriggerAddCondition(gg_trg_GandalfTeleport, Condition(function Trig_GandalfTeleport_Conditions))
+    call TriggerAddAction(gg_trg_GandalfTeleport, function Trig_GandalfTeleport_Actions)
+endfunction
+
+//===========================================================================
+// Trigger: GandalfTeleport Copy
+//===========================================================================
+function Trig_GandalfTeleport_Effect_Conditions takes nothing returns boolean
+    if ( not ( GetSpellAbilityId() == 'A0LY' ) ) then
+        return false
+    endif
+    return true
+endfunction
+
+function Trig_GandalfTeleport_Effect_Actions takes nothing returns nothing
+    local unit u1= GetSpellTargetUnit()
+    local unit u2= GetTriggerUnit()
+    local real x1= GetUnitX(u1)
+    local real x2= GetUnitX(u2)
+    local real y1= GetUnitY(u1)
+    local real y2= GetUnitY(u2)
+    if(not IsUnitMovementDisabled(u2)) then
+        call SetUnitX(u2,x1)
+        call SetUnitY(u2,y1)
+        call SetUnitPosition(u1, x2, y2)
+    endif
+    set u1=null
+    set u2=null
+
+    //call DisplayTextToPlayer(GetLocalPlayer(),0,0,R2S(GetLocationX(o))+R2S(GetLocationY(o)))
+endfunction
+
+//===========================================================================
+function InitTrig_GandalfTeleport_Effect takes nothing returns nothing
+    set gg_trg_GandalfTeleport_Effect=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_GandalfTeleport_Effect, EVENT_PLAYER_UNIT_SPELL_EFFECT)
+    call TriggerAddCondition(gg_trg_GandalfTeleport_Effect, Condition(function Trig_GandalfTeleport_Effect_Conditions))
+    call TriggerAddAction(gg_trg_GandalfTeleport_Effect, function Trig_GandalfTeleport_Effect_Actions)
+endfunction
+function Trig_ForceFieldTLF_Conditions takes nothing returns boolean
+    if ( not ( GetUnitTypeId(GetTriggerUnit()) == 'h07X' ) ) then
+        return false
+    endif
+    return true
+endfunction
+
+function Trig_ForceFieldTLF_Actions takes nothing returns nothing
+    call UnitApplyTimedLifeBJ(5.00, 'BTLF', GetTriggerUnit())
+    call UnitSetConstructionProgress(GetTriggerUnit(), 100)
+    call ShowUnitHide(GetTriggerUnit())
+    call ShowUnitShow(GetTriggerUnit())
+endfunction
+
+//===========================================================================
+function InitTrig_ForceFieldTLF takes nothing returns nothing
+    set gg_trg_ForceFieldTLF=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(gg_trg_ForceFieldTLF, EVENT_PLAYER_UNIT_CONSTRUCT_START)
+    call TriggerAddCondition(gg_trg_ForceFieldTLF, Condition(function Trig_ForceFieldTLF_Conditions))
+    call TriggerAddAction(gg_trg_ForceFieldTLF, function Trig_ForceFieldTLF_Actions)
+endfunction
 function Trig_OOW_Dummies_Func001Func001Func001A takes nothing returns nothing
 call GroupRemoveUnitSimple(GetEnumUnit(),udg_OOW_HitGroup[udg_OOW_LoopInteger])
 call PauseUnitBJ(false,GetEnumUnit())
@@ -52019,6 +52129,7 @@ call TriggerAddAction(udg_trg_Passive_Death_Coil,function Trig_Passive_Death_Coi
 endfunction
 function InitCustomTriggers2 takes nothing returns nothing
 call InitTrig_AdvControl()
+call InitTrig_ForceFieldTLF()
 call InitTrig_Adv_Mechanical_Armor()
 call InitTrig_Adv_Mechanical_Weapon()
 call InitTrig_humansundead_player_check()
@@ -52124,6 +52235,7 @@ call InitTrig_Chaos_Event()
 call InitTrig_Raining_Pigs()
 call InitTrig_Rain_of_Fire_Event()
 call InitTrig_Creature_Event()
+call InitTrig_GandalfTeleport_Effect()
 call InitTrig_reset_trees()
 call InitTrig_reset_trees_Copy()
 call InitTrig_reset_trees_Copy_Copy()
