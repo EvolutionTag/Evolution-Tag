@@ -47965,6 +47965,7 @@ function Trig_GandalfTeleport_Effect_Actions takes nothing returns nothing
     local real y2= GetUnitY(u2)
     if(not IsUnitMovementDisabled(u2)) then
         call SetUnitX(u2,x1)
+        call UnitRemoveAbility(u2,'B02U')
         call SetUnitY(u2,y1)
         call SetUnitPosition(u1, x2, y2)
     endif
