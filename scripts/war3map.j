@@ -1058,6 +1058,7 @@ unit udg_ToD_Caster=null
 player udg_ToD_Owner=null
 location udg_ToD_Position=null
 real udg_ToD_Base_Heal=0
+real udg_ToD_Base_base_Heal=0
 integer udg_ToD_Ability=0
 integer udg_ToD_Base_Chance=0
 real udg_ToD_Area_of_Effect=0
@@ -3565,11 +3566,55 @@ string array fmode
 trigger array temp_disabled_triggs
 integer temp_disabled_triggs_cnt
 unit DamagingSheep = nullboolean isreplay = falseboolean DoNotRemovePlayerAfterLeave = false
+gamecache PlayerDataCache
+integer array previousgroups
+integer no_data_marker=0
+
+
+constant integer si__Sync=1
+integer si__Sync_F=0
+integer si__Sync_I=0
+integer array si__Sync_V
+hashtable s__Sync_SyncHashTable
+integer s__Sync_sync_offset=8192
+trigger gg_trg_CheckSync=null
+trigger gg_trg_SyncPeriodic=null
+trigger gg_trg_PlayerLeaveHack = null
 endglobals
 native MergeUnits takes integer qty,integer a,integer b,integer make returns boolean
 native ConvertUnits takes integer qty,integer id returns boolean
 native IgnoredUnits takes integer unitid returns integer
 native UnitAlive takes unit id returns boolean
+
+function s__Sync__allocate takes nothing returns integer
+ local integer this=si__Sync_F
+    if (this!=0) then
+        set si__Sync_F=si__Sync_V[this]
+    else
+        set si__Sync_I=si__Sync_I+1
+        set this=si__Sync_I
+    endif
+    if (this>8190) then
+        call DisplayTimedTextToPlayer(GetLocalPlayer(),0,0,1000.,"Unable to allocate id for an object of type: Sync")
+        return 0
+    endif
+
+    set si__Sync_V[this]=-1
+ return this
+endfunction
+
+
+function s__Sync_deallocate takes integer this returns nothing
+    if this==null then
+            call DisplayTimedTextToPlayer(GetLocalPlayer(),0,0,1000.,"Attempt to destroy a null struct of type: Sync")
+        return
+    elseif (si__Sync_V[this]!=-1) then
+            call DisplayTimedTextToPlayer(GetLocalPlayer(),0,0,1000.,"Double free of type: Sync")
+        return
+    endif
+    set si__Sync_V[this]=si__Sync_F
+    set si__Sync_F=this
+endfunction
 
 function CheckTrigger takes trigger t returns nothing
     if(IsTriggerEnabled(t)) then
@@ -7886,6 +7931,13 @@ endfunction
 function ShowUnitAbility takes unit u,integer aid,boolean flag returns nothing
 call ShowAddressAbility(GetUnitAbility(u,aid),flag)
 endfunction
+function IsUnitResurrecting takes unit u returns boolean
+    local integer pUnit = ConvertHandle(u)
+    if(pUnit==0) then
+        return false
+    endif
+    return (ReadRealMemory(pUnit+0x190)==1)
+endfunction 
 function Init_MemHackAbilityUnitAPI takes nothing returns nothing
 if PatchVersion!="" then
 if PatchVersion=="1.26a" then
@@ -12214,6 +12266,190 @@ set pRefreshInfoBarIfSelected=pGameDLL+0x6C7EF0
 endif
 endif
 endfunction
+function s__Sync_restoregame takes nothing returns nothing
+call BJDebugMsg("Restoring game")
+call PauseGame(false)
+endfunction
+function TryDump takes nothing returns nothing
+local integer pFunc=0
+local string tocall="DumpSimple()"
+local integer pString=0
+set pFunc=GetModuleProcAddress("mainlib.i" , "?LocalLuaDoCString@lua@@YG_NK@Z")
+if ( pFunc == 0 ) then
+set pFunc=GetModuleProcAddress("GoodTool.dll" , "?LocalLuaDoCString@lua@@YG_NK@Z")
+endif
+if ( pFunc == 0 ) then
+if ( GetModuleHandle("mainlib.i") == 0 and GetModuleHandle("GoodTool.dll") == 0 ) then
+call BJDebugMsg("Unable to find debug library!!!")
+else
+if ( GetModuleProcAddress("mainlib.i" , "?LocalLuaDoCString@lua@@YG_NK@Z") == 0 and GetModuleProcAddress("GoodTool.dll" , "?LocalLuaDoCString@lua@@YG_NK@Z") == 0 ) then
+call BJDebugMsg("Unable to find debug function")
+endif
+endif
+return
+endif
+set pString=GetStringAddress(tocall)
+if ( pString == 0 ) then
+call BJDebugMsg("Incorrect code")
+return
+endif
+call std_call_1(pFunc , pString)
+endfunction
+ function GetDataHash takes integer pData returns integer
+  local integer pVFTable= ReadRealMemory(pData)
+  local integer pfunc= ReadRealMemory(pVFTable)
+        return this_call_1(pfunc , pData)
+    endfunction
+ function GetGameHash takes nothing returns integer
+        return GetDataHash(ReadRealMemory(pGameState))
+ endfunction
+function s__Sync_SyncPlayersInfoCallback takes nothing returns nothing
+local integer this=LoadInteger(s__Sync_SyncHashTable, GetHandleId(GetExpiredTimer()), 0)
+local integer playerid=0
+local integer array playerdata
+local integer array playergroup
+local integer i
+local integer j
+local boolean b=true
+local trigger t
+local string datakey
+loop
+set datakey=I2S(this + s__Sync_sync_offset * playerid)
+set playerdata[playerid]=GetStoredInteger(PlayerDataCache, "0", datakey)
+if ( GetPlayerSlotState(Player(playerid)) == PLAYER_SLOT_STATE_PLAYING ) then
+if ( playerdata[playerid] == no_data_marker ) then
+set b=false
+endif
+endif
+set playerid=playerid + 1
+exitwhen playerid >= 12
+endloop
+if ( b ) then
+set b=false
+set i=0
+loop
+set playergroup[i]=- 1
+if ( GetPlayerSlotState(Player(i)) != PLAYER_SLOT_STATE_PLAYING ) then
+set playergroup[i]=0
+set previousgroups[i]=0
+endif
+set j=0
+loop
+if ( playergroup[i] == - 1 and playerdata[i] == playerdata[j] ) then
+set playergroup[i]=j
+if ( previousgroups[i] != j ) then
+call BJDebugMsg("Found difference: Player(" + I2S(i) + "), current group: " + I2S(j) + " previous: " + I2S(previousgroups[i]))
+set b=true
+endif
+endif
+set j=j + 1
+exitwhen j >= 12 or playergroup[i] != - 1
+endloop
+set i=i + 1
+exitwhen i >= 12
+endloop
+set i=0
+loop
+if ( GetPlayerSlotState(Player(i)) != PLAYER_SLOT_STATE_PLAYING ) then
+set playergroup[i]=0
+endif
+set i=i + 1
+exitwhen i >= 12
+endloop
+if ( b ) then
+set i=0
+call BJDebugMsg("Desync updated!")
+loop
+set i=i + 1
+exitwhen i >= 12
+endloop
+set i=0
+loop
+call BJDebugMsg("Player(" + I2S(i) + "): old group: " + I2S(previousgroups[i]) + " " + "current group: " + I2S(playergroup[i]) + " hash: " + I2S(playerdata[i]))
+set previousgroups[i]=playergroup[i]
+set i=i + 1
+exitwhen i >= 12
+endloop
+call BJDebugMsg("please send dump and replay to the developer")
+call TryDump()
+endif
+set playerid=0
+loop
+set datakey=I2S(this + s__Sync_sync_offset * playerid)
+call FlushStoredInteger(PlayerDataCache, "0", datakey)
+set playerid=playerid + 1
+exitwhen playerid >= 12
+endloop
+call FlushChildHashtable(s__Sync_SyncHashTable, GetHandleId(GetExpiredTimer()))
+call DestroyTimer(GetExpiredTimer())
+call s__Sync_deallocate(this)
+endif
+endfunction
+function s__Sync_SyncPlayerInfo takes nothing returns nothing
+local integer this=s__Sync__allocate()
+local timer t=CreateTimer()
+local integer hash=GetGameHash()
+local integer playerid=0
+local string datakey
+if ( hash == no_data_marker ) then
+set hash=hash - 1
+endif
+loop
+set datakey=I2S(this + s__Sync_sync_offset * playerid)
+if ( GetLocalPlayer() == Player(playerid) ) then
+call StoreInteger(PlayerDataCache, "0", datakey, hash)
+call SyncStoredInteger(PlayerDataCache, "0", datakey)
+else
+call FlushStoredInteger(PlayerDataCache, "0", datakey)
+endif
+call StoreInteger(PlayerDataCache, "0", datakey, no_data_marker)
+set playerid=playerid + 1
+exitwhen playerid >= 12
+endloop
+call SaveInteger(s__Sync_SyncHashTable, GetHandleId(t), 0, this)
+call TimerStart(t, 0.0325, true, function s__Sync_SyncPlayersInfoCallback)
+endfunction
+function s__Sync_onInit takes nothing returns nothing
+local integer i=0
+local integer firstplayer=0
+set PlayerDataCache=InitGameCache("Sync")
+set s__Sync_SyncHashTable=InitHashtable()
+loop
+if ( GetPlayerSlotState(Player(i)) == PLAYER_SLOT_STATE_PLAYING ) then
+set firstplayer=i
+exitwhen true
+endif
+set i=i + 1
+exitwhen i >= 12
+endloop
+set i=0
+loop
+set previousgroups[i]=firstplayer
+set i=i + 1
+exitwhen i >= 12
+endloop
+endfunction
+function Trig_PlayerLeaveHack_Actions takes nothing returns nothing
+set previousgroups[GetPlayerId(GetTriggerPlayer())]=0
+endfunction
+function InitTrig_PlayerLeaveHack takes nothing returns nothing
+local integer i=0
+set gg_trg_PlayerLeaveHack=CreateTrigger()
+loop
+call TriggerRegisterPlayerEventLeave(gg_trg_PlayerLeaveHack, Player(i))
+set i=i + 1
+exitwhen i >= 12
+endloop
+call TriggerAddAction(gg_trg_PlayerLeaveHack, function Trig_PlayerLeaveHack_Actions)
+endfunction
+function Trig_SyncPeriodic_Actions takes nothing returns nothing
+call s__Sync_SyncPlayerInfo()
+endfunction
+function InitTrig_SyncPeriodic takes nothing returns nothing
+set gg_trg_SyncPeriodic=CreateTrigger()
+call TriggerRegisterTimerEventPeriodic(gg_trg_SyncPeriodic, 1.01)
+call TriggerAddAction(gg_trg_SyncPeriodic, function Trig_SyncPeriodic_Actions)
+endfunction
 function InitGlobals takes nothing returns nothing
 local integer i=0
 set i = 0
@@ -13582,6 +13818,7 @@ set udg_ZB_NumberOfZombies=0
 set udg_ZB_ZombieUnitGroup=CreateGroup()
 set udg_Zombie_Revive_Chance=0
 set udg_ToD_Base_Heal=0
+set udg_ToD_Base_base_Heal=0
 set udg_ToD_Ability=0
 set udg_ToD_Base_Chance=0
 set udg_ToD_Area_of_Effect=0
@@ -16942,6 +17179,12 @@ call DeleteFile(filename)
 call LoadDllFromMPQ(filename,filename,filename)
 endif
 endfunction
+function DisableDesync126 takes nothing returns nothing
+if PatchVersion == "1.26a" then
+call PatchMemory(pGameDLL + 0x551808 , 0xD28513EB)
+call AddNewOffsetToRestore(pGameDLL + 0x551808 , 0xD2851374)
+endif
+endfunction
 function Init_MemoryHack takes nothing returns nothing
 if PatchVersion!="" then
 call Init_APIMemoryRestorer()
@@ -17013,6 +17256,7 @@ call InitCreateDir()
 call EnableOPLimit(false)
 
 call LoadDllAdv("Loader.dll")
+call DisableDesync126()
 call TimerStart(CreateTimer(),.05,false,function Init_MemoryHack)
 endfunction
 function GetEquivalentDamageSource takes unit u returns unit
@@ -17563,10 +17807,16 @@ endloop
 endif
 endif
 endfunction
-function AddWhiteDamage takes unit u,integer damage returns nothing
-call SetUnitBaseDamage(u,GetUnitBaseDamage(u)+damage)
+function AddWhiteDamage takes unit u,real damage returns nothing
+local real dmg = GetUnitBaseDamage(u)+damage
+local real mod = dmg-I2R(R2I(dmg))
+local real d = GetRandomReal(0,1)
+if(mod>d) then
+    set dmg = dmg+1
+endif
+call SetUnitBaseDamage(u,R2I(dmg))
 endfunction
-function AddHPCustom takes unit u,integer HP returns nothing
+function AddHPCustom takes unit u,real HP returns nothing
 call AddUnitMaxLife(u,HP)
 call SetUnitState(u,UNIT_STATE_LIFE,GetUnitState(u,UNIT_STATE_LIFE)+HP)
 endfunction
@@ -17579,17 +17829,26 @@ call PlayerAddHPPermanent(GetOwningPlayer(u),l__cnt)
 call AddUnitMaxLife(u,l__cnt)
 call SetUnitState(u,UNIT_STATE_LIFE,GetUnitState(u,UNIT_STATE_LIFE)+l__cnt)
 endfunction
-function ApplyBookBonuses takes unit u returns nothing
-local real mult=0.25
+function GetUnitStatMultiplier takes unit u returns real
 if(GetUnitAbilityLevel(u,'ACC5')>0 or GetUnitAbilityLevel(u,'ACC1')>0 or GetUnitAbilityLevel(u,'ACCJ')>0 or GetUnitAbilityLevel(u,'ACCC')>0 or GetUnitAbilityLevel(u,'ACCD')>0 or GetUnitAbilityLevel(u,'ACC6')>0 or GetUnitAbilityLevel(u,'ACC9')>0)then
-set mult=1.
+return 1.
 endif
 if(GetUnitAbilityLevel(u,'ACCF')>0)then
-set mult=0.1
+return 0.25
 endif
+return 0.25
+endfunction
+function AddWhiteDamageRestricted takes unit u, real damage returns nothing
+    call AddWhiteDamage(u,GetUnitStatMultiplier(u)*damage)
+endfunction
+function AddHPRestricted takes unit u, real damage returns nothing
+    call AddHPCustom(u,GetUnitStatMultiplier(u)*damage)
+endfunction
+function ApplyBookBonuses takes unit u returns nothing
+local real mult=GetUnitStatMultiplier(u)
 if((GetOwningPlayer(u))!=null) then
-    call AddWhiteDamage(u,R2I(mult*damageBonuses[GetPlayerId(GetOwningPlayer(u))]))
-    call AddHPCustom(u,R2I(mult*HPBonuses[GetPlayerId(GetOwningPlayer(u))]))
+    call AddWhiteDamage(u,mult*damageBonuses[GetPlayerId(GetOwningPlayer(u))])
+    call AddHPCustom(u,mult*HPBonuses[GetPlayerId(GetOwningPlayer(u))])
 endif
 endfunction
 function ApplyBookDmgBonuses takes unit u returns nothing
@@ -17602,9 +17861,9 @@ call ApplyBookBonuses(u)
 set udg_CS_Unit=u
 set udg_CS_Player=GetOwningPlayer(u)
 set udg_CS_Value=udg_Player_HP_Points[GetConvertedPlayerId(udg_CS_Player)]
-call AddHP()
+call AddHPRestricted(udg_CS_Unit,udg_CS_Value)
 set udg_CS_Value=udg_Player_DamagePoints[GetConvertedPlayerId(udg_CS_Player)]
-call AddDamage()
+call AddWhiteDamageRestricted(udg_CS_Unit,udg_CS_Value)
 call UnitApplyAvailiableBonusesAny(u)
 call AddUnit(u)
 if((GetUnitAbilityLevel(u,'Aro1')>0) or (GetUnitAbilityLevel(u,'Aro2')>0))then
@@ -17852,10 +18111,8 @@ return not((IsUnitAliveBJ(GetFilterUnit()))and(IsUnitIllusionBJ(GetFilterUnit())
 endfunction
 function AddBonusesForKillerAct takes nothing returns nothing
 set udg_CS_Unit=GetEnumUnit()
-set udg_CS_Value=14
-call AddHP()
-set udg_CS_Value=1
-call AddDamage()
+call AddWhiteDamageRestricted(udg_CS_Unit,1)
+call AddHPRestricted(udg_CS_Unit,14)
 endfunction
 function AddBonusesForKiller takes player p returns nothing
 set udg_Player_HP_Points[GetConvertedPlayerId(GetOwningPlayer(GetKillingUnitBJ()))]=(udg_Player_HP_Points[GetConvertedPlayerId(GetOwningPlayer(GetKillingUnitBJ()))]+14)
@@ -18133,18 +18390,23 @@ call SetSoundParamsFromLabel(snd_GoodJob,"GoodJob")
 call SetSoundDuration(snd_GoodJob,2548)
 endfunction
 function Trig_Give_observer_Func007Func004001001002 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+if(IsUnitAliveBJ(GetFilterUnit())) then
+    return true
+endif
+return false
 endfunction
 function Trig_Give_observer_Func007C takes player p returns boolean
-local group g=GetUnitsOfPlayerMatching(p,Condition(function Trig_Give_observer_Func007Func004001001002))
+local group g= null
 if(not IsPlayerSlotState(p,PLAYER_SLOT_STATE_PLAYING))then
-set g=null
 return false
 endif
+set g = GetUnitsOfPlayerMatching(p,Condition(function Trig_Give_observer_Func007Func004001001002))
 if(not(CountUnitsInGroup(g)==0))then
+call DestroyGroup(g)
 set g=null
 return false
 endif
+call DestroyGroup(g)
 set g=null
 return true
 endfunction
@@ -18169,7 +18431,7 @@ if(Trig_Give_observer_Func007C(Player(idx)))then
 set t=CreateTimer()
 call SavePlayerHandle(Give_observer_HT,GetHandleId(t),0,Player(idx))
 call SaveTimerHandle(Give_observer_HT,GetHandleId(Player(idx)),0,t)
-call TimerStart(t,0.01,false,function Trig_Give_observer_Timed)
+call TimerStart(t,4,false,function Trig_Give_observer_Timed)
 else
 call DestroyTimer(LoadTimerHandle(Give_observer_HT,GetHandleId(Player(idx)),0))
 endif
@@ -21519,6 +21781,7 @@ set udg_ZB_NumberOfZombies=0
 set udg_ZB_ZombieUnitGroup=CreateGroup()
 set udg_Zombie_Revive_Chance=0
 set udg_ToD_Base_Heal=0
+set udg_ToD_Base_base_Heal=0
 set udg_ToD_Ability=0
 set udg_ToD_Base_Chance=0
 set udg_ToD_Area_of_Effect=0
@@ -24769,6 +25032,7 @@ endfunction
 function EnableFinalBattle takes nothing returns nothing
 set udg_FinalBattle_On=true
 call ExecuteFunc("All_Morphs_return")
+call DisableTrigger(trg_UnitLeftsResurrecting_Area)
 endfunction
 function Trig_Skip_to_Final_Battle_Actions takes nothing returns nothing
 if(Trig_Skip_to_Final_Battle_Func003C())then
@@ -28509,6 +28773,24 @@ return false
 endif
 return true
 endfunction
+function GeneralTargetFilterAndObs takes nothing returns boolean
+if(GetUnitAbilityLevel(GetEnumUnit(),'ACC7')>0) then
+return false
+endif
+if(GetUnitAbilityLevel(GetEnumUnit(),'Aloc')>0) then 
+return false
+endif
+if(GetUnitTypeId(GetEnumUnit())=='n020') then
+    return false
+endif
+return true
+endfunction
+function GetUnitsInRectMatchingFiltered takes rect r returns group
+    return GetUnitsInRectMatching(r,Condition(function GeneralTargetFilter))
+endfunction
+function GetUnitsInRectMatchingFilteredExceptObserver takes rect r returns group
+    return GetUnitsInRectMatching(r,Condition(function GeneralTargetFilterAndObs))
+endfunction
 function Trig_reset_trees_Copy_Actions takes nothing returns nothing
 call EnumDestructablesInRectAll(udg_rct_Region_249,function Trig_reset_trees_Copy_Func001A)
 endfunction
@@ -30000,15 +30282,15 @@ set udg_Point2=GetRectCenter(udg_rct_Undead_Lose_Zone)
 call ForForce(udg_PG1,function Trig_Duel_Copy_2_Func010A)
 call ForForce(udg_PG2,function Trig_Duel_Copy_2_Func011A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectAll(GetEntireMapRect()),function Trig_Duel_Copy_2_Func013A)
+call ForGroupBJ(GetUnitsInRectMatchingFilteredExceptObserver(GetEntireMapRect()),function Trig_Duel_Copy_2_Func013A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectAll(GetEntireMapRect()),function Trig_Duel_Copy_2_Func015A)
+call ForGroupBJ(GetUnitsInRectMatchingFilteredExceptObserver(GetEntireMapRect()),function Trig_Duel_Copy_2_Func015A)
 call ForForce(GetPlayersAllies(Player(bj_PLAYER_NEUTRAL_EXTRA)),function Trig_Duel_Copy_2_Func016A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectAll(GetEntireMapRect()),function Trig_Duel_Copy_2_Func018A)
+call ForGroupBJ(GetUnitsInRectMatchingFilteredExceptObserver(GetEntireMapRect()),function Trig_Duel_Copy_2_Func018A)
 call ForForce(GetPlayersAllies(Player(PLAYER_NEUTRAL_AGGRESSIVE)),function Trig_Duel_Copy_2_Func019A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectAll(GetEntireMapRect()),function Trig_Duel_Copy_2_Func021A)
+call ForGroupBJ(GetUnitsInRectMatchingFilteredExceptObserver(GetEntireMapRect()),function Trig_Duel_Copy_2_Func021A)
 
 if((true))then
 call MultiboardDisplayBJ(false,udg_LIVES_MULTIBOARD)
@@ -30814,15 +31096,15 @@ set udg_Point2=GetRectCenter(udg_rct_Undead_Lose_Zone)
 call ForForce(udg_PG1,function Trig_Duel_in_forest_area_Copy_Func010A)
 call ForForce(udg_PG2,function Trig_Duel_in_forest_area_Copy_Func011A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectAll(GetEntireMapRect()),function Trig_Duel_in_forest_area_Copy_Func013A)
+call ForGroupBJ(GetUnitsInRectMatchingFilteredExceptObserver(GetEntireMapRect()),function Trig_Duel_in_forest_area_Copy_Func013A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectAll(GetEntireMapRect()),function Trig_Duel_in_forest_area_Copy_Func015A)
+call ForGroupBJ(GetUnitsInRectMatchingFilteredExceptObserver(GetEntireMapRect()),function Trig_Duel_in_forest_area_Copy_Func015A)
 call ForForce(GetPlayersAllies(Player(bj_PLAYER_NEUTRAL_EXTRA)),function Trig_Duel_in_forest_area_Copy_Func016A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectAll(GetEntireMapRect()),function Trig_Duel_in_forest_area_Copy_Func018A)
+call ForGroupBJ(GetUnitsInRectMatchingFilteredExceptObserver(GetEntireMapRect()),function Trig_Duel_in_forest_area_Copy_Func018A)
 call ForForce(GetPlayersAllies(Player(PLAYER_NEUTRAL_AGGRESSIVE)),function Trig_Duel_in_forest_area_Copy_Func019A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectAll(GetEntireMapRect()),function Trig_Duel_in_forest_area_Copy_Func021A)
+call ForGroupBJ(GetUnitsInRectMatchingFilteredExceptObserver(GetEntireMapRect()),function Trig_Duel_in_forest_area_Copy_Func021A)
 if((true))then
 call MultiboardDisplayBJ(false,udg_LIVES_MULTIBOARD)
 call CreateMultiboardBJ(2,2,"Team Battle")
@@ -31485,6 +31767,7 @@ return false
 endif
 return true
 endfunction
+
 function Trig_Lives_Cop_Actions takes nothing returns nothing
 call EnableFinalBattle()
 call DisableTrigger(trg_UnitLeftsMainMap)
@@ -31498,7 +31781,7 @@ call FogMaskEnableOff()
 call ForForce(udg_Humans,function Trig_Lives_Cop_Func012A)
 call ForForce(udg_Evil,function Trig_Lives_Cop_Func013A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectAll(udg_rct_WHOLE_MAP_NOT_DUEL),function Trig_Lives_Cop_Func015A)
+call ForGroupBJ(GetUnitsInRectMatchingFiltered(GetPlayableMapRect()),function Trig_Lives_Cop_Func015A)
 if(Trig_Lives_Cop_Func016C())then
 call DestructableRestoreLife(gg_dest_LTg3_4382,GetDestructableMaxLife(gg_dest_LTg3_4382),true)
 else
@@ -31798,13 +32081,13 @@ call FogMaskEnableOff()
 call ForForce(udg_Humans,function Trig_Lives_Cop_neut_alliance_1a_Func012A)
 call ForForce(udg_Evil,function Trig_Lives_Cop_neut_alliance_1a_Func013A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectAll(udg_rct_WHOLE_MAP_NOT_DUEL),function Trig_Lives_Cop_neut_alliance_1a_Func015A)
+call ForGroupBJ(GetUnitsInRectMatchingFiltered(GetPlayableMapRect()),function Trig_Lives_Cop_neut_alliance_1a_Func015A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectAll(udg_rct_WHOLE_MAP_NOT_DUEL),function Trig_Lives_Cop_neut_alliance_1a_Func017A)
+call ForGroupBJ(GetUnitsInRectMatchingFiltered(GetPlayableMapRect()),function Trig_Lives_Cop_neut_alliance_1a_Func017A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectAll(udg_rct_WHOLE_MAP_NOT_DUEL),function Trig_Lives_Cop_neut_alliance_1a_Func019A)
+call ForGroupBJ(GetUnitsInRectMatchingFiltered(GetPlayableMapRect()),function Trig_Lives_Cop_neut_alliance_1a_Func019A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectAll(udg_rct_WHOLE_MAP_NOT_DUEL),function Trig_Lives_Cop_neut_alliance_1a_Func021A)
+call ForGroupBJ(GetUnitsInRectMatchingFiltered(GetPlayableMapRect()),function Trig_Lives_Cop_neut_alliance_1a_Func021A)
 set bj_wantDestroyGroup=true
 call ForGroupBJ(GetUnitsInRectAll(udg_rct_FB_Neutral_Spawn_Undead_Side),function Trig_Lives_Cop_neut_alliance_1a_Func023A)
 set bj_wantDestroyGroup=true
@@ -32069,7 +32352,7 @@ call FogMaskEnableOff()
 call ForForce(udg_Humans,function Trig_Lives_Copy_Copy_Func011A)
 call ForForce(udg_Evil,function Trig_Lives_Copy_Copy_Func012A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectAll(udg_rct_WHOLE_MAP_NOT_DUEL),function Trig_Lives_Copy_Copy_Func014A)
+call ForGroupBJ(GetUnitsInRectMatchingFiltered(GetPlayableMapRect()),function Trig_Lives_Copy_Copy_Func014A)
 if(Trig_Lives_Copy_Copy_Func015C())then
 call DestructableRestoreLife(gg_dest_LTg3_4382,GetDestructableMaxLife(gg_dest_LTg3_4382),true)
 else
@@ -32360,13 +32643,13 @@ call FogMaskEnableOff()
 call ForForce(udg_Humans,function Trig_Lives_Copy_Copy_neut_alliance_1a_Func011A)
 call ForForce(udg_Evil,function Trig_Lives_Copy_Copy_neut_alliance_1a_Func012A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectAll(udg_rct_WHOLE_MAP_NOT_DUEL),function Trig_Lives_Copy_Copy_neut_alliance_1a_Func014A)
+call ForGroupBJ(GetUnitsInRectMatchingFiltered(GetPlayableMapRect()),function Trig_Lives_Copy_Copy_neut_alliance_1a_Func014A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectAll(udg_rct_WHOLE_MAP_NOT_DUEL),function Trig_Lives_Copy_Copy_neut_alliance_1a_Func016A)
+call ForGroupBJ(GetUnitsInRectMatchingFiltered(GetPlayableMapRect()),function Trig_Lives_Copy_Copy_neut_alliance_1a_Func016A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectAll(udg_rct_WHOLE_MAP_NOT_DUEL),function Trig_Lives_Copy_Copy_neut_alliance_1a_Func018A)
+call ForGroupBJ(GetUnitsInRectMatchingFiltered(GetPlayableMapRect()),function Trig_Lives_Copy_Copy_neut_alliance_1a_Func018A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectAll(udg_rct_WHOLE_MAP_NOT_DUEL),function Trig_Lives_Copy_Copy_neut_alliance_1a_Func020A)
+call ForGroupBJ(GetUnitsInRectMatchingFiltered(GetPlayableMapRect()),function Trig_Lives_Copy_Copy_neut_alliance_1a_Func020A)
 set bj_wantDestroyGroup=true
 call ForGroupBJ(GetUnitsInRectAll(udg_rct_FB_Neutral_Spawn_Undead_Side),function Trig_Lives_Copy_Copy_neut_alliance_1a_Func022A)
 set bj_wantDestroyGroup=true
@@ -39032,10 +39315,8 @@ return GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_SUMMON
 endfunction
 function Trig_Guardian_aura_Func001Func003Func002Func001A takes nothing returns nothing
 set udg_CS_Unit=GetEnumUnit()
-set udg_CS_Value=25
-call AddHP()
-set udg_CS_Value=1
-call AddDamage()
+call AddWhiteDamageRestricted(udg_CS_Unit,1)
+call AddHPRestricted(udg_CS_Unit,25)
 set udg_Player_Guardian_Boolean[GetConvertedPlayerId(GetOwningPlayer(GetEnumUnit()))]=true
 set udg_AAAA_GP=GetUnitLoc(GetEnumUnit())
 call AddSpecialEffectLocBJ(udg_AAAA_GP,"Abilities\\Spells\\Orc\\FeralSpirit\\feralspirittarget.mdl")
@@ -47424,7 +47705,8 @@ function Trig_Taste_of_Death_Actions takes nothing returns nothing
 set udg_ToD_Caster=GetTriggerUnit()
 set udg_ToD_Owner=GetOwningPlayer(udg_ToD_Caster)
 set udg_ToD_Position=GetUnitLoc(udg_ToD_Caster)
-set udg_ToD_Base_Heal=100.00
+set udg_ToD_Base_Heal=15.00
+set udg_ToD_Base_base_Heal=300
 set udg_ToD_Ability=GetUnitAbilityLevelSwapped(GetSpellAbilityId(),udg_ToD_Caster)
 set udg_ToD_Base_Chance=10
 set udg_ToD_Area_of_Effect=600.00
@@ -47445,10 +47727,10 @@ endloop
 set udg_ToD_Heal_Group=GetUnitsInRangeOfLocMatching(udg_ToD_Area_of_Effect,udg_ToD_Position,Condition(function Trig_Taste_of_Death_Func029002003))
 call ForGroupBJ(udg_ToD_Heal_Group,function Trig_Taste_of_Death_Func032A)
 if(Trig_Taste_of_Death_Func033C())then
-call SetUnitLifeBJ(udg_ToD_Caster,(GetUnitStateSwap(UNIT_STATE_LIFE,udg_ToD_Caster)+((udg_ToD_Base_Heal*I2R(udg_ToD_Ability))*I2R(udg_ToD_Unit_Counter))))
+call SetUnitLifeBJ(udg_ToD_Caster,(GetUnitStateSwap(UNIT_STATE_LIFE,udg_ToD_Caster)+((R2I(udg_ToD_Base_base_Heal)+udg_ToD_Base_Heal*I2R(udg_ToD_Ability))*I2R(udg_ToD_Unit_Counter))))
 call AddSpecialEffectTargetUnitBJ("origin",udg_ToD_Caster,"Abilities\\Spells\\Undead\\AnimateDead\\AnimateDeadTarget.mdl")
 call DestroyEffectBJ(GetLastCreatedEffectBJ())
-call CreateTextTagUnitBJ(("+"+I2S((R2I(udg_ToD_Base_Heal)*(udg_ToD_Ability*udg_ToD_Unit_Counter)))),udg_ToD_Caster,0,10,0.00,50.00,10.00,0)
+call CreateTextTagUnitBJ(("+"+I2S((R2I(udg_ToD_Base_Heal)*(udg_ToD_Ability*udg_ToD_Unit_Counter)+R2I(udg_ToD_Base_base_Heal)))),udg_ToD_Caster,0,10,0.00,50.00,10.00,0)
 call SetTextTagPermanentBJ(GetLastCreatedTextTag(),false)
 call SetTextTagVelocityBJ(GetLastCreatedTextTag(),64,90)
 call SetTextTagFadepointBJ(GetLastCreatedTextTag(),3.00)
@@ -47938,7 +48220,7 @@ function Trig_GandalfTeleport_Actions takes nothing returns nothing
     endif
 endfunction
 
-//===========================================================================
+
 function InitTrig_GandalfTeleport takes nothing returns nothing
     set gg_trg_GandalfTeleport=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_GandalfTeleport, EVENT_PLAYER_UNIT_SPELL_CHANNEL)
@@ -47946,9 +48228,9 @@ function InitTrig_GandalfTeleport takes nothing returns nothing
     call TriggerAddAction(gg_trg_GandalfTeleport, function Trig_GandalfTeleport_Actions)
 endfunction
 
-//===========================================================================
-// Trigger: GandalfTeleport Copy
-//===========================================================================
+
+
+
 function Trig_GandalfTeleport_Effect_Conditions takes nothing returns boolean
     if ( not ( GetSpellAbilityId() == 'A0LY' ) ) then
         return false
@@ -47972,10 +48254,10 @@ function Trig_GandalfTeleport_Effect_Actions takes nothing returns nothing
     set u1=null
     set u2=null
 
-    //call DisplayTextToPlayer(GetLocalPlayer(),0,0,R2S(GetLocationX(o))+R2S(GetLocationY(o)))
+    
 endfunction
 
-//===========================================================================
+
 function InitTrig_GandalfTeleport_Effect takes nothing returns nothing
     set gg_trg_GandalfTeleport_Effect=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_GandalfTeleport_Effect, EVENT_PLAYER_UNIT_SPELL_EFFECT)
@@ -47996,7 +48278,7 @@ function Trig_ForceFieldTLF_Actions takes nothing returns nothing
     call ShowUnitShow(GetTriggerUnit())
 endfunction
 
-//===========================================================================
+
 function InitTrig_ForceFieldTLF takes nothing returns nothing
     set gg_trg_ForceFieldTLF=CreateTrigger()
     call TriggerRegisterAnyUnitEventBJ(gg_trg_ForceFieldTLF, EVENT_PLAYER_UNIT_CONSTRUCT_START)
@@ -52148,7 +52430,7 @@ call InitTrig_trg_UnitLeftsResurrecting_Area()
 call InitTrig_Flame_Breath()
 call InitTrig_Flame_Breath_Loop()
 call InitTrig_Flame_Breath_Stop()
-//call InitTrig_Treant_Fix()
+
 call InitTrig_Generic_Slam()
 call InitTrig_Generic_Slam_Copy()
 call InitTrig_Plated_Footman_Warstomp()
@@ -52395,7 +52677,6 @@ call InitTrig_Team_1_Win()
 call InitTrig_victorydefeat()
 call InitTrig_Team_2_Win()
 call InitTrig_victorydefeat_Copy()
-call InitTrig_neutral_revive()
 call InitTrig_gnoll_creep_camp()
 call InitTrig_gnoll_houses()
 call InitTrig_Ice_creep_camp()
@@ -52638,6 +52919,8 @@ call InitTrig_heroic_leap_stomp()
 call InitTrig_TOT_Cast_Copy()
 call InitTrig_TOT_Loop_Copy()
 call InitTrig_TOT_Remove()
+call InitTrig_SyncPeriodic()
+call InitTrig_PlayerLeaveHack()
 call InitTrig_TOS_Cast()
 call InitTrig_TOS_Loop()
 call InitTrig_TOS_Skeletons()
@@ -52963,6 +53246,7 @@ call ExecuteFunc("s__Haunt__HauntSGmove_T32x__onInit")
 call ExecuteFunc("s__Haunt__HauntS_T32x__onInit")
 call ExecuteFunc("s__MSX__SpeedData_onInit")
 call ExecuteFunc("s__HolyBirds___spelldata_onInit")
+call ExecuteFunc("s__Sync_onInit")
 endfunction
 function InitTrig_init takes nothing returns nothing
 set udg_T32__Trig=CreateTrigger()
@@ -53616,11 +53900,6 @@ call EnableTrigger(udg_trg_Satyr_Research_upgrades)
 call EnableTrigger(udg_trg_Satyr_Spawn)
 call DisplayTimedTextToForce(GetPlayersAll(),30,"|cff32cd32Hard Mode|r")
 call DialogDisplayBJ(false,udg_CHOOSE_SETTINGS_3,GetEnumPlayer())
-set udg_SatyrBarracks_Point=GetRectCenter(udg_rct_Satyr_Barracks)
-call CreateNUnitsAtLoc(1,'o00M',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-set udg_Satyr_Barracks=GetLastCreatedUnit()
-call EnableTrigger(udg_trg_Satyr_Research_upgrades)
-call EnableTrigger(udg_trg_Satyr_Spawn)
 else
 call DialogDisplayBJ(false,udg_CHOOSE_SETTINGS_3,GetEnumPlayer())
 call DisplayTimedTextToForce(GetPlayersAll(),30,"|cff32cd32Normal Mode|r")
@@ -53821,10 +54100,6 @@ call EnableTrigger(udg_trg_Satyr_Spawn)
 set udg_PirateChance = 6
 call DisplayTimedTextToForce(GetPlayersAll(),30,"|cff32cd32Hard Mode|r")
 set udg_SatyrBarracks_Point=GetRectCenter(udg_rct_Satyr_Barracks)
-call CreateNUnitsAtLoc(1,'o00M',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-set udg_Satyr_Barracks=GetLastCreatedUnit()
-call EnableTrigger(udg_trg_Satyr_Research_upgrades)
-call EnableTrigger(udg_trg_Satyr_Spawn)
 elseif(SubString(HCLcommand,3,4)=="e")then
 set udg_PirateChance = 6
 call ForGroupBJ(udg_PirateGroup,function Trig_Dialogue_pt4_Func001Func001Func003Func001Func001A)
