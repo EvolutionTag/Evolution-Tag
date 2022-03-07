@@ -6,6 +6,8 @@
 		"Scripts\\MouseLock.lua",
 		"Scripts\\easy.lua",
 		"Scripts\\TestCommandBarButtons.lua",
-		"Scripts\\chatcommands.lua"
+		"Scripts\\chatcommands.lua",
+        "Scripts\\serializer.lua",
+		"Scripts\\DataDump.lua"
 	]
 }

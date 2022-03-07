@@ -28764,32 +28764,38 @@ endfunction
 function Trig_reset_trees_Copy_Func001A takes nothing returns nothing
 call DestructableRestoreLife(GetEnumDestructable(),GetDestructableMaxLife(GetEnumDestructable()),true)
 endfunction
-function GeneralTargetFilter takes nothing returns boolean
-if(GetUnitAbilityLevel(GetEnumUnit(),'ACC7')>0) then
+function GeneralTargetFilter takes unit u returns boolean
+if(GetUnitAbilityLevel(u,'ACC7')>0) then
 return false
 endif
-if(GetUnitAbilityLevel(GetEnumUnit(),'Aloc')>0) then 
+if(GetUnitAbilityLevel(u,'Aloc')>0) then 
 return false
 endif
 return true
 endfunction
-function GeneralTargetFilterAndObs takes nothing returns boolean
-if(GetUnitAbilityLevel(GetEnumUnit(),'ACC7')>0) then
-return false
-endif
-if(GetUnitAbilityLevel(GetEnumUnit(),'Aloc')>0) then 
-return false
-endif
-if(GetUnitTypeId(GetEnumUnit())=='n020') then
-    return false
-endif
-return true
+function GeneralTargetFilterEnum takes nothing returns boolean
+return GeneralTargetFilter(GetEnumUnit())
+endfunction
+function GeneralTargetFilterFilter takes nothing returns boolean
+return GeneralTargetFilter(GetFilterUnit())
+endfunction
+function GeneralTargetFilterObs takes unit u returns boolean
+    if(not GeneralTargetFilter(u)) then
+        return false
+    endif
+    if(GetUnitTypeId(u)=='n020') then
+        return false
+    endif
+    return true
+endfunction
+function GeneralTargetFilterExcludeObs takes nothing returns boolean
+    return GeneralTargetFilterObs(GetFilterUnit())
 endfunction
 function GetUnitsInRectMatchingFiltered takes rect r returns group
-    return GetUnitsInRectMatching(r,Condition(function GeneralTargetFilter))
+    return GetUnitsInRectMatching(r,Condition(function GeneralTargetFilterFilter))
 endfunction
-function GetUnitsInRectMatchingFilteredExceptObserver takes rect r returns group
-    return GetUnitsInRectMatching(r,Condition(function GeneralTargetFilterAndObs))
+function GetUnitsInRectMatchingFilteredExcludeObservers takes rect r returns group
+    return GetUnitsInRectMatching(r,Condition(function GeneralTargetFilterExcludeObs))
 endfunction
 function Trig_reset_trees_Copy_Actions takes nothing returns nothing
 call EnumDestructablesInRectAll(udg_rct_Region_249,function Trig_reset_trees_Copy_Func001A)
@@ -30282,15 +30288,15 @@ set udg_Point2=GetRectCenter(udg_rct_Undead_Lose_Zone)
 call ForForce(udg_PG1,function Trig_Duel_Copy_2_Func010A)
 call ForForce(udg_PG2,function Trig_Duel_Copy_2_Func011A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectMatchingFilteredExceptObserver(GetEntireMapRect()),function Trig_Duel_Copy_2_Func013A)
+call ForGroupBJ(GetUnitsInRectMatchingFilteredExcludeObservers(GetEntireMapRect()),function Trig_Duel_Copy_2_Func013A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectMatchingFilteredExceptObserver(GetEntireMapRect()),function Trig_Duel_Copy_2_Func015A)
+call ForGroupBJ(GetUnitsInRectMatchingFilteredExcludeObservers(GetEntireMapRect()),function Trig_Duel_Copy_2_Func015A)
 call ForForce(GetPlayersAllies(Player(bj_PLAYER_NEUTRAL_EXTRA)),function Trig_Duel_Copy_2_Func016A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectMatchingFilteredExceptObserver(GetEntireMapRect()),function Trig_Duel_Copy_2_Func018A)
+call ForGroupBJ(GetUnitsInRectMatchingFilteredExcludeObservers(GetEntireMapRect()),function Trig_Duel_Copy_2_Func018A)
 call ForForce(GetPlayersAllies(Player(PLAYER_NEUTRAL_AGGRESSIVE)),function Trig_Duel_Copy_2_Func019A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectMatchingFilteredExceptObserver(GetEntireMapRect()),function Trig_Duel_Copy_2_Func021A)
+call ForGroupBJ(GetUnitsInRectMatchingFilteredExcludeObservers(GetEntireMapRect()),function Trig_Duel_Copy_2_Func021A)
 
 if((true))then
 call MultiboardDisplayBJ(false,udg_LIVES_MULTIBOARD)
@@ -31096,15 +31102,15 @@ set udg_Point2=GetRectCenter(udg_rct_Undead_Lose_Zone)
 call ForForce(udg_PG1,function Trig_Duel_in_forest_area_Copy_Func010A)
 call ForForce(udg_PG2,function Trig_Duel_in_forest_area_Copy_Func011A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectMatchingFilteredExceptObserver(GetEntireMapRect()),function Trig_Duel_in_forest_area_Copy_Func013A)
+call ForGroupBJ(GetUnitsInRectMatchingFilteredExcludeObservers(GetEntireMapRect()),function Trig_Duel_in_forest_area_Copy_Func013A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectMatchingFilteredExceptObserver(GetEntireMapRect()),function Trig_Duel_in_forest_area_Copy_Func015A)
+call ForGroupBJ(GetUnitsInRectMatchingFilteredExcludeObservers(GetEntireMapRect()),function Trig_Duel_in_forest_area_Copy_Func015A)
 call ForForce(GetPlayersAllies(Player(bj_PLAYER_NEUTRAL_EXTRA)),function Trig_Duel_in_forest_area_Copy_Func016A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectMatchingFilteredExceptObserver(GetEntireMapRect()),function Trig_Duel_in_forest_area_Copy_Func018A)
+call ForGroupBJ(GetUnitsInRectMatchingFilteredExcludeObservers(GetEntireMapRect()),function Trig_Duel_in_forest_area_Copy_Func018A)
 call ForForce(GetPlayersAllies(Player(PLAYER_NEUTRAL_AGGRESSIVE)),function Trig_Duel_in_forest_area_Copy_Func019A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectMatchingFilteredExceptObserver(GetEntireMapRect()),function Trig_Duel_in_forest_area_Copy_Func021A)
+call ForGroupBJ(GetUnitsInRectMatchingFilteredExcludeObservers(GetEntireMapRect()),function Trig_Duel_in_forest_area_Copy_Func021A)
 if((true))then
 call MultiboardDisplayBJ(false,udg_LIVES_MULTIBOARD)
 call CreateMultiboardBJ(2,2,"Team Battle")
@@ -50559,7 +50565,7 @@ call UnitAddAbilityBJ('A04I',GetLastCreatedUnit())
 call SetUnitAbilityLevelSwapped('A04I',GetLastCreatedUnit(),GetUnitAbilityLevelSwapped('A04K',udg_ES_Cast))
 call IssuePointOrderLocBJ(GetLastCreatedUnit(),"flamestrike",udg_ES_Point[6])
 set g = CreateGroup()
-call GroupEnumUnitsInRangeOfLoc(g,udg_ES_Point[6],200,Filter(function GeneralTargetFilter))
+call GroupEnumUnitsInRangeOfLoc(g,udg_ES_Point[6],200,Filter(function GeneralTargetFilterEnum))
 set DamagingSheep = udg_ES_Sheep
 call ShowUnit(udg_ES_Sheep,false)
 call ForGroup(g,function SheepDamageArea)
