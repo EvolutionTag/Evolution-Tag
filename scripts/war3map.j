@@ -12365,12 +12365,12 @@ exitwhen i >= 12
 endloop
 set i=0
 loop
-call BJDebugMsg("Player(" + I2S(i) + "): old group: " + I2S(previousgroups[i]) + " " + "current group: " + I2S(playergroup[i]) + " hash: " + I2S(playerdata[i]))
+call BJDebugMsg("Player(" + I2S(i) + "):  ["+GetPlayerName(Player(i))+"] old group: " + I2S(previousgroups[i]) + " " + "current group: " + I2S(playergroup[i]) + " hash: " + I2S(playerdata[i]))
 set previousgroups[i]=playergroup[i]
 set i=i + 1
 exitwhen i >= 12
 endloop
-call BJDebugMsg("please send dump and replay to the developer")
+call BJDebugMsg("please send dump and replay to the developer (you can find the dump in \"<warcraft folder>\\GoodTool\\Logs\" is is named as DUMP...")
 call TryDump()
 endif
 set playerid=0
