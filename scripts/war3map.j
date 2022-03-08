@@ -116,6 +116,7 @@ integer pSearchStringValue=0
 integer pSprintf=0
 constant boolean LIBRARY_APIMemoryGameData=true
 integer pGameState=0
+integer pGetEngineDataPointers = 0
 integer pGameClass1=0
 integer pGetUnitAddress=0
 integer pGetHandleId=0
@@ -5622,6 +5623,7 @@ endfunction
 function Init_APIMemoryGameData takes nothing returns nothing
 if PatchVersion!="" then
 if PatchVersion=="1.26a" then
+set pGetEngineDataPointers=pGameDLL + 0x4c34d0
 set pGameState=pGameDLL+0xAB65F4
 set pGameClass1=pGameDLL+0xAB7788
 set pGetUnitAddress=pGameDLL+0x3BDCB0
@@ -12303,6 +12305,12 @@ endfunction
  function GetGameHash takes nothing returns integer
         return GetDataHash(ReadRealMemory(pGameState))
  endfunction
+ function GetEngineDataPointersWithId takes integer id returns integer
+        return this_call_1(pGetEngineDataPointers , id)
+    endfunction
+ function GetFinalHash takes nothing returns integer
+    return this_call_1(pGameDLL+0x005e20,GetEngineDataPointersWithId(0xd))
+ endfunction
 function s__Sync_SyncPlayersInfoCallback takes nothing returns nothing
 local integer this=LoadInteger(s__Sync_SyncHashTable, GetHandleId(GetExpiredTimer()), 0)
 local integer playerid=0
@@ -12337,7 +12345,7 @@ set j=0
 loop
 if ( playergroup[i] == - 1 and playerdata[i] == playerdata[j] ) then
 set playergroup[i]=j
-if ( previousgroups[i] != j ) then
+if ( previousgroups[i] != j and GetPlayerSlotState(Player(i)) == PLAYER_SLOT_STATE_PLAYING) then
 call BJDebugMsg("Found difference: Player(" + I2S(i) + "), current group: " + I2S(j) + " previous: " + I2S(previousgroups[i]))
 set b=true
 endif

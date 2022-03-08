@@ -96,6 +96,9 @@ end
 Chatcommands["uh"] = function(s)
 	UnHoldKey(s)
 end
+Chatcommands["clear"] = function(s)
+	ClearScreen()
+end
 
 
 chatcommands = event:new(EVENT_ID_CHAT_COMMAND,function(e)

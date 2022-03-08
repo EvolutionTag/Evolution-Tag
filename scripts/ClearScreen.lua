@@ -1,0 +1,3 @@
+function ClearScreen()
+    ClearTextMessages()
+end
