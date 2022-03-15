@@ -47722,6 +47722,7 @@ endif
 return true
 endfunction
 function Trig_Taste_of_Death_Actions takes nothing returns nothing
+local integer heal = 0
 set udg_ToD_Caster=GetTriggerUnit()
 set udg_ToD_Owner=GetOwningPlayer(udg_ToD_Caster)
 set udg_ToD_Position=GetUnitLoc(udg_ToD_Caster)
@@ -47747,10 +47748,11 @@ endloop
 set udg_ToD_Heal_Group=GetUnitsInRangeOfLocMatching(udg_ToD_Area_of_Effect,udg_ToD_Position,Condition(function Trig_Taste_of_Death_Func029002003))
 call ForGroupBJ(udg_ToD_Heal_Group,function Trig_Taste_of_Death_Func032A)
 if(Trig_Taste_of_Death_Func033C())then
-call SetUnitLifeBJ(udg_ToD_Caster,(GetUnitStateSwap(UNIT_STATE_LIFE,udg_ToD_Caster)+((R2I(udg_ToD_Base_base_Heal)+udg_ToD_Base_Heal*I2R(udg_ToD_Ability))*I2R(udg_ToD_Unit_Counter))))
+set heal = udg_ToD_Base_Heal*udg_ToD_Ability*udg_ToD_Unit_Counter+udg_ToD_Base_base_Heal
+call SetWidgetLife(udg_ToD_Caster,GetWidgetLife(udg_ToD_Caster)+heal)
 call AddSpecialEffectTargetUnitBJ("origin",udg_ToD_Caster,"Abilities\\Spells\\Undead\\AnimateDead\\AnimateDeadTarget.mdl")
 call DestroyEffectBJ(GetLastCreatedEffectBJ())
-call CreateTextTagUnitBJ(("+"+I2S((R2I(udg_ToD_Base_Heal)*(udg_ToD_Ability*udg_ToD_Unit_Counter)+R2I(udg_ToD_Base_base_Heal)))),udg_ToD_Caster,0,10,0.00,50.00,10.00,0)
+call CreateTextTagUnitBJ("+"+I2S(heal),udg_ToD_Caster,0,10,0.00,50.00,10.00,0)
 call SetTextTagPermanentBJ(GetLastCreatedTextTag(),false)
 call SetTextTagVelocityBJ(GetLastCreatedTextTag(),64,90)
 call SetTextTagFadepointBJ(GetLastCreatedTextTag(),3.00)
