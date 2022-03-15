@@ -3566,7 +3566,9 @@ integer protects_with_abilcode='ACC6'
 string array fmode
 trigger array temp_disabled_triggs
 integer temp_disabled_triggs_cnt
-unit DamagingSheep = nullboolean isreplay = falseboolean DoNotRemovePlayerAfterLeave = false
+unit DamagingSheep = null
+boolean isreplay = false
+boolean DoNotRemovePlayerAfterLeave = false
 gamecache PlayerDataCache
 integer array previousgroups
 integer no_data_marker=0
@@ -17236,7 +17238,8 @@ call Init_MemHackTrackableAPI()
 call Init_MemHackMouseAPI()
 call Init_MemHackItemAPI()
 call Init_AntiHack()
-call DisableSaveGameMenu()set isreplay = IsReplay()
+call DisableSaveGameMenu()
+set isreplay = IsReplay()
 
 if PatchVersion=="1.26a" then
 endif
@@ -25346,7 +25349,10 @@ call AdjustPlayerStateBJ(LeaverGold,GetEnumPlayer(),PLAYER_STATE_RESOURCE_GOLD)
 call AdjustPlayerStateBJ(LeaverLumber,GetEnumPlayer(),PLAYER_STATE_RESOURCE_LUMBER)
 endfunction
 function Trig_Check_Leavers_Actions takes nothing returns nothing
-local integer playerscount=0if(DoNotRemovePlayerAfterLeave) then    returnendif
+local integer playerscount=0
+if(DoNotRemovePlayerAfterLeave) then
+    return
+endif
 call ForGroupBJ(GetUnitsOfPlayerAll(GetTriggerPlayer()),function Trig_Check_Leavers_Func001002)
 if((IsPlayerInForce(GetTriggerPlayer(),udg_Evil)==true))then
 call ForceRemovePlayerSimple(GetTriggerPlayer(),udg_Evil)
@@ -54405,7 +54411,13 @@ if(not(GetPlayerColor(GetTriggerPlayer())==PLAYER_COLOR_RED))then
 return false
 endif
 return true
-endfunctionfunction DoNotRemovePlayerAfterLeaveEnable takes nothing returns nothing    set DoNotRemovePlayerAfterLeave = trueendfunctionfunction DoNotRemovePlayerAfterLeaveDisable takes nothing returns nothing    set DoNotRemovePlayerAfterLeave = falseendfunction
+endfunction
+function DoNotRemovePlayerAfterLeaveEnable takes nothing returns nothing
+    set DoNotRemovePlayerAfterLeave = true
+endfunction
+function DoNotRemovePlayerAfterLeaveDisable takes nothing returns nothing
+    set DoNotRemovePlayerAfterLeave = false
+endfunction
 function Trig_Game_settings_6_NEW_Func006A takes nothing returns nothing
 call RemoveUnit(GetEnumUnit())
 endfunction
