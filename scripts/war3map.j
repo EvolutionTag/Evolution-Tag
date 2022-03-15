@@ -817,6 +817,8 @@ location array udg_HR_TempLoc5
 real array udg_HR_Dur
 real array udg_HR_Damage
 real array udg_HR_AoE
+gamecache unitrestore = null
+item array itemexchange
 integer udg_HR_LOOP=0
 integer udg_Arrow_Counts=0
 integer udg_Arrow_CountMaxSize=0
@@ -12462,6 +12464,13 @@ call TriggerAddAction(gg_trg_SyncPeriodic, function Trig_SyncPeriodic_Actions)
 endfunction
 function InitGlobals takes nothing returns nothing
 local integer i=0
+set unitrestore = InitGameCache("UnitRestore")
+set i = 0
+loop
+    set itemexchange[i] = null
+    set i = i + 1
+    exitwhen i>6
+endloop
 set i = 0
 loop
     set ResurrectionLocations[i] = null
@@ -17865,26 +17874,34 @@ endfunction
 function ApplyBookDmgBonuses takes unit u returns nothing
 call AddWhiteDamage(u,damageBonuses[GetPlayerId(GetOwningPlayer(u))])
 endfunction
-function ApplyAllBonuses1 takes unit u returns nothing
-local integer pAbil
-call ApplyBookBonuses(u)
+function ApplySmelterBonuses takes unit u returns nothing
+    call UnitApplyAvailiableBonusesAny(u)
+    if(IsUnitInGroup(u,Smelter_owners)) then
+        call AddUnit(u)
+    endif
+endfunction
 
+function ApplyAllNotStatBonuses takes unit u returns nothing
+    local integer pAbil
+    call ApplySmelterBonuses(u)
+    if((GetUnitAbilityLevel(u,'Aro1')>0) or (GetUnitAbilityLevel(u,'Aro2')>0))then
+        set pAbil = GetUnitAbility(u,'AInv')
+        if(pAbil!=0) then
+            call WriteRealMemory(pAbil+0x3c,-2)
+            call WriteRealMemory(pAbil+0x40,-2)
+            call WriteRealMemory(pAbil+0x44,-2)
+        endif
+     endif
+endfunction
+function ApplyAllBonuses1 takes unit u returns nothing
+call ApplyBookBonuses(u)
 set udg_CS_Unit=u
 set udg_CS_Player=GetOwningPlayer(u)
 set udg_CS_Value=udg_Player_HP_Points[GetConvertedPlayerId(udg_CS_Player)]
 call AddHPRestricted(udg_CS_Unit,udg_CS_Value)
 set udg_CS_Value=udg_Player_DamagePoints[GetConvertedPlayerId(udg_CS_Player)]
 call AddWhiteDamageRestricted(udg_CS_Unit,udg_CS_Value)
-call UnitApplyAvailiableBonusesAny(u)
-call AddUnit(u)
-if((GetUnitAbilityLevel(u,'Aro1')>0) or (GetUnitAbilityLevel(u,'Aro2')>0))then
-set pAbil = GetUnitAbility(u,'AInv')
-if(pAbil!=0) then
-call WriteRealMemory(pAbil+0x3c,-2)
-call WriteRealMemory(pAbil+0x40,-2)
-call WriteRealMemory(pAbil+0x44,-2)
-endif
-endif
+call ApplyAllNotStatBonuses(u)
 endfunction
 
 function AddSpecialEffectIfNotBuilding takes string name, unit u, string attach returns nothing
@@ -17951,15 +17968,24 @@ exitwhen idx>=l__cnt
 endloop
 endfunction
 function RecreateUnitPosBonusesNotRemove takes unit u,real x,real y returns unit
-local unit u2=CreateUnit(GetOwningPlayer(u),GetUnitTypeId(u),x,y,0)
-local integer idx=1
+local unit u2
+local integer idx=0
+call StoreUnit(unitrestore,"0","0",u)
+set u2 = RestoreUnit(unitrestore,"0","0",GetOwningPlayer(u),x,y,0)
 call UnregUnitBonuses(u)
 call AddRevengeCheck(u2)
-call ApplyAllBonuses1(u2)
+call ApplyAllNotStatBonuses(u2)
 loop
-call UnitAddItem(u2,UnitItemInSlotBJ(u,idx))
+set itemexchange[idx] = UnitRemoveItemFromSlot(u,idx)
 set idx=idx+1
-exitwhen idx>6
+exitwhen idx>5
+endloop
+set idx = 0
+loop
+    call UnitAddItem(u2,itemexchange[idx])
+    set itemexchange[idx]=null
+    set idx=idx+1
+    exitwhen idx>5
 endloop
 if(IsUnitType(u,UNIT_TYPE_HERO))then
 call SetHeroXP(u2,GetHeroXP(u),false)
@@ -18215,7 +18241,7 @@ local location respoint = ResurrectionLocations[GetPlayerId(owner)]
 if(IsPlayerInForce(owner,udg_Humans))then
 call PlaySoundBJ(snd_HumanDies)
 if(udg_FinalBattle_On)then
-set udg_CS_Unit=RecreateUnitPosBonusesNotRemove(GetDyingUnit(),GetLocationX(GetRectCenter(udg_rct_FB_Human_Spawn)),GetLocationY(GetRectCenter(udg_rct_FB_Human_Spawn)))
+set udg_CS_Unit=RecreateUnitPosBonusesNotRemove(u,GetLocationX(GetRectCenter(udg_rct_FB_Human_Spawn)),GetLocationY(GetRectCenter(udg_rct_FB_Human_Spawn)))
 call DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Human\\Resurrect\\ResurrectCaster.mdl",udg_CS_Unit,"origin"))
 if((GetUnitTypeId(udg_CS_Unit)=='u00S')or(GetUnitTypeId(udg_CS_Unit)=='u00T'))then
 if(CountUnitsInGroup(Psychos)==0)then
@@ -18228,7 +18254,7 @@ call PlaySoundBJ(snd_UndedadDies)
 if(respoint==null) then
     set respoint = GetRectCenter(udg_rct_Dead_area_entry)
 endif
-set udg_CS_Unit=RecreateUnitPosBonusesNotRemove(GetDyingUnit(),GetLocationX(respoint),GetLocationY(respoint))
+set udg_CS_Unit=RecreateUnitPosBonusesNotRemove(u,GetLocationX(respoint),GetLocationY(respoint))
 call DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Human\\Resurrect\\ResurrectCaster.mdl",udg_CS_Unit,"origin"))
 call SetPlayerToTp(owner)
 if((GetUnitTypeId(udg_CS_Unit)=='u00S')or(GetUnitTypeId(udg_CS_Unit)=='u00T'))then
@@ -18240,7 +18266,7 @@ endif
 endif
 else
 if(udg_FinalBattle_On)then
-set udg_CS_Unit=RecreateUnitPosBonusesNotRemove(GetDyingUnit(),GetLocationX(GetRectCenter(udg_rct_FB_Undead_Spawn)),GetLocationY(GetRectCenter(udg_rct_FB_Undead_Spawn)))
+set udg_CS_Unit=RecreateUnitPosBonusesNotRemove(u,GetLocationX(GetRectCenter(udg_rct_FB_Undead_Spawn)),GetLocationY(GetRectCenter(udg_rct_FB_Undead_Spawn)))
 call DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Human\\Resurrect\\ResurrectCaster.mdl",udg_CS_Unit,"origin"))
 if((GetUnitTypeId(udg_CS_Unit)=='u00S')or(GetUnitTypeId(udg_CS_Unit)=='u00T'))then
 if(CountUnitsInGroup(Psychos)==0)then
@@ -18252,7 +18278,7 @@ else
 if(respoint==null) then
     set respoint = GetRectCenter(udg_rct_The_ring_of_trees)
 endif
-set udg_CS_Unit=RecreateUnitPosBonusesNotRemove(GetDyingUnit(),GetLocationX(respoint),GetLocationY(respoint))
+set udg_CS_Unit=RecreateUnitPosBonusesNotRemove(u,GetLocationX(respoint),GetLocationY(respoint))
 call DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Human\\Resurrect\\ResurrectCaster.mdl",udg_CS_Unit,"origin"))
 if((GetUnitTypeId(udg_CS_Unit)=='u00S')or(GetUnitTypeId(udg_CS_Unit)=='u00T'))then
 if(CountUnitsInGroup(Psychos)==0)then
@@ -18374,16 +18400,20 @@ call PlayerDefeatedHuman(p)
 endif
 endfunction
 function Trig_PlayerDies_Actions takes nothing returns nothing
+local unit DyingUnit = GetDyingUnit()
 call RegisterKill()
-call UnregUnitBonuses(GetDyingUnit())
-if(AddLivesP(GetOwningPlayer(GetDyingUnit()),-1))then
-call PlayerDefeated(GetOwningPlayer(GetDyingUnit()))
-call MultiboardSetItemIconBJ(udg_LIVES_MULTIBOARD,1,2+GetPlayerId(GetOwningPlayer(GetDyingUnit())),"ReplaceableTextures\\CommandButtons\\BTNPig.blp")
-call PlaySoundBJ(snd_GoodJob)
-else
-call RespawnPlayer(GetDyingUnit())
+if(GetUnitTypeId(DyingUnit)!=0) then
+    call UnregUnitBonuses(DyingUnit)
+    if(AddLivesP(GetOwningPlayer(DyingUnit),-1))then
+    call PlayerDefeated(GetOwningPlayer(DyingUnit))
+    call MultiboardSetItemIconBJ(udg_LIVES_MULTIBOARD,1,2+GetPlayerId(GetOwningPlayer(DyingUnit)),"ReplaceableTextures\\CommandButtons\\BTNPig.blp")
+    call PlaySoundBJ(snd_GoodJob)
+    else
+    call RespawnPlayer(DyingUnit)
+    endif
+    call PlanHeroRecycle(DyingUnit)
 endif
-call PlanHeroRecycle(GetDyingUnit())
+set DyingUnit = null
 endfunction
 function InitTrig_PlayerDies takes nothing returns nothing
 set gg_trg_PlayerDies=CreateTrigger()
@@ -47748,7 +47778,7 @@ endloop
 set udg_ToD_Heal_Group=GetUnitsInRangeOfLocMatching(udg_ToD_Area_of_Effect,udg_ToD_Position,Condition(function Trig_Taste_of_Death_Func029002003))
 call ForGroupBJ(udg_ToD_Heal_Group,function Trig_Taste_of_Death_Func032A)
 if(Trig_Taste_of_Death_Func033C())then
-set heal = udg_ToD_Base_Heal*udg_ToD_Ability*udg_ToD_Unit_Counter+udg_ToD_Base_base_Heal
+set heal = R2I(udg_ToD_Base_Heal*udg_ToD_Ability*udg_ToD_Unit_Counter+udg_ToD_Base_base_Heal)
 call SetWidgetLife(udg_ToD_Caster,GetWidgetLife(udg_ToD_Caster)+heal)
 call AddSpecialEffectTargetUnitBJ("origin",udg_ToD_Caster,"Abilities\\Spells\\Undead\\AnimateDead\\AnimateDeadTarget.mdl")
 call DestroyEffectBJ(GetLastCreatedEffectBJ())
