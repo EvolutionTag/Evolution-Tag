@@ -17970,16 +17970,16 @@ endfunction
 function RecreateUnitPosBonusesNotRemove takes unit u,real x,real y returns unit
 local unit u2
 local integer idx=0
-call StoreUnit(unitrestore,"0","0",u)
-set u2 = RestoreUnit(unitrestore,"0","0",GetOwningPlayer(u),x,y,0)
 call UnregUnitBonuses(u)
-call AddRevengeCheck(u2)
-call ApplyAllNotStatBonuses(u2)
 loop
 set itemexchange[idx] = UnitRemoveItemFromSlot(u,idx)
 set idx=idx+1
 exitwhen idx>5
 endloop
+call StoreUnit(unitrestore,"0","0",u)
+set u2 = RestoreUnit(unitrestore,"0","0",GetOwningPlayer(u),x,y,0)
+call AddRevengeCheck(u2)
+call ApplyAllNotStatBonuses(u2)
 set idx = 0
 loop
     call UnitAddItem(u2,itemexchange[idx])
