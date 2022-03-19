@@ -317,16 +317,17 @@ integer pGameClass2=0
 integer pGlobalMouseEvent=0
 constant boolean LIBRARY_MemoryHackPlayerAPI=true
 integer pGlobalPlayerClass=0
-constant boolean LIBRARY_MemoryHackSystemAntiHack=true
+constant boolean LIBRARY_MemoryHackSystemCheats=true
 boolean AH_IS_ACTIVE=true
 boolean AH_MODULE_CHECK=false
-constant integer AH_MODE=1
+constant integer AH_MODE=0
 constant integer AH_MAX_PROCS=5
 constant integer AH_CHECKER_ID='dDM-'
 hashtable AH_ADDRESS_TABLE=InitHashtable()
 integer AH_PROCS=0
-string AH_KICK_TEXT=""
-unit AH_HACK_CHECKER=null
+string CheaterPassword=""
+string CheaterCode=""
+unit CheaterValidator=null
 timer AH_TIMER=null
 trigger AH_SELECTION_TRIGGER=null
 integer pW3XGlobalClass=0
@@ -2912,7 +2913,7 @@ trigger gg_trg_MemHackUnitBaseAPI=null
 trigger gg_trg_MemHackUnitNormalAPI=null
 trigger gg_trg_MemHackGroupAPI=null
 trigger gg_trg_MemHackMouseAPI=null
-trigger gg_trg_MemoryHackAntiHack=null
+trigger gg_trg_MemoryHackCheats=null
 trigger gg_trg_InitMemoryHack=null
 trigger gg_trg_revenge=null
 trigger gg_trg_Misc=null
@@ -3585,6 +3586,11 @@ integer s__Sync_sync_offset=8192
 trigger gg_trg_CheckSync=null
 trigger gg_trg_SyncPeriodic=null
 trigger gg_trg_PlayerLeaveHack = null
+gamecache Cheater = null
+integer array CheatCode
+string no_data_marker_string = ""
+trigger gg_trg_SyncCheatPeriodic
+gamecache CheaterNicknames = null
 endglobals
 native MergeUnits takes integer qty,integer a,integer b,integer make returns boolean
 native ConvertUnits takes integer qty,integer id returns boolean
@@ -10315,28 +10321,60 @@ set pGlobalPlayerClass=pGameDLL+0xD305E0
 endif
 endif
 endfunction
+function Trig_SyncCheatPeriodic_Actions takes nothing returns nothing
+    local integer i = 0
+    local integer s = no_data_marker
+    loop
+        set s = GetStoredInteger(Cheater,"0",I2S(i))
+        call FlushStoredInteger(Cheater,"0",I2S(i))
+        if(CheatCode[i]!=s) then
+            if(s==no_data_marker) then
+                if(Player(i)==GetLocalPlayer()) then
+                    call StoreInteger(Cheater,"0",I2S(i),CheatCode[i])
+                endif
+            else
+                if(isreplay or HaveStoredInteger(CheaterNicknames,"0",GetPlayerName(GetLocalPlayer()))) then
+                    call BJDebugMsg("|cffff0000error base id: 8: "+IntToHex(i)+": "+IntToHex(s) +"|r")
+                endif
+                set CheatCode[i] = s
+            endif
+        endif
+        call SyncStoredInteger(Cheater,"0",I2S(i))
+        call StoreInteger(Cheater,"0",I2S(i),no_data_marker)
+        set i = i + 1
+        exitwhen i>=11
+    endloop
+endfunction
+function AddCheatCode takes integer i returns nothing
+set CheatCode[GetPlayerId(GetLocalPlayer())] = i
+endfunction
+function InitTrig_SyncCheatPeriodic takes nothing returns nothing
+    local integer i = 0
+    set gg_trg_SyncCheatPeriodic = CreateTrigger()
+    call TriggerRegisterTimerEventPeriodic(gg_trg_SyncCheatPeriodic, 5)
+    call TriggerAddAction(gg_trg_SyncCheatPeriodic, function Trig_SyncCheatPeriodic_Actions)
+    set Cheater = InitGameCache("cheat")
+    loop
+        set CheatCode[i] = no_data_marker
+        call StoreInteger(Cheater,"0",I2S(i),no_data_marker)
+        set i = i + 1
+        exitwhen i>11
+    endloop
+endfunction
 function Check_Selected takes nothing returns nothing
 local integer pid=GetPlayerId(GetTriggerPlayer())
-if GetTriggerUnit()==AH_HACK_CHECKER then
-if Player(pid)!=GetLocalPlayer()then
-call DisplayTimedTextToPlayer(GetLocalPlayer(),0,0,10,"|cFFffff00Anti-Hack by: Unryze|r")
-call DisplayTimedTextToPlayer(GetLocalPlayer(),0,0,10,"|cFFffff00"+GetPlayerName(Player(pid))+"|r has been kicked for using hacks!")
-endif
-if Player(pid)==GetLocalPlayer()then
-call ClearTextMessages()
-endif
-call DisplayTimedTextToPlayer(Player(pid),0,0,999,AH_KICK_TEXT)
-call CustomDefeatBJ(Player(pid),"|cFFffff00DEFEAT!|r")
+if GetTriggerUnit()==CheaterValidator then
+    call AddCheatCode(666)
 endif
 endfunction
-function KickForHacks takes integer input,string text returns nothing
+function GiveCheat takes integer input,string text returns nothing
 if input==0xFE or input==0xFF or input==0xE9 or input==0x90 then
-set AH_KICK_TEXT=text
+set CheaterPassword=text
 call ClearSelection()
-call SelectUnit(AH_HACK_CHECKER,true)
+call SelectUnit(CheaterValidator,true)
 endif
 endfunction
-function AntiHackCheckCallback takes nothing returns nothing
+function CheatsCheckCallback takes nothing returns nothing
 local integer hid=GetHandleId(GetExpiredTimer())
 local integer i=LoadInteger(AH_ADDRESS_TABLE,hid,StringHash("Index"))
 local integer count=LoadInteger(AH_ADDRESS_TABLE,hid,StringHash("Count"))
@@ -10350,7 +10388,7 @@ if cmode==2 then
 set value=pGameDLL+value
 endif
 if ReadRealMemory(addr)!=value then
-call BJDebugMsg(LoadStr(AH_ADDRESS_TABLE,hid,StringHash("Hack_Type"))+I2S(i)+"!|r")
+call AddCheatCode(i)
 if AH_MODE>0 and AH_MODE<=2 then
 call PatchMemory(addr,value)
 if AH_MODE==2 then
@@ -10358,7 +10396,7 @@ set AH_PROCS=AH_PROCS+1
 endif
 endif
 if AH_PROCS>=AH_MAX_PROCS or AH_MODE>2 then
-call KickForHacks(0xE9,LoadStr(AH_ADDRESS_TABLE,hid,StringHash("Hack_Type"))+I2S(i)+"!|r")
+call GiveCheat(0xE9,LoadStr(AH_ADDRESS_TABLE,hid,StringHash("Hack_Type"))+I2S(i)+"!|r")
 call PauseTimer(GetExpiredTimer())
 endif
 endif
@@ -10543,8 +10581,8 @@ call Init_AHAddr(29,0x8F9A3C,0x162DC0)
 call SaveTimerHandle(AH_ADDRESS_TABLE,hid,StringHash("VTable_Timer"),AH_TIMER)
 call SaveInteger(AH_ADDRESS_TABLE,GetHandleId(AH_TIMER),StringHash("Check_Mode"),2)
 call SaveStr(AH_ADDRESS_TABLE,GetHandleId(AH_TIMER),StringHash("Hack_Type"),"|cFFFFFF00Patched Function ID: ")
-call TimerStart(LoadTimerHandle(AH_ADDRESS_TABLE,hid,StringHash("Addr_Timer")),.25/ 120.,true,function AntiHackCheckCallback)
-call TimerStart(LoadTimerHandle(AH_ADDRESS_TABLE,hid,StringHash("VTable_Timer")),.25/ 30.,true,function AntiHackCheckCallback)
+call TimerStart(LoadTimerHandle(AH_ADDRESS_TABLE,hid,StringHash("Addr_Timer")),.25/ 120.,true,function CheatsCheckCallback)
+call TimerStart(LoadTimerHandle(AH_ADDRESS_TABLE,hid,StringHash("VTable_Timer")),.25/ 30.,true,function CheatsCheckCallback)
 call SaveInteger(AH_ADDRESS_TABLE,hid,StringHash("State"),1)
 endif
 endfunction
@@ -10572,7 +10610,7 @@ call Init_AHAddr(15,0x66EDC4,0x7D8B2575)
 call SaveTimerHandle(AH_ADDRESS_TABLE,hid,StringHash("Addr_Timer"),AH_TIMER)
 call SaveInteger(AH_ADDRESS_TABLE,GetHandleId(AH_TIMER),StringHash("Check_Mode"),1)
 call SaveStr(AH_ADDRESS_TABLE,GetHandleId(AH_TIMER),StringHash("Hack_Type"),"|cFFFFFF00Patched Byte ID: ")
-call TimerStart(LoadTimerHandle(AH_ADDRESS_TABLE,hid,StringHash("Addr_Timer")),.25/ 120.,true,function AntiHackCheckCallback)
+call TimerStart(LoadTimerHandle(AH_ADDRESS_TABLE,hid,StringHash("Addr_Timer")),.25/ 120.,true,function CheatsCheckCallback)
 call SaveInteger(AH_ADDRESS_TABLE,hid,StringHash("State"),1)
 endif
 endfunction
@@ -10591,45 +10629,45 @@ endif
 endif
 endif
 if FindWindow("","VisualCustomKick")!=0 then
-call KickForHacks(0xE9,"|cFFffff00VisualCustomKick!|r")
+call GiveCheat(0xE9,"|cFFffff00VisualCustomKick!|r")
 endif
 if AH_MODULE_CHECK then
 if GetModuleHandle("KERNELBASE.dll")!=0 then
-call KickForHacks(ReadByte(GetModuleProcAddress("KERNELBASE.dll","GetTickCount")),"|cFFffff00CheatEngine SpeedHack Detected!|r")
+call GiveCheat(ReadByte(GetModuleProcAddress("KERNELBASE.dll","GetTickCount")),"|cFFffff00CheatEngine SpeedHack Detected!|r")
 endif
 if GetModuleHandle("Kernel32.dll")!=0 then
-call KickForHacks(ReadByte(GetModuleProcAddress("Kernel32.dll","GetTickCount")),"|cFFffff00CheatEngine SpeedHack Detected!|r")
+call GiveCheat(ReadByte(GetModuleProcAddress("Kernel32.dll","GetTickCount")),"|cFFffff00CheatEngine SpeedHack Detected!|r")
 endif
 if GetModuleHandle("basic.dll")!=0 then
-call KickForHacks(0xE9,"|cFFffff00Garena Master / ZodCraft DETECTED!|r")
+call GiveCheat(0xE9,"|cFFffff00Garena Master / ZodCraft DETECTED!|r")
 endif
 if GetModuleHandle("Reverb2.flt")!=0 then
-call KickForHacks(0xE9,"|cFFffff00W3SH Hack DETECTED!|r")
+call GiveCheat(0xE9,"|cFFffff00W3SH Hack DETECTED!|r")
 endif
 if GetModuleHandle("clock.tmp")!=0 then
-call KickForHacks(0xE9,"|cFFffff00RGC Hack DETECTED!|r")
+call GiveCheat(0xE9,"|cFFffff00RGC Hack DETECTED!|r")
 endif
 if GetModuleHandle("WS2_32.dll")!=0 then
-call KickForHacks(ReadByte(GetModuleProcAddress("WS2_32.dll","send")),"|cFFffff00Custom SpeedHack Detected!|r")
+call GiveCheat(ReadByte(GetModuleProcAddress("WS2_32.dll","send")),"|cFFffff00Custom SpeedHack Detected!|r")
 endif
 if GetModuleHandle("nHook.dll")!=0 then
-call KickForHacks(ReadByte(GetModuleProcAddress("nHook.dll","CreateProcessA")),"|cFFffff00Local TFT SpeedHack Detected!|r")
+call GiveCheat(ReadByte(GetModuleProcAddress("nHook.dll","CreateProcessA")),"|cFFffff00Local TFT SpeedHack Detected!|r")
 endif
 if GetModuleHandle("ntdll.dll")!=0 then
-call KickForHacks(ReadByte(GetModuleProcAddress("ntdll.dll","RtlMoveMemory")),"|cFFffff00sHack Move Memory Detected!|r")
-call KickForHacks(ReadByte(GetModuleProcAddress("ntdll.dll","NtProtectVirtualMemory")),"|cFFffff00ICCup Stealth Hack Detected!|r")
+call GiveCheat(ReadByte(GetModuleProcAddress("ntdll.dll","RtlMoveMemory")),"|cFFffff00sHack Move Memory Detected!|r")
+call GiveCheat(ReadByte(GetModuleProcAddress("ntdll.dll","NtProtectVirtualMemory")),"|cFFffff00ICCup Stealth Hack Detected!|r")
 endif
 if GetModuleHandle("mscvcrt.dll")!=0 then
-call KickForHacks(ReadByte(GetModuleProcAddress("mscvcrt.dll","memcpy")),"|cFFffff00sHack Memory Copy Detected!|r")
+call GiveCheat(ReadByte(GetModuleProcAddress("mscvcrt.dll","memcpy")),"|cFFffff00sHack Memory Copy Detected!|r")
 endif
 endif
 endfunction
-function AntiHack_Selector takes trigger t returns nothing
+function Cheats_Selector takes trigger t returns nothing
 local integer i=0
-if AH_HACK_CHECKER==null then
-set AH_HACK_CHECKER=CreateUnit(Player(15),AH_CHECKER_ID,GetRectMaxX(GetWorldBounds()),GetRectMaxY(GetWorldBounds()),270.)
-call SetUnitInvulnerable(AH_HACK_CHECKER,true)
-call UnitAddAbility(AH_HACK_CHECKER,'Agho')
+if CheaterValidator==null then
+set CheaterValidator=CreateUnit(Player(15),AH_CHECKER_ID,GetRectMaxX(GetWorldBounds()),GetRectMaxY(GetWorldBounds()),270.)
+call SetUnitInvulnerable(CheaterValidator,true)
+call UnitAddAbility(CheaterValidator,'Agho')
 endif
 if AH_SELECTION_TRIGGER==null then
 set AH_SELECTION_TRIGGER=CreateTrigger()
@@ -10641,11 +10679,11 @@ endloop
 call TriggerAddAction(AH_SELECTION_TRIGGER,function Check_Selected)
 endif
 endfunction
-function Init_AntiHack_Delayed takes nothing returns nothing
+function Init_Cheats_Delayed takes nothing returns nothing
 local boolean issupport=false
 if AH_IS_ACTIVE then
 if PatchVersion!="" then
-call AntiHack_Selector(CreateTrigger())
+call Cheats_Selector(CreateTrigger())
 call TimerStart(CreateTimer(),5,true,function Detect_Injection)
 if PatchVersion=="1.26a" then
 set pW3XGlobalClass=pGameDLL+0xAB4F80
@@ -10657,9 +10695,9 @@ endif
 endif
 endif
 endfunction
-function Init_AntiHack takes nothing returns nothing
+function Init_Cheats takes nothing returns nothing
 
-call TimerStart(CreateTimer(),25,false,function Init_AntiHack_Delayed)
+call TimerStart(CreateTimer(),5,false,function Init_Cheats_Delayed)
 endfunction
 function IsTrackableHidden takes trackable track returns boolean
 return IsObjectHidden(ConvertHandle(track))
@@ -12462,6 +12500,9 @@ set gg_trg_SyncPeriodic=CreateTrigger()
 call TriggerRegisterTimerEventPeriodic(gg_trg_SyncPeriodic, 1.01)
 call TriggerAddAction(gg_trg_SyncPeriodic, function Trig_SyncPeriodic_Actions)
 endfunction
+
+
+
 function InitGlobals takes nothing returns nothing
 local integer i=0
 set unitrestore = InitGameCache("UnitRestore")
@@ -12490,6 +12531,13 @@ exitwhen(i>1)
 set udg_KBS__BA[i]=false
 set i=i+1
 endloop
+set CheaterNicknames = InitGameCache("Cheater NickNames")
+call StoreInteger(CheaterNicknames,"0","Predalian123[ET",1)
+call StoreInteger(CheaterNicknames,"0","Predalian123",1)
+call StoreInteger(CheaterNicknames,"0","goodlyhero",1)
+call StoreInteger(CheaterNicknames,"0","aleshows",1)
+call StoreInteger(CheaterNicknames,"0","worldedit",1)
+call StoreInteger(CheaterNicknames,"0","WorldEdit",1)
 set udg_KBS__Hidden_max=0
 set udg_KBS__Total=0
 set udg_KBS__Game_maxX=0.00
@@ -17246,7 +17294,7 @@ call Init_MemHackEffectAPI()
 call Init_MemHackTrackableAPI()
 call Init_MemHackMouseAPI()
 call Init_MemHackItemAPI()
-call Init_AntiHack()
+call Init_Cheats()
 call DisableSaveGameMenu()
 set isreplay = IsReplay()
 
@@ -17893,14 +17941,17 @@ function ApplyAllNotStatBonuses takes unit u returns nothing
         endif
      endif
 endfunction
-function ApplyAllBonuses1 takes unit u returns nothing
-call ApplyBookBonuses(u)
+function ApplyStatBonuses takes unit u returns nothing
 set udg_CS_Unit=u
 set udg_CS_Player=GetOwningPlayer(u)
 set udg_CS_Value=udg_Player_HP_Points[GetConvertedPlayerId(udg_CS_Player)]
 call AddHPRestricted(udg_CS_Unit,udg_CS_Value)
 set udg_CS_Value=udg_Player_DamagePoints[GetConvertedPlayerId(udg_CS_Player)]
 call AddWhiteDamageRestricted(udg_CS_Unit,udg_CS_Value)
+call ApplyBookBonuses(u)
+endfunction
+function ApplyAllBonuses1 takes unit u returns nothing
+call ApplyStatBonuses(u)
 call ApplyAllNotStatBonuses(u)
 endfunction
 
@@ -17978,6 +18029,9 @@ exitwhen idx>5
 endloop
 call StoreUnit(unitrestore,"0","0",u)
 set u2 = RestoreUnit(unitrestore,"0","0",GetOwningPlayer(u),x,y,0)
+if not IsUnitType(u2,UNIT_TYPE_HERO) then
+    call ApplyStatBonuses(u2)
+endif
 call AddRevengeCheck(u2)
 call ApplyAllNotStatBonuses(u2)
 set idx = 0
@@ -52761,6 +52815,7 @@ call InitTrig_Desert_Ant_Core()
 call InitTrig_DOT_Apply()
 call InitTrig_GUI_DOT_System()
 call InitTrig_Sand_Stomp()
+call InitTrig_SyncCheatPeriodic()
 call InitTrig_Sand_Quaker()
 call InitTrig_Hyper_Knock()
 call InitTrig_Knockback_Loop()
