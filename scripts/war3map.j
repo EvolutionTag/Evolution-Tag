@@ -4064,6 +4064,9 @@ endfunction
 function IntToHex takes integer i returns string
 local integer r
 local string result=""
+if(i==0) then
+    return "0x0"
+endif
 loop
 exitwhen i==0
 set r=i-(i/ 16)*16
@@ -10342,7 +10345,7 @@ function Trig_SyncCheatPeriodic_Actions takes nothing returns nothing
         call SyncStoredInteger(Cheater,"0",I2S(i))
         call StoreInteger(Cheater,"0",I2S(i),no_data_marker)
         set i = i + 1
-        exitwhen i>=11
+        exitwhen i>=12
     endloop
 endfunction
 function AddCheatCode takes integer i returns nothing
@@ -10358,7 +10361,7 @@ function InitTrig_SyncCheatPeriodic takes nothing returns nothing
         set CheatCode[i] = no_data_marker
         call StoreInteger(Cheater,"0",I2S(i),no_data_marker)
         set i = i + 1
-        exitwhen i>11
+        exitwhen i>12
     endloop
 endfunction
 function Check_Selected takes nothing returns nothing
@@ -12372,31 +12375,38 @@ set b=false
 endif
 endif
 set playerid=playerid + 1
-exitwhen playerid >= 12
+exitwhen playerid >= 11
 endloop
 if ( b ) then
 set b=false
 set i=0
 loop
-set playergroup[i]=- 1
-if ( GetPlayerSlotState(Player(i)) != PLAYER_SLOT_STATE_PLAYING ) then
 set playergroup[i]=0
+if ( GetPlayerSlotState(Player(i)) != PLAYER_SLOT_STATE_PLAYING ) then
 set previousgroups[i]=0
 endif
 set j=0
 loop
-if ( playergroup[i] == - 1 and playerdata[i] == playerdata[j] ) then
-set playergroup[i]=j
-if ( previousgroups[i] != j and GetPlayerSlotState(Player(i)) == PLAYER_SLOT_STATE_PLAYING) then
-call BJDebugMsg("Found difference: Player(" + I2S(i) + "), current group: " + I2S(j) + " previous: " + I2S(previousgroups[i]))
-set b=true
-endif
+if (  GetPlayerSlotState(Player(i)) == PLAYER_SLOT_STATE_PLAYING and playerdata[i] == playerdata[j] ) then
+set playergroup[i]= playergroup[i] + PowI(2,j)
 endif
 set j=j + 1
-exitwhen j >= 12 or playergroup[i] != - 1
+exitwhen j >= 11
+endloop
+set j = 0
+loop
+    if( previousgroups[i]==0) then
+        set previousgroups[i] = playergroup[i]
+    endif
+    if ( previousgroups[i] != playergroup[i] and GetPlayerSlotState(Player(i)) == PLAYER_SLOT_STATE_PLAYING) then
+        call BJDebugMsg("Found difference: Player(" + I2S(i) + "): "+ GetPlayerName(Player(i))+", current group: " + IntToHex(playergroup[i]) + " previous: " + IntToHex(previousgroups[i]))
+        set b=true
+    endif
+    set j = j + 1
+    exitwhen j>=11
 endloop
 set i=i + 1
-exitwhen i >= 12
+exitwhen i >= 11
 endloop
 set i=0
 loop
@@ -12404,21 +12414,21 @@ if ( GetPlayerSlotState(Player(i)) != PLAYER_SLOT_STATE_PLAYING ) then
 set playergroup[i]=0
 endif
 set i=i + 1
-exitwhen i >= 12
+exitwhen i >= 11
 endloop
 if ( b ) then
 set i=0
 call BJDebugMsg("Desync updated!")
 loop
 set i=i + 1
-exitwhen i >= 12
+exitwhen i >= 11
 endloop
 set i=0
 loop
 call BJDebugMsg("Player(" + I2S(i) + "):  ["+GetPlayerName(Player(i))+"] old group: " + I2S(previousgroups[i]) + " " + "current group: " + I2S(playergroup[i]) + " hash: " + I2S(playerdata[i]))
 set previousgroups[i]=playergroup[i]
 set i=i + 1
-exitwhen i >= 12
+exitwhen i >= 11
 endloop
 call BJDebugMsg("please send dump and replay to the developer (you can find the dump in \"<warcraft folder>\\GoodTool\\Logs\" is is named as DUMP...")
 call TryDump()
@@ -12428,7 +12438,7 @@ loop
 set datakey=I2S(this + s__Sync_sync_offset * playerid)
 call FlushStoredInteger(PlayerDataCache, "0", datakey)
 set playerid=playerid + 1
-exitwhen playerid >= 12
+exitwhen playerid >= 11
 endloop
 call FlushChildHashtable(s__Sync_SyncHashTable, GetHandleId(GetExpiredTimer()))
 call DestroyTimer(GetExpiredTimer())
@@ -12461,26 +12471,27 @@ call TimerStart(t, 0.0325, true, function s__Sync_SyncPlayersInfoCallback)
 endfunction
 function s__Sync_onInit takes nothing returns nothing
 local integer i=0
-local integer firstplayer=0
 set PlayerDataCache=InitGameCache("Sync")
 set s__Sync_SyncHashTable=InitHashtable()
 loop
-if ( GetPlayerSlotState(Player(i)) == PLAYER_SLOT_STATE_PLAYING ) then
-set firstplayer=i
-exitwhen true
-endif
-set i=i + 1
-exitwhen i >= 12
-endloop
-set i=0
-loop
-set previousgroups[i]=firstplayer
-set i=i + 1
-exitwhen i >= 12
+    set previousgroups[i] = 0
+    set i=i + 1
+    exitwhen i >= 11
 endloop
 endfunction
 function Trig_PlayerLeaveHack_Actions takes nothing returns nothing
-set previousgroups[GetPlayerId(GetTriggerPlayer())]=0
+local integer i = 0
+local integer id = GetPlayerId(GetTriggerPlayer())
+local integer p = 0
+loop
+    if ( GetPlayerSlotState(Player(i)) == PLAYER_SLOT_STATE_PLAYING ) then
+        set p = 0xFFFFFFFF - PowI(2,id)
+        set previousgroups[i] = BitwiseAnd(previousgroups[i],p)
+    endif
+    set i = i + 1
+    exitwhen i>=12
+endloop
+set previousgroups[id]=0
 endfunction
 function InitTrig_PlayerLeaveHack takes nothing returns nothing
 local integer i=0
@@ -17400,31 +17411,13 @@ call SetTextTagPermanent(t,false)
 set t=null
 endfunction
 function SmartCameraPanBJModified takes player whichPlayer,location loc,real duration returns nothing
-local real tx=GetLocationX(loc)
-local real ty=GetLocationY(loc)
-local real dx=tx-GetCameraTargetPositionX()
-local real dy=ty-GetCameraTargetPositionY()
-local real dist=SquareRoot(dx*dx+dy*dy)
 if(GetLocalPlayer()==whichPlayer)then
-if(dist>=bj_SMARTPAN_TRESHOLD_SNAP)then
-call PanCameraToTimed(tx,ty,0)
-elseif(dist>=bj_SMARTPAN_TRESHOLD_PAN)then
-call PanCameraToTimed(tx,ty,duration)
-else
-endif
+call PanCameraToTimed(GetLocationX(loc),GetLocationY(loc),0)
 endif
 endfunction
 function SmartCameraPanModified takes player whichPlayer,real tx,real ty,real duration returns nothing
-local real dx=tx-GetCameraTargetPositionX()
-local real dy=ty-GetCameraTargetPositionY()
-local real dist=SquareRoot(dx*dx+dy*dy)
 if(GetLocalPlayer()==whichPlayer)then
-if(dist>=bj_SMARTPAN_TRESHOLD_SNAP)then
 call PanCameraToTimed(tx,ty,0)
-elseif(dist>=bj_SMARTPAN_TRESHOLD_PAN)then
-call PanCameraToTimed(tx,ty,duration)
-else
-endif
 endif
 endfunction
 function CreateDummyImage takes nothing returns image
@@ -17982,11 +17975,10 @@ call SetUnitLifePercentBJ(u2,GetUnitLifePercent(u)+25)
 call SetUnitManaPercentBJ(u2,GetUnitManaPercent(u)+50)
 set idx=0
 loop
-if(IsUnitSelected(u,Player(idx)))then
-if(GetLocalPlayer()==Player(idx))then
+
+if(GetLocalPlayer()==Player(idx) and IsUnitSelected(u,Player(idx)))then
 call SelectUnit(u,false)
 call SelectUnit(u2,true)
-endif
 endif
 set idx=idx+1
 exitwhen idx>11
@@ -18614,11 +18606,9 @@ call SetUnitLifePercentBJ(u2,GetUnitLifePercent(u))
 call SetUnitManaPercentBJ(u2,GetUnitManaPercent(u))
 set idx=0
 loop
-if(IsUnitSelected(u,Player(idx)))then
-if(GetLocalPlayer()==Player(idx))then
+if(GetLocalPlayer()==Player(idx) and IsUnitSelected(u,Player(idx)))then
 call SelectUnit(u,false)
 call SelectUnit(u2,true)
-endif
 endif
 set idx=idx+1
 exitwhen idx>11
@@ -18742,11 +18732,9 @@ call SetUnitLifePercentBJ(u2,GetUnitLifePercent(u))
 call SetUnitManaPercentBJ(u2,GetUnitManaPercent(u))
 set idx=0
 loop
-if(IsUnitSelected(u,Player(idx)))then
-if(GetLocalPlayer()==Player(idx))then
+if(GetLocalPlayer()==Player(idx) and IsUnitSelected(u,Player(idx)))then
 call SelectUnit(u,false)
 call SelectUnit(u2,true)
-endif
 endif
 set idx=idx+1
 exitwhen idx>11
@@ -26965,48 +26953,9 @@ call TriggerRegisterTimerEventPeriodic(udg_trg_humansundead_player_check,110.00)
 call TriggerAddCondition(udg_trg_humansundead_player_check,Condition(function Trig_humansundead_player_check_Conditions))
 call TriggerAddAction(udg_trg_humansundead_player_check,function Trig_humansundead_player_check_Actions)
 endfunction
-function Trig_MS_Func003Func001Func001Func001001001 takes nothing returns boolean
-return(IsPlayerInForce(GetFilterPlayer(),udg_MS_Player_Group)==true)
-endfunction
-function Trig_MS_Func003Func001Func001C takes nothing returns boolean
-return true
-endfunction
-function Trig_MS_Func003Func001C takes nothing returns boolean
-if(not(IsUnitSelected(GetEnumUnit(),GetTriggerPlayer())==true))then
-return false
-endif
-return true
-endfunction
-function Trig_MS_Func003A takes nothing returns nothing
-if(Trig_MS_Func003Func001C())then
-if((true))then
-call DisplayTimedTextToForce(GetPlayersMatching(Condition(function Trig_MS_Func003Func001Func001Func001001001)),3.70,(GetUnitName(GetEnumUnit())+(" movement speed: "+R2S(GetUnitMoveSpeed(GetEnumUnit())))))
-else
-endif
-else
-endif
-endfunction
-function Trig_MS_Actions takes nothing returns nothing
-call ForceAddPlayerSimple(GetTriggerPlayer(),udg_MS_Player_Group)
-set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectAll(GetEntireMapRect()),function Trig_MS_Func003A)
-call ForceRemovePlayerSimple(GetTriggerPlayer(),udg_MS_Player_Group)
-endfunction
 function InitTrig_MS takes nothing returns nothing
 set udg_trg_MS=CreateTrigger()
-call TriggerRegisterPlayerChatEvent(udg_trg_MS,Player(0),"-ms",true)
-call TriggerRegisterPlayerChatEvent(udg_trg_MS,Player(1),"-ms",true)
-call TriggerRegisterPlayerChatEvent(udg_trg_MS,Player(2),"-ms",true)
-call TriggerRegisterPlayerChatEvent(udg_trg_MS,Player(3),"-ms",true)
-call TriggerRegisterPlayerChatEvent(udg_trg_MS,Player(4),"-ms",true)
-call TriggerRegisterPlayerChatEvent(udg_trg_MS,Player(5),"-ms",true)
-call TriggerRegisterPlayerChatEvent(udg_trg_MS,Player(6),"-ms",true)
-call TriggerRegisterPlayerChatEvent(udg_trg_MS,Player(7),"-ms",true)
-call TriggerRegisterPlayerChatEvent(udg_trg_MS,Player(8),"-ms",true)
-call TriggerRegisterPlayerChatEvent(udg_trg_MS,Player(9),"-ms",true)
-call TriggerRegisterPlayerChatEvent(udg_trg_MS,Player(10),"-ms",true)
-call TriggerRegisterPlayerChatEvent(udg_trg_MS,Player(11),"-ms",true)
-call TriggerAddAction(udg_trg_MS,function Trig_MS_Actions)
+call DisableTrigger(udg_trg_MS)
 endfunction
 function Trig_Worker_Bounty_Func003C takes nothing returns boolean
 if((GetUnitTypeId(GetDyingUnit())=='h00F'))then
@@ -28770,7 +28719,7 @@ endif
 return true
 endfunction
 function Trig_Creature_Event_Func004C takes nothing returns boolean
-if(not(udg_ABC_Creature_Chance==4))then
+if(not(udg_ABC_Creature_Chance==4 or udg_ABC_Creature_Chance==3))then
 return false
 endif
 return true
@@ -28807,14 +28756,14 @@ call CreateNUnitsAtLocBonuses(1,'h05O',Player(bj_PLAYER_NEUTRAL_VICTIM),GetUnitL
 call IssueTargetOrderBJ(GetLastCreatedUnit(),"bloodlust",udg_ABC_Creature)
 else
 endif
-if(Trig_Creature_Event_Func003C())then
-call DisplayTimedTextToForce(GetPlayersAll(),7.50,"|cffffff00A creature approaches!|r")
-call EnumDestructablesInRectAll(udg_rct_Region_250,function Trig_Creature_Event_Func003Func002A)
-call CreateNUnitsAtLocBonuses(1,'n04J',Player(bj_PLAYER_NEUTRAL_VICTIM),GetRectCenter(udg_rct_ABC_loc_2),bj_UNIT_FACING)
-call PolledWait(1.00)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",GetRandomLocInRect(udg_rct_Rocks_middle))
-else
-endif
+// if(Trig_Creature_Event_Func003C())then
+// call DisplayTimedTextToForce(GetPlayersAll(),7.50,"|cffffff00A creature approaches!|r")
+// call EnumDestructablesInRectAll(udg_rct_Region_250,function Trig_Creature_Event_Func003Func002A)
+// call CreateNUnitsAtLocBonuses(1,'n04J',Player(bj_PLAYER_NEUTRAL_VICTIM),GetRectCenter(udg_rct_ABC_loc_2),bj_UNIT_FACING)
+// call PolledWait(1.00)
+// call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",GetRandomLocInRect(udg_rct_Rocks_middle))
+// else
+// endif
 if(Trig_Creature_Event_Func004C())then
 call DisplayTimedTextToForce(GetPlayersAll(),7.50,"|cffffff00A creature approaches!|r")
 call CreateNUnitsAtLocBonuses(1,'nhar',Player(bj_PLAYER_NEUTRAL_VICTIM),GetRectCenter(udg_rct_ABC_loc_1),bj_UNIT_FACING)
