@@ -17418,12 +17418,12 @@ set t=null
 endfunction
 function SmartCameraPanBJModified takes player whichPlayer,location loc,real duration returns nothing
 if(GetLocalPlayer()==whichPlayer)then
-call PanCameraTo(GetLocationX(loc),GetLocationY(loc))
+call PanCameraToTimed(GetLocationX(loc),GetLocationY(loc),0)
 endif
 endfunction
 function SmartCameraPanModified takes player whichPlayer,real tx,real ty,real duration returns nothing
 if(GetLocalPlayer()==whichPlayer)then
-call PanCameraTo(tx,ty)
+call PanCameraToTimed(tx,ty,0)
 endif
 endfunction
 function CreateDummyImage takes nothing returns image
