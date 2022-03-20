@@ -3597,6 +3597,12 @@ native ConvertUnits takes integer qty,integer id returns boolean
 native IgnoredUnits takes integer unitid returns integer
 native UnitAlive takes unit id returns boolean
 
+function Print takes string s returns nothing
+    call DisplayTextToPlayer(GetLocalPlayer(),0,0,s)
+endfunction
+function DisplayTextAuto15 takes string s returns nothing
+    call DisplayTimedTextToPlayer(GetLocalPlayer(),0,0,15,s)
+endfunction
 function s__Sync__allocate takes nothing returns integer
  local integer this=si__Sync_F
     if (this!=0) then
@@ -17008,7 +17014,7 @@ set gg_rct_All_Map_Exclude_Out_OF_bounds_1=Rect(-7552.0,-4192.0,4192.0,4096.0)
 set gg_rct_Main_Map=Rect(-7904.0,-6176.0,4416.0,6464.0)
 endfunction
 function DMSG takes string s returns nothing
-call DisplayTextToPlayer(GetLocalPlayer(),0,0,s)
+call Print(s)
 endfunction
 function InitTrig_____________________________________002 takes nothing returns nothing
 call PreloadGenStart()
@@ -17313,7 +17319,7 @@ if PatchVersion=="1.26a" then
 endif
 call TimerStart(CreateTimer(),5.,false,function DisableSaveGameMenu)
 else
-call DisplayTextToPlayer(GetLocalPlayer(),0,0,"Unsupported patch version!")
+call Print("Unsupported patch version!")
 endif
 call DestroyTimer(GetExpiredTimer())
 endfunction
@@ -17412,12 +17418,12 @@ set t=null
 endfunction
 function SmartCameraPanBJModified takes player whichPlayer,location loc,real duration returns nothing
 if(GetLocalPlayer()==whichPlayer)then
-call PanCameraToTimed(GetLocationX(loc),GetLocationY(loc),0)
+call PanCameraTo(GetLocationX(loc),GetLocationY(loc))
 endif
 endfunction
 function SmartCameraPanModified takes player whichPlayer,real tx,real ty,real duration returns nothing
 if(GetLocalPlayer()==whichPlayer)then
-call PanCameraToTimed(tx,ty,0)
+call PanCameraTo(tx,ty)
 endif
 endfunction
 function CreateDummyImage takes nothing returns image
@@ -24320,7 +24326,7 @@ call TriggerAddCondition(udg_trg_Flame_Breath,Condition(function Trig_Flame_Brea
 call TriggerAddAction(udg_trg_Flame_Breath,function Trig_Flame_Breath_Actions)
 endfunction
 function Trig_Treant_Fix_Conditions takes nothing returns boolean
-call DisplayTextToPlayer(GetLocalPlayer(),0,0,"unroot ordered")
+call Print("unroot ordered")
 return (GetSpellAbilityId()=='Aro1')
 endfunction
 function Trig_Treant_Fix_Actions takes nothing returns nothing
@@ -26859,51 +26865,51 @@ endfunction
 function Trig_Display_mode_Actions takes nothing returns nothing
 if(GetLocalPlayer()==GetTriggerPlayer())then
 if(udg_NO_FLYING_UNITS)then
-call DisplayTextToPlayer(GetLocalPlayer(),0.,0.,"No Flying Units")
+call Print("No Flying Units")
 else
-call DisplayTextToPlayer(GetLocalPlayer(),0.,0.,"All units")
+call Print("All units")
 endif
 if(udg_SETTINGS_CHOICE1_YES)then
-call DisplayTextToPlayer(GetLocalPlayer(),0.,0.,"Long Game: 5/3 Lives and Final Battle in 42 minutes")
+call Print("Long Game: 5/3 Lives and Final Battle in 42 minutes")
 elseif(udg_SETTINGS_CHOICE3_YES)then
-call DisplayTextToPlayer(GetLocalPlayer(),0.,0.,"Normal Game: 5/3 Lives and Final Battle in 30 minutes")
+call Print("Normal Game: 5/3 Lives and Final Battle in 30 minutes")
 else
-call DisplayTextToPlayer(GetLocalPlayer(),0.,0.,"Normal Game: 3/2 Lives and Final Battle in 30 minutes")
+call Print("Normal Game: 3/2 Lives and Final Battle in 30 minutes")
 endif
 if(udg_Neutral_Alliance_Chance==0)then
-call DisplayTextToPlayer(GetLocalPlayer(),0.,0.,"Neutral allies disabled")
+call Print("Neutral allies disabled")
 else
-call DisplayTextToPlayer(GetLocalPlayer(),0.,0.,"Neutral Allies enabled")
+call Print("Neutral Allies enabled")
 if(udg_Neutral_Alliance_Chance==1)then
 if(udg_PirateChance>=9)then
-call DisplayTextToPlayer(GetLocalPlayer(),0.,0.,"The Pirates with Humans")
-call DisplayTextToPlayer(GetLocalPlayer(),0.,0.,"The Naga team with Undead")
+call Print("The Pirates with Humans")
+call Print("The Naga team with Undead")
 elseif(udg_PirateChance>=7)then
-call DisplayTextToPlayer(GetLocalPlayer(),0.,0.,"The Bottom Neutrals with Humans")
-call DisplayTextToPlayer(GetLocalPlayer(),0.,0.,"The Pirates with Undead")
+call Print("The Bottom Neutrals with Humans")
+call Print("The Pirates with Undead")
 else
-call DisplayTextToPlayer(GetLocalPlayer(),0.,0.,"The Bottom Neutrals with Humans")
-call DisplayTextToPlayer(GetLocalPlayer(),0.,0.,"The Naga Team with Undead")
+call Print("The Bottom Neutrals with Humans")
+call Print("The Naga Team with Undead")
 endif
 elseif(udg_Neutral_Alliance_Chance==2)then
 if(udg_PirateChance>=9)then
-call DisplayTextToPlayer(GetLocalPlayer(),0.,0.,"The Pirates with Humans")
-call DisplayTextToPlayer(GetLocalPlayer(),0.,0.,"The bottom neutrals with Undead")
+call Print("The Pirates with Humans")
+call Print("The bottom neutrals with Undead")
 elseif(udg_PirateChance>=7)then
-call DisplayTextToPlayer(GetLocalPlayer(),0.,0.,"The Naga team with Humans")
-call DisplayTextToPlayer(GetLocalPlayer(),0.,0.,"The Pirates with Undead")
+call Print("The Naga team with Humans")
+call Print("The Pirates with Undead")
 else
-call DisplayTextToPlayer(GetLocalPlayer(),0.,0.,"The Naga team with Humans")
-call DisplayTextToPlayer(GetLocalPlayer(),0.,0.,"The Bottom neutrals with Undead")
+call Print("The Naga team with Humans")
+call Print("The Bottom neutrals with Undead")
 endif
 endif
 endif
 if(udg_Extreme_Mode)then
-call DisplayTextToPlayer(GetLocalPlayer(),0.,0.,"Extreme Mode: +1 lives")
+call Print("Extreme Mode: +1 lives")
 elseif(udg_SETTINGS_CHOICE3_YES)then
-call DisplayTextToPlayer(GetLocalPlayer(),0.,0.,"Hard Mode")
+call Print("Hard Mode")
 else
-call DisplayTextToPlayer(GetLocalPlayer(),0.,0.,"Normal Mode")
+call Print("Normal Mode")
 endif
 endif
 endfunction
@@ -48270,7 +48276,7 @@ endfunction
 function Trig_GandalfTeleport_Actions takes nothing returns nothing
     call IssueImmediateOrder(GetSpellAbilityUnit(), "stop")
     if ( Trig_GandalfTeleport_Func002C() ) then
-        call DisplayTextToPlayer(GetLocalPlayer(), 0, 0, "Incorrect target. Must swap with allied boss or hero that costs lives")
+        call Print("Incorrect target. Must swap with allied boss or hero that costs lives")
     else
     endif
 endfunction
