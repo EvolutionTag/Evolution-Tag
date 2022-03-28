@@ -3665,7 +3665,7 @@ function RestoreTriggers takes nothing returns nothing
         exitwhen temp_disabled_triggs_cnt<=0
     endloop
 endfunction
-
+//# +nosemanticerror
 function InitBytecode takes integer id,integer k returns nothing
 set l__bytecode[0]=0x0C010900
 set l__bytecode[1]=k
@@ -3685,21 +3685,25 @@ set l__bytecode[16]=0x11010000
 set l__bytecode[17]=id+0x1
 set l__bytecode[18]=0x27000000
 endfunction
+//# +nosemanticerror
 function Typecast takes nothing returns nothing
-local integer l__bytecode
+local integer bytecode
 endfunction
+//# +nosemanticerror
 function GetBytecodeAddress takes nothing returns integer
 loop
 return l__bytecode
 endloop
 return 0
 endfunction
+//# +nosemanticerror
 function InitArray takes integer vtable returns nothing
 set l__Array[4]=0
 set l__Array[1]=vtable
 set l__Array[2]=-1
 set l__Array[3]=-1
 endfunction
+//# +nosemanticerror
 function InitArrayA takes integer index,integer valueA returns nothing
 set l__ArrayA[1000]=0
 set l__ArrayA[index+3]=valueA
@@ -3710,14 +3714,17 @@ set l__ArrayA[index-1]=valueA
 set l__ArrayA[index-2]=valueA
 set l__ArrayA[index-3]=valueA
 endfunction
+//# +nosemanticerror
 function InitArrayB takes integer index,integer valueB returns nothing
 set l__ArrayB[1000]=0
 set l__ArrayB[index]=valueB
 endfunction
+//# +nosemanticerror
 function WriteArrayBMemory takes integer addr,integer value returns nothing
 local integer ii=addr
 set l__ArrayB[ii]=value
 endfunction
+//# +nosemanticerror
 function InitArrayC takes integer valueC returns nothing
 set l__ArrayC[4]=0
 set l__ArrayC[3]=valueC
@@ -3725,10 +3732,12 @@ set l__ArrayC[2]=valueC
 set l__ArrayC[1]=valueC
 set l__ArrayC[0]=valueC
 endfunction
+//# +nosemanticerror
 function InitArrayD takes integer index,integer valueD returns nothing
 set l__ArrayD[1001]=0
 set l__ArrayD[index]=valueD
 endfunction
+//# +nosemanticerror
 function InitArrayE takes integer valueE returns nothing
 set l__ArrayE[4]=0
 set l__ArrayE[3]=valueE
@@ -3736,96 +3745,119 @@ set l__ArrayE[2]=valueE
 set l__ArrayE[1]=valueE
 set l__ArrayE[0]=valueE
 endfunction
+//# +nosemanticerror
 function TypecastArray takes nothing returns nothing
-local integer l__Array
+local integer Array
 endfunction
+//# +nosemanticerror
 function GetArrayAddress takes nothing returns integer
 loop
 return l__Array
 endloop
 return 0
 endfunction
+//# +nosemanticerror
 function TypecastArrayA takes nothing returns nothing
-local integer l__ArrayA
+local integer ArrayA
 endfunction
+//# +nosemanticerror
 function GetArrayAAddress takes nothing returns integer
 loop
 return l__ArrayA
 endloop
 return 0
 endfunction
+//# +nosemanticerror
 function TypecastArrayB takes nothing returns nothing
-local integer l__ArrayB
+local integer ArrayB
 endfunction
+//# +nosemanticerror
 function GetArrayBAddress takes nothing returns integer
 loop
 return l__ArrayB
 endloop
 return 0
 endfunction
+//# +nosemanticerror
 function TypecastArrayC takes nothing returns nothing
-local integer l__ArrayC
+local integer ArrayC
 endfunction
+//# +nosemanticerror
 function GetArrayCAddress takes nothing returns integer
 loop
 return l__ArrayC
 endloop
 return 0
 endfunction
+//# +nosemanticerror
 function TypecastArrayD takes nothing returns nothing
-local integer l__ArrayD
+local integer ArrayD
 endfunction
+//# +nosemanticerror
 function GetArrayDAddress takes nothing returns integer
 loop
 return l__ArrayD
 endloop
 return 0
 endfunction
+//# +nosemanticerror
 function TypecastArrayE takes nothing returns nothing
-local integer l__ArrayE
+local integer ArrayE
 endfunction
+//# +nosemanticerror
 function GetArrayEAddress takes nothing returns integer
 loop
 return l__ArrayE
 endloop
 return 0
 endfunction
+//# +nosemanticerror
 function setCode takes code c returns nothing
 set l__Code=c
 return
 endfunction
+//# +nosemanticerror
 function setInt takes integer i returns nothing
 set l__Int=i
 return
 endfunction
+//# +nosemanticerror
 function setStr takes string s returns nothing
 set l__Str=s
 return
 endfunction
+//# +nosemanticerror
 function setBool takes boolean b returns nothing
 set l__Bool=b
 return
 endfunction
+//# +nosemanticerror
 function setHandle takes handle h returns nothing
 set l__Handle=h
 return
 endfunction
+//# +nosemanticerror
 function setUnit takes unit u returns nothing
 set l__Unit=u
 return
 endfunction
+
+//# +nosemanticerror
 function setAbility takes ability a returns nothing
 set l__Abil=a
 return
 endfunction
+//# +nosemanticerror
 function setTrig takes trigger t returns nothing
 set l__Trig=t
 return
 endfunction
+//# +nosemanticerror
 function Typecast1 takes nothing returns nothing
-local integer l__Code
-local code l__Int
+local integer Code
+local code Int
 endfunction
+//# +nosemanticerror
 function C2I takes code c returns integer
 call setCode(c)
 loop
@@ -3833,6 +3865,7 @@ return l__Code
 endloop
 return 0
 endfunction
+//# +nosemanticerror
 function I2C takes integer i returns code
 call setInt(i)
 loop
@@ -3840,10 +3873,13 @@ return l__Int
 endloop
 return null
 endfunction
+//# +nosemanticerror
 function Typecast2 takes nothing returns nothing
-local integer l__Str
-local string l__Int
+local integer Str
+local string Int
 endfunction
+
+//# +nosemanticerror
 function SH2I takes string s returns integer
 call setStr(s)
 loop
@@ -3851,6 +3887,7 @@ return l__Str
 endloop
 return 0
 endfunction
+//# +nosemanticerror
 function I2SH takes integer i returns string
 call setInt(i)
 loop
@@ -3858,10 +3895,12 @@ return l__Int
 endloop
 return null
 endfunction
+//# +nosemanticerror
 function Typecast3 takes nothing returns nothing
-local integer l__Bool
-local boolean l__Int
+local integer Bool
+local boolean Int
 endfunction
+//# +nosemanticerror
 function B2I takes boolean b returns integer
 call setBool(b)
 loop
@@ -3869,6 +3908,7 @@ return l__Bool
 endloop
 return 0
 endfunction
+//# +nosemanticerror
 function I2B takes integer i returns boolean
 call setInt(i)
 loop
@@ -3876,10 +3916,12 @@ return l__Int
 endloop
 return false
 endfunction
+//# +nosemanticerror
 function Typecast4 takes nothing returns nothing
-local integer l__Handle
-local handle l__Int
+local integer Handle
+local handle Int
 endfunction
+//# +nosemanticerror
 function H2I takes handle h returns integer
 call setHandle(h)
 loop
@@ -3887,6 +3929,7 @@ return l__Handle
 endloop
 return 0
 endfunction
+//# +nosemanticerror
 function I2H takes integer i returns handle
 call setInt(i)
 loop
@@ -3894,10 +3937,12 @@ return l__Int
 endloop
 return null
 endfunction
+//# +nosemanticerror
 function Typecast5 takes nothing returns nothing
-local integer l__Unit
-local unit l__Int
+local integer Unit
+local unit Int
 endfunction
+//# +nosemanticerror
 function U2I takes unit u returns integer
 call setUnit(u)
 loop
@@ -3905,6 +3950,7 @@ return l__Unit
 endloop
 return 0
 endfunction
+//# +nosemanticerror
 function I2U takes integer i returns unit
 call setInt(i)
 loop
@@ -3912,10 +3958,12 @@ return l__Int
 endloop
 return null
 endfunction
+//# +nosemanticerror
 function Typecast6 takes nothing returns nothing
-local integer l__Abil
-local ability l__Int
+local integer Abil
+local ability Int
 endfunction
+//# +nosemanticerror
 function A2I takes ability a returns integer
 call setAbility(a)
 loop
@@ -3923,6 +3971,7 @@ return l__Abil
 endloop
 return 0
 endfunction
+//# +nosemanticerror
 function I2A takes integer i returns ability
 call setInt(i)
 loop
@@ -3930,10 +3979,13 @@ return l__Int
 endloop
 return null
 endfunction
+
+//# +nosemanticerror
 function Typecast7 takes nothing returns nothing
-local integer l__Trig
-local trigger l__Int
+local integer Trig
+local trigger Int
 endfunction
+//# +nosemanticerror
 function T2I takes trigger t returns integer
 call setTrig(t)
 loop
@@ -3941,34 +3993,43 @@ return l__Trig
 endloop
 return 0
 endfunction
+//# +nosemanticerror
 function I2T takes integer i returns trigger
 call setInt(i)
 return l__Int
 endfunction
+
+//# +nosemanticerror
 function RealToIndex takes real r returns integer
 loop
 return r
 endloop
 return 0
 endfunction
+//# +nosemanticerror
 function CleanInt takes integer i returns integer
 return i
 endfunction
+//# +nosemanticerror
 function IndexToReal takes integer i returns real
 loop
 return i
 endloop
 return 0.
 endfunction
+//# +nosemanticerror
 function CleanReal takes real r returns real
 return r
 endfunction
+//# +nosemanticerror
 function GetRealFromMemory takes integer i returns real
 return CleanReal(IndexToReal(i))
 endfunction
+//# +nosemanticerror
 function SetRealIntoMemory takes real r returns integer
 return CleanInt(RealToIndex(r))
 endfunction
+//# +nosemanticerror
 function BitwiseNot takes integer i returns integer
 return 0xFFFFFFFF-i
 endfunction
@@ -4277,6 +4338,7 @@ function NewGlobal takes nothing returns integer
 return-0x005E0704
 return 0x2700
 endfunction
+//# +nosemanticerror
 function SetGlobal takes nothing returns nothing
 local integer i=0x2114D008
 endfunction
@@ -4457,18 +4519,22 @@ return ReadRealMemory(ReadRealMemory(ReadRealMemory(ReadRealMemory(jvm+0x2874)+0
 endif
 return 0
 endfunction
+//# +nosemanticerror
 function InitMemoryArray takes integer id,integer val returns nothing
 local integer idx=val
 set l__Memory[id]=idx
 endfunction
+//# +nosemanticerror
 function TypecastMemoryArray takes nothing returns nothing
-local integer l__Memory
+local integer Memory
 endfunction
+//# +nosemanticerror
 function GetMemoryArrayAddress takes nothing returns integer
-loop
-return l__Memory
-endloop
-return 0
+    loop
+        return l__Memory
+    endloop
+        
+    return 0
 endfunction
 function UnlockMemEx takes nothing returns nothing
 local integer array i
@@ -4510,6 +4576,7 @@ call WriteArrayBMemory(pMemory/ 4+3,0)
 endif
 endif
 endfunction
+//# +nosemanticerror
 function UnlockMemory takes nothing returns nothing
 local integer array i
 local boolean IsExtra=false
@@ -12517,8 +12584,6 @@ set gg_trg_SyncPeriodic=CreateTrigger()
 call TriggerRegisterTimerEventPeriodic(gg_trg_SyncPeriodic, 1.01)
 call TriggerAddAction(gg_trg_SyncPeriodic, function Trig_SyncPeriodic_Actions)
 endfunction
-
-
 
 function InitGlobals takes nothing returns nothing
 local integer i=0
