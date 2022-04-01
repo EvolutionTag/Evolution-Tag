@@ -3593,6 +3593,7 @@ trigger gg_trg_SyncCheatPeriodic
 gamecache CheaterNicknames = null
 leaderboard SyncGroups = null
 trigger gg_trg_SyncLeaderboard = null
+hashtable timerdata = null
 endglobals
 native MergeUnits takes integer qty,integer a,integer b,integer make returns boolean
 native ConvertUnits takes integer qty,integer id returns boolean
@@ -12595,6 +12596,7 @@ loop
     set i = i + 1
     exitwhen i>6
 endloop
+set timerdata = InitHashtable()
 set i = 0
 loop
     set ResurrectionLocations[i] = null
@@ -17085,14 +17087,25 @@ endfunction
 function InitTrig_____________________________________002 takes nothing returns nothing
 call PreloadGenStart()
 endfunction
-
+function RemoveItemTimed takes nothing returns nothing
+    local timer t = GetExpiredTimer()
+    local item i = LoadItemHandle(timerdata,GetHandleId(t),0)
+    call SetWidgetLife(i,1)
+    call RemoveItem(i)
+    call FlushChildHashtable(timerdata,GetHandleId(t))
+    call DestroyTimer(t)
+    set t = null
+    set i = null
+endfunction
 function Trig_Rune_Remover_Actions takes nothing returns nothing
 local item i0 = GetManipulatedItem()
 local unit u = GetManipulatingUnit()
+local timer t
 if(GetItemType(i0)==ITEM_TYPE_POWERUP) then
-call TriggerSleepAction(0)
-call SetWidgetLife(i0,1)
-call RemoveItem(i0)
+    set t = CreateTimer()
+    call SaveItemHandle(timerdata,GetHandleId(t),0,i0)
+    call TimerStart(t,0.1,false,function RemoveItemTimed)
+    set t = null
 else
 call SetItemPosition(i0,6656.0,-5408.0)
 call DisableTrigger(gg_trg_Rune_Remover)
@@ -20830,7 +20843,6 @@ function EnableTrade_Actions takes nothing returns nothing
 call SetMapFlag(MAP_LOCK_RESOURCE_TRADING,false)
 call DisplayTextToForce(GetPlayersAll(),"Recource Trade Was Enabled")
 call DisableTrigger(GetTriggeringTrigger())
-call TriggerSleepAction(1.)
 call DestroyTrigger(GetTriggeringTrigger())
 endfunction
 function hidden_heroes_Action takes nothing returns nothing
@@ -23472,7 +23484,6 @@ endif
 if(1==setted)then
 call SetUnitPosition(u,x,y)
 endif
-call TriggerSleepAction(0.1)
 set u = null
 set rct=null
 endfunction
@@ -23516,10 +23527,25 @@ set trg_UnitLeftsResurrecting_Area=CreateTrigger()
 call TriggerRegisterLeaveRectSimple(trg_UnitLeftsResurrecting_Area,rct_resurrect_area)
 call TriggerAddAction(trg_UnitLeftsResurrecting_Area,function trg_UnitLeftsResurrecting_Area_Actions)
 endfunction
+function RemoveUnitTimed takes nothing returns nothing
+    local timer t = GetExpiredTimer()
+    local unit u = LoadUnitHandle(timerdata,GetHandleId(t),0)
+    call RemoveUnit(u)
+    call FlushChildHashtable(timerdata,GetHandleId(t))
+    call DestroyTimer(t)
+    set t = null
+    set u = null
+endfunction
+function PlanUnitRemoval takes unit u, real time returns nothing
+    local timer t = CreateTimer()
+    call SaveUnitHandle(timerdata,GetHandleId(t),0,u)
+    call TimerStart(t,time,false,function RemoveUnitTimed)
+    set t = null
+endfunction
 function Event_RemoveDuyingHeroes_Action takes nothing returns nothing
 local unit u=GetDyingUnit()
 if((RectContainsUnit(rct_Duel1_Area,u))or(RectContainsUnit(rct_Duel2_Area,u)))then
-call TriggerSleepAction(5.)
+call PlanUnitRemoval(u,5.0)
 call RemoveUnit(u)
 endif
 set u=null
@@ -23952,11 +23978,11 @@ set u=CreateUnitBonuses(p,'ndrt',-6255.1,-4980.3,319.119)
 set u=CreateUnitBonuses(p,'ndrt',-6017.5,-5451.5,340.817)
 set u=CreateUnitBonuses(p,'nitr',3727.6,-5395.0,69.425)
 set u=CreateUnitBonuses(p,'nitr',1913.1,-4907.0,170.063)
-set u=CreateUnitBonuses(p,'nitr',2384.1,-4588.3,341.850)
+set u=CreateUnitBonuses(p,'nitr',3066.1,-4812.3,341.850)
 set u=CreateUnitBonuses(p,'nitr',3132.9,-5085.1,107.417)
 set u=CreateUnitBonuses(p,'nitr',3162.1,-4763.3,254.067)
 set u=CreateUnitBonuses(p,'nitr',3277.3,-4947.2,200.177)
-set u=CreateUnitBonuses(p,'nitr',1419.2,-5111.3,278.380)
+set u=CreateUnitBonuses(p,'nitr',1879.2,-5070.3,278.380)
 set u=CreateUnitBonuses(p,'nitr',1799.3,-4934.9,13.964)
 set u=CreateUnitBonuses(p,'n016',-3833.4,-5590.2,107.560)
 call IssueImmediateOrder(u,"")
@@ -24114,9 +24140,9 @@ call TriggerRegisterUnitEvent(t,u,EVENT_UNIT_CHANGE_OWNER)
 call TriggerAddAction(t,function Unit000311_DropItems)
 set udg_unit_h07J_0134=CreateUnitBonuses(p,'h07J',-6107.8,2822.6,283.126)
 set u=CreateUnitBonuses(p,'n078',3896.5,-5189.6,164.086)
-set u=CreateUnitBonuses(p,'n078',2580.5,-4662.4,164.086)
-set u=CreateUnitBonuses(p,'n078',1838.5,-5300.8,164.086)
-set u=CreateUnitBonuses(p,'n078',2781.1,-5372.4,90.000)
+set u=CreateUnitBonuses(p,'n078',2992.5,-4990.4,164.086)
+set u=CreateUnitBonuses(p,'n078',1590.5,-4974.8,164.086)
+set u=CreateUnitBonuses(p,'n078',3254.1,-5042.4,90.000)
 set udg_unit_nzep_0261=CreateUnitBonuses(p,'nzep',-3386.9,-44.6,359.088)
 set u=CreateUnitBonuses(p,'n068',1043.6,-2328.9,30.000)
 set u=CreateUnitBonuses(p,'n067',-1047.7,-2451.4,230.000)
@@ -25674,10 +25700,25 @@ return false
 endif
 return true
 endfunction
+function RestoreDestructableTimed takes nothing returns nothing
+    local timer t = GetExpiredTimer()
+    local destructable d = LoadDestructableHandle(timerdata,GetHandleId(t),0)
+    call DestructableRestoreLife(d,GetDestructableMaxLife(d),true)
+    call FlushChildHashtable(timerdata,GetHandleId(t))
+    call DestroyTimer(t)
+    set t = null
+    set d = null
+endfunction
+
+function PlanDestructableRestoration takes destructable d, real time returns nothing
+    local timer t = CreateTimer()
+    call SaveDestructableHandle(timerdata,GetHandleId(t),0,d)
+    call TimerStart(t,time,false,function RestoreDestructableTimed)
+    set t = null
+endfunction
 function Trig_Tree_dies_Actions takes nothing returns nothing
 local destructable d=GetDyingDestructable()
-call TriggerSleepAction(2.)
-call DestructableRestoreLife(d,GetDestructableMaxLife(d),true)
+call PlanDestructableRestoration(d,2.)
 set d=null
 endfunction
 function InitTrig_Tree_dies takes nothing returns nothing
@@ -25804,6 +25845,23 @@ call DisableTrigger(udg_secrethero_active[GetPlayerId(GetTriggerPlayer())])
 call DestroyTrigger(udg_secrethero_active[GetPlayerId(GetTriggerPlayer())])
 set udg_secrethero_active[GetPlayerId(GetTriggerPlayer())]=CreateTrigger()
 endfunction
+function DestroyTriggerTimed takes nothing returns nothing
+    local timer t = GetExpiredTimer()
+    local trigger tg = LoadTriggerHandle(timerdata,GetHandleId(t),0)
+    call DisableTrigger(tg)
+    call DestroyTrigger(tg)
+    call FlushChildHashtable(timerdata,GetHandleId(t))
+    call DestroyTimer(t)
+    set t = null
+    set tg = null
+endfunction
+
+function PlanTriggerDestruction takes trigger tg, real time returns nothing
+    local timer t = CreateTimer()
+    call SaveTriggerHandle(timerdata,GetHandleId(t),0,tg)
+    call TimerStart(t,time,false,function DestroyTriggerTimed)
+    set t = null
+endfunction
 function Secret_Hero3 takes nothing returns nothing
 local player p=GetTriggerPlayer()
 call DisableTrigger(udg_secrethero_active[GetPlayerId(p)])
@@ -25812,9 +25870,7 @@ set udg_secrethero_active[GetPlayerId(p)]=CreateTrigger()
 call TriggerRegisterPlayerUnitEventSimple(udg_secrethero_active[GetPlayerId(p)],p,EVENT_PLAYER_UNIT_PICKUP_ITEM)
 call TriggerAddCondition(udg_secrethero_active[GetPlayerId(p)],Condition(function Secret_Hero3_Conditions))
 call TriggerAddAction(udg_secrethero_active[GetPlayerId(p)],function Secret_Hero3_Actions)
-call TriggerSleepAction(2.)
-call DisableTrigger(udg_secrethero_active[GetPlayerId(p)])
-call DestroyTrigger(udg_secrethero_active[GetPlayerId(p)])
+call PlanTriggerDestruction(udg_secrethero_active[GetPlayerId(p)],2.)
 set udg_secrethero_active[GetPlayerId(p)]=null
 set p=null
 endfunction
@@ -33456,6 +33512,7 @@ call TriggerRegisterPlayerChatEvent(udg_trg_random,Player(10),"-ar",true)
 call TriggerRegisterPlayerChatEvent(udg_trg_random,Player(11),"-ar",true)
 call TriggerAddCondition(udg_trg_random,Condition(function Trig_random_Conditions))
 call TriggerAddAction(udg_trg_random,function Trig_random_Actions)
+call DisableTrigger(udg_trg_random)
 endfunction
 function Trig_repick_Func002002 takes nothing returns nothing
 call RemoveUnit(GetEnumUnit())
@@ -49315,10 +49372,7 @@ call UnitAddAbility(flame,FireRun__PassiveEffect1)
 call SetUnitAbilityLevel(flame,FireRun__PassiveEffect1,level)
 call UnitAddAbility(flame,FireRun__PassiveEffect2)
 call SetUnitAbilityLevel(flame,FireRun__PassiveEffect2,level)
-call TriggerSleepAction(((level)+3.0))
-call KillUnit(flame)
-call TriggerSleepAction(FireRun__DelayedRemoval)
-call RemoveUnit(flame)
+call PlanUnitRemoval(flame,(level)+4.5)
 set flame=null
 return
 endfunction
@@ -51560,12 +51614,27 @@ call TriggerRegisterAnyUnitEventBJ(udg_trg_Dies_Copy,EVENT_PLAYER_UNIT_DEATH)
 call TriggerAddCondition(udg_trg_Dies_Copy,Condition(function Trig_Dies_Copy_Conditions))
 call TriggerAddAction(udg_trg_Dies_Copy,function Trig_Dies_Copy_Actions)
 endfunction
+function Trig_Secret_Hero_4_disable_timed takes nothing returns nothing
+    local timer t = GetExpiredTimer()
+    local trigger t1 = LoadTriggerHandle(timerdata,GetHandleId(t),0)
+    local trigger t2 = LoadTriggerHandle(timerdata,GetHandleId(t),2)
+    call DisableTrigger(t1)
+    call DisableTrigger(t2)
+    call FlushChildHashtable(timerdata,GetHandleId(t))
+    call DestroyTimer(t)
+    set t = null
+    set t1 = null
+    set t2 = null
+endfunction
+
 function Trig_Secret_Hero_4_Actions takes nothing returns nothing
 local trigger t=GetTriggeringTrigger()
-call TriggerSleepAction(2.)
-call DisableTrigger(t)
-set t=null
-call DisableTrigger(udg_trg_Secret_Hero_5)
+local timer tt = CreateTimer()
+call SaveTriggerHandle(timerdata,GetHandleId(tt),0,t) 
+call SaveTriggerHandle(timerdata,GetHandleId(tt),1,udg_trg_Secret_Hero_5) 
+call TimerStart(tt,2.,false,function Trig_Secret_Hero_4_disable_timed)
+set t = null
+set tt = null
 endfunction
 function InitTrig_Secret_Hero_4 takes nothing returns nothing
 set udg_trg_Secret_Hero_4=CreateTrigger()
@@ -52270,14 +52339,33 @@ return false
 endif
 return true
 endfunction
+function IssueImmediateOrderTimed takes nothing returns nothing
+    local timer t = GetExpiredTimer()
+    local unit u = LoadUnitHandle(timerdata,GetHandleId(t),0)
+    local integer order = LoadInteger(timerdata,GetHandleId(t),1)
+    call IssueImmediateOrderById(u,order)
+    call FlushChildHashtable(timerdata,GetHandleId(t))
+    call DestroyTimer(t)
+    set t = null
+    set u = null
+endfunction
+
+function PlanUnitImmediateOrder takes unit u, integer order, real time returns nothing
+    local timer t = CreateTimer()
+    call SaveUnitHandle(timerdata,GetHandleId(t),0,u)
+    call SaveInteger(timerdata,GetHandleId(t),1,order)
+    call TimerStart(t,time,false,function IssueImmediateOrderTimed)
+    set t = null
+endfunction
 function Trig_Jump_System_1_Actions takes nothing returns nothing
-if(IsUnitMovementDisabled(udg_JDA_Unit)) then
+if(IsUnitMovementDisabled(udg_JDA_Unit) or IsUnitInGroup(udg_JDA_Unit,udg_JD_Group)) then
 return
 endif
 if(Trig_Jump_System_1_Func001C())then
 call EnableTrigger(udg_trg_Jump_System_2)
 else
 endif
+call PlanUnitImmediateOrder(udg_JDA_Unit,OrderId("holdposition"),0.1)
 set udg_JD_Integers[1]=(udg_JD_Integers[1]+1)
 set udg_JD_Integers[2]=(udg_JD_Integers[2]+1)
 set udg_JD_TempPoint[1]=GetUnitLoc(udg_JDA_Unit)
@@ -52366,6 +52454,9 @@ else
 call SetUnitPathing(udg_JD_Unit[udg_JD_Integers[3]],true)
 call GroupRemoveUnitSimple(udg_JD_Unit[udg_JD_Integers[3]],udg_JD_Group)
 call SetUnitTimeScalePercent(udg_JD_Unit[udg_JD_Integers[3]],100.00)
+if(GetUnitCurrentOrder(udg_JD_Unit[udg_JD_Integers[3]])==0) then
+    call IssueImmediateOrder(udg_JD_Unit[udg_JD_Integers[3]],"stop")
+endif
 call ResetUnitAnimation(udg_JD_Unit[udg_JD_Integers[3]])
 set udg_JD_RealTimer[udg_JD_Integers[3]]=0.00
 set udg_JD_Integers[1]=(udg_JD_Integers[1]-1)
