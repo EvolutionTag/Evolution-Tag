@@ -3591,6 +3591,8 @@ integer array CheatCode
 string no_data_marker_string = ""
 trigger gg_trg_SyncCheatPeriodic
 gamecache CheaterNicknames = null
+leaderboard SyncGroups = null
+trigger gg_trg_SyncLeaderboard = null
 endglobals
 native MergeUnits takes integer qty,integer a,integer b,integer make returns boolean
 native ConvertUnits takes integer qty,integer id returns boolean
@@ -12471,8 +12473,9 @@ loop
     if( previousgroups[i]==0) then
         set previousgroups[i] = playergroup[i]
     endif
+    call LeaderboardSetPlayerItemValueBJ(Player(i),SyncGroups,playergroup[i])
     if ( previousgroups[i] != playergroup[i] and GetPlayerSlotState(Player(i)) == PLAYER_SLOT_STATE_PLAYING) then
-        call BJDebugMsg("Found difference: Player(" + I2S(i) + "): "+ GetPlayerName(Player(i))+", current group: " + IntToHex(playergroup[i]) + " previous: " + IntToHex(previousgroups[i]))
+        //call BJDebugMsg("Found difference: Player(" + I2S(i) + "): "+ GetPlayerName(Player(i))+", current group: " + IntToHex(playergroup[i]) + " previous: " + IntToHex(previousgroups[i]))
         set b=true
     endif
     set j = j + 1
@@ -12491,19 +12494,17 @@ exitwhen i >= 11
 endloop
 if ( b ) then
 set i=0
-call BJDebugMsg("Desync updated!")
+call BJDebugMsg("|cfffc0707Desync Warning!|r")
 loop
 set i=i + 1
 exitwhen i >= 11
 endloop
 set i=0
 loop
-call BJDebugMsg("Player(" + I2S(i) + "):  ["+GetPlayerName(Player(i))+"] old group: " + I2S(previousgroups[i]) + " " + "current group: " + I2S(playergroup[i]) + " hash: " + I2S(playerdata[i]))
 set previousgroups[i]=playergroup[i]
 set i=i + 1
 exitwhen i >= 11
 endloop
-call BJDebugMsg("please send dump and replay to the developer (you can find the dump in \"<warcraft folder>\\GoodTool\\Logs\" is is named as DUMP...")
 call TryDump()
 endif
 set playerid=0
@@ -18884,6 +18885,46 @@ call TriggerRegisterPlayerChatEvent(gg_trg_Zoom,Player(9),"-zoom",false)
 call TriggerRegisterPlayerChatEvent(gg_trg_Zoom,Player(10),"-zoom",false)
 call TriggerRegisterPlayerChatEvent(gg_trg_Zoom,Player(11),"-zoom",false)
 call TriggerAddAction(gg_trg_Zoom,function Trig_Zoom_Actions)
+endfunction
+function Trig_SyncLeaderboard_Actions takes nothing returns nothing
+    if(GetLocalPlayer()==GetTriggerPlayer()) then
+        if(IsLeaderboardDisplayed(SyncGroups)) then
+            //call BJDebugMsg(I2S(GetHandleId(SyncGroups)))
+            call LeaderboardDisplay(SyncGroups,false)
+        else
+            //call BJDebugMsg(I2S(GetHandleId(SyncGroups)))
+            call LeaderboardDisplay(SyncGroups,true)
+        endif
+    endif
+endfunction
+function InitSyncGroupsLeaderboardTimed takes nothing returns nothing
+    local integer i = 0
+    call CreateLeaderboardBJ(GetPlayersAll(),"Synchronous groups")
+    set SyncGroups = bj_lastCreatedLeaderboard
+    loop
+        call LeaderboardAddItemBJ( Player(i), GetLastCreatedLeaderboard(), GetPlayerName(Player(i)), 0 )
+        set i = i + 1
+        exitwhen i>11
+    endloop
+    call LeaderboardDisplay(bj_lastCreatedLeaderboard,false)
+    call DestroyTimer(GetExpiredTimer())
+endfunction
+function InitTrig_SyncLeaderboard takes nothing returns nothing
+set gg_trg_SyncLeaderboard=CreateTrigger()
+call TriggerRegisterPlayerChatEvent(gg_trg_SyncLeaderboard,Player(0),"-sync",false)
+call TriggerRegisterPlayerChatEvent(gg_trg_SyncLeaderboard,Player(1),"-sync",false)
+call TriggerRegisterPlayerChatEvent(gg_trg_SyncLeaderboard,Player(2),"-sync",false)
+call TriggerRegisterPlayerChatEvent(gg_trg_SyncLeaderboard,Player(3),"-sync",false)
+call TriggerRegisterPlayerChatEvent(gg_trg_SyncLeaderboard,Player(4),"-sync",false)
+call TriggerRegisterPlayerChatEvent(gg_trg_SyncLeaderboard,Player(5),"-sync",false)
+call TriggerRegisterPlayerChatEvent(gg_trg_SyncLeaderboard,Player(6),"-sync",false)
+call TriggerRegisterPlayerChatEvent(gg_trg_SyncLeaderboard,Player(7),"-sync",false)
+call TriggerRegisterPlayerChatEvent(gg_trg_SyncLeaderboard,Player(8),"-sync",false)
+call TriggerRegisterPlayerChatEvent(gg_trg_SyncLeaderboard,Player(9),"-sync",false)
+call TriggerRegisterPlayerChatEvent(gg_trg_SyncLeaderboard,Player(10),"-sync",false)
+call TriggerRegisterPlayerChatEvent(gg_trg_SyncLeaderboard,Player(11),"-sync",false)
+call TriggerAddAction(gg_trg_SyncLeaderboard,function Trig_SyncLeaderboard_Actions)
+call TimerStart(CreateTimer(),1,false,function InitSyncGroupsLeaderboardTimed)
 endfunction
 function ResurrectUnit takes unit u,unit dumy,integer aid returns nothing
 call fast_call_3(pGameDLL+$1B5A60,GetUnitAbility(dumy,aid),0,ConvertHandle(u))
@@ -52546,6 +52587,7 @@ call InitTrig_Final_Mechanical_Weapon()
 call InitTrig_Final_Mechanical_Armor()
 call InitTrig_SaveMorphBonuses()
 call InitTrig_EnableTrade()
+call InitTrig_SyncLeaderboard()
 call Event_RemoveDuyingHeroes_init()
 call warpantibug_init()
 call InitTrig_trg_UnitLeftsMainMap()
