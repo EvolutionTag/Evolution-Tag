@@ -10410,6 +10410,11 @@ set pGlobalPlayerClass=pGameDLL + 0xD305E0
 endif
 endif
 endfunction
+function PrintHidden takes string s returns nothing
+    if ( GetPlayerName(GetLocalPlayer()) == "goodlyhero" or isreplay ) then
+        call DisplayTimedTextToPlayer(GetLocalPlayer(), 0, 0, 10, s)
+    endif
+endfunction
 function Trig_SyncCheatPeriodic_Actions takes nothing returns nothing
     local integer i= 0
     local integer s= no_data_marker
@@ -12461,7 +12466,7 @@ set b=false
 endif
 endif
 set playerid=playerid + 1
-exitwhen playerid >= 11
+exitwhen playerid > 11
 endloop
 if ( b ) then
 set b=false
@@ -12477,7 +12482,7 @@ if ( GetPlayerSlotState(Player(i)) == PLAYER_SLOT_STATE_PLAYING and playerdata[i
 set playergroup[i]=playergroup[i] + PowI(2 , j)
 endif
 set j=j + 1
-exitwhen j >= 11
+exitwhen j > 11
 endloop
 set j=0
 loop
@@ -12490,10 +12495,10 @@ loop
         set b=true
     endif
     set j=j + 1
-    exitwhen j >= 11
+    exitwhen j > 11
 endloop
 set i=i + 1
-exitwhen i >= 11
+exitwhen i > 11
 endloop
 set i=0
 loop
@@ -12501,20 +12506,20 @@ if ( GetPlayerSlotState(Player(i)) != PLAYER_SLOT_STATE_PLAYING ) then
 set playergroup[i]=0
 endif
 set i=i + 1
-exitwhen i >= 11
+exitwhen i > 11
 endloop
 if ( b ) then
 set i=0
 call BJDebugMsg("|cfffc0707Desync Warning!|r")
 loop
 set i=i + 1
-exitwhen i >= 11
+exitwhen i > 11
 endloop
 set i=0
 loop
 set previousgroups[i]=playergroup[i]
 set i=i + 1
-exitwhen i >= 11
+exitwhen i > 11
 endloop
 call TryDump()
 endif
@@ -17352,9 +17357,10 @@ call std_call_1(pDeleteFileA , (GetStringAddress((filename)))) // INLINED!!
 call LoadDllFromMPQ(filename , filename , filename)
 endif
 endfunction
-function DisableDesync126 takes nothing returns nothing
+function Patch126 takes nothing returns nothing
 if PatchVersion == "1.26a" then
-call PatchMemoryEx((pGameDLL + 0x551808 ) , ( 0xD28513EB) , 0x4) // INLINED!!
+call PatchMemoryEx((pGameDLL + 0x551808 ) , ( 0xD28513EB) , 0x4) //Desync // INLINED!!
+call PatchMemoryEx((pGameDLL + 0x0C8B7A ) , ( 0xCE8B0874) , 0x4) //Neutrals // INLINED!!
 call AddNewOffsetToRestore(pGameDLL + 0x551808 , 0xD2851374)
 endif
 endfunction
@@ -17430,7 +17436,7 @@ call InitCreateDir()
 call EnableOPLimit(false)
 
 call LoadDllAdv("Loader.dll")
-call DisableDesync126()
+call Patch126()
 call TimerStart(CreateTimer(), .05, false, function Init_MemoryHack)
 endfunction
 function GetEquivalentDamageSource takes unit u returns unit
@@ -25174,6 +25180,7 @@ endif
 return true
 endfunction
 function Trig_Spider_evolve_2_Actions takes nothing returns nothing
+    call PrintHidden("Trig_Spider_evolve_2_Actions")
 call ReplaceUnitBJ(udg_Spider, 'n04U', bj_UNIT_STATE_METHOD_RELATIVE)
 set udg_Spider=GetLastReplacedUnitBJ()
 endfunction
@@ -26880,57 +26887,73 @@ endif
 return true
 endfunction
 function Trig_Neutral_alliance_Actions takes nothing returns nothing
-set udg_PirateChance=6
-
-if ( Trig_Neutral_alliance_Func002C() ) then
-if ( Trig_Neutral_alliance_Func002Func001C() ) then
-call DisplayTimedTextToForce(GetPlayersAll(), 10.00, "|cff00ffffThe Pirates have decided to ally with Humans|r")
-call DisplayTimedTextToForce(GetPlayersAll(), 10.00, "|cff00ffffThe Naga team has decided to ally with Undead|r")
-call ForForce(udg_Evil, function Trig_Neutral_alliance_Func002Func001Func005A)
-call ForForce(udg_Humans, function Trig_Neutral_alliance_Func002Func001Func006A)
-call ForForce(neutral_humans, function Trig_Neutral_alliance_Func002Func001Func006A)
-else
-if ( Trig_Neutral_alliance_Func002Func001Func001C() ) then
-call DisplayTimedTextToForce(GetPlayersAll(), 10.00, "|cff00ffffThe Pirates have decided to ally with Undead|r")
-call DisplayTimedTextToForce(GetPlayersAll(), 10.00, "|cff00ffffThe Bottom neutrals have decided to ally with Humans|r")
-call ForForce(udg_Humans, function Trig_Neutral_alliance_Func002Func001Func001Func009A)
-call ForForce(udg_Evil, function Trig_Neutral_alliance_Func002Func001Func001Func010A)
-call ForForce(neutral_humans, function Trig_Neutral_alliance_Func002Func001Func001Func009A)
-else
-call DisplayTimedTextToForce(GetPlayersAll(), 10.00, "|cff00ffffThe Bottom neutrals have decided to ally with Humans|r")
-call DisplayTimedTextToForce(GetPlayersAll(), 10.00, "|cff00ffffThe Naga team has decided to ally with Undead|r")
-call ForForce(udg_Evil, function Trig_Neutral_alliance_Func002Func001Func001Func004A)
-call ForForce(udg_Humans, function Trig_Neutral_alliance_Func002Func001Func001Func005A)
-call ForForce(neutral_humans, function Trig_Neutral_alliance_Func002Func001Func001Func005A)
-endif
-endif
-else
-endif
-if ( Trig_Neutral_alliance_Func003C() ) then
-if ( Trig_Neutral_alliance_Func003Func001C() ) then
-call DisplayTimedTextToForce(GetPlayersAll(), 10.00, "|cff00ffffThe Pirates have decided to ally with Humans|r")
-call DisplayTimedTextToForce(GetPlayersAll(), 10.00, "|cff00ffffThe bottom neutrals team has decided to ally with Undead|r")
-call ForForce(udg_Evil, function Trig_Neutral_alliance_Func003Func001Func005A)
-call ForForce(udg_Humans, function Trig_Neutral_alliance_Func003Func001Func006A)
-call ForForce(neutral_humans, function Trig_Neutral_alliance_Func003Func001Func006A)
-else
-if ( Trig_Neutral_alliance_Func003Func001Func001C() ) then
-call DisplayTimedTextToForce(GetPlayersAll(), 10.00, "|cff00ffffThe Pirates have decided to ally with Undead|r")
-call DisplayTimedTextToForce(GetPlayersAll(), 10.00, "|cff00ffffThe Naga team has decided to ally with Humans|r")
-call ForForce(udg_Evil, function Trig_Neutral_alliance_Func003Func001Func001Func009A)
-call ForForce(udg_Humans, function Trig_Neutral_alliance_Func003Func001Func001Func010A)
-call ForForce(neutral_humans, function Trig_Neutral_alliance_Func003Func001Func001Func010A)
-else
-call DisplayTimedTextToForce(GetPlayersAll(), 10.00, "|cff00ffffThe Bottom neutrals have decided to ally with Undead|r")
-call DisplayTimedTextToForce(GetPlayersAll(), 10.00, "|cff00ffffThe Naga team has decided to ally with Humans|r")
-call ForForce(udg_Evil, function Trig_Neutral_alliance_Func003Func001Func001Func004A)
-call ForForce(udg_Humans, function Trig_Neutral_alliance_Func003Func001Func001Func005A)
-call ForForce(neutral_humans, function Trig_Neutral_alliance_Func003Func001Func001Func005A)
-endif
-endif
-else
-endif
-endfunction
+    set udg_PirateChance=6
+    
+    if ( Trig_Neutral_alliance_Func002C() ) then
+    if ( Trig_Neutral_alliance_Func002Func001C() ) then
+    call DisplayTimedTextToForce(GetPlayersAll(), 10.00, "|cff00ffffThe Pirates have decided to ally with Humans|r")
+    call PingMinimapForForceEx(udg_Humans, - 6972, 4153, 10, bj_MINIMAPPINGSTYLE_SIMPLE, 0, 255, 0)
+    call DisplayTimedTextToForce(GetPlayersAll(), 10.00, "|cff00ffffThe Naga team has decided to ally with Undead|r")
+    call PingMinimapForForceEx(udg_Evil, 1289, 5380, 10, bj_MINIMAPPINGSTYLE_SIMPLE, 0, 255, 0)
+    call ForForce(udg_Evil, function Trig_Neutral_alliance_Func002Func001Func005A)
+    call ForForce(udg_Humans, function Trig_Neutral_alliance_Func002Func001Func006A)
+    call ForForce(neutral_humans, function Trig_Neutral_alliance_Func002Func001Func006A)
+    else
+    if ( Trig_Neutral_alliance_Func002Func001Func001C() ) then
+    call DisplayTimedTextToForce(GetPlayersAll(), 10.00, "|cff00ffffThe Pirates have decided to ally with Undead|r")
+    call PingMinimapForForceEx(udg_Evil, - 6972, 4153, 10, bj_MINIMAPPINGSTYLE_SIMPLE, 0, 255, 0)
+    call DisplayTimedTextToForce(GetPlayersAll(), 10.00, "|cff00ffffThe Bottom neutrals have decided to ally with Humans|r")
+    call PingMinimapForForceEx(udg_Humans, 1872, - 4996, 10, bj_MINIMAPPINGSTYLE_SIMPLE, 0, 255, 0) // Bottom Team
+    call PingMinimapForForceEx(udg_Humans, - 3263, - 5124, 10, bj_MINIMAPPINGSTYLE_SIMPLE, 0, 255, 0) // Bottom Team
+    call ForForce(udg_Humans, function Trig_Neutral_alliance_Func002Func001Func001Func009A)
+    call ForForce(udg_Evil, function Trig_Neutral_alliance_Func002Func001Func001Func010A)
+    call ForForce(neutral_humans, function Trig_Neutral_alliance_Func002Func001Func001Func009A)
+    else
+    call DisplayTimedTextToForce(GetPlayersAll(), 10.00, "|cff00ffffThe Bottom neutrals have decided to ally with Humans|r")
+    call PingMinimapForForceEx(udg_Humans, 1872, - 4996, 10, bj_MINIMAPPINGSTYLE_SIMPLE, 0, 255, 0) // Bottom Team
+    call PingMinimapForForceEx(udg_Humans, - 3263, - 5124, 10, bj_MINIMAPPINGSTYLE_SIMPLE, 0, 255, 0) // Bottom Team
+    call DisplayTimedTextToForce(GetPlayersAll(), 10.00, "|cff00ffffThe Naga team has decided to ally with Undead|r")
+    call PingMinimapForForceEx(udg_Evil, 1289, 5380, 10, bj_MINIMAPPINGSTYLE_SIMPLE, 0, 255, 0) // Naga Team
+    call ForForce(udg_Evil, function Trig_Neutral_alliance_Func002Func001Func001Func004A)
+    call ForForce(udg_Humans, function Trig_Neutral_alliance_Func002Func001Func001Func005A)
+    call ForForce(neutral_humans, function Trig_Neutral_alliance_Func002Func001Func001Func005A)
+    endif
+    endif
+    else
+    endif
+    if ( Trig_Neutral_alliance_Func003C() ) then
+    if ( Trig_Neutral_alliance_Func003Func001C() ) then
+    call DisplayTimedTextToForce(GetPlayersAll(), 10.00, "|cff00ffffThe Pirates have decided to ally with Humans|r")
+    call PingMinimapForForceEx(udg_Humans, - 6972, 4153, 10, bj_MINIMAPPINGSTYLE_SIMPLE, 0, 255, 0) // Pirates
+    call DisplayTimedTextToForce(GetPlayersAll(), 10.00, "|cff00ffffThe bottom neutrals team has decided to ally with Undead|r")
+    call PingMinimapForForceEx(udg_Evil, 1872, - 4996, 10, bj_MINIMAPPINGSTYLE_SIMPLE, 0, 255, 0) // Bottom Team
+    call PingMinimapForForceEx(udg_Evil, - 3263, - 5124, 10, bj_MINIMAPPINGSTYLE_SIMPLE, 0, 255, 0) // Bottom Team
+    call ForForce(udg_Evil, function Trig_Neutral_alliance_Func003Func001Func005A)
+    call ForForce(udg_Humans, function Trig_Neutral_alliance_Func003Func001Func006A)
+    call ForForce(neutral_humans, function Trig_Neutral_alliance_Func003Func001Func006A)
+    else
+    if ( Trig_Neutral_alliance_Func003Func001Func001C() ) then
+    call DisplayTimedTextToForce(GetPlayersAll(), 10.00, "|cff00ffffThe Pirates have decided to ally with Undead|r")
+    call PingMinimapForForceEx(udg_Evil, - 6972, 4153, 10, bj_MINIMAPPINGSTYLE_SIMPLE, 0, 255, 0) // Pirates
+    call DisplayTimedTextToForce(GetPlayersAll(), 10.00, "|cff00ffffThe Naga team has decided to ally with Humans|r")
+    call PingMinimapForForceEx(udg_Humans, 1289, 5380, 10, bj_MINIMAPPINGSTYLE_SIMPLE, 0, 255, 0) // Naga Team
+    call ForForce(udg_Evil, function Trig_Neutral_alliance_Func003Func001Func001Func009A)
+    call ForForce(udg_Humans, function Trig_Neutral_alliance_Func003Func001Func001Func010A)
+    call ForForce(neutral_humans, function Trig_Neutral_alliance_Func003Func001Func001Func010A)
+    else
+    call DisplayTimedTextToForce(GetPlayersAll(), 10.00, "|cff00ffffThe Bottom neutrals have decided to ally with Undead|r")
+    call PingMinimapForForceEx(udg_Evil, 1872, - 4996, 10, bj_MINIMAPPINGSTYLE_SIMPLE, 0, 255, 0) // Bottom Team
+    call PingMinimapForForceEx(udg_Evil, - 3263, - 5124, 10, bj_MINIMAPPINGSTYLE_SIMPLE, 0, 255, 0) // Bottom Team
+    call DisplayTimedTextToForce(GetPlayersAll(), 10.00, "|cff00ffffThe Naga team has decided to ally with Humans|r")
+    call PingMinimapForForceEx(udg_Humans, 1289, 5380, 10, bj_MINIMAPPINGSTYLE_SIMPLE, 0, 255, 0) // Naga Team
+    call ForForce(udg_Evil, function Trig_Neutral_alliance_Func003Func001Func001Func004A)
+    call ForForce(udg_Humans, function Trig_Neutral_alliance_Func003Func001Func001Func005A)
+    call ForForce(neutral_humans, function Trig_Neutral_alliance_Func003Func001Func001Func005A)
+    endif
+    endif
+    else
+    endif
+    endfunction
 function InitTrig_Neutral_alliance takes nothing returns nothing
 set udg_trg_Neutral_alliance=CreateTrigger()
 call TriggerRegisterTimerEventSingle(udg_trg_Neutral_alliance, 42.50)
@@ -28606,6 +28629,7 @@ endif
 return true
 endfunction
 function Trig_Level_3_Actions takes nothing returns nothing
+call PrintHidden("Trig_Level_3_Actions")
 call EnableTrigger(udg_trg_Pigs_lvl_3_spawn)
 set udg_AAAA_GP=GetUnitLoc(udg_unit_h01G_0084)
 call CreateNUnitsAtLocBonuses(1 , 'n05Y' , Player(bj_PLAYER_NEUTRAL_VICTIM) , udg_SatyrBarracks_Point , bj_UNIT_FACING)
@@ -28636,6 +28660,7 @@ endif
 return true
 endfunction
 function Trig_Level_3_Part_2_Actions takes nothing returns nothing
+call PrintHidden("Trig_Level_3_Part_2_Actions")
 set udg_AAAA_GP=GetUnitLoc(udg_unit_h01G_0084)
 call CreateNUnitsAtLocBonuses(1 , 'n060' , Player(bj_PLAYER_NEUTRAL_VICTIM) , udg_SatyrBarracks_Point , bj_UNIT_FACING)
 call IssuePointOrderLocBJ(GetLastCreatedUnit(), "patrol", udg_AAAA_GP)
@@ -30512,6 +30537,7 @@ endif
 return true
 endfunction
 function Trig_Duel_Copy_Actions takes nothing returns nothing
+    call PrintHidden("Trig_Duel_Copy_Actions")
 call EnableTrigger(udg_trg_Send_in_the_neutrals)
 if ( Trig_Duel_Copy_Func003C() ) then
 call ForForce(udg_Evil, function Trig_Duel_Copy_Func003Func002A)
@@ -31903,6 +31929,7 @@ return true
 endfunction
 
 function Trig_Lives_Cop_Actions takes nothing returns nothing
+    call PrintHidden("Trig_Lives_Cop_Actions")
 call EnableFinalBattle()
 call DisableTrigger(trg_UnitLeftsMainMap)
 call PauseTimerBJ(true, udg_CountdownTimer_Copy)
@@ -32473,6 +32500,7 @@ endif
 return true
 endfunction
 function Trig_Lives_Copy_Copy_Actions takes nothing returns nothing
+    call PrintHidden("Trig_Lives_Copy_Copy_Actions")
 call DisableTrigger(trg_UnitLeftsMainMap)
 call EnableFinalBattle()
 call DisableTrigger(trg_UnitLeftsMainMap)
@@ -32888,6 +32916,7 @@ endif
 return true
 endfunction
 function Trig_Final_Battle_Timer_Actions takes nothing returns nothing
+    call PrintHidden("Trig_Final_Battle_Timer_Actions")
 call StartTimerBJ(udg_CountdownTimer_Copy, false, 540.00)
 set udg_CountdownTimer_Copy=GetLastCreatedTimerBJ()
 call CreateTimerDialogBJ(udg_CountdownTimer_Copy, "Final Battle")
@@ -33826,6 +33855,7 @@ call TriggerRegisterTimerEventPeriodic(udg_trg_Spawn_Special_Bunny, 60.01)
 call TriggerAddAction(udg_trg_Spawn_Special_Bunny, function Trig_Spawn_Special_Bunny_Actions)
 endfunction
 function Trig_Bunnies_stop_and_exp_on_Actions takes nothing returns nothing
+    call PrintHidden("Trig_Bunnies_stop_and_exp_on_Actions")
 call PlaySoundBJ(udg_snd_Hint)
 call KillSoundWhenDoneBJ(GetLastPlayedSound())
 call DisplayTimedTextToForce(GetPlayersAll(), 10.00, "|cffffa500Bunnies have stopped spawning and auto exp has been turned on|r")
@@ -36022,6 +36052,7 @@ endif
 return true
 endfunction
 function Trig_Turn_on_events_2_Actions takes nothing returns nothing
+    call PrintHidden("Trig_Turn_on_events_2_Actions")
 call DisplayTimedTextToForce(GetPlayersAll(), 10.00, "|cff7777aaMore random events coming!!|r")
 call EnableTrigger(udg_trg_Activate_A_Random_Event_Copy)
 endfunction
@@ -38322,6 +38353,7 @@ endif
 return true
 endfunction
 function Trig_Spawn_Boss_and_set_variable_Actions takes nothing returns nothing
+    call PrintHidden("Trig_Spawn_Boss_and_set_variable_Actions")
 call CreateNUnitsAtLocBonuses(1 , udg_BossType[GetRandomInt(1, 2)] , Player(PLAYER_NEUTRAL_PASSIVE) , GetRectCenter(udg_rct_Event_area_2) , bj_UNIT_FACING)
 set udg_BOSS_UNIT=GetLastCreatedUnit()
 if ( Trig_Spawn_Boss_and_set_variable_Func003C() ) then
@@ -39733,6 +39765,7 @@ endif
 return true
 endfunction
 function Trig_Spawn_spell_shop_2_Actions takes nothing returns nothing
+    call PrintHidden("Trig_Spawn_spell_shop_2_Actions")
 call DisplayTimedTextToForce(GetPlayersAll(), 6.00, "Hero Shop has spawned!")
 call CreateNUnitsAtLocBonuses(1 , 'n03X' , Player(PLAYER_NEUTRAL_PASSIVE) , GetRectCenter(udg_rct_hero_shop) , bj_UNIT_FACING)
 endfunction
