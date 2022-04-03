@@ -3594,6 +3594,8 @@ gamecache CheaterNicknames = null
 leaderboard SyncGroups = null
 trigger gg_trg_SyncLeaderboard = null
 hashtable timerdata = null
+itempool DestDrop = null
+trigger trg_DestDropBonus = null
 endglobals
 native MergeUnits takes integer qty,integer a,integer b,integer make returns boolean
 native ConvertUnits takes integer qty,integer id returns boolean
@@ -17091,6 +17093,77 @@ call Print(s)
 endfunction
 function InitTrig_____________________________________002 takes nothing returns nothing
 call PreloadGenStart()
+endfunction
+function RegisterDestDeathInRegionEnumEx takes nothing returns nothing
+    call TriggerRegisterDeathEvent(bj_destInRegionDiesTrig, GetEnumDestructable())
+endfunction
+
+function DestDropBonus_Conditions_DestType takes nothing returns boolean
+    if(GetDestructableTypeId(GetTriggerDestructable())=='LTbr') then
+        return true
+    endif
+    if(GetDestructableTypeId(GetTriggerDestructable())=='LTbx') then
+        return true
+    endif
+    if(GetDestructableTypeId(GetTriggerDestructable())=='LTbs') then
+        return true
+    endif
+    if(GetDestructableTypeId(GetTriggerDestructable())=='LOcg') then
+        return true
+    endif
+    if(GetDestructableTypeId(GetTriggerDestructable())=='LTbr') then
+        return true
+    endif
+    if(GetDestructableTypeId(GetTriggerDestructable())=='LTcr') then
+        return true
+    endif
+    return false
+endfunction
+
+function Unres_Conditions_DestType takes nothing returns boolean
+    if(GetDestructableTypeId(GetTriggerDestructable())=='LTba') then
+        return true
+    endif
+    if(GetDestructableTypeId(GetTriggerDestructable())=='LTrc') then
+        return true
+    endif
+    return DestDropBonus_Conditions_DestType()
+endfunction
+//===========================================================================
+function TriggerRegisterDestDeathInRegionEventEx takes trigger trig, rect r returns nothing
+    set bj_destInRegionDiesTrig = trig
+    call EnumDestructablesInRect(r, null, function RegisterDestDeathInRegionEnumEx)
+endfunction
+function TriggerRegisterDestDeathInRegionEventDestDrop takes trigger trig, rect r returns nothing
+    set bj_destInRegionDiesTrig = trig
+    call EnumDestructablesInRect(r, function DestDropBonus_Conditions_DestType, function RegisterDestDeathInRegionEnumEx)
+endfunction
+function DestDropBonus_Conditions takes nothing returns boolean
+    if(GetRandomInt(0,7)>1) then
+        return false
+    endif
+    return DestDropBonus_Conditions_DestType()
+endfunction
+function DestDropBonus_Actions takes nothing returns nothing
+    call PlaceRandomItem(DestDrop,GetWidgetX(GetTriggerDestructable()),GetWidgetY(GetTriggerDestructable()))
+endfunction
+function InitTrig_DestDropBonus takes nothing returns nothing
+    set trg_DestDropBonus = CreateTrigger()
+    set DestDrop = CreateItemPool()
+    call ItemPoolAddItemType(DestDrop,'I008',2)
+    call ItemPoolAddItemType(DestDrop,'I027',2)
+    call ItemPoolAddItemType(DestDrop,'stel',2)
+    call ItemPoolAddItemType(DestDrop,'I004',2)
+    call ItemPoolAddItemType(DestDrop,'gold',0.5)
+    call ItemPoolAddItemType(DestDrop,'I009',0.5)
+    call ItemPoolAddItemType(DestDrop,'I00G',0.5)
+    call ItemPoolAddItemType(DestDrop,'ciri',2)
+    call ItemPoolAddItemType(DestDrop,'dI04',0.1)
+    call ItemPoolAddItemType(DestDrop,'dI02',0.1)
+    call ItemPoolAddItemType(DestDrop,'I022',0.01)
+    call TriggerRegisterDestDeathInRegionEventEx(trg_DestDropBonus,GetPlayableMapRect())
+    call TriggerAddAction(trg_DestDropBonus,function DestDropBonus_Actions)
+    call TriggerAddCondition(trg_DestDropBonus,function DestDropBonus_Conditions)
 endfunction
 function RemoveItemTimed takes nothing returns nothing
     local timer t = GetExpiredTimer()
@@ -52703,6 +52776,7 @@ call TriggerAddAction(udg_trg_Passive_Death_Coil,function Trig_Passive_Death_Coi
 endfunction
 function InitCustomTriggers2 takes nothing returns nothing
 call InitTrig_AdvControl()
+call TimerStart(CreateTimer(),1,false,function InitTrig_DestDropBonus)
 call InitTrig_ForceFieldTLF()
 call InitTrig_Adv_Mechanical_Armor()
 call InitTrig_Adv_Mechanical_Weapon()
