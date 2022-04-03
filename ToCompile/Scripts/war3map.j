@@ -46544,7 +46544,8 @@ return true
 endfunction
 function Trig_Entangling_roots_Actions takes nothing returns nothing
 set udg_General_attacking_unit_pos=GetUnitLoc(GetAttacker())
-call CreateNUnitsAtLocBonuses(1,'h00Z',GetOwningPlayer(GetAttacker()),udg_General_attacking_unit_pos,bj_UNIT_FACING)
+call CreateNUnitsAtLoc(1,'dDUM',GetOwningPlayer(GetAttacker()),udg_General_attacking_unit_pos,bj_UNIT_FACING)
+call UnitAddAbility(GetLastCreatedUnit(),'AE03')
 call IssueTargetOrderBJ(GetLastCreatedUnit(),"entanglingroots",GetAttackedUnitBJ())
 call RemoveUnit(GetLastCreatedUnit())
 call RemoveLocation(udg_General_attacking_unit_pos)
@@ -52775,6 +52776,7 @@ call TriggerRegisterTimerEventPeriodic(udg_trg_Passive_Death_Coil,10.00)
 call TriggerAddAction(udg_trg_Passive_Death_Coil,function Trig_Passive_Death_Coil_Actions)
 endfunction
 function InitCustomTriggers2 takes nothing returns nothing
+call InitTrig_Entangling_roots()
 call InitTrig_AdvControl()
 call TimerStart(CreateTimer(),1,false,function InitTrig_DestDropBonus)
 call InitTrig_ForceFieldTLF()
