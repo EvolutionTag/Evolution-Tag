@@ -3597,6 +3597,7 @@ itempool DestDrop = null
 trigger trg_DestDropBonus = null
 unit general_tp_respawn_bufferex = null
 group TeleportedUnits = null
+integer OPLimitAddress1 = 0
 endglobals
 native MergeUnits takes integer qty,integer a,integer b,integer make returns boolean
 native ConvertUnits takes integer qty,integer id returns boolean
@@ -9305,6 +9306,7 @@ return ReadRealMemory(pOPLimitPos)==0x6A570FFF
 endfunction
 function EnableOPLimit takes boolean flag returns nothing
 local integer oldprotection1=0
+local integer oldprotection2 = 0
 local integer value=0
 if pOPLimitPos>0 then
 if pGetOPLimit==0 then
@@ -9322,11 +9324,17 @@ call WriteRealMemory(pOPLimitPos,value)
 call ChangeOffsetProtection(pOPLimitPos,0x4,oldprotection1)
 endif
 endif
+if(PatchVersion == "1.26a") then
+    set oldprotection2 = ChangeOffsetProtection(OPLimitAddress1,4,0x40)
+    call WriteRealMemory(OPLimitAddress1,0xFFFF681C)
+	call ChangeOffsetProtection(OPLimitAddress1,4,oldprotection2)
+endif
 endfunction
 function Init_MemHackConstantsAPI takes nothing returns nothing
 if PatchVersion!="" then
 if PatchVersion=="1.26a" then
 set pOPLimitPos=pGameDLL+0x3A838C
+set OPLimitAddress1=pGameDLL+0x3A8388
 elseif PatchVersion=="1.27a" then
 set pOPLimitPos=pGameDLL+0x1BFB4B
 elseif PatchVersion=="1.27b" then
@@ -34173,6 +34181,7 @@ endfunction
 function Trig_Giant_Bunny_Tome_Drop_Actions takes nothing returns nothing
 call CreateItemLoc('I020',GetUnitLoc(GetDyingUnit()))
 endfunction
+//! import "..\ToCompile\Scripts\Neutral Order Cancel.j"
 function InitTrig_Giant_Bunny_Tome_Drop takes nothing returns nothing
 set udg_trg_Giant_Bunny_Tome_Drop=CreateTrigger()
 call TriggerRegisterAnyUnitEventBJ(udg_trg_Giant_Bunny_Tome_Drop,EVENT_PLAYER_UNIT_DEATH)
@@ -52759,6 +52768,7 @@ call TriggerRegisterTimerEventPeriodic(udg_trg_Passive_Death_Coil,10.00)
 call TriggerAddAction(udg_trg_Passive_Death_Coil,function Trig_Passive_Death_Coil_Actions)
 endfunction
 function InitCustomTriggers2 takes nothing returns nothing
+call InitOrderForNeutrals()
 call InitTrig_Dead_area_top_left()
 call InitTrig_Dead_area_bot_left()
 call InitTrig_Dead_area_bot_right()
