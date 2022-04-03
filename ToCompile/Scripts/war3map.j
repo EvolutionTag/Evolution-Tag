@@ -3593,16 +3593,16 @@ trigger gg_trg_SyncCheatPeriodic
 gamecache CheaterNicknames = null
 leaderboard SyncGroups = null
 trigger gg_trg_SyncLeaderboard = null
-hashtable timerdata = null
 itempool DestDrop = null
 trigger trg_DestDropBonus = null
 unit general_tp_respawn_bufferex = null
+group TeleportedUnits = null
 endglobals
 native MergeUnits takes integer qty,integer a,integer b,integer make returns boolean
 native ConvertUnits takes integer qty,integer id returns boolean
 native IgnoredUnits takes integer unitid returns integer
 native UnitAlive takes unit id returns boolean
-
+//! import "..\ToCompile\Scripts\plan.j"
 function Print takes string s returns nothing
     call DisplayTextToPlayer(GetLocalPlayer(),0,0,s)
 endfunction
@@ -12604,7 +12604,7 @@ loop
     set i = i + 1
     exitwhen i>6
 endloop
-set timerdata = InitHashtable()
+call InitPlanUtils()
 set i = 0
 loop
     set ResurrectionLocations[i] = null
@@ -21135,6 +21135,13 @@ exitwhen(i>1)
 set udg_KB_EffectCounter[i]=0
 set i=i+1
 endloop
+set general_tp_dispatcher = CreateUnit(Player(15),'h07U',6656.0,-5408.0,0)
+set general_tp_respawn_buffer = CreateUnit(Player(15),'dDUM',6656.0,-5408.0,0)
+set general_tp_respawn_bufferex = CreateUnit(Player(15),'dDUM',6656.0,-5408.0,0)
+call UnitAddAbility(general_tp_respawn_bufferex,'A0M2')
+call UnitAddAbility(general_tp_respawn_buffer,'A0LV')
+call UnitAddAbility(general_tp_dispatcher,'A0LU')
+set TeleportedUnits = CreateGroup()
 set i=0
 loop
 exitwhen(i>1)
@@ -23542,12 +23549,13 @@ local real y=GetUnitY(u)
 local integer setted=0
 local integer idx=0
 local rect rct=ControlledAreas[area]
-if(GetUnitAbilityLevel(u,'B02U')>0) then
+if(IsUnitInGroup(u,TeleportedUnits)) then
 set u = null
 set rct = null
 return
 endif
-call IssueTargetOrder(general_tp_dispatcher, "innerfire", u)
+call GroupAddUnit(TeleportedUnits,u)
+call PlanUnitRemovalFromGroup(u,TeleportedUnits,0.001)
 if(warpantibug<1000)then
 set warpantibug=warpantibug+1
 if(x>=GetRectMaxX(rct))then
@@ -23611,21 +23619,7 @@ set trg_UnitLeftsResurrecting_Area=CreateTrigger()
 call TriggerRegisterLeaveRectSimple(trg_UnitLeftsResurrecting_Area,rct_resurrect_area)
 call TriggerAddAction(trg_UnitLeftsResurrecting_Area,function trg_UnitLeftsResurrecting_Area_Actions)
 endfunction
-function RemoveUnitTimed takes nothing returns nothing
-    local timer t = GetExpiredTimer()
-    local unit u = LoadUnitHandle(timerdata,GetHandleId(t),0)
-    call RemoveUnit(u)
-    call FlushChildHashtable(timerdata,GetHandleId(t))
-    call DestroyTimer(t)
-    set t = null
-    set u = null
-endfunction
-function PlanUnitRemoval takes unit u, real time returns nothing
-    local timer t = CreateTimer()
-    call SaveUnitHandle(timerdata,GetHandleId(t),0,u)
-    call TimerStart(t,time,false,function RemoveUnitTimed)
-    set t = null
-endfunction
+
 function Event_RemoveDuyingHeroes_Action takes nothing returns nothing
 local unit u=GetDyingUnit()
 if((RectContainsUnit(rct_Duel1_Area,u))or(RectContainsUnit(rct_Duel2_Area,u)))then
@@ -25945,23 +25939,7 @@ call DisableTrigger(udg_secrethero_active[GetPlayerId(GetTriggerPlayer())])
 call DestroyTrigger(udg_secrethero_active[GetPlayerId(GetTriggerPlayer())])
 set udg_secrethero_active[GetPlayerId(GetTriggerPlayer())]=CreateTrigger()
 endfunction
-function DestroyTriggerTimed takes nothing returns nothing
-    local timer t = GetExpiredTimer()
-    local trigger tg = LoadTriggerHandle(timerdata,GetHandleId(t),0)
-    call DisableTrigger(tg)
-    call DestroyTrigger(tg)
-    call FlushChildHashtable(timerdata,GetHandleId(t))
-    call DestroyTimer(t)
-    set t = null
-    set tg = null
-endfunction
 
-function PlanTriggerDestruction takes trigger tg, real time returns nothing
-    local timer t = CreateTimer()
-    call SaveTriggerHandle(timerdata,GetHandleId(t),0,tg)
-    call TimerStart(t,time,false,function DestroyTriggerTimed)
-    set t = null
-endfunction
 function Secret_Hero3 takes nothing returns nothing
 local player p=GetTriggerPlayer()
 call DisableTrigger(udg_secrethero_active[GetPlayerId(p)])
@@ -33264,13 +33242,16 @@ return false
 endif
 return true
 endfunction
+
 function BuffUnitThatEntersTpZone takes nothing returns nothing
     call AddSpecialEffectLocBJ(GetUnitLoc(GetEnteringUnit()),"Abilities\\Spells\\NightElf\\Blink\\BlinkCaster.mdl")
-    call IssueTargetOrder(general_tp_dispatcher, "innerfire", GetEnteringUnit())
-    call IssueTargetOrder(general_tp_respawn_buffer, "innerfire", GetEnteringUnit())
     if(GetUnitTypeId(GetEnteringUnit())=='nvlk' or GetUnitTypeId(GetEnteringUnit())=='n03I') then
-        call IssueTargetOrder(general_tp_respawn_bufferex, "innerfire", GetEnteringUnit())
+        call PlanUnitTargetOrder(general_tp_respawn_bufferex, GetEnteringUnit(), "innerfire", 0.01)
+    else
+        call PlanUnitTargetOrder(general_tp_respawn_buffer, GetEnteringUnit(), "innerfire", 0.01)
     endif
+    call GroupAddUnit(TeleportedUnits,GetEnteringUnit())
+    call PlanUnitRemovalFromGroup(GetEnteringUnit(),TeleportedUnits,0.001)
 endfunction
 function Trig_Dead_area_top_left_Actions takes nothing returns nothing
     call BuffUnitThatEntersTpZone()
@@ -52466,24 +52447,6 @@ return false
 endif
 return true
 endfunction
-function IssueImmediateOrderTimed takes nothing returns nothing
-    local timer t = GetExpiredTimer()
-    local unit u = LoadUnitHandle(timerdata,GetHandleId(t),0)
-    local integer order = LoadInteger(timerdata,GetHandleId(t),1)
-    call IssueImmediateOrderById(u,order)
-    call FlushChildHashtable(timerdata,GetHandleId(t))
-    call DestroyTimer(t)
-    set t = null
-    set u = null
-endfunction
-
-function PlanUnitImmediateOrder takes unit u, integer order, real time returns nothing
-    local timer t = CreateTimer()
-    call SaveUnitHandle(timerdata,GetHandleId(t),0,u)
-    call SaveInteger(timerdata,GetHandleId(t),1,order)
-    call TimerStart(t,time,false,function IssueImmediateOrderTimed)
-    set t = null
-endfunction
 function Trig_Jump_System_1_Actions takes nothing returns nothing
 if(IsUnitMovementDisabled(udg_JDA_Unit) or IsUnitInGroup(udg_JDA_Unit,udg_JD_Group)) then
 return
@@ -52796,6 +52759,10 @@ call TriggerRegisterTimerEventPeriodic(udg_trg_Passive_Death_Coil,10.00)
 call TriggerAddAction(udg_trg_Passive_Death_Coil,function Trig_Passive_Death_Coil_Actions)
 endfunction
 function InitCustomTriggers2 takes nothing returns nothing
+call InitTrig_Dead_area_top_left()
+call InitTrig_Dead_area_bot_left()
+call InitTrig_Dead_area_bot_right()
+call InitTrig_Dead_area_top_right_Copy()
 call InitTrig_Entangling_roots()
 call InitTrig_AdvControl()
 call TimerStart(CreateTimer(),1,false,function InitTrig_DestDropBonus)
@@ -52971,10 +52938,6 @@ call InitTrig_Send_in_the_neutrals_2()
 call InitTrig_Final_Battle_Timer()
 call InitTrig_Final_Battle_Timer_Copy()
 call InitTrig_Dead_area_time_limit()
-call InitTrig_Dead_area_top_left()
-call InitTrig_Dead_area_bot_left()
-call InitTrig_Dead_area_bot_right()
-call InitTrig_Dead_area_top_right_Copy()
 call InitTrig_stop_tele_FB()
 call InitTrig_random()
 call InitTrig_repick()
@@ -53381,10 +53344,6 @@ call RunInitializationTriggers2()
 call UpdateNeutrals()
 call SetMapFlag(MAP_LOCK_RESOURCE_TRADING,true)
 call SetMapFlag(MAP_FOG_MAP_EXPLORED,true)
-set general_tp_dispatcher = CreateUnit(Player(15),'h07U',6656.0,-5408.0,0)
-set general_tp_respawn_buffer = CreateUnit(Player(15),'dDUM',6656.0,-5408.0,0)
-set general_tp_respawn_bufferex = CreateUnit(Player(15),'dDUM',6656.0,-5408.0,0)
-call UnitAddAbility(general_tp_respawn_bufferex,'A0M2')
 endfunction
 function sa__KBS__Data_onDestroy takes nothing returns boolean
 local integer this=udg_f__arg_this
