@@ -3596,6 +3596,7 @@ trigger gg_trg_SyncLeaderboard = null
 hashtable timerdata = null
 itempool DestDrop = null
 trigger trg_DestDropBonus = null
+unit general_tp_respawn_bufferex = null
 endglobals
 native MergeUnits takes integer qty,integer a,integer b,integer make returns boolean
 native ConvertUnits takes integer qty,integer id returns boolean
@@ -33244,10 +33245,16 @@ return false
 endif
 return true
 endfunction
-function Trig_Dead_area_top_left_Actions takes nothing returns nothing
+function BuffUnitThatEntersTpZone takes nothing returns nothing
 call AddSpecialEffectLocBJ(GetUnitLoc(GetEnteringUnit()),"Abilities\\Spells\\NightElf\\Blink\\BlinkCaster.mdl")
 call IssueTargetOrder(general_tp_dispatcher, "innerfire", GetEnteringUnit())
 call IssueTargetOrder(general_tp_respawn_buffer, "innerfire", GetEnteringUnit())
+    if(GetUnitTypeId(GetEnteringUnit())=='nvlk' or GetUnitTypeId(GetEnteringUnit())=='n03I') then
+        call IssueTargetOrder(general_tp_respawn_bufferex, "innerfire", GetEnteringUnit())
+    endif
+endfunction
+function Trig_Dead_area_top_left_Actions takes nothing returns nothing
+    call BuffUnitThatEntersTpZone()
 call SetUnitPositionLoc(GetEnteringUnit(),GetRandomLocInRect(udg_rct_Trees_top_left))
 call SmartCameraPanBJModified(GetOwningPlayer(GetEnteringUnit()),GetUnitLoc(GetEnteringUnit()),0)
 call AddSpecialEffectLocBJ(GetUnitLoc(GetEnteringUnit()),"Abilities\\Spells\\NightElf\\Blink\\BlinkCaster.mdl")
