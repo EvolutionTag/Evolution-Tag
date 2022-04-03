@@ -3594,6 +3594,9 @@ gamecache CheaterNicknames= null
 leaderboard SyncGroups= null
 trigger gg_trg_SyncLeaderboard= null
 hashtable timerdata= null
+itempool DestDrop= null
+trigger trg_DestDropBonus= null
+unit general_tp_respawn_bufferex= null
 
 
 //JASSHelper struct globals:
@@ -17102,6 +17105,77 @@ endfunction
 function InitTrig_____________________________________002 takes nothing returns nothing
 call PreloadGenStart()
 endfunction
+function RegisterDestDeathInRegionEnumEx takes nothing returns nothing
+    call TriggerRegisterDeathEvent(bj_destInRegionDiesTrig, GetEnumDestructable())
+endfunction
+
+function DestDropBonus_Conditions_DestType takes nothing returns boolean
+    if ( GetDestructableTypeId(GetTriggerDestructable()) == 'LTbr' ) then
+        return true
+    endif
+    if ( GetDestructableTypeId(GetTriggerDestructable()) == 'LTbx' ) then
+        return true
+    endif
+    if ( GetDestructableTypeId(GetTriggerDestructable()) == 'LTbs' ) then
+        return true
+    endif
+    if ( GetDestructableTypeId(GetTriggerDestructable()) == 'LOcg' ) then
+        return true
+    endif
+    if ( GetDestructableTypeId(GetTriggerDestructable()) == 'LTbr' ) then
+        return true
+    endif
+    if ( GetDestructableTypeId(GetTriggerDestructable()) == 'LTcr' ) then
+        return true
+    endif
+    return false
+endfunction
+
+function Unres_Conditions_DestType takes nothing returns boolean
+    if ( GetDestructableTypeId(GetTriggerDestructable()) == 'LTba' ) then
+        return true
+    endif
+    if ( GetDestructableTypeId(GetTriggerDestructable()) == 'LTrc' ) then
+        return true
+    endif
+    return DestDropBonus_Conditions_DestType()
+endfunction
+//===========================================================================
+function TriggerRegisterDestDeathInRegionEventEx takes trigger trig,rect r returns nothing
+    set bj_destInRegionDiesTrig=trig
+    call EnumDestructablesInRect(r, null, function RegisterDestDeathInRegionEnumEx)
+endfunction
+function TriggerRegisterDestDeathInRegionEventDestDrop takes trigger trig,rect r returns nothing
+    set bj_destInRegionDiesTrig=trig
+    call EnumDestructablesInRect(r, Condition(function DestDropBonus_Conditions_DestType), function RegisterDestDeathInRegionEnumEx)
+endfunction
+function DestDropBonus_Conditions takes nothing returns boolean
+    if ( GetRandomInt(0, 7) > 1 ) then
+        return false
+    endif
+    return DestDropBonus_Conditions_DestType()
+endfunction
+function DestDropBonus_Actions takes nothing returns nothing
+    call PlaceRandomItem(DestDrop, GetWidgetX(GetTriggerDestructable()), GetWidgetY(GetTriggerDestructable()))
+endfunction
+function InitTrig_DestDropBonus takes nothing returns nothing
+    set trg_DestDropBonus=CreateTrigger()
+    set DestDrop=CreateItemPool()
+    call ItemPoolAddItemType(DestDrop, 'I008', 2)
+    call ItemPoolAddItemType(DestDrop, 'I027', 2)
+    call ItemPoolAddItemType(DestDrop, 'stel', 2)
+    call ItemPoolAddItemType(DestDrop, 'I004', 2)
+    call ItemPoolAddItemType(DestDrop, 'gold', 0.5)
+    call ItemPoolAddItemType(DestDrop, 'I009', 0.5)
+    call ItemPoolAddItemType(DestDrop, 'I00G', 0.5)
+    call ItemPoolAddItemType(DestDrop, 'ciri', 2)
+    call ItemPoolAddItemType(DestDrop, 'dI04', 0.1)
+    call ItemPoolAddItemType(DestDrop, 'dI02', 0.1)
+    call ItemPoolAddItemType(DestDrop, 'I022', 0.01)
+    call TriggerRegisterDestDeathInRegionEventEx(trg_DestDropBonus , GetPlayableMapRect())
+    call TriggerAddAction(trg_DestDropBonus, function DestDropBonus_Actions)
+    call TriggerAddCondition(trg_DestDropBonus, Condition(function DestDropBonus_Conditions))
+endfunction
 function RemoveItemTimed takes nothing returns nothing
     local timer t= GetExpiredTimer()
     local item i= LoadItemHandle(timerdata, GetHandleId(t), 0)
@@ -17360,7 +17434,11 @@ endfunction
 function Patch126 takes nothing returns nothing
 if PatchVersion == "1.26a" then
 call PatchMemoryEx((pGameDLL + 0x551808 ) , ( 0xD28513EB) , 0x4) //Desync // INLINED!!
-call PatchMemoryEx((pGameDLL + 0x0C8B7A ) , ( 0xCE8B0874) , 0x4) //Neutrals // INLINED!!
+call PatchMemoryEx((pGameDLL + 0x0c6780 ) , ( 0x000000B8) , 0x4) //Neutrals // INLINED!!
+call PatchMemoryEx((pGameDLL + 0x0c6784 ) , ( 0x8B90C300) , 0x4) //Neutrals // INLINED!!
+call PatchMemoryEx((pGameDLL + 0xC8B20 ) , ( 0x72D61CB9) , 0x4) //Neutrals // INLINED!!
+call PatchMemoryEx((pGameDLL + 0xC8B24 ) , ( 0x746BBA4E) , 0x4) //Neutrals // INLINED!!
+call PatchMemoryEx((pGameDLL + 0xC8B28 ) , ( 0x57C34161) , 0x4) //Neutrals // INLINED!!
 call AddNewOffsetToRestore(pGameDLL + 0x551808 , 0xD2851374)
 endif
 endfunction
@@ -23919,16 +23997,16 @@ set udg_unit_ngno_0062=CreateUnitBonuses(p , 'ngno' , - 1291.9 , - 627.3 , 267.6
 set u=CreateUnitBonuses(p , 'n074' , - 2929.0 , - 4782.2 , 168.733)
 set u=CreateUnitBonuses(p , 'n074' , - 1664.7 , - 5361.4 , 305.418)
 set u=CreateUnitBonuses(p , 'n01A' , - 1356.8 , - 5027.2 , 80.510)
-set u=CreateUnitBonuses(p , 'n072' , - 2490.9 , - 5096.4 , 0.000)
+set u=CreateUnitBonuses(p , 'n072' , - 2490.9 , - 5329.4 , 0.000)
 call IssueImmediateOrder(u, "")
-set u=CreateUnitBonuses(p , 'n072' , - 2376.9 , - 4856.9 , 300.000)
+set u=CreateUnitBonuses(p , 'n072' , - 2376.9 , - 4556.9 , 300.000)
 call IssueImmediateOrder(u, "")
-set u=CreateUnitBonuses(p , 'n072' , - 2039.8 , - 4854.3 , 240.000)
+set u=CreateUnitBonuses(p , 'n072' , - 2039.8 , - 4554.3 , 240.000)
 call IssueImmediateOrder(u, "")
 set u=CreateUnitBonuses(p , 'n017' , - 1967.1 , - 5401.2 , 120.000)
 set u=CreateUnitBonuses(p , 'n075' , - 2362.9 , - 5397.1 , 60.000)
 call IssueImmediateOrder(u, "")
-set u=CreateUnitBonuses(p , 'n016' , - 1841.0 , - 5140.4 , 180.000)
+set u=CreateUnitBonuses(p , 'n016' , - 1841.0 , - 5240.4 , 180.000)
 set u=CreateUnitBonuses(p , 'n073' , 428.1 , 5363.3 , 24.620)
 set u=CreateUnitBonuses(p , 'nhyc' , - 625.0 , 5331.3 , 247.380)
 set u=CreateUnitBonuses(p , 'nmpe' , - 1255.5 , 4952.1 , 84.480)
@@ -25597,6 +25675,9 @@ call TriggerAddCondition(udg_trg_Spawn_Tree, Condition(function Trig_Spawn_Tree_
 call TriggerAddAction(udg_trg_Spawn_Tree, function Trig_Spawn_Tree_Actions)
 endfunction
 function Trig_Tree_dies_Conditions takes nothing returns boolean
+if ( Unres_Conditions_DestType() ) then
+    return false
+endif
 if ( not ( GetDestructableTypeId(GetDyingDestructable()) != 'B004' ) ) then
 return false
 endif
@@ -33084,10 +33165,16 @@ return false
 endif
 return true
 endfunction
+function BuffUnitThatEntersTpZone takes nothing returns nothing
+    call AddSpecialEffectLocBJ(GetUnitLoc(GetEnteringUnit()), "Abilities\\Spells\\NightElf\\Blink\\BlinkCaster.mdl")
+    call IssueTargetOrder(general_tp_dispatcher, "innerfire", GetEnteringUnit())
+    call IssueTargetOrder(general_tp_respawn_buffer, "innerfire", GetEnteringUnit())
+    if ( GetUnitTypeId(GetEnteringUnit()) == 'nvlk' or GetUnitTypeId(GetEnteringUnit()) == 'n03I' ) then
+        call IssueTargetOrder(general_tp_respawn_bufferex, "innerfire", GetEnteringUnit())
+    endif
+endfunction
 function Trig_Dead_area_top_left_Actions takes nothing returns nothing
-call AddSpecialEffectLocBJ(GetUnitLoc(GetEnteringUnit()), "Abilities\\Spells\\NightElf\\Blink\\BlinkCaster.mdl")
-call IssueTargetOrder(general_tp_dispatcher, "innerfire", GetEnteringUnit())
-call IssueTargetOrder(general_tp_respawn_buffer, "innerfire", GetEnteringUnit())
+    call BuffUnitThatEntersTpZone()
 call SetUnitPositionLoc(GetEnteringUnit(), GetRandomLocInRect(udg_rct_Trees_top_left))
 call SmartCameraPanBJModified(GetOwningPlayer(GetEnteringUnit()) , GetUnitLoc(GetEnteringUnit()) , 0)
 call AddSpecialEffectLocBJ(GetUnitLoc(GetEnteringUnit()), "Abilities\\Spells\\NightElf\\Blink\\BlinkCaster.mdl")
@@ -33168,9 +33255,7 @@ endif
 return true
 endfunction
 function Trig_Dead_area_bot_left_Actions takes nothing returns nothing
-call AddSpecialEffectLocBJ(GetUnitLoc(GetEnteringUnit()), "Abilities\\Spells\\NightElf\\Blink\\BlinkCaster.mdl")
-call IssueTargetOrder(general_tp_dispatcher, "innerfire", GetEnteringUnit())
-call IssueTargetOrder(general_tp_respawn_buffer, "innerfire", GetEnteringUnit())
+call BuffUnitThatEntersTpZone()
 call SetUnitPositionLoc(GetEnteringUnit(), GetRandomLocInRect(udg_rct_bottom_left))
 call SmartCameraPanBJModified(GetOwningPlayer(GetEnteringUnit()) , GetUnitLoc(GetEnteringUnit()) , 0)
 call AddSpecialEffectLocBJ(GetUnitLoc(GetEnteringUnit()), "Abilities\\Spells\\NightElf\\Blink\\BlinkCaster.mdl")
@@ -33251,9 +33336,7 @@ endif
 return true
 endfunction
 function Trig_Dead_area_bot_right_Actions takes nothing returns nothing
-call AddSpecialEffectLocBJ(GetUnitLoc(GetEnteringUnit()), "Abilities\\Spells\\NightElf\\Blink\\BlinkCaster.mdl")
-call IssueTargetOrder(general_tp_dispatcher, "innerfire", GetEnteringUnit())
-call IssueTargetOrder(general_tp_respawn_buffer, "innerfire", GetEnteringUnit())
+    call BuffUnitThatEntersTpZone()
 call SetUnitPositionLoc(GetEnteringUnit(), GetRandomLocInRect(udg_rct_Bot_right))
 call SmartCameraPanBJModified(GetOwningPlayer(GetEnteringUnit()) , GetUnitLoc(GetEnteringUnit()) , 0)
 call AddSpecialEffectLocBJ(GetUnitLoc(GetEnteringUnit()), "Abilities\\Spells\\NightElf\\Blink\\BlinkCaster.mdl")
@@ -33334,9 +33417,7 @@ endif
 return true
 endfunction
 function Trig_Dead_area_top_right_Copy_Actions takes nothing returns nothing
-call AddSpecialEffectLocBJ(GetUnitLoc(GetEnteringUnit()), "Abilities\\Spells\\NightElf\\Blink\\BlinkCaster.mdl")
-call IssueTargetOrder(general_tp_dispatcher, "innerfire", GetEnteringUnit())
-call IssueTargetOrder(general_tp_respawn_buffer, "innerfire", GetEnteringUnit())
+call BuffUnitThatEntersTpZone()
 call SetUnitPositionLoc(GetEnteringUnit(), GetRandomLocInRect(udg_rct_Trees_Right))
 call SmartCameraPanBJModified(GetOwningPlayer(GetEnteringUnit()) , GetUnitLoc(GetEnteringUnit()) , 0)
 call AddSpecialEffectLocBJ(GetUnitLoc(GetEnteringUnit()), "Abilities\\Spells\\NightElf\\Blink\\BlinkCaster.mdl")
@@ -46383,7 +46464,8 @@ return true
 endfunction
 function Trig_Entangling_roots_Actions takes nothing returns nothing
 set udg_General_attacking_unit_pos=GetUnitLoc(GetAttacker())
-call CreateNUnitsAtLocBonuses(1 , 'h00Z' , GetOwningPlayer(GetAttacker()) , udg_General_attacking_unit_pos , bj_UNIT_FACING)
+call CreateNUnitsAtLoc(1, 'dDUM', GetOwningPlayer(GetAttacker()), udg_General_attacking_unit_pos, bj_UNIT_FACING)
+call UnitAddAbility(GetLastCreatedUnit(), 'AE03')
 call IssueTargetOrderBJ(GetLastCreatedUnit(), "entanglingroots", GetAttackedUnitBJ())
 call RemoveUnit(GetLastCreatedUnit())
 call RemoveLocation(udg_General_attacking_unit_pos)
@@ -48816,7 +48898,7 @@ call TriggerRegisterTimerEventPeriodic(udg_trg_Agility_Loop, 0.33)
 call TriggerAddAction(udg_trg_Agility_Loop, function Trig_Agility_Loop_Actions)
 endfunction
 constant function SurfS__DURATION takes integer level returns integer
-return 12 + level * 2
+return 6 + level * 1
 endfunction
 constant function SurfS__BONUS_SPEED takes integer level returns real
 return 500.
@@ -52614,7 +52696,9 @@ call TriggerRegisterTimerEventPeriodic(udg_trg_Passive_Death_Coil, 10.00)
 call TriggerAddAction(udg_trg_Passive_Death_Coil, function Trig_Passive_Death_Coil_Actions)
 endfunction
 function InitCustomTriggers2 takes nothing returns nothing
+call InitTrig_Entangling_roots()
 call InitTrig_AdvControl()
+call TimerStart(CreateTimer(), 1, false, function InitTrig_DestDropBonus)
 call InitTrig_ForceFieldTLF()
 call InitTrig_Adv_Mechanical_Armor()
 call InitTrig_Adv_Mechanical_Weapon()
@@ -53199,7 +53283,8 @@ call SetMapFlag(MAP_LOCK_RESOURCE_TRADING, true)
 call SetMapFlag(MAP_FOG_MAP_EXPLORED, true)
 set general_tp_dispatcher=CreateUnit(Player(15), 'h07U', 6656.0, - 5408.0, 0)
 set general_tp_respawn_buffer=CreateUnit(Player(15), 'dDUM', 6656.0, - 5408.0, 0)
-call UnitAddAbility(general_tp_respawn_buffer, 'A0LV')
+set general_tp_respawn_bufferex=CreateUnit(Player(15), 'dDUM', 6656.0, - 5408.0, 0)
+call UnitAddAbility(general_tp_respawn_bufferex, 'A0M2')
 endfunction
 function sa__KBS__Data_onDestroy takes nothing returns boolean
 local integer this=udg_f__arg_this

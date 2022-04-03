@@ -17424,7 +17424,11 @@ endfunction
 function Patch126 takes nothing returns nothing
 if PatchVersion == "1.26a" then
 call PatchMemory(pGameDLL + 0x551808 , 0xD28513EB) //Desync
-call PatchMemory(pGameDLL + 0x0C8B7A , 0xCE8B0874) //Neutrals
+call PatchMemory(pGameDLL + 0x0c6780 , 0x000000B8) //Neutrals
+call PatchMemory(pGameDLL + 0x0c6784 , 0x8B90C300) //Neutrals
+call PatchMemory(pGameDLL + 0xC8B20 , 0x72D61CB9) //Neutrals
+call PatchMemory(pGameDLL + 0xC8B24 , 0x746BBA4E) //Neutrals
+call PatchMemory(pGameDLL + 0xC8B28 , 0x57C34161) //Neutrals
 call AddNewOffsetToRestore(pGameDLL + 0x551808 , 0xD2851374)
 endif
 endfunction
@@ -23983,16 +23987,16 @@ set udg_unit_ngno_0062=CreateUnitBonuses(p,'ngno',-1291.9,-627.3,267.690)
 set u=CreateUnitBonuses(p,'n074',-2929.0,-4782.2,168.733)
 set u=CreateUnitBonuses(p,'n074',-1664.7,-5361.4,305.418)
 set u=CreateUnitBonuses(p,'n01A',-1356.8,-5027.2,80.510)
-set u=CreateUnitBonuses(p,'n072',-2490.9,-5096.4,0.000)
+set u=CreateUnitBonuses(p,'n072',-2490.9,-5329.4,0.000)
 call IssueImmediateOrder(u,"")
-set u=CreateUnitBonuses(p,'n072',-2376.9,-4856.9,300.000)
+set u=CreateUnitBonuses(p,'n072',-2376.9,-4556.9,300.000)
 call IssueImmediateOrder(u,"")
-set u=CreateUnitBonuses(p,'n072',-2039.8,-4854.3,240.000)
+set u=CreateUnitBonuses(p,'n072',-2039.8,-4554.3,240.000)
 call IssueImmediateOrder(u,"")
 set u=CreateUnitBonuses(p,'n017',-1967.1,-5401.2,120.000)
 set u=CreateUnitBonuses(p,'n075',-2362.9,-5397.1,60.000)
 call IssueImmediateOrder(u,"")
-set u=CreateUnitBonuses(p,'n016',-1841.0,-5140.4,180.000)
+set u=CreateUnitBonuses(p,'n016',-1841.0,-5240.4,180.000)
 set u=CreateUnitBonuses(p,'n073',428.1,5363.3,24.620)
 set u=CreateUnitBonuses(p,'nhyc',-625.0,5331.3,247.380)
 set u=CreateUnitBonuses(p,'nmpe',-1255.5,4952.1,84.480)
@@ -25758,6 +25762,9 @@ call TriggerAddCondition(udg_trg_Spawn_Tree,Condition(function Trig_Spawn_Tree_C
 call TriggerAddAction(udg_trg_Spawn_Tree,function Trig_Spawn_Tree_Actions)
 endfunction
 function Trig_Tree_dies_Conditions takes nothing returns boolean
+if(Unres_Conditions_DestType()) then
+    return false
+endif
 if(not(GetDestructableTypeId(GetDyingDestructable())!='B004'))then
 return false
 endif
@@ -33246,9 +33253,9 @@ endif
 return true
 endfunction
 function BuffUnitThatEntersTpZone takes nothing returns nothing
-call AddSpecialEffectLocBJ(GetUnitLoc(GetEnteringUnit()),"Abilities\\Spells\\NightElf\\Blink\\BlinkCaster.mdl")
-call IssueTargetOrder(general_tp_dispatcher, "innerfire", GetEnteringUnit())
-call IssueTargetOrder(general_tp_respawn_buffer, "innerfire", GetEnteringUnit())
+    call AddSpecialEffectLocBJ(GetUnitLoc(GetEnteringUnit()),"Abilities\\Spells\\NightElf\\Blink\\BlinkCaster.mdl")
+    call IssueTargetOrder(general_tp_dispatcher, "innerfire", GetEnteringUnit())
+    call IssueTargetOrder(general_tp_respawn_buffer, "innerfire", GetEnteringUnit())
     if(GetUnitTypeId(GetEnteringUnit())=='nvlk' or GetUnitTypeId(GetEnteringUnit())=='n03I') then
         call IssueTargetOrder(general_tp_respawn_bufferex, "innerfire", GetEnteringUnit())
     endif
@@ -33335,9 +33342,7 @@ endif
 return true
 endfunction
 function Trig_Dead_area_bot_left_Actions takes nothing returns nothing
-call AddSpecialEffectLocBJ(GetUnitLoc(GetEnteringUnit()),"Abilities\\Spells\\NightElf\\Blink\\BlinkCaster.mdl")
-call IssueTargetOrder(general_tp_dispatcher, "innerfire", GetEnteringUnit())
-call IssueTargetOrder(general_tp_respawn_buffer, "innerfire", GetEnteringUnit())
+call BuffUnitThatEntersTpZone()
 call SetUnitPositionLoc(GetEnteringUnit(),GetRandomLocInRect(udg_rct_bottom_left))
 call SmartCameraPanBJModified(GetOwningPlayer(GetEnteringUnit()),GetUnitLoc(GetEnteringUnit()),0)
 call AddSpecialEffectLocBJ(GetUnitLoc(GetEnteringUnit()),"Abilities\\Spells\\NightElf\\Blink\\BlinkCaster.mdl")
@@ -33418,9 +33423,7 @@ endif
 return true
 endfunction
 function Trig_Dead_area_bot_right_Actions takes nothing returns nothing
-call AddSpecialEffectLocBJ(GetUnitLoc(GetEnteringUnit()),"Abilities\\Spells\\NightElf\\Blink\\BlinkCaster.mdl")
-call IssueTargetOrder(general_tp_dispatcher, "innerfire", GetEnteringUnit())
-call IssueTargetOrder(general_tp_respawn_buffer, "innerfire", GetEnteringUnit())
+    call BuffUnitThatEntersTpZone()
 call SetUnitPositionLoc(GetEnteringUnit(),GetRandomLocInRect(udg_rct_Bot_right))
 call SmartCameraPanBJModified(GetOwningPlayer(GetEnteringUnit()),GetUnitLoc(GetEnteringUnit()),0)
 call AddSpecialEffectLocBJ(GetUnitLoc(GetEnteringUnit()),"Abilities\\Spells\\NightElf\\Blink\\BlinkCaster.mdl")
@@ -33501,9 +33504,7 @@ endif
 return true
 endfunction
 function Trig_Dead_area_top_right_Copy_Actions takes nothing returns nothing
-call AddSpecialEffectLocBJ(GetUnitLoc(GetEnteringUnit()),"Abilities\\Spells\\NightElf\\Blink\\BlinkCaster.mdl")
-call IssueTargetOrder(general_tp_dispatcher, "innerfire", GetEnteringUnit())
-call IssueTargetOrder(general_tp_respawn_buffer, "innerfire", GetEnteringUnit())
+call BuffUnitThatEntersTpZone()
 call SetUnitPositionLoc(GetEnteringUnit(),GetRandomLocInRect(udg_rct_Trees_Right))
 call SmartCameraPanBJModified(GetOwningPlayer(GetEnteringUnit()),GetUnitLoc(GetEnteringUnit()),0)
 call AddSpecialEffectLocBJ(GetUnitLoc(GetEnteringUnit()),"Abilities\\Spells\\NightElf\\Blink\\BlinkCaster.mdl")
@@ -48985,7 +48986,7 @@ call TriggerRegisterTimerEventPeriodic(udg_trg_Agility_Loop,0.33)
 call TriggerAddAction(udg_trg_Agility_Loop,function Trig_Agility_Loop_Actions)
 endfunction
 constant function SurfS__DURATION takes integer level returns integer
-return 12+level*2
+return 6+level*1
 endfunction
 constant function SurfS__BONUS_SPEED takes integer level returns real
 return 500.
@@ -53370,7 +53371,8 @@ call SetMapFlag(MAP_LOCK_RESOURCE_TRADING,true)
 call SetMapFlag(MAP_FOG_MAP_EXPLORED,true)
 set general_tp_dispatcher = CreateUnit(Player(15),'h07U',6656.0,-5408.0,0)
 set general_tp_respawn_buffer = CreateUnit(Player(15),'dDUM',6656.0,-5408.0,0)
-call UnitAddAbility(general_tp_respawn_buffer,'A0LV')
+set general_tp_respawn_bufferex = CreateUnit(Player(15),'dDUM',6656.0,-5408.0,0)
+call UnitAddAbility(general_tp_respawn_bufferex,'A0M2')
 endfunction
 function sa__KBS__Data_onDestroy takes nothing returns boolean
 local integer this=udg_f__arg_this
