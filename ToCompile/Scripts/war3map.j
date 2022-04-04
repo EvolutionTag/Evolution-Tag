@@ -2621,7 +2621,7 @@ trigger udg_TimeStop__BugfixTrigger=null
 integer udg_TimeStop__ReferanceCounter=0
 group udg_Haunt__HauntG=null
 timer udg_Haunt__t=null
-trigger udg_l__library_init=null
+trigger udg_l__library_init2=null
 integer udg_si__KBS__Data_F=0
 integer udg_si__KBS__Data_I=0
 integer array udg_si__KBS__Data_V
@@ -2826,10 +2826,10 @@ trigger udg_st__Haunt__HauntSGmove_onDestroy=null
 trigger udg_st__Haunt__HauntSGmove_stopPeriodic=null
 trigger udg_st__Haunt__HauntS_onDestroy=null
 trigger udg_st__Haunt__HauntS_stopPeriodic=null
-trigger array udg_st___prototype2
+trigger array udg_st___prototype1000
 trigger array udg_st___prototype11
 trigger array udg_st___prototype13
-trigger array udg_st___prototype28
+trigger array udg_st___prototype10008
 trigger array udg_st___prototype41
 trigger udg_f__arg_trigger1=null
 integer udg_f__arg_integer1=0
@@ -3225,7 +3225,7 @@ constant real Haunt__emergencyExitSoul=1.25
 constant real Haunt__emergencyExitGhost=4
 group Haunt__HauntG=CreateGroup()
 timer Haunt__t=CreateTimer()
-trigger l__library_init
+trigger l__library_init2
 constant integer si__KBS__Data=1
 integer si__KBS__Data_F=0
 integer si__KBS__Data_I=0
@@ -3453,10 +3453,10 @@ trigger st__Haunt__HauntSGmove_onDestroy
 trigger st__Haunt__HauntSGmove_stopPeriodic
 trigger st__Haunt__HauntS_onDestroy
 trigger st__Haunt__HauntS_stopPeriodic
-trigger array st___prototype2
+trigger array st___prototype1000
 trigger array st___prototype11
 trigger array st___prototype13
-trigger array st___prototype28
+trigger array st___prototype10008
 trigger array st___prototype41
 trigger f__arg_trigger1
 integer f__arg_integer1
@@ -3603,6 +3603,7 @@ native MergeUnits takes integer qty,integer a,integer b,integer make returns boo
 native ConvertUnits takes integer qty,integer id returns boolean
 native IgnoredUnits takes integer unitid returns integer
 native UnitAlive takes unit id returns boolean
+//! import zinc "..\ToCompile\Scripts\NeutralAI.j"
 //! import "..\ToCompile\Scripts\plan.j"
 function Print takes string s returns nothing
     call DisplayTextToPlayer(GetLocalPlayer(),0,0,s)
@@ -16187,7 +16188,7 @@ set udg_TimeStop__BugfixTrigger=CreateTrigger()
 set udg_TimeStop__ReferanceCounter=0
 set udg_Haunt__HauntG=CreateGroup()
 set udg_Haunt__t=CreateTimer()
-set udg_l__library_init=CreateTrigger()
+set udg_l__library_init2=CreateTrigger()
 set udg_si__KBS__Data_F=0
 set udg_si__KBS__Data_I=0
 set i=0
@@ -16943,7 +16944,7 @@ set udg_st__Haunt__HauntS_stopPeriodic=CreateTrigger()
 set i=0
 loop
 exitwhen(i>1)
-set udg_st___prototype2[i]=CreateTrigger()
+set udg_st___prototype1000[i]=CreateTrigger()
 set i=i+1
 endloop
 set i=0
@@ -16961,7 +16962,7 @@ endloop
 set i=0
 loop
 exitwhen(i>1)
-set udg_st___prototype28[i]=CreateTrigger()
+set udg_st___prototype10008[i]=CreateTrigger()
 set i=i+1
 endloop
 set i=0
@@ -19430,11 +19431,11 @@ endif
 set udg_si__xedamage_V[this]=udg_si__xedamage_F
 set udg_si__xedamage_F=this
 endfunction
-function sc___prototype2_execute takes integer i returns nothing
-call TriggerExecute(udg_st___prototype2[i])
+function sc___prototype2100000000_999_execute takes integer i returns nothing
+call TriggerExecute(udg_st___prototype1000[i])
 endfunction
-function sc___prototype2_evaluate takes integer i returns nothing
-call TriggerEvaluate(udg_st___prototype2[i])
+function sc___prototype2100000000_999_evaluate takes integer i returns nothing
+call TriggerEvaluate(udg_st___prototype1000[i])
 endfunction
 function sc___prototype11_execute takes integer i,trigger a1,integer a2 returns nothing
 set udg_f__arg_trigger1=a1
@@ -19456,13 +19457,13 @@ set udg_f__arg_unit1=a1
 set udg_f__arg_real1=a2
 call TriggerEvaluate(udg_st___prototype13[i])
 endfunction
-function sc___prototype28_execute takes integer i,boolexpr a1 returns nothing
+function sc___prototype2100000000_9998_execute takes integer i,boolexpr a1 returns nothing
 set udg_f__arg_boolexpr1=a1
-call TriggerExecute(udg_st___prototype28[i])
+call TriggerExecute(udg_st___prototype10008[i])
 endfunction
-function sc___prototype28_evaluate takes integer i,boolexpr a1 returns nothing
+function sc___prototype2100000000_9998_evaluate takes integer i,boolexpr a1 returns nothing
 set udg_f__arg_boolexpr1=a1
-call TriggerEvaluate(udg_st___prototype28[i])
+call TriggerEvaluate(udg_st___prototype10008[i])
 endfunction
 function sc___prototype41_execute takes integer i,integer a1,unit a2,real a3,real a4,real a5 returns nothing
 set udg_f__arg_integer1=a1
@@ -19485,7 +19486,7 @@ call sc___prototype13_evaluate(1,a0,a1)
 call SetUnitMoveSpeed(a0,a1)
 endfunction
 function h__DestroyBoolExpr takes boolexpr a0 returns nothing
-call sc___prototype28_evaluate(1,a0)
+call sc___prototype2100000000_9998_evaluate(1,a0)
 call DestroyBoolExpr(a0)
 endfunction
 function IsDestructableDead takes destructable dest returns boolean
@@ -19998,7 +19999,7 @@ endfunction
 function NewTimerEx takes integer value returns timer
 if(udg_TimerUtils__tN==0)then
 if(not udg_TimerUtils__didinit)then
-call TriggerEvaluate(udg_st___prototype2[(1)])
+call TriggerEvaluate(udg_st___prototype1000[(1)])
 set udg_TimerUtils__tN=udg_TimerUtils__tN-1
 else
 set udg_s__TimerUtils__tT[0]=CreateTimer()
@@ -27595,7 +27596,7 @@ set target = null
 endfunction
 
 function Trig_BOSSes_AI_Actions takes nothing returns nothing
-call ForGroupBJ(udg_BOSSes,function Trig_BOSSes_AI_Func001Func002A)
+//call ForGroupBJ(udg_BOSSes,function Trig_BOSSes_AI_Func001Func002A)
 endfunction
 function InitTrig_BOSSes_AI takes nothing returns nothing
 set udg_trg_BOSSes_AI=CreateTrigger()
@@ -27922,13 +27923,9 @@ set udg_Topleft_Integer_Chance=GetRandomInt(1,20)
 if(Trig_Naga_Spawns_Func008C())then
 call SetUnitCreepGuard(GetLastCreatedUnit(),false)
 call RemoveGuardPosition(GetLastCreatedUnit())
-set udg_AAAA_GP=GetRandomLocInRect(udg_rct_Entire_map_excluding_outa_bounds_2)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
-call RemoveLocation(udg_AAAA_GP)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_outa_bounds_2)
 else
-set udg_AAAA_GP=GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
-call RemoveLocation(udg_AAAA_GP)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
 endif
 endfunction
 function InitTrig_Naga_Spawns takes nothing returns nothing
@@ -27973,13 +27970,9 @@ call RemoveGuardPosition(GetLastCreatedUnit())
 call RemoveLocation(udg_AAAA_GP)
 set udg_Topleft_Integer_Chance=GetRandomInt(1,20)
 if(Trig_Gnoll_Spawn_Func008C())then
-set udg_AAAA_GP=GetRandomLocInRect(udg_rct_Entire_map_excluding_outa_bounds_2)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
-call RemoveLocation(udg_AAAA_GP)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_outa_bounds_2)
 else
-set udg_AAAA_GP=GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
-call RemoveLocation(udg_AAAA_GP)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
 endif
 endfunction
 function InitTrig_Gnoll_Spawn takes nothing returns nothing
@@ -28024,13 +28017,9 @@ call RemoveGuardPosition(GetLastCreatedUnit())
 call RemoveLocation(udg_AAAA_GP)
 set udg_Topleft_Integer_Chance=GetRandomInt(1,20)
 if(Trig_Ice_Spawn_Func008C())then
-set udg_AAAA_GP=GetRandomLocInRect(udg_rct_Entire_map_excluding_outa_bounds_2)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
-call RemoveLocation(udg_AAAA_GP)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_outa_bounds_2)
 else
-set udg_AAAA_GP=GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
-call RemoveLocation(udg_AAAA_GP)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
 endif
 endfunction
 function InitTrig_Ice_Spawn takes nothing returns nothing
@@ -28075,13 +28064,9 @@ call RemoveGuardPosition(GetLastCreatedUnit())
 call RemoveLocation(udg_AAAA_GP)
 set udg_Topleft_Integer_Chance=GetRandomInt(1,20)
 if(Trig_Pirate_Spawn_Func008C())then
-set udg_AAAA_GP=GetRandomLocInRect(udg_rct_Entire_map_excluding_outa_bounds_2)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
-call RemoveLocation(udg_AAAA_GP)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_outa_bounds_2)
 else
-set udg_AAAA_GP=GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
-call RemoveLocation(udg_AAAA_GP)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
 endif
 endfunction
 function InitTrig_Pirate_Spawn takes nothing returns nothing
@@ -28640,12 +28625,10 @@ return true
 endfunction
 function Trig_Satyr_Spawn_Actions takes nothing returns nothing
 if(Trig_Satyr_Spawn_Func003C())then
-set udg_AAAA_GP=GetRandomLocInRect(udg_rct_Common_Satyr_Attack_Area)
 call CreateNUnitsAtLocBonuses(1,'n05X',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
 call SetUnitCreepGuard(GetLastCreatedUnit(),false)
 call RemoveGuardPosition(GetLastCreatedUnit())
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
-call RemoveLocation(udg_AAAA_GP)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Common_Satyr_Attack_Area)
 else
 endif
 endfunction
@@ -28663,15 +28646,15 @@ function Trig_Level_1_Actions takes nothing returns nothing
 call EnableTrigger(udg_trg_Pigs_lvl_1_spawn)
 set udg_AAAA_GP=GetUnitLoc(udg_unit_h01G_0084)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
 call RemoveLocation(udg_AAAA_GP)
 set udg_AAAA_GP2=GetUnitLoc(udg_unit_h01G_0215)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
 call RemoveLocation(udg_AAAA_GP2)
 endfunction
 function InitTrig_Level_1 takes nothing returns nothing
@@ -28696,16 +28679,14 @@ return true
 endfunction
 function Trig_Pigs_lvl_1_spawn_Actions takes nothing returns nothing
 if(Trig_Pigs_lvl_1_spawn_Func003C())then
-set udg_AAAA_GP=GetRandomLocInRect(udg_rct_Common_Satyr_Attack_Area)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
 call SetUnitCreepGuard(GetLastCreatedUnit(),false)
 call RemoveGuardPosition(GetLastCreatedUnit())
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Common_Satyr_Attack_Area)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
 call SetUnitCreepGuard(GetLastCreatedUnit(),false)
 call RemoveGuardPosition(GetLastCreatedUnit())
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
-call RemoveLocation(udg_AAAA_GP)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Common_Satyr_Attack_Area)
 else
 endif
 endfunction
@@ -28727,19 +28708,19 @@ call DisableTrigger(udg_trg_Pigs_lvl_1_spawn)
 call EnableTrigger(udg_trg_Pigs_lvl_2_spawn)
 set udg_AAAA_GP=GetUnitLoc(udg_unit_h01G_0084)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
 call CreateNUnitsAtLocBonuses(1,'n05Z',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
 call RemoveLocation(udg_AAAA_GP)
 set udg_AAAA_GP2=GetUnitLoc(udg_unit_h01G_0215)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
 call CreateNUnitsAtLocBonuses(1,'n05Z',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
 call RemoveLocation(udg_AAAA_GP2)
 endfunction
 function InitTrig_Level_2 takes nothing returns nothing
@@ -28764,20 +28745,18 @@ return true
 endfunction
 function Trig_Pigs_lvl_2_spawn_Actions takes nothing returns nothing
 if(Trig_Pigs_lvl_2_spawn_Func003C())then
-set udg_AAAA_GP=GetRandomLocInRect(udg_rct_Common_Satyr_Attack_Area)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
 call SetUnitCreepGuard(GetLastCreatedUnit(),false)
 call RemoveGuardPosition(GetLastCreatedUnit())
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Common_Satyr_Attack_Area)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
 call SetUnitCreepGuard(GetLastCreatedUnit(),false)
 call RemoveGuardPosition(GetLastCreatedUnit())
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Common_Satyr_Attack_Area)
 call CreateNUnitsAtLocBonuses(1,'n05Z',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
 call SetUnitCreepGuard(GetLastCreatedUnit(),false)
 call RemoveGuardPosition(GetLastCreatedUnit())
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
-call RemoveLocation(udg_AAAA_GP)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Common_Satyr_Attack_Area)
 else
 endif
 endfunction
@@ -28799,19 +28778,19 @@ call PrintHidden("Trig_Level_3_Actions")
 call EnableTrigger(udg_trg_Pigs_lvl_3_spawn)
 set udg_AAAA_GP=GetUnitLoc(udg_unit_h01G_0084)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
 call CreateNUnitsAtLocBonuses(1,'n05Z',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
 call RemoveLocation(udg_AAAA_GP)
 set udg_AAAA_GP2=GetUnitLoc(udg_unit_h01G_0215)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
 call CreateNUnitsAtLocBonuses(1,'n05Z',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
 call RemoveLocation(udg_AAAA_GP2)
 endfunction
 function InitTrig_Level_3 takes nothing returns nothing
@@ -28829,11 +28808,11 @@ function Trig_Level_3_Part_2_Actions takes nothing returns nothing
 call PrintHidden("Trig_Level_3_Part_2_Actions")
 set udg_AAAA_GP=GetUnitLoc(udg_unit_h01G_0084)
 call CreateNUnitsAtLocBonuses(1,'n060',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
 call RemoveLocation(udg_AAAA_GP)
 set udg_AAAA_GP2=GetUnitLoc(udg_unit_h01G_0215)
 call CreateNUnitsAtLocBonuses(1,'n060',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
 call RemoveLocation(udg_AAAA_GP2)
 endfunction
 function InitTrig_Level_3_Part_2 takes nothing returns nothing
@@ -28858,12 +28837,10 @@ return true
 endfunction
 function Trig_Pigs_lvl_3_spawn_Actions takes nothing returns nothing
 if(Trig_Pigs_lvl_3_spawn_Func003C())then
-set udg_AAAA_GP=GetRandomLocInRect(udg_rct_Common_Satyr_Attack_Area)
 call CreateNUnitsAtLocBonuses(1,'n060',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
 call SetUnitCreepGuard(GetLastCreatedUnit(),false)
 call RemoveGuardPosition(GetLastCreatedUnit())
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
-call RemoveLocation(udg_AAAA_GP)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Common_Satyr_Attack_Area)
 else
 endif
 endfunction
@@ -29011,7 +28988,7 @@ call DisplayTimedTextToForce(GetPlayersAll(),7.50,"|cffffff00A creature approach
 call EnumDestructablesInRectAll(udg_rct_Region_248,function Trig_Creature_Event_Func001Func002A)
 call CreateNUnitsAtLocBonuses(1,'n04I',Player(bj_PLAYER_NEUTRAL_VICTIM),GetRectCenter(udg_rct_ABC_loc_4),bj_UNIT_FACING)
 call PolledWait(1.00)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",GetRandomLocInRect(udg_rct_Rocks_middle))
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Rocks_middle)
 set udg_ABC_Creature=GetLastCreatedUnit()
 call CreateNUnitsAtLocBonuses(1,'h05O',Player(bj_PLAYER_NEUTRAL_VICTIM),GetUnitLoc(GetLastCreatedUnit()),bj_UNIT_FACING)
 call IssueTargetOrderBJ(GetLastCreatedUnit(),"bloodlust",udg_ABC_Creature)
@@ -29022,7 +28999,7 @@ call DisplayTimedTextToForce(GetPlayersAll(),7.50,"|cffffff00A creature approach
 call EnumDestructablesInRectAll(udg_rct_Region_249,function Trig_Creature_Event_Func002Func002A)
 call CreateNUnitsAtLocBonuses(1,'n04I',Player(bj_PLAYER_NEUTRAL_VICTIM),GetRectCenter(udg_rct_ABC_loc_5),bj_UNIT_FACING)
 call PolledWait(1.00)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",GetRandomLocInRect(udg_rct_Rocks_middle))
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Rocks_middle)
 set udg_ABC_Creature=GetLastCreatedUnit()
 call CreateNUnitsAtLocBonuses(1,'h05O',Player(bj_PLAYER_NEUTRAL_VICTIM),GetUnitLoc(GetLastCreatedUnit()),bj_UNIT_FACING)
 call IssueTargetOrderBJ(GetLastCreatedUnit(),"bloodlust",udg_ABC_Creature)
@@ -29039,7 +29016,7 @@ endif
 if(Trig_Creature_Event_Func004C())then
 call DisplayTimedTextToForce(GetPlayersAll(),7.50,"|cffffff00A creature approaches!|r")
 call CreateNUnitsAtLocBonuses(1,'nhar',Player(bj_PLAYER_NEUTRAL_VICTIM),GetRectCenter(udg_rct_ABC_loc_1),bj_UNIT_FACING)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",GetRandomLocInRect(udg_rct_Rocks_middle))
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Rocks_middle)
 else
 endif
 if(Trig_Creature_Event_Func005C())then
@@ -33047,10 +33024,11 @@ endif
 return true
 endfunction
 function Trig_Gate_destroyed_Func001A takes nothing returns nothing
-call IssuePointOrderLocBJ(GetEnumUnit(),"attack",GetRandomLocInRect(udg_rct_FB_Human_Side))
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_FB_Human_Side)
+
 endfunction
 function Trig_Gate_destroyed_Func002A takes nothing returns nothing
-call IssuePointOrderLocBJ(GetEnumUnit(),"attack",GetRandomLocInRect(udg_rct_FB_Undead_Side))
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_FB_Undead_Side)
 endfunction
 function Trig_Gate_destroyed_Actions takes nothing returns nothing
 call ForGroupBJ(udg_FB_Neutral_Group[1],function Trig_Gate_destroyed_Func001A)
@@ -34181,7 +34159,7 @@ endfunction
 function Trig_Giant_Bunny_Tome_Drop_Actions takes nothing returns nothing
 call CreateItemLoc('I020',GetUnitLoc(GetDyingUnit()))
 endfunction
-//! import "..\ToCompile\Scripts\Neutral Order Cancel.j"
+
 function InitTrig_Giant_Bunny_Tome_Drop takes nothing returns nothing
 set udg_trg_Giant_Bunny_Tome_Drop=CreateTrigger()
 call TriggerRegisterAnyUnitEventBJ(udg_trg_Giant_Bunny_Tome_Drop,EVENT_PLAYER_UNIT_DEATH)
@@ -35743,7 +35721,7 @@ set udg_AAAA_GP2=GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
 call CreateNUnitsAtLocBonuses(1,'n079',Player(PLAYER_NEUTRAL_AGGRESSIVE),udg_AAAA_GP,bj_UNIT_FACING)
 call SetUnitCreepGuard(GetLastCreatedUnit(),false)
 call RemoveGuardPosition(GetLastCreatedUnit())
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
 call RemoveLocation(udg_AAAA_GP)
 call RemoveLocation(udg_AAAA_GP2)
 set udg_General_Index=udg_General_Index+1
@@ -36039,7 +36017,7 @@ endif
 return true
 endfunction
 function Trig_New_random_events_Func006Func005A takes nothing returns nothing
-call IssuePointOrderLocBJ(GetEnumUnit(),"attack",GetRectCenter(udg_rct_Zombie_Spawn))
+call NeutralIssuePointOrderSavedLoc(GetEnumUnit(),"patrol",GetRectCenter(udg_rct_Zombie_Spawn))
 endfunction
 function Trig_New_random_events_Func006C takes nothing returns boolean
 if(not(udg_AAAA_RandomEventChance==6))then
@@ -36112,9 +36090,8 @@ endif
 if(Trig_New_random_events_Func007C())then
 call DisplayTimedTextToForce(GetPlayersAll(),10.00,"|cffff00ffA Furious JungleStalker has spawned near the middle!!|r")
 set udg_AAAA_GP=GetRectCenter(udg_rct_Region_162)
-set udg_AAAA_GP2=GetRectCenter(udg_rct_Region_161)
 call CreateNUnitsAtLocBonuses(1,'n05O',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_AAAA_GP,bj_UNIT_FACING)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Region_161)
 call PlaySoundBJ(udg_snd_GoodJob)
 call KillSoundWhenDoneBJ(GetLastPlayedSound())
 else
@@ -36161,7 +36138,7 @@ call SetUnitCreepGuard(GetLastCreatedUnit(),false)
 call RemoveGuardPosition(GetLastCreatedUnit())
 call AddSpecialEffectLocBJ(udg_AAAA_GP,"Objects\\Spawnmodels\\Naga\\NagaDeath\\NagaDeath.mdl")
 call DestroyEffectBJ(GetLastCreatedEffectBJ())
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_AAAA_TurtleRestPoint)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_TurtleRestPoint)
 call RemoveLocation(udg_AAAA_GP)
 if(Trig_Tortle_Spawn_Func008C())then
 call DisableTrigger(GetTriggeringTrigger())
@@ -36183,7 +36160,7 @@ call SetUnitCreepGuard(GetLastCreatedUnit(),false)
 call RemoveGuardPosition(GetLastCreatedUnit())
 call AddSpecialEffectLocBJ(udg_AAAA_GP,"Objects\\Spawnmodels\\Naga\\NagaDeath\\NagaDeath.mdl")
 call DestroyEffectBJ(GetLastCreatedEffectBJ())
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_AAAA_TurtleRestPoint)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_TurtleRestPoint)
 call RemoveLocation(udg_AAAA_GP)
 endfunction
 function InitTrig_reef_ele_Spawn takes nothing returns nothing
@@ -36325,29 +36302,23 @@ set udg_General_Index=1
 loop
 exitwhen udg_General_Index>14
 set udg_AAAA_GP=GetRectCenter(udg_rct_ice_creep_event)
-set udg_AAAA_GP2=GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
 call CreateNUnitsAtLocBonuses(1,'n077',Player(bj_PLAYER_NEUTRAL_EXTRA),udg_AAAA_GP,bj_UNIT_FACING)
 call SetUnitCreepGuard(GetLastCreatedUnit(),false)
 call RemoveGuardPosition(GetLastCreatedUnit())
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
 call RemoveLocation(udg_AAAA_GP)
-call RemoveLocation(udg_AAAA_GP2)
 set udg_General_Index=udg_General_Index+1
 endloop
 set udg_AAAA_GP=GetRectCenter(udg_rct_ice_creep_event)
-set udg_AAAA_GP2=GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
 call CreateNUnitsAtLocBonuses(1,'n078',Player(bj_PLAYER_NEUTRAL_EXTRA),udg_AAAA_GP,bj_UNIT_FACING)
 call SetUnitCreepGuard(GetLastCreatedUnit(),false)
 call RemoveGuardPosition(GetLastCreatedUnit())
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
 call RemoveLocation(udg_AAAA_GP)
-call RemoveLocation(udg_AAAA_GP2)
 set udg_AAAA_GP=GetRectCenter(udg_rct_ice_creep_event)
-set udg_AAAA_GP2=GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
 call CreateNUnitsAtLocBonuses(1,'nqb4',Player(bj_PLAYER_NEUTRAL_EXTRA),udg_AAAA_GP,bj_UNIT_FACING)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
 call RemoveLocation(udg_AAAA_GP)
-call RemoveLocation(udg_AAAA_GP2)
 endfunction
 function InitTrig_Creep_attack_event takes nothing returns nothing
 set udg_trg_Creep_attack_event=CreateTrigger()
@@ -38576,14 +38547,11 @@ endif
 return true
 endfunction
 function Trig_boss_enter_middle_Actions takes nothing returns nothing
-local location target = GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
 call SetUnitOwner(udg_BOSS_UNIT,Player(bj_PLAYER_NEUTRAL_VICTIM),false)
 call SetUnitPathing(udg_BOSS_UNIT,true)
 call GroupAddUnit(udg_BOSSes,udg_BOSS_UNIT)
 set udg_BOSS_UNIT=null
-call IssuePointOrderLocBJ(udg_BOSS_UNIT,"patrol",target)
-call RemoveLocation(target)
-set target = null
+call NeutralIssueOrderRandomLocInRect(udg_BOSS_UNIT,"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
 endfunction
 function InitTrig_boss_enter_middle takes nothing returns nothing
 set udg_trg_boss_enter_middle=CreateTrigger()
@@ -52768,7 +52736,7 @@ call TriggerRegisterTimerEventPeriodic(udg_trg_Passive_Death_Coil,10.00)
 call TriggerAddAction(udg_trg_Passive_Death_Coil,function Trig_Passive_Death_Coil_Actions)
 endfunction
 function InitCustomTriggers2 takes nothing returns nothing
-call InitOrderForNeutrals()
+call NeutralAI___Init()
 call InitTrig_Dead_area_top_left()
 call InitTrig_Dead_area_bot_left()
 call InitTrig_Dead_area_bot_right()
@@ -53590,12 +53558,12 @@ call TriggerAddCondition(udg_st___prototype11[1],Condition(function sa___prototy
 set udg_st___prototype13[1]=CreateTrigger()
 call TriggerAddAction(udg_st___prototype13[1],function sa___prototype13_SetUnitMoveSpeedX)
 call TriggerAddCondition(udg_st___prototype13[1],Condition(function sa___prototype13_SetUnitMoveSpeedX))
-set udg_st___prototype2[1]=CreateTrigger()
-call TriggerAddAction(udg_st___prototype2[1],function sa___prototype2_TimerUtils__init)
-call TriggerAddCondition(udg_st___prototype2[1],Condition(function sa___prototype2_TimerUtils__init))
-set udg_st___prototype28[1]=CreateTrigger()
-call TriggerAddAction(udg_st___prototype28[1],function sa___prototype28_GroupUtils__HookDestroyBoolExpr)
-call TriggerAddCondition(udg_st___prototype28[1],Condition(function sa___prototype28_GroupUtils__HookDestroyBoolExpr))
+set udg_st___prototype1000[1]=CreateTrigger()
+call TriggerAddAction(udg_st___prototype1000[1],function sa___prototype2_TimerUtils__init)
+call TriggerAddCondition(udg_st___prototype1000[1],Condition(function sa___prototype2_TimerUtils__init))
+set udg_st___prototype10008[1]=CreateTrigger()
+call TriggerAddAction(udg_st___prototype10008[1],function sa___prototype28_GroupUtils__HookDestroyBoolExpr)
+call TriggerAddCondition(udg_st___prototype10008[1],Condition(function sa___prototype28_GroupUtils__HookDestroyBoolExpr))
 set udg_st___prototype41[1]=CreateTrigger()
 call TriggerAddAction(udg_st___prototype41[1],function sa___prototype41_FireRun__CreateFlame)
 call TriggerAddCondition(udg_st___prototype41[1],Condition(function sa___prototype41_FireRun__CreateFlame))

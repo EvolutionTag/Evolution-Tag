@@ -1,4 +1,4 @@
-$jashelper = "D:\\Program Files\\WC3Edit\\jasshelper\\clijasshelper.exe"
+$jashelper = "D:\\Program Files\\wc3 we\\Jass New Gen Pack Rebuild\\jasshelper\\clijasshelper.exe"
 $wc3lni = "d:\\program files\\wc3edit\\wc3lni\\w2l.exe"
 $TempFolder = ".\\Temp" #warning! will be deleted after compilation (нафиг удалится после компиляции)
 $commonj = "..\\Scripts\\common.j"
