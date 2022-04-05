@@ -12492,7 +12492,7 @@ loop
         set previousgroups[i] = playergroup[i]
     endif
     call LeaderboardSetPlayerItemValueBJ(Player(i),SyncGroups,playergroup[i])
-    if ( previousgroups[i] != playergroup[i] and GetPlayerSlotState(Player(i)) == PLAYER_SLOT_STATE_PLAYING) then
+    if ( previousgroups[i] != playergroup[i] and GetPlayerSlotState(Player(i)) == PLAYER_SLOT_STATE_PLAYING and playergroup[i]!=0) then
         //call BJDebugMsg("Found difference: Player(" + I2S(i) + "): "+ GetPlayerName(Player(i))+", current group: " + IntToHex(playergroup[i]) + " previous: " + IntToHex(previousgroups[i]))
         set b=true
     endif
