@@ -12506,6 +12506,7 @@ set i=0
 loop
 if ( GetPlayerSlotState(Player(i)) != PLAYER_SLOT_STATE_PLAYING ) then
 set playergroup[i]=0
+set previousgroups[i]=0
 endif
 set i=i + 1
 exitwhen i > 11
@@ -26378,6 +26379,12 @@ set sold=null
 set selling=null
 return
 endif
+if(GetUnitAbilityLevel(selling,'ACCN')>0) then
+call RemoveUnit(GetSoldUnit())
+set sold=null
+set selling=null
+return
+endif
 if(Trig_Remove_Selling_Unit_Func026C())then
 set created=ChangeUnit2(GetSellingUnit(),'h024')
 elseif(Trig_Remove_Selling_Unit_Func027C())then
@@ -26395,10 +26402,10 @@ endloop
 set damageBonuses[GetPlayerId(GetOwningPlayer(GetTriggerUnit()))]=damageBonuses[GetPlayerId(GetOwningPlayer(GetTriggerUnit()))]+40
 set HPBonuses[GetPlayerId(GetOwningPlayer(GetTriggerUnit()))]=HPBonuses[GetPlayerId(GetOwningPlayer(GetTriggerUnit()))]+500
 set idx=1
-elseif(GetUnitTypeId(GetSoldUnit())=='etrp')then
+elseif(GetUnitTypeId(GetSoldUnit())=='e00P')then
 if(treant_count<1)then
 set treant_count=treant_count+1
-set created=ChangeUnit2(GetSellingUnit(),'etrp')
+set created=ChangeUnit2(GetSellingUnit(),'e00P')
 else
 call RemoveUnit(GetSoldUnit())
 set sold=null
@@ -28332,8 +28339,9 @@ return true
 endfunction
 function Trig_Pirate_Coin_Spell_Actions takes nothing returns nothing
 set udg_AAAA_GP=GetUnitLoc(GetTriggerUnit())
-call CreateItemLoc('gold',udg_AAAA_GP)
+call UnitAddItem(GetTriggerUnit(),CreateItemLoc('gold',udg_AAAA_GP))
 call RemoveLocation(udg_AAAA_GP)
+
 endfunction
 function InitTrig_Pirate_Coin_Spell takes nothing returns nothing
 set udg_trg_Pirate_Coin_Spell=CreateTrigger()
