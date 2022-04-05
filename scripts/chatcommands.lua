@@ -100,6 +100,12 @@ Chatcommands["clear"] = function(s)
 	ClearScreen()
 end
 
+Chatcommands["std"] = function(s)
+	pcall(Chatcommands["key"])
+	pcall(Chatcommands["mouse"])
+	pcall(Chatcommands["scd"])
+end
+
 
 chatcommands = event:new(EVENT_ID_CHAT_COMMAND,function(e)
 	local s,r = pcall(function()
