@@ -3604,6 +3604,7 @@ native ConvertUnits takes integer qty,integer id returns boolean
 native IgnoredUnits takes integer unitid returns integer
 native UnitAlive takes unit id returns boolean
 //! import zinc "..\ToCompile\Scripts\NeutralAI.j"
+//! import zinc "..\ToCompile\Scripts\InfoQuests.j"
 //! import "..\ToCompile\Scripts\plan.j"
 function Print takes string s returns nothing
     call DisplayTextToPlayer(GetLocalPlayer(),0,0,s)
