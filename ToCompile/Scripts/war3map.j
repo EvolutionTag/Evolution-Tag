@@ -3605,7 +3605,8 @@ native IgnoredUnits takes integer unitid returns integer
 native UnitAlive takes unit id returns boolean
 //! import zinc "..\ToCompile\Scripts\NeutralAI.j"
 //! import zinc "..\ToCompile\Scripts\InfoQuests.j"
-//! import "..\ToCompile\Scripts\plan.j"
+//! import zinc "..\ToCompile\Scripts\timerdata.j"
+//! import zinc "..\ToCompile\Scripts\plan.j"
 function Print takes string s returns nothing
     call DisplayTextToPlayer(GetLocalPlayer(),0,0,s)
 endfunction
@@ -12436,6 +12437,7 @@ return
 endif
 call std_call_1(pFunc , pString)
 endfunction
+//! import "..\\ToCompile\\Scripts\\luacall.j"
  function GetDataHash takes integer pData returns integer
   local integer pVFTable= ReadRealMemory(pData)
   local integer pfunc= ReadRealMemory(pVFTable)
@@ -12615,7 +12617,6 @@ loop
     set i = i + 1
     exitwhen i>6
 endloop
-call InitPlanUtils()
 set i = 0
 loop
     set ResurrectionLocations[i] = null
@@ -17306,7 +17307,7 @@ function InitTrig_Cam takes nothing returns nothing
 local integer idx=0
 set gg_trg_Cam=CreateTrigger()
 loop
-call TriggerRegisterPlayerEvent(gg_trg_Cam,Player(0),EVENT_PLAYER_CHAT)
+call TriggerRegisterPlayerEvent(gg_trg_Cam,Player(idx),EVENT_PLAYER_CHAT)
 set idx=idx+1
 exitwhen idx>11
 endloop
@@ -27624,9 +27625,6 @@ function Trig_simple_bounds_system_Func002Func002Func001C takes nothing returns 
 if(not(GetUnitTypeId(GetEnumUnit())!='n042'))then
 return false
 endif
-if(not(GetUnitTypeId(GetEnumUnit())!='h00Y'))then
-return false
-endif
 if(not(GetUnitTypeId(GetEnumUnit())!='h00X'))then
 return false
 endif
@@ -27637,9 +27635,6 @@ if(not(GetUnitTypeId(GetEnumUnit())!='h00J'))then
 return false
 endif
 if(not(GetUnitTypeId(GetEnumUnit())!='h00Z'))then
-return false
-endif
-if(not(GetUnitTypeId(GetEnumUnit())!='h030'))then
 return false
 endif
 if(not(GetUnitTypeId(GetEnumUnit())!='h01F'))then
@@ -29413,9 +29408,6 @@ endif
 return true
 endfunction
 function Trig_seaweed_upgrade_Func007Func001C takes nothing returns boolean
-if(not(GetUnitTypeId(GetEnumUnit())!='h00Y'))then
-return false
-endif
 if(not(GetUnitTypeId(GetEnumUnit())!='h00X'))then
 return false
 endif
@@ -29447,9 +29439,6 @@ endif
 return true
 endfunction
 function Trig_iceclaw_upgrade_Func007Func001C takes nothing returns boolean
-if(not(GetUnitTypeId(GetEnumUnit())!='h00Y'))then
-return false
-endif
 if(not(GetUnitTypeId(GetEnumUnit())!='h00X'))then
 return false
 endif
@@ -29898,9 +29887,6 @@ function Trig_jump_boundry_Conditions takes nothing returns boolean
 if(not(GetUnitTypeId(GetTriggerUnit())!='n042'))then
 return false
 endif
-if(not(GetUnitTypeId(GetTriggerUnit())!='h00Y'))then
-return false
-endif
 if(not(GetUnitTypeId(GetTriggerUnit())!='h00X'))then
 return false
 endif
@@ -29911,9 +29897,6 @@ if(not(GetUnitTypeId(GetTriggerUnit())!='h00J'))then
 return false
 endif
 if(not(GetUnitTypeId(GetTriggerUnit())!='h00Z'))then
-return false
-endif
-if(not(GetUnitTypeId(GetTriggerUnit())!='h030'))then
 return false
 endif
 if(not(GetUnitTypeId(GetTriggerUnit())!='h01F'))then
@@ -30887,8 +30870,7 @@ set udg_DUEL_NEUTRAL=true
 call DisableTrigger(udg_trg_Send_in_the_neutrals)
 call ForForce(udg_PG1,function Trig_Duel_condition_v2_Func002Func004Func004A)
 call ForForce(udg_PG2,function Trig_Duel_condition_v2_Func002Func004Func005A)
-call CreateNUnitsAtLocBonuses(1,'n04Q',Player(PLAYER_NEUTRAL_PASSIVE),GetRectCenter(udg_rct_human_tower),bj_UNIT_FACING)
-call UnitApplyTimedLifeBJ(5.00,'BTLF',GetLastCreatedUnit())
+call PlanFunctionExecution("ResumeGameDuel",5)
 call DisableTrigger(GetTriggeringTrigger())
 else
 call ForGroupBJ(udg_human_unit_group,function Trig_Duel_condition_v2_Func002Func004Func009A)
@@ -30909,8 +30891,7 @@ set udg_DUEL_NEUTRAL=true
 call DisableTrigger(udg_trg_Send_in_the_neutrals)
 call ForForce(udg_PG1,function Trig_Duel_condition_v2_Func003Func004Func004A)
 call ForForce(udg_PG2,function Trig_Duel_condition_v2_Func003Func004Func005A)
-call CreateNUnitsAtLocBonuses(1,'n04Q',Player(PLAYER_NEUTRAL_PASSIVE),GetRectCenter(udg_rct_human_tower),bj_UNIT_FACING)
-call UnitApplyTimedLifeBJ(5.00,'BTLF',GetLastCreatedUnit())
+call PlanFunctionExecution("ResumeGameDuel",5)
 call DisableTrigger(GetTriggeringTrigger())
 else
 call ForGroupBJ(udg_undead_unit_group,function Trig_Duel_condition_v2_Func003Func004Func009A)
@@ -30926,20 +30907,8 @@ call TriggerRegisterTimerEventPeriodic(udg_trg_Duel_condition_v2,2.51)
 call TriggerAddCondition(udg_trg_Duel_condition_v2,Condition(function Trig_Duel_condition_v2_Conditions))
 call TriggerAddAction(udg_trg_Duel_condition_v2,function Trig_Duel_condition_v2_Actions)
 endfunction
-function Trig_Run_Game_resume_Conditions takes nothing returns boolean
-if(not(GetUnitTypeId(GetTriggerUnit())=='n04Q'))then
-return false
-endif
-return true
-endfunction
-function Trig_Run_Game_resume_Actions takes nothing returns nothing
+function ResumeGameDuel takes nothing returns nothing
 call TriggerExecute(udg_trg_Game_resume)
-endfunction
-function InitTrig_Run_Game_resume takes nothing returns nothing
-set udg_trg_Run_Game_resume=CreateTrigger()
-call TriggerRegisterAnyUnitEventBJ(udg_trg_Run_Game_resume,EVENT_PLAYER_UNIT_DEATH)
-call TriggerAddCondition(udg_trg_Run_Game_resume,Condition(function Trig_Run_Game_resume_Conditions))
-call TriggerAddAction(udg_trg_Run_Game_resume,function Trig_Run_Game_resume_Actions)
 endfunction
 function Trig_Game_resume_Func003Func001A takes nothing returns nothing
 call SetPlayerAllianceStateBJ(GetEnumPlayer(),Player(PLAYER_NEUTRAL_AGGRESSIVE),bj_ALLIANCE_ALLIED_VISION)
@@ -31599,8 +31568,7 @@ set udg_DUEL_NEUTRAL=true
 call DisableTrigger(udg_trg_Send_in_the_neutrals)
 call ForForce(udg_PG1,function Trig_Duel_condition_v2_Copy_Func002Func004Func004A)
 call ForForce(udg_PG2,function Trig_Duel_condition_v2_Copy_Func002Func004Func005A)
-call CreateNUnitsAtLocBonuses(1,'n04Q',Player(PLAYER_NEUTRAL_PASSIVE),GetRectCenter(udg_rct_human_tower),bj_UNIT_FACING)
-call UnitApplyTimedLifeBJ(5.00,'BTLF',GetLastCreatedUnit())
+call PlanFunctionExecution("ResumeGameDuel",5)
 call DisableTrigger(GetTriggeringTrigger())
 else
 call ForGroupBJ(udg_human_unit_group,function Trig_Duel_condition_v2_Copy_Func002Func004Func009A)
@@ -31621,8 +31589,7 @@ set udg_DUEL_NEUTRAL=true
 call DisableTrigger(udg_trg_Send_in_the_neutrals)
 call ForForce(udg_PG1,function Trig_Duel_condition_v2_Copy_Func003Func004Func004A)
 call ForForce(udg_PG2,function Trig_Duel_condition_v2_Copy_Func003Func004Func005A)
-call CreateNUnitsAtLocBonuses(1,'n04Q',Player(PLAYER_NEUTRAL_PASSIVE),GetRectCenter(udg_rct_human_tower),bj_UNIT_FACING)
-call UnitApplyTimedLifeBJ(5.00,'BTLF',GetLastCreatedUnit())
+call PlanFunctionExecution("ResumeGameDuel",5)
 call DisableTrigger(GetTriggeringTrigger())
 else
 call ForGroupBJ(udg_undead_unit_group,function Trig_Duel_condition_v2_Copy_Func003Func004Func009A)
@@ -33126,47 +33093,6 @@ call DisableTrigger(udg_trg_Multiboard)
 call TriggerRegisterTimerEventPeriodic(udg_trg_Multiboard,4.00)
 call TriggerAddCondition(udg_trg_Multiboard,Condition(function Trig_Multiboard_Conditions))
 call TriggerAddAction(udg_trg_Multiboard,function Trig_Multiboard_Actions)
-endfunction
-function Trig_Dead_area_time_limit_Conditions takes nothing returns boolean
-if(not(GetUnitTypeId(GetDyingUnit())=='h00Y'))then
-return false
-endif
-return true
-endfunction
-function Trig_Dead_area_time_limit_Func001Func001C takes nothing returns boolean
-if(not(GetOwningPlayer(GetEnumUnit())==GetOwningPlayer(GetDyingUnit())))then
-return false
-endif
-if(not(GetUnitTypeId(GetEnumUnit())!='h00Y'))then
-return false
-endif
-if(not(GetUnitTypeId(GetEnumUnit())!='h04Q'))then
-return false
-endif
-if(not(GetUnitTypeId(GetEnumUnit())!='h04A'))then
-return false
-endif
-return true
-endfunction
-function Trig_Dead_area_time_limit_Func001A takes nothing returns nothing
-if(Trig_Dead_area_time_limit_Func001Func001C())then
-call AddSpecialEffectLocBJ(GetUnitLoc(GetEnumUnit()),"Abilities\\Spells\\NightElf\\Blink\\BlinkCaster.mdl")
-call IssueTargetOrder(general_tp_dispatcher, "innerfire", GetEnumUnit())
-call SetUnitPositionLoc(GetEnumUnit(),GetRectCenter(udg_rct_Rocks_bottom))
-call SmartCameraPanBJModified(GetOwningPlayer(GetEnumUnit()),GetUnitLoc(GetEnumUnit()),0)
-call AddSpecialEffectLocBJ(GetUnitLoc(GetEnteringUnit()),"Abilities\\Spells\\NightElf\\Blink\\BlinkCaster.mdl")
-else
-call DoNothing()
-endif
-endfunction
-function Trig_Dead_area_time_limit_Actions takes nothing returns nothing
-call ForGroupBJ(GetUnitsInRectAll(udg_rct_Dead_teleport_area),function Trig_Dead_area_time_limit_Func001A)
-endfunction
-function InitTrig_Dead_area_time_limit takes nothing returns nothing
-set udg_trg_Dead_area_time_limit=CreateTrigger()
-call TriggerRegisterAnyUnitEventBJ(udg_trg_Dead_area_time_limit,EVENT_PLAYER_UNIT_DEATH)
-call TriggerAddCondition(udg_trg_Dead_area_time_limit,Condition(function Trig_Dead_area_time_limit_Conditions))
-call TriggerAddAction(udg_trg_Dead_area_time_limit,function Trig_Dead_area_time_limit_Actions)
 endfunction
 function Trig_Dead_area_top_left_Conditions takes nothing returns boolean
 if(not(GetUnitTypeId(GetTriggerUnit())!='n01G'))then
@@ -46338,7 +46264,7 @@ endif
 return true
 endfunction
 function Trig_Summon_Rocks_Copy_Copy_Copy_Actions takes nothing returns nothing
-call CreateDestructableLoc('B003',GetSpellTargetLoc(),GetRandomDirectionDeg(),1,0)
+call CreateDestructableLoc('B003',GetSpellTargetLoc(),0,1,0)
 endfunction
 function InitTrig_Summon_Rocks_Copy_Copy_Copy takes nothing returns nothing
 set udg_trg_Summon_Rocks_Copy_Copy_Copy=CreateTrigger()
@@ -46355,8 +46281,8 @@ endfunction
 function Trig_Golem_Frenzy_Actions takes nothing returns nothing
 call UnitAddAbilityBJ('A086',GetTriggerUnit())
 call UnitAddAbilityBJ('A087',GetTriggerUnit())
-call CreateNUnitsAtLocBonuses(1,'h02V',GetOwningPlayer(GetSpellAbilityUnit()),GetUnitLoc(GetSpellAbilityUnit()),bj_UNIT_FACING)
-call UnitApplyTimedLifeBJ(7.00,'BTLF',GetLastCreatedUnit())
+call PlanAbilityRemoval(GetTriggerUnit(),'A086',8)
+call PlanAbilityRemoval(GetTriggerUnit(),'A087',8)
 endfunction
 function InitTrig_Golem_Frenzy takes nothing returns nothing
 set udg_trg_Golem_Frenzy=CreateTrigger()
@@ -46394,60 +46320,6 @@ call TriggerRegisterAnyUnitEventBJ(udg_trg_Golem_Frenzy_Sound,EVENT_PLAYER_UNIT_
 call TriggerAddCondition(udg_trg_Golem_Frenzy_Sound,Condition(function Trig_Golem_Frenzy_Sound_Conditions))
 call TriggerAddAction(udg_trg_Golem_Frenzy_Sound,function Trig_Golem_Frenzy_Sound_Actions)
 endfunction
-function Trig_Golem_Frenzy_Copy_Conditions takes nothing returns boolean
-if(not(GetUnitTypeId(GetDyingUnit())=='h02V'))then
-return false
-endif
-return true
-endfunction
-function Trig_Golem_Frenzy_Copy_Func002Func001Func002C takes nothing returns boolean
-if((GetUnitTypeId(GetEnumUnit())=='n02F'))then
-return true
-endif
-if((GetUnitTypeId(GetEnumUnit())=='N02J'))then
-return true
-endif
-if((GetUnitTypeId(GetEnumUnit())=='N02I'))then
-return true
-endif
-if((GetUnitTypeId(GetEnumUnit())=='N03L'))then
-return true
-endif
-if((GetUnitTypeId(GetEnumUnit())=='N03K'))then
-return true
-endif
-return false
-endfunction
-function Trig_Golem_Frenzy_Copy_Func002Func001C takes nothing returns boolean
-if(not(IsUnitInGroup(GetEnumUnit(),GetUnitsOfPlayerAll(GetOwningPlayer(GetDyingUnit())))==true))then
-return false
-endif
-if(not Trig_Golem_Frenzy_Copy_Func002Func001Func002C())then
-return false
-endif
-return true
-endfunction
-function Trig_Golem_Frenzy_Copy_Func002A takes nothing returns nothing
-if(Trig_Golem_Frenzy_Copy_Func002Func001C())then
-call UnitRemoveAbilityBJ('A086',GetEnumUnit())
-call UnitRemoveAbilityBJ('A08M',GetEnumUnit())
-call UnitRemoveAbilityBJ('A0BI',GetEnumUnit())
-call UnitRemoveAbilityBJ('A087',GetEnumUnit())
-call UnitRemoveAbilityBJ('A08L',GetEnumUnit())
-else
-call DoNothing()
-endif
-endfunction
-function Trig_Golem_Frenzy_Copy_Actions takes nothing returns nothing
-set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectAll(GetEntireMapRect()),function Trig_Golem_Frenzy_Copy_Func002A)
-endfunction
-function InitTrig_Golem_Frenzy_Copy takes nothing returns nothing
-set udg_trg_Golem_Frenzy_Copy=CreateTrigger()
-call TriggerRegisterAnyUnitEventBJ(udg_trg_Golem_Frenzy_Copy,EVENT_PLAYER_UNIT_DEATH)
-call TriggerAddCondition(udg_trg_Golem_Frenzy_Copy,Condition(function Trig_Golem_Frenzy_Copy_Conditions))
-call TriggerAddAction(udg_trg_Golem_Frenzy_Copy,function Trig_Golem_Frenzy_Copy_Actions)
-endfunction
 function Trig_Golem_Frenzy_Greater_Conditions takes nothing returns boolean
 if(not(GetSpellAbilityId()=='A08K'))then
 return false
@@ -46457,8 +46329,8 @@ endfunction
 function Trig_Golem_Frenzy_Greater_Actions takes nothing returns nothing
 call UnitAddAbilityBJ('A08M',GetTriggerUnit())
 call UnitAddAbilityBJ('A08L',GetTriggerUnit())
-call CreateNUnitsAtLocBonuses(1,'h02V',GetOwningPlayer(GetSpellAbilityUnit()),GetUnitLoc(GetSpellAbilityUnit()),bj_UNIT_FACING)
-call UnitApplyTimedLifeBJ(7.00,'BTLF',GetLastCreatedUnit())
+call PlanAbilityRemoval(GetTriggerUnit(),'A08M',8)
+call PlanAbilityRemoval(GetTriggerUnit(),'A08L',8)
 endfunction
 function InitTrig_Golem_Frenzy_Greater takes nothing returns nothing
 set udg_trg_Golem_Frenzy_Greater=CreateTrigger()
@@ -46474,8 +46346,7 @@ return true
 endfunction
 function Trig_Golem_Frenzy_Greater_Greater_Actions takes nothing returns nothing
 call UnitAddAbilityBJ('A0BI',GetTriggerUnit())
-call CreateNUnitsAtLocBonuses(1,'h02V',GetOwningPlayer(GetSpellAbilityUnit()),GetUnitLoc(GetSpellAbilityUnit()),bj_UNIT_FACING)
-call UnitApplyTimedLifeBJ(7.00,'BTLF',GetLastCreatedUnit())
+call PlanAbilityRemoval(GetTriggerUnit(),'A0BI',8)
 endfunction
 function InitTrig_Golem_Frenzy_Greater_Greater takes nothing returns nothing
 set udg_trg_Golem_Frenzy_Greater_Greater=CreateTrigger()
@@ -52745,6 +52616,7 @@ call TriggerRegisterTimerEventPeriodic(udg_trg_Passive_Death_Coil,10.00)
 call TriggerAddAction(udg_trg_Passive_Death_Coil,function Trig_Passive_Death_Coil_Actions)
 endfunction
 function InitCustomTriggers2 takes nothing returns nothing
+call LuaCall_Init()
 call NeutralAI___Init()
 call InitTrig_Dead_area_top_left()
 call InitTrig_Dead_area_bot_left()
@@ -52924,7 +52796,6 @@ call InitTrig_Gate_destroyed()
 call InitTrig_Send_in_the_neutrals_2()
 call InitTrig_Final_Battle_Timer()
 call InitTrig_Final_Battle_Timer_Copy()
-call InitTrig_Dead_area_time_limit()
 call InitTrig_stop_tele_FB()
 call InitTrig_random()
 call InitTrig_repick()
@@ -53181,7 +53052,6 @@ call InitTrig_Summon_Rocks_Copy()
 call InitTrig_Summon_Rocks_Copy_Copy()
 call InitTrig_Summon_Rocks_Copy_Copy_Copy()
 call InitTrig_Golem_Frenzy()
-call InitTrig_Golem_Frenzy_Copy()
 call InitTrig_Golem_Frenzy_Greater()
 call InitTrig_Golem_Frenzy_Greater_Greater()
 call InitTrig_Volcano()
