@@ -3607,6 +3607,7 @@ native UnitAlive takes unit id returns boolean
 //! import zinc "..\ToCompile\Scripts\InfoQuests.j"
 //! import zinc "..\ToCompile\Scripts\timerdata.j"
 //! import zinc "..\ToCompile\Scripts\plan.j"
+//! import zinc "..\ToCompile\Scripts\JumpSystem.j"
 function Print takes string s returns nothing
     call DisplayTextToPlayer(GetLocalPlayer(),0,0,s)
 endfunction
@@ -25548,7 +25549,7 @@ redscores - desert ant spell
 list is too long..
 use search in hiveworkshop for who made spell/model","ReplaceableTextures\\CommandButtons\\BTNAmbush.blp")
 call CreateQuestBJ(bj_QUESTTYPE_OPT_DISCOVERED,"\"Hidden Heroes\"","type command with unit in target to be able to get them if u want |nAcolyte \"-builder\" - undead builder|nGiant Infernal \"-demon\" - Demon ","ReplaceableTextures\\CommandButtons\\BTNAmbush.blp")
-call CreateQuestBJ(bj_QUESTTYPE_OPT_DISCOVERED,"HCL mode","1st symbol: a/n/m = all units/no flying units/fastmode;|n with m u can add fastmode number: 1 - nlan; 2 - alan;3 - nlah4 - nlaf;5 - nlnn; 6 - nlnhojk|n2nd symbol n/l/p: normal game 3/2 lives; long game 5/3 lives and normal game 5/3 lives|n3nd symbol - n/a - allies/no allies|nsymbol 4: n/h/e/f - normal/hard/extreme/special extreme;|n symbol 5: o - no obstructions i u dont want - replace with j|n symbol 6 - n - no random events |n symbol 7 - p/k - no allies; zombies becomes humans or not","ReplaceableTextures\\CommandButtons\\BTNAmbush.blp")
+call CreateQuestBJ(bj_QUESTTYPE_OPT_DISCOVERED,"HCL mode","1st symbol: a/n/m = all units/no flying units/fastmode|n with m u can add fastmode number: 1 - nlan 2 - alan3 - nlah4 - nlaf5 - nlnn 6 - nlnhojk|n2nd symbol n/l/p: normal game 3/2 lives long game 5/3 lives and normal game 5/3 lives|n3nd symbol - n/a - allies/no allies|nsymbol 4: n/h/e/f - normal/hard/extreme/special extreme|n symbol 5: o - no obstructions i u dont want - replace with j|n symbol 6 - n - no random events |n symbol 7 - p/k - no allies zombies becomes humans or not","ReplaceableTextures\\CommandButtons\\BTNAmbush.blp")
 endfunction
 function InitTrig_MAP_INIT_and_QUESTS takes nothing returns nothing
 set udg_trg_MAP_INIT_and_QUESTS=CreateTrigger()
@@ -44036,16 +44037,12 @@ endif
 return true
 endfunction
 function Trig_Bomb_Jump_Actions takes nothing returns nothing
-set udg_JDA_JumpHigh_Distance=0.58
-set udg_JDA_DestroyTrees_Dash=false
-set udg_JDA_Collusion=false
-set udg_JDA_TargetPoint=GetSpellTargetLoc()
-set udg_JDA_Unit=GetTriggerUnit()
-set udg_JDA_Speed=18.00
-set udg_JDA_SpecialEffect="Abilities\\Weapons\\RedDragonBreath\\RedDragonMissile.mdl"
-set udg_JDA_Animation="walk"
-set udg_JDA_AnimationSpeed=0.60
-call ConditionalTriggerExecute(udg_trg_Jump_System_1)
+local location target = GetSpellTargetLoc()
+if(not IsUnitMovementDisabled(GetTriggerUnit())) then
+    call JumpUnitPoint(GetTriggerUnit(),GetLocationX(target),GetLocationY(target),550,1,false,"walk")
+endif
+call RemoveLocation(target)
+set target = null
 endfunction
 function InitTrig_Bomb_Jump takes nothing returns nothing
 set udg_trg_Bomb_Jump=CreateTrigger()
@@ -51355,38 +51352,11 @@ return false
 endif
 return true
 endfunction
-function Trig_Pyro_Jump_On_Func001C takes nothing returns boolean
-if(not(udg_JP_Spam==0))then
-return false
-endif
-return true
-endfunction
 function Trig_Pyro_Jump_On_Actions takes nothing returns nothing
-
 if(IsUnitMovementDisabled(GetTriggerUnit())) then
 return
 endif
-if(Trig_Pyro_Jump_On_Func001C())then
-call EnableTrigger(udg_trg_Pyro_Jump_Loop)
-else
-endif
-set udg_JP_Times=(udg_JP_Times+1)
-set udg_JP_Spam=(udg_JP_Spam+1)
-set udg_JP_Off[udg_JP_Times]=true
-set udg_JP_Hero[udg_JP_Times]=GetSpellAbilityUnit()
-set udg_JP_Angel[udg_JP_Times]=GetUnitFacing(udg_JP_Hero[udg_JP_Times])
-set udg_JP_Distance[udg_JP_Times]=1000.00
-set udg_JP_Speed[udg_JP_Times]=15.00
-set udg_JP_Fly_Distance[udg_JP_Times]=udg_JP_Distance[udg_JP_Times]
-set udg_JP_Max_Height[udg_JP_Times]=0.25
-set udg_JP_Formula[udg_JP_Times]=(udg_JP_Distance[udg_JP_Times]*udg_JP_Max_Height[udg_JP_Times])
-call UnitAddAbilityBJ('Arav',udg_JP_Hero[udg_JP_Times])
-call SetUnitPathing(udg_JP_Hero[udg_JP_Times],false)
-call UnitRemoveAbilityBJ('Arav',udg_JP_Hero[udg_JP_Times])
-call SetUnitAnimation(udg_JP_Hero[udg_JP_Times],"Dissipate")
-call SetUnitTimeScalePercent(udg_JP_Hero[udg_JP_Times],(udg_JP_Speed[udg_JP_Times]*3.60))
-call AddSpecialEffectTargetUnitBJ("chest",udg_JP_Hero[udg_JP_Times],"Doodads\\Cinematic\\TownBurningFireEmitter\\TownBurningFireEmitter.mdl")
-set udg_JP_Special[udg_JP_Times]=GetLastCreatedEffectBJ()
+call JumpUnitDistance(GetTriggerUnit(),1000.0,500,0.3,false,"walk")
 endfunction
 function InitTrig_Pyro_Jump_On takes nothing returns nothing
 set udg_trg_Pyro_Jump_On=CreateTrigger()
@@ -52431,16 +52401,12 @@ endif
 return true
 endfunction
 function Trig_Sample_Spell_Jump_Actions takes nothing returns nothing
-set udg_JDA_JumpHigh_Distance=(0.33*I2R(GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())))
-set udg_JDA_DestroyTrees_Dash=false
-set udg_JDA_Collusion=false
-set udg_JDA_TargetPoint=GetSpellTargetLoc()
-set udg_JDA_Unit=GetTriggerUnit()
-set udg_JDA_Speed=23.00
-set udg_JDA_SpecialEffect=""
-set udg_JDA_Animation="walk"
-set udg_JDA_AnimationSpeed=0.60
-call ConditionalTriggerExecute(udg_trg_Jump_System_1)
+local location target = GetSpellTargetLoc()
+if(not IsUnitMovementDisabled(GetTriggerUnit())) then
+    call JumpUnitPoint(GetTriggerUnit(),GetLocationX(target),GetLocationY(target),500,1,false,"walk")
+endif
+call RemoveLocation(target)
+set target = null
 endfunction
 function InitTrig_Sample_Spell_Jump takes nothing returns nothing
 set udg_trg_Sample_Spell_Jump=CreateTrigger()
@@ -52455,16 +52421,12 @@ endif
 return true
 endfunction
 function Trig_Sample_Spell_Jump_JASS_REDO_Actions takes nothing returns nothing
-set udg_JDA_JumpHigh_Distance=0.40
-set udg_JDA_DestroyTrees_Dash=false
-set udg_JDA_Collusion=false
-set udg_JDA_TargetPoint=GetSpellTargetLoc()
-set udg_JDA_Unit=GetTriggerUnit()
-set udg_JDA_Speed=20.00
-set udg_JDA_SpecialEffect=""
-set udg_JDA_Animation="walk"
-set udg_JDA_AnimationSpeed=2.00
-call ConditionalTriggerExecute(udg_trg_Jump_System_1)
+local location target = GetSpellTargetLoc()
+if(not IsUnitMovementDisabled(GetTriggerUnit())) then
+    call JumpUnitPoint(GetTriggerUnit(),GetLocationX(target),GetLocationY(target),600,0.4,false,"walk")
+endif
+call RemoveLocation(target)
+set target = null
 endfunction
 function InitTrig_Sample_Spell_Jump_JASS_REDO takes nothing returns nothing
 set udg_trg_Sample_Spell_Jump_JASS_REDO=CreateTrigger()
@@ -52479,16 +52441,12 @@ endif
 return true
 endfunction
 function Trig_Sample_Spell_Jump_2_Actions takes nothing returns nothing
-set udg_JDA_JumpHigh_Distance=(0.33*I2R(GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())))
-set udg_JDA_DestroyTrees_Dash=false
-set udg_JDA_Collusion=false
-set udg_JDA_TargetPoint=GetSpellTargetLoc()
-set udg_JDA_Unit=GetTriggerUnit()
-set udg_JDA_Speed=40.00
-set udg_JDA_SpecialEffect="Abilities\\Weapons\\FaerieDragonMissile\\FaerieDragonMissile.mdl"
-set udg_JDA_Animation="walk"
-set udg_JDA_AnimationSpeed=0.60
-call ConditionalTriggerExecute(udg_trg_Jump_System_1)
+    local location target = GetSpellTargetLoc()
+    if(not IsUnitMovementDisabled(GetTriggerUnit())) then
+        call JumpUnitPoint(GetTriggerUnit(),GetLocationX(target),GetLocationY(target),600,1,false,"walk")
+    endif
+    call RemoveLocation(target)
+    set target = null
 endfunction
 function InitTrig_Sample_Spell_Jump_2 takes nothing returns nothing
 set udg_trg_Sample_Spell_Jump_2=CreateTrigger()
@@ -52503,16 +52461,12 @@ endif
 return true
 endfunction
 function Trig_Sample_Spell_Super_Jump_Actions takes nothing returns nothing
-set udg_JDA_JumpHigh_Distance=(0.15*I2R(GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())))
-set udg_JDA_DestroyTrees_Dash=false
-set udg_JDA_Collusion=false
-set udg_JDA_TargetPoint=GetSpellTargetLoc()
-set udg_JDA_Unit=GetTriggerUnit()
-set udg_JDA_Speed=40.00
-set udg_JDA_SpecialEffect="Abilities\\Weapons\\WingedSerpentMissile\\WingedSerpentMissile.mdl"
-set udg_JDA_Animation="walk"
-set udg_JDA_AnimationSpeed=0.60
-call ConditionalTriggerExecute(udg_trg_Jump_System_1)
+    local location target = GetSpellTargetLoc()
+    if(not IsUnitMovementDisabled(GetTriggerUnit())) then
+        call JumpUnitPoint(GetTriggerUnit(),GetLocationX(target),GetLocationY(target),600,1,false,"walk")
+    endif
+    call RemoveLocation(target)
+    set target = null
 endfunction
 function InitTrig_Sample_Spell_Super_Jump takes nothing returns nothing
 set udg_trg_Sample_Spell_Super_Jump=CreateTrigger()
@@ -52527,16 +52481,12 @@ endif
 return true
 endfunction
 function Trig_Sample_Spell_Shockwave_Jump_Actions takes nothing returns nothing
-set udg_JDA_JumpHigh_Distance=(0.01*I2R(GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit())))
-set udg_JDA_DestroyTrees_Dash=true
-set udg_JDA_Collusion=false
-set udg_JDA_TargetPoint=GetSpellTargetLoc()
-set udg_JDA_Unit=GetTriggerUnit()
-set udg_JDA_Speed=22.00
-set udg_JDA_SpecialEffect="Abilities\\Weapons\\FaerieDragonMissile\\FaerieDragonMissile.mdl"
-set udg_JDA_Animation="walk"
-set udg_JDA_AnimationSpeed=0.60
-call ConditionalTriggerExecute(udg_trg_Jump_System_1)
+local location target = GetSpellTargetLoc()
+if(not IsUnitMovementDisabled(GetTriggerUnit())) then
+    call JumpUnitPoint(GetTriggerUnit(),GetLocationX(target),GetLocationY(target),600,1,true,"walk")
+endif
+call RemoveLocation(target)
+set target = null
 endfunction
 function InitTrig_Sample_Spell_Shockwave_Jump takes nothing returns nothing
 set udg_trg_Sample_Spell_Shockwave_Jump=CreateTrigger()
