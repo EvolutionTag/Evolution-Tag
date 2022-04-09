@@ -18168,6 +18168,9 @@ endloop
 call RemoveUnit(u)
 set u=u2
 set u2=null
+if(udg_NO_FLYING_UNITS) then
+    call RemoveUnitFromStock(u,'ugar')
+endif
 return u
 endfunction
 
@@ -41816,12 +41819,13 @@ endif
 return true
 endfunction
 function Trig_BlackHoleMoveTarget_Func003A takes nothing returns nothing
+local real BlackholeRange = 500.
 set udg_BlackHole=GetEnumUnit()
 set udg_BlackHoleCaster=LoadUnitHandleBJ(StringHashBJ("BlackHoleCaster"),GetHandleIdBJ(GetEnumUnit()),udg_blackHoleTable)
 if(Trig_BlackHoleMoveTarget_Func003Func004C())then
 set udg_tempPoint=GetUnitLoc(udg_BlackHole)
-call EnumDestructablesInCircleBJ(650.00,udg_tempPoint,function Trig_BlackHoleMoveTarget_Func003Func004Func007A)
-set udg_tempGroup=GetUnitsInRangeOfLocAll(650.00,udg_tempPoint)
+call EnumDestructablesInCircleBJ(BlackholeRange,udg_tempPoint,function Trig_BlackHoleMoveTarget_Func003Func004Func007A)
+set udg_tempGroup=GetUnitsInRangeOfLocAll(BlackholeRange,udg_tempPoint)
 call ForGroupBJ(udg_tempGroup,function Trig_BlackHoleMoveTarget_Func003Func004Func010A)
 call RemoveLocation(udg_tempPoint)
 call RemoveLocation(udg_BH_Point)
@@ -53458,6 +53462,12 @@ exitwhen i>14
 endloop
 endfunction
 function DisableFly takes nothing returns nothing
+    local integer i=0
+    loop
+    call SetPlayerAbilityAvailable(Player(i),'A00K',false)
+    set i=i+1
+    exitwhen i>14
+    endloop
 call RemoveUnitFromAllStock('ugar')
 endfunction
 function Trig_AAA_Dialogue_Part_0_Func001A takes nothing returns nothing
