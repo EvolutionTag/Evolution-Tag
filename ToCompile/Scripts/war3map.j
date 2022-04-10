@@ -41808,10 +41808,9 @@ function Trig_BlackHoleMoveTarget_Func003Func004Func010A takes nothing returns n
 if(Trig_BlackHoleMoveTarget_Func003Func004Func010Func001C())then
 set udg_BH_Point=GetUnitLoc(GetEnumUnit())
 set udg_BH_Next_Point=PolarProjectionBJ(udg_BH_Point,50.00,(AngleBetweenPoints(udg_BH_Point,udg_tempPoint)+75.00))
-call SetUnitX(GetEnumUnit(),GetLocationX(udg_BH_Next_Point))
-call SetUnitY(GetEnumUnit(),GetLocationY(udg_BH_Next_Point))
-RemoveLocation(udg_BH_Point)
-RemoveLocation(udg_BH_Next_Point)
+call SetUnitPositionLoc(GetEnumUnit(),udg_BH_Next_Point)
+call RemoveLocation(udg_BH_Point)
+call RemoveLocation(udg_BH_Next_Point)
 else
 endif
 endfunction
