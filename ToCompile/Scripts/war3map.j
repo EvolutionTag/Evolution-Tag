@@ -18259,7 +18259,7 @@ set i=i+1
 endloop
 endfunction
 function SetUnitAbilityLevelSwappedSafe takes integer id,unit u,integer lvl returns nothing
-if(IsUnitAliveBJ(u))then
+if(GetWidgetLife(u)>0.1)then
 call SetUnitAbilityLevelSwapped(id,u,lvl)
 endif
 endfunction
@@ -40745,12 +40745,13 @@ return true
 endfunction
 function Trig_Night_Func001A takes nothing returns nothing
 if(Trig_Night_Func001Func001C())then
+if(GetWidgetLife(GetEnumUnit())>0.1) then
 if(GetUnitAbilityLevel(GetEnumUnit(),'S003')==0)then
 call UnitAddAbility(GetEnumUnit(),'S003')
 endif
 call SetUnitAbilityLevelSwappedSafe('S003',GetEnumUnit(),1)
 else
-call DoNothing()
+endif
 endif
 endfunction
 function Trig_Night_Actions takes nothing returns nothing
@@ -40787,10 +40788,12 @@ return true
 endfunction
 function Trig_Day_Func001A takes nothing returns nothing
 if(Trig_Day_Func001Func001C())then
+if(GetWidgetLife(GetEnumUnit())>0.1) then
 if(GetUnitAbilityLevel(GetEnumUnit(),'S003')==0)then
 call UnitAddAbility(GetEnumUnit(),'S003')
 endif
 call SetUnitAbilityLevelSwappedSafe('S003',GetEnumUnit(),2)
+endif
 endif
 endfunction
 function Trig_Day_Actions takes nothing returns nothing
@@ -44920,7 +44923,7 @@ set udg_BL_Point[1]=GetSpellTargetLoc()
 set udg_BL_Angle[udg_BL_Times]=AngleBetweenPoints(udg_BL_Point[0],udg_BL_Point[1])
 set udg_BL_Distance[udg_BL_Times]=(800.00+(200.00*I2R(GetUnitAbilityLevelSwapped('A0CU',udg_BL_Hero[udg_BL_Times]))))
 set udg_BL_Speed[udg_BL_Times]=20.00
-set udg_BL_Dmg[udg_BL_Times]=(100.00+(I2R(GetHeroStatBJ(bj_HEROSTAT_INT,udg_BL_Hero[udg_BL_Times],true))*(1+(0.25*I2R(GetUnitAbilityLevelSwapped('A0CU',udg_BL_Hero[udg_BL_Times]))))))
+set udg_BL_Dmg[udg_BL_Times]=(100.00+(I2R(GetHeroStatBJ(bj_HEROSTAT_INT,udg_BL_Hero[udg_BL_Times],true))*(0.25+(0.25*I2R(GetUnitAbilityLevelSwapped('A0CU',udg_BL_Hero[udg_BL_Times]))))))
 set udg_BL_AoE[udg_BL_Times]=(100.00+(50.00*I2R(GetUnitAbilityLevelSwapped('A0CU',udg_BL_Hero[udg_BL_Times]))))
 set udg_BL_Collision[udg_BL_Times]=(50.00+(15.00*I2R(GetUnitAbilityLevelSwapped('A0CU',udg_BL_Hero[udg_BL_Times]))))
 set udg_BL_Scale=(100.00+(20.00*I2R(GetUnitAbilityLevelSwapped('A0CU',udg_BL_Hero[udg_BL_Times]))))
