@@ -3608,6 +3608,8 @@ native UnitAlive takes unit id returns boolean
 //! import zinc "..\ToCompile\Scripts\timerdata.j"
 //! import zinc "..\ToCompile\Scripts\plan.j"
 //! import zinc "..\ToCompile\Scripts\JumpSystem.j"
+//! import zinc "..\ToCompile\Scripts\SharedVisionWithAllies.j"
+//! import zinc "..\ToCompile\Scripts\SharedVisionDefault.j"
 function Print takes string s returns nothing
     call DisplayTextToPlayer(GetLocalPlayer(),0,0,s)
 endfunction
@@ -18128,6 +18130,7 @@ endfunction
 function ApplyAllBonuses1 takes unit u returns nothing
 call ApplyStatBonuses(u)
 call ApplyAllNotStatBonuses(u)
+call AddAlliedVisionCheck(u)
 endfunction
 
 function AddSpecialEffectIfNotBuilding takes string name, unit u, string attach returns nothing
@@ -18525,6 +18528,7 @@ endfunction
 function unallywithenumplayerenum takes nothing returns nothing
 call SetPlayerAllianceStateBJ(GetEnumPlayer(),dyingplayer,bj_ALLIANCE_UNALLIED)
 call SetPlayerAllianceStateBJ(dyingplayer,GetEnumPlayer(),bj_ALLIANCE_UNALLIED)
+call UpdateSharedVisionWithPlayer(GetEnumPlayer())
 endfunction
 function UnallyWithPlayersForce takes force f returns nothing
 call ForForce(f,function unallywithenumplayerenum)
@@ -18532,6 +18536,12 @@ endfunction
 function AllyWithPlayer takes player p1,player p2 returns nothing
 call SetPlayerAllianceStateBJ(p1,p2,bj_ALLIANCE_ALLIED_VISION)
 call SetPlayerAllianceStateBJ(p2,p1,bj_ALLIANCE_ALLIED_VISION)
+endfunction
+function AllyWithPlayerAI takes player p1,player p2 returns nothing
+call SetPlayerAllianceStateBJ(p1,p2,bj_ALLIANCE_ALLIED)
+call SetPlayerAllianceStateBJ(p2,p1,bj_ALLIANCE_ALLIED)
+call UpdateSharedVisionWithPlayer(p2)
+call UpdateSharedVisionWithPlayer(p1)
 endfunction
 function RemoveEnumUnit takes nothing returns nothing
 call RemoveUnit(GetEnumUnit())
@@ -18544,14 +18554,14 @@ call DestroyGroup(g)
 set g=null
 endfunction
 function SendToPirates takes player p returns nothing
-call AllyWithPlayer(p,Player(13))
+call AllyWithPlayerAI(p,Player(13))
 call DisplayTimedTextToForce(GetPlayersAll(),10.00,udg_AAA_Player_Colors[GetConvertedPlayerId(p)]+" will join the pirates")
 call CreateNUnitsAtLoc(1,'h07M',p,GetRectCenter(udg_rct_Satyr_Barracks),bj_UNIT_FACING)
 call ApplyAllBonuses1(GetLastCreatedUnit())
 call SmartCameraPanBJModified(p,GetRectCenter(udg_rct_Satyr_Barracks),0)
 endfunction
 function SendToBottom takes player p returns nothing
-call AllyWithPlayer(p,Player(14))
+call AllyWithPlayerAI(p,Player(14))
 if(GetRandomInt(1,2)==1)then
 call CreateNUnitsAtLoc(1,'nwwf',p,GetRectCenter(udg_rct_Ice_creep_camp_spawn),bj_UNIT_FACING)
 call ApplyAllBonuses1(GetLastCreatedUnit())
@@ -18565,7 +18575,7 @@ call DisplayTimedTextToForce(GetPlayersAll(),10.00,(udg_AAA_Player_Colors[GetCon
 endif
 endfunction
 function SendToNaga takes player p returns nothing
-call AllyWithPlayer(p,Player(12))
+call AllyWithPlayerAI(p,Player(12))
 call DisplayTimedTextToForce(GetPlayersAll(),10.00,(udg_AAA_Player_Colors[GetConvertedPlayerId(p)]+" will join the naga team"))
 call CreateNUnitsAtLoc(1,'n079',p,GetRectCenter(udg_rct_Naga_spawn_area),bj_UNIT_FACING)
 call ApplyAllBonuses1(GetLastCreatedUnit())
@@ -18629,6 +18639,7 @@ else
 call ForceRemovePlayer(udg_Humans,p)
 call PlayerDefeatedHuman(p)
 endif
+call UpdateSharedVisionWithPlayer(p)
 endfunction
 function Trig_PlayerDies_Actions takes nothing returns nothing
 local unit DyingUnit = GetDyingUnit()
@@ -26983,20 +26994,20 @@ endif
 return true
 endfunction
 function Trig_Neutral_alliance_Func002Func001Func001Func004A takes nothing returns nothing
-call SetPlayerAllianceStateBJ(Player(PLAYER_NEUTRAL_AGGRESSIVE),GetEnumPlayer(),bj_ALLIANCE_ALLIED_VISION)
-call SetPlayerAllianceStateBJ(GetEnumPlayer(),Player(PLAYER_NEUTRAL_AGGRESSIVE),bj_ALLIANCE_ALLIED_VISION)
+call SetPlayerAllianceStateBJ(Player(PLAYER_NEUTRAL_AGGRESSIVE),GetEnumPlayer(),bj_ALLIANCE_ALLIED)
+call SetPlayerAllianceStateBJ(GetEnumPlayer(),Player(PLAYER_NEUTRAL_AGGRESSIVE),bj_ALLIANCE_ALLIED)
 endfunction
 function Trig_Neutral_alliance_Func002Func001Func001Func005A takes nothing returns nothing
-call SetPlayerAllianceStateBJ(GetEnumPlayer(),Player(bj_PLAYER_NEUTRAL_EXTRA),bj_ALLIANCE_ALLIED_VISION)
-call SetPlayerAllianceStateBJ(Player(bj_PLAYER_NEUTRAL_EXTRA),GetEnumPlayer(),bj_ALLIANCE_ALLIED_VISION)
+call SetPlayerAllianceStateBJ(GetEnumPlayer(),Player(bj_PLAYER_NEUTRAL_EXTRA),bj_ALLIANCE_ALLIED)
+call SetPlayerAllianceStateBJ(Player(bj_PLAYER_NEUTRAL_EXTRA),GetEnumPlayer(),bj_ALLIANCE_ALLIED)
 endfunction
 function Trig_Neutral_alliance_Func002Func001Func001Func009A takes nothing returns nothing
-call SetPlayerAllianceStateBJ(GetEnumPlayer(),Player(bj_PLAYER_NEUTRAL_EXTRA),bj_ALLIANCE_ALLIED_VISION)
-call SetPlayerAllianceStateBJ(Player(bj_PLAYER_NEUTRAL_EXTRA),GetEnumPlayer(),bj_ALLIANCE_ALLIED_VISION)
+call SetPlayerAllianceStateBJ(GetEnumPlayer(),Player(bj_PLAYER_NEUTRAL_EXTRA),bj_ALLIANCE_ALLIED)
+call SetPlayerAllianceStateBJ(Player(bj_PLAYER_NEUTRAL_EXTRA),GetEnumPlayer(),bj_ALLIANCE_ALLIED)
 endfunction
 function Trig_Neutral_alliance_Func002Func001Func001Func010A takes nothing returns nothing
-call SetPlayerAllianceStateBJ(GetEnumPlayer(),Player(bj_PLAYER_NEUTRAL_VICTIM),bj_ALLIANCE_ALLIED_VISION)
-call SetPlayerAllianceStateBJ(Player(bj_PLAYER_NEUTRAL_VICTIM),GetEnumPlayer(),bj_ALLIANCE_ALLIED_VISION)
+call SetPlayerAllianceStateBJ(GetEnumPlayer(),Player(bj_PLAYER_NEUTRAL_VICTIM),bj_ALLIANCE_ALLIED)
+call SetPlayerAllianceStateBJ(Player(bj_PLAYER_NEUTRAL_VICTIM),GetEnumPlayer(),bj_ALLIANCE_ALLIED)
 endfunction
 function Trig_Neutral_alliance_Func002Func001Func001C takes nothing returns boolean
 if(not(udg_PirateChance>=7))then
@@ -27005,12 +27016,12 @@ endif
 return true
 endfunction
 function Trig_Neutral_alliance_Func002Func001Func005A takes nothing returns nothing
-call SetPlayerAllianceStateBJ(Player(PLAYER_NEUTRAL_AGGRESSIVE),GetEnumPlayer(),bj_ALLIANCE_ALLIED_VISION)
-call SetPlayerAllianceStateBJ(GetEnumPlayer(),Player(PLAYER_NEUTRAL_AGGRESSIVE),bj_ALLIANCE_ALLIED_VISION)
+call SetPlayerAllianceStateBJ(Player(PLAYER_NEUTRAL_AGGRESSIVE),GetEnumPlayer(),bj_ALLIANCE_ALLIED)
+call SetPlayerAllianceStateBJ(GetEnumPlayer(),Player(PLAYER_NEUTRAL_AGGRESSIVE),bj_ALLIANCE_ALLIED)
 endfunction
 function Trig_Neutral_alliance_Func002Func001Func006A takes nothing returns nothing
-call SetPlayerAllianceStateBJ(GetEnumPlayer(),Player(bj_PLAYER_NEUTRAL_VICTIM),bj_ALLIANCE_ALLIED_VISION)
-call SetPlayerAllianceStateBJ(Player(bj_PLAYER_NEUTRAL_VICTIM),GetEnumPlayer(),bj_ALLIANCE_ALLIED_VISION)
+call SetPlayerAllianceStateBJ(GetEnumPlayer(),Player(bj_PLAYER_NEUTRAL_VICTIM),bj_ALLIANCE_ALLIED)
+call SetPlayerAllianceStateBJ(Player(bj_PLAYER_NEUTRAL_VICTIM),GetEnumPlayer(),bj_ALLIANCE_ALLIED)
 endfunction
 function Trig_Neutral_alliance_Func002Func001C takes nothing returns boolean
 if(not(udg_PirateChance>=9))then
@@ -27025,20 +27036,20 @@ endif
 return true
 endfunction
 function Trig_Neutral_alliance_Func003Func001Func001Func004A takes nothing returns nothing
-call SetPlayerAllianceStateBJ(Player(bj_PLAYER_NEUTRAL_EXTRA),GetEnumPlayer(),bj_ALLIANCE_ALLIED_VISION)
-call SetPlayerAllianceStateBJ(GetEnumPlayer(),Player(bj_PLAYER_NEUTRAL_EXTRA),bj_ALLIANCE_ALLIED_VISION)
+call SetPlayerAllianceStateBJ(Player(bj_PLAYER_NEUTRAL_EXTRA),GetEnumPlayer(),bj_ALLIANCE_ALLIED)
+call SetPlayerAllianceStateBJ(GetEnumPlayer(),Player(bj_PLAYER_NEUTRAL_EXTRA),bj_ALLIANCE_ALLIED)
 endfunction
 function Trig_Neutral_alliance_Func003Func001Func001Func005A takes nothing returns nothing
-call SetPlayerAllianceStateBJ(GetEnumPlayer(),Player(PLAYER_NEUTRAL_AGGRESSIVE),bj_ALLIANCE_ALLIED_VISION)
-call SetPlayerAllianceStateBJ(Player(PLAYER_NEUTRAL_AGGRESSIVE),GetEnumPlayer(),bj_ALLIANCE_ALLIED_VISION)
+call SetPlayerAllianceStateBJ(GetEnumPlayer(),Player(PLAYER_NEUTRAL_AGGRESSIVE),bj_ALLIANCE_ALLIED)
+call SetPlayerAllianceStateBJ(Player(PLAYER_NEUTRAL_AGGRESSIVE),GetEnumPlayer(),bj_ALLIANCE_ALLIED)
 endfunction
 function Trig_Neutral_alliance_Func003Func001Func001Func009A takes nothing returns nothing
-call SetPlayerAllianceStateBJ(Player(bj_PLAYER_NEUTRAL_VICTIM),GetEnumPlayer(),bj_ALLIANCE_ALLIED_VISION)
-call SetPlayerAllianceStateBJ(GetEnumPlayer(),Player(bj_PLAYER_NEUTRAL_VICTIM),bj_ALLIANCE_ALLIED_VISION)
+call SetPlayerAllianceStateBJ(Player(bj_PLAYER_NEUTRAL_VICTIM),GetEnumPlayer(),bj_ALLIANCE_ALLIED)
+call SetPlayerAllianceStateBJ(GetEnumPlayer(),Player(bj_PLAYER_NEUTRAL_VICTIM),bj_ALLIANCE_ALLIED)
 endfunction
 function Trig_Neutral_alliance_Func003Func001Func001Func010A takes nothing returns nothing
-call SetPlayerAllianceStateBJ(GetEnumPlayer(),Player(PLAYER_NEUTRAL_AGGRESSIVE),bj_ALLIANCE_ALLIED_VISION)
-call SetPlayerAllianceStateBJ(Player(PLAYER_NEUTRAL_AGGRESSIVE),GetEnumPlayer(),bj_ALLIANCE_ALLIED_VISION)
+call SetPlayerAllianceStateBJ(GetEnumPlayer(),Player(PLAYER_NEUTRAL_AGGRESSIVE),bj_ALLIANCE_ALLIED)
+call SetPlayerAllianceStateBJ(Player(PLAYER_NEUTRAL_AGGRESSIVE),GetEnumPlayer(),bj_ALLIANCE_ALLIED)
 endfunction
 function Trig_Neutral_alliance_Func003Func001Func001C takes nothing returns boolean
 if(not(udg_PirateChance>=7))then
@@ -27047,12 +27058,12 @@ endif
 return true
 endfunction
 function Trig_Neutral_alliance_Func003Func001Func005A takes nothing returns nothing
-call SetPlayerAllianceStateBJ(Player(bj_PLAYER_NEUTRAL_EXTRA),GetEnumPlayer(),bj_ALLIANCE_ALLIED_VISION)
-call SetPlayerAllianceStateBJ(GetEnumPlayer(),Player(bj_PLAYER_NEUTRAL_EXTRA),bj_ALLIANCE_ALLIED_VISION)
+call SetPlayerAllianceStateBJ(Player(bj_PLAYER_NEUTRAL_EXTRA),GetEnumPlayer(),bj_ALLIANCE_ALLIED)
+call SetPlayerAllianceStateBJ(GetEnumPlayer(),Player(bj_PLAYER_NEUTRAL_EXTRA),bj_ALLIANCE_ALLIED)
 endfunction
 function Trig_Neutral_alliance_Func003Func001Func006A takes nothing returns nothing
-call SetPlayerAllianceStateBJ(GetEnumPlayer(),Player(bj_PLAYER_NEUTRAL_VICTIM),bj_ALLIANCE_ALLIED_VISION)
-call SetPlayerAllianceStateBJ(Player(bj_PLAYER_NEUTRAL_VICTIM),GetEnumPlayer(),bj_ALLIANCE_ALLIED_VISION)
+call SetPlayerAllianceStateBJ(GetEnumPlayer(),Player(bj_PLAYER_NEUTRAL_VICTIM),bj_ALLIANCE_ALLIED)
+call SetPlayerAllianceStateBJ(Player(bj_PLAYER_NEUTRAL_VICTIM),GetEnumPlayer(),bj_ALLIANCE_ALLIED)
 endfunction
 function Trig_Neutral_alliance_Func003Func001C takes nothing returns boolean
 if(not(udg_PirateChance>=9))then
@@ -27133,6 +27144,7 @@ function Trig_Neutral_alliance_Actions takes nothing returns nothing
     endif
     else
     endif
+    call UpdateSharedVisionAll()
     endfunction
 function InitTrig_Neutral_alliance takes nothing returns nothing
 set udg_trg_Neutral_alliance=CreateTrigger()
@@ -30915,8 +30927,8 @@ function ResumeGameDuel takes nothing returns nothing
 call TriggerExecute(udg_trg_Game_resume)
 endfunction
 function Trig_Game_resume_Func003Func001A takes nothing returns nothing
-call SetPlayerAllianceStateBJ(GetEnumPlayer(),Player(PLAYER_NEUTRAL_AGGRESSIVE),bj_ALLIANCE_ALLIED_VISION)
-call SetPlayerAllianceStateBJ(Player(PLAYER_NEUTRAL_AGGRESSIVE),GetEnumPlayer(),bj_ALLIANCE_ALLIED_VISION)
+call SetPlayerAllianceStateBJ(GetEnumPlayer(),Player(PLAYER_NEUTRAL_AGGRESSIVE),bj_ALLIANCE_ALLIED)
+call SetPlayerAllianceStateBJ(Player(PLAYER_NEUTRAL_AGGRESSIVE),GetEnumPlayer(),bj_ALLIANCE_ALLIED)
 endfunction
 function Trig_Game_resume_Func003C takes nothing returns boolean
 if(not(udg_Neutral_Alliance_Chance==1))then
@@ -30925,8 +30937,8 @@ endif
 return true
 endfunction
 function Trig_Game_resume_Func004Func001A takes nothing returns nothing
-call SetPlayerAllianceStateBJ(GetEnumPlayer(),Player(PLAYER_NEUTRAL_AGGRESSIVE),bj_ALLIANCE_ALLIED_VISION)
-call SetPlayerAllianceStateBJ(Player(PLAYER_NEUTRAL_AGGRESSIVE),GetEnumPlayer(),bj_ALLIANCE_ALLIED_VISION)
+call SetPlayerAllianceStateBJ(GetEnumPlayer(),Player(PLAYER_NEUTRAL_AGGRESSIVE),bj_ALLIANCE_ALLIED)
+call SetPlayerAllianceStateBJ(Player(PLAYER_NEUTRAL_AGGRESSIVE),GetEnumPlayer(),bj_ALLIANCE_ALLIED)
 endfunction
 function Trig_Game_resume_Func004C takes nothing returns boolean
 if(not(udg_Neutral_Alliance_Chance==2))then
@@ -36324,6 +36336,7 @@ call SetPlayerAllianceStateBJ(Player(12),GetEnumPlayer(),bj_ALLIANCE_UNALLIED)
 call SetPlayerAllianceStateBJ(Player(13),GetEnumPlayer(),bj_ALLIANCE_UNALLIED)
 call SetPlayerAllianceStateBJ(Player(14),GetEnumPlayer(),bj_ALLIANCE_UNALLIED)
 call SetPlayerAllianceStateBJ(Player(15),GetEnumPlayer(),bj_ALLIANCE_UNALLIED)
+call UpdateSharedVisionWithPlayer(GetEnumPlayer())
 endfunction
 function Trig_Team_1_Win_Func006C takes nothing returns boolean
 if(not(udg_FinalBattle_On==true))then
@@ -36455,6 +36468,7 @@ call SetPlayerAllianceStateBJ(Player(8),GetEnumPlayer(),bj_ALLIANCE_UNALLIED)
 call SetPlayerAllianceStateBJ(Player(9),GetEnumPlayer(),bj_ALLIANCE_UNALLIED)
 call SetPlayerAllianceStateBJ(Player(10),GetEnumPlayer(),bj_ALLIANCE_UNALLIED)
 call SetPlayerAllianceStateBJ(Player(11),GetEnumPlayer(),bj_ALLIANCE_UNALLIED)
+call UpdateSharedVisionWithPlayer(GetEnumPlayer())
 endfunction
 function Trig_Team_2_Win_Func004C takes nothing returns boolean
 if(not(udg_FinalBattle_On==true))then
