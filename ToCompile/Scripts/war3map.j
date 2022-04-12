@@ -32430,6 +32430,7 @@ call ForForce(udg_Humans,function Trig_initiate_send_in_neuts_Func001A)
 call ForForce(udg_Evil,function Trig_initiate_send_in_neuts_Func002A)
 call DisplayTimedTextToForce(GetPlayersAll(),10.00,"|cff00ffffSince this event is taking too long, creeps are coming to help end it!|r")
 call EnableTrigger(udg_trg_Send_in_the_neutrals_2)
+call UpdateSharedVisionAll()
 endfunction
 function InitTrig_initiate_send_in_neuts takes nothing returns nothing
 set udg_trg_initiate_send_in_neuts=CreateTrigger()
@@ -36360,6 +36361,7 @@ endloop
 set i=i+1
 exitwhen i>14
 endloop
+call UpdateSharedVisionAll()
 endfunction
 function UnallyAllPlayers takes nothing returns nothing
 local integer j=0
