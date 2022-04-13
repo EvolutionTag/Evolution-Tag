@@ -2226,6 +2226,7 @@ trigger udg_trg_Ice_creep_camp=null
 trigger udg_trg_Open_close_gate_Copy=null
 trigger udg_trg_drop_ultimate_upgrade_item=null
 trigger udg_trg_the_ultimate_upgrade_item=null
+trigger udg_trg_the_ultimate_upgrade_unit=null
 trigger udg_trg_the_ultimate_upgrade_2=null
 trigger udg_trg_the_ultimate_upgrade_flying_units=null
 trigger udg_trg_Disable_Marine_Flying=null
@@ -3610,6 +3611,7 @@ native UnitAlive takes unit id returns boolean
 //! import zinc "..\ToCompile\Scripts\JumpSystem.j"
 //! import zinc "..\ToCompile\Scripts\SharedVisionWithAllies.j"
 //! import zinc "..\ToCompile\Scripts\SharedVisionDefault.j"
+//! import zinc "..\ToCompile\Scripts\UltimateUpgrades.j"
 function Print takes string s returns nothing
     call DisplayTextToPlayer(GetLocalPlayer(),0,0,s)
 endfunction
@@ -36636,1092 +36638,94 @@ set udg_trg_drop_ultimate_upgrade_item=CreateTrigger()
 call TriggerRegisterTimerEventPeriodic(udg_trg_drop_ultimate_upgrade_item,806.66)
 call TriggerAddAction(udg_trg_drop_ultimate_upgrade_item,function Trig_drop_ultimate_upgrade_item_Actions)
 endfunction
-function Trig_the_ultimate_upgrade_item_Conditions takes nothing returns boolean
+function Trig_UltimateUpgrade_item_Conditions takes nothing returns boolean
 if(not(GetItemTypeId(GetManipulatedItem())=='I00N'))then
 return false
 endif
 return true
 endfunction
-function Trig_the_ultimate_upgrade_item_Func002Func024C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func002C takes nothing returns boolean
-if(not(GetUnitTypeId(GetManipulatingUnit())=='O00E'))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func004Func024C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func004C takes nothing returns boolean
-if(not(GetUnitTypeId(GetManipulatingUnit())=='Usyl'))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func006Func024C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func006C takes nothing returns boolean
-if(not(GetUnitTypeId(GetManipulatingUnit())=='N03B'))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func008Func024C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func008C takes nothing returns boolean
-if(not(GetUnitTypeId(GetManipulatingUnit())=='Obla'))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func011Func024C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func011C takes nothing returns boolean
-if(not(GetUnitTypeId(GetManipulatingUnit())=='Nfir'))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func013Func001C takes nothing returns boolean
-if((GetUnitTypeId(GetManipulatingUnit())=='N033'))then
-return true
-endif
-return false
-endfunction
-function Trig_the_ultimate_upgrade_item_Func013Func019Func001C takes nothing returns boolean
-if(not(GetUnitTypeId(GetEnumUnit())=='nbal'))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func013Func019A takes nothing returns nothing
-if(Trig_the_ultimate_upgrade_item_Func013Func019Func001C())then
-call RemoveUnit(GetEnumUnit())
-else
-call DoNothing()
-endif
-endfunction
-function Trig_the_ultimate_upgrade_item_Func013Func026C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func013C takes nothing returns boolean
-if(not Trig_the_ultimate_upgrade_item_Func013Func001C())then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func015Func025C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func015C takes nothing returns boolean
-if(not(GetUnitTypeId(GetManipulatingUnit())=='U00W'))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func017Func001C takes nothing returns boolean
-if((GetUnitTypeId(GetManipulatingUnit())=='n00P'))then
-return true
-endif
-if((GetUnitTypeId(GetManipulatingUnit())=='n00V'))then
-return true
-endif
-return false
-endfunction
-function Trig_the_ultimate_upgrade_item_Func017Func024C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func017C takes nothing returns boolean
-if(not Trig_the_ultimate_upgrade_item_Func017Func001C())then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func019Func001C takes nothing returns boolean
-if((GetUnitTypeId(GetManipulatingUnit())=='edoc'))then
-return true
-endif
-if((GetUnitTypeId(GetManipulatingUnit())=='edcm'))then
-return true
-endif
-return false
-endfunction
-function Trig_the_ultimate_upgrade_item_Func019Func024C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func019C takes nothing returns boolean
-if(not Trig_the_ultimate_upgrade_item_Func019Func001C())then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func021Func001C takes nothing returns boolean
-if((GetUnitTypeId(GetManipulatingUnit())=='N02J'))then
-return true
-endif
-if((GetUnitTypeId(GetManipulatingUnit())=='N02I'))then
-return true
-endif
-return false
-endfunction
-function Trig_the_ultimate_upgrade_item_Func021Func025C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func021C takes nothing returns boolean
-if(not Trig_the_ultimate_upgrade_item_Func021Func001C())then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func023Func025C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func023C takes nothing returns boolean
-if(not(GetUnitTypeId(GetManipulatingUnit())=='Udea'))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func025Func025C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func025C takes nothing returns boolean
-if(not(GetUnitTypeId(GetManipulatingUnit())=='U00U'))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func027Func024C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func027C takes nothing returns boolean
-if(not(GetUnitTypeId(GetManipulatingUnit())=='z000'))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func029Func025C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func029C takes nothing returns boolean
-if(not(GetUnitTypeId(GetManipulatingUnit())=='O006'))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func031Func023C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func031C takes nothing returns boolean
-if(not(GetUnitTypeId(GetManipulatingUnit())=='uabo'))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func033Func001C takes nothing returns boolean
-if((GetUnitTypeId(GetManipulatingUnit())=='n01D'))then
-return true
-endif
-if((GetUnitTypeId(GetManipulatingUnit())=='nndr'))then
-return true
-endif
-return false
-endfunction
-function Trig_the_ultimate_upgrade_item_Func033Func024C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func033C takes nothing returns boolean
-if(not Trig_the_ultimate_upgrade_item_Func033Func001C())then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func034Func024C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func034C takes nothing returns boolean
-if(not(GetUnitTypeId(GetManipulatingUnit())=='n01B'))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func035Func001C takes nothing returns boolean
-if((GetUnitTypeId(GetManipulatingUnit())=='nahy'))then
-return true
-endif
-if((GetUnitTypeId(GetManipulatingUnit())=='Hvsh'))then
-return true
-endif
-return false
-endfunction
-function Trig_the_ultimate_upgrade_item_Func035Func016C takes nothing returns boolean
-if(not(GetUnitTypeId(GetManipulatingUnit())=='Hvsh'))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func035Func025C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func035C takes nothing returns boolean
-if(not Trig_the_ultimate_upgrade_item_Func035Func001C())then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func037Func001C takes nothing returns boolean
-if((GetUnitTypeId(GetManipulatingUnit())=='h03V'))then
-return true
-endif
-return false
-endfunction
-function Trig_the_ultimate_upgrade_item_Func037Func024C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func037C takes nothing returns boolean
-if(not Trig_the_ultimate_upgrade_item_Func037Func001C())then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func039Func001C takes nothing returns boolean
-if((GetUnitTypeId(GetManipulatingUnit())=='Hpal'))then
-return true
-endif
-return false
-endfunction
-function Trig_the_ultimate_upgrade_item_Func039Func025C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func039C takes nothing returns boolean
-if(not Trig_the_ultimate_upgrade_item_Func039Func001C())then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func040Func001C takes nothing returns boolean
-if((GetUnitTypeId(GetManipulatingUnit())=='H025'))then
-return true
-endif
-return false
-endfunction
-function Trig_the_ultimate_upgrade_item_Func040Func025C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func040C takes nothing returns boolean
-if(not Trig_the_ultimate_upgrade_item_Func040Func001C())then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func042Func001C takes nothing returns boolean
-if((GetUnitTypeId(GetManipulatingUnit())=='Emoo'))then
-return true
-endif
-return false
-endfunction
-function Trig_the_ultimate_upgrade_item_Func042Func025C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func042C takes nothing returns boolean
-if(not Trig_the_ultimate_upgrade_item_Func042Func001C())then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func044Func025C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func044C takes nothing returns boolean
-if(not(GetUnitTypeId(GetManipulatingUnit())=='H03G'))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func045Func025C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func045C takes nothing returns boolean
-if(not(GetUnitTypeId(GetManipulatingUnit())=='H04O'))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func047Func025C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func047C takes nothing returns boolean
-if(not(GetUnitTypeId(GetManipulatingUnit())=='E013'))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func048Func025C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func048C takes nothing returns boolean
-if(not(GetUnitTypeId(GetManipulatingUnit())=='H00D'))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func049Func025C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func049C takes nothing returns boolean
-if(not(GetUnitTypeId(GetManipulatingUnit())=='H03H'))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func051Func025C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func051C takes nothing returns boolean
-if(not(GetUnitTypeId(GetManipulatingUnit())=='Hlgr'))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func053Func025C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func053C takes nothing returns boolean
-if(not(GetUnitTypeId(GetManipulatingUnit())=='E00D'))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func055Func025C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func055C takes nothing returns boolean
-if(not(GetUnitTypeId(GetManipulatingUnit())=='Hant'))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func057Func025C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func057C takes nothing returns boolean
-if(not(GetUnitTypeId(GetManipulatingUnit())=='H05L'))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func059Func025C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func059C takes nothing returns boolean
-if(not(GetUnitTypeId(GetManipulatingUnit())=='Ewar'))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func061Func025C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func061C takes nothing returns boolean
-if(not(GetUnitTypeId(GetManipulatingUnit())=='H00B'))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func063Func025C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func063C takes nothing returns boolean
-if(not(GetUnitTypeId(GetManipulatingUnit())=='E00E'))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func065Func025C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func065C takes nothing returns boolean
-if(not(GetUnitTypeId(GetManipulatingUnit())=='Hvwd'))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func067Func024C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func067C takes nothing returns boolean
-if(not(GetUnitTypeId(GetManipulatingUnit())=='h00R'))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func069Func025C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func069C takes nothing returns boolean
-if(not(GetUnitTypeId(GetManipulatingUnit())=='Npbm'))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func071Func025C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_item_Func071C takes nothing returns boolean
-if(not(GetUnitTypeId(GetManipulatingUnit())=='Naka'))then
-return false
-endif
-return true
-endfunction
-function UltimateUpgrade takes unit u,integer uid returns nothing
-local unit ut=ChangeUnit2(u,uid)
-if(GetLocalPlayer()==GetOwningPlayer(ut))then
-call SelectUnitSingle(ut)
+function UltimateUpgrade takes unit u,integer uid returns unit
+set u=ChangeUnit2(u,uid)
+if(GetLocalPlayer()==GetOwningPlayer(u))then
+call SelectUnitSingle(u)
+return u
 endif
 call RemoveItem(GetManipulatedItem())
+return u
 endfunction
-function Trig_the_ultimate_upgrade_item_Actions takes nothing returns nothing
-if(IsUnitInGroup(GetTriggerUnit(),morphs))then
-return
-endif
-if(Trig_the_ultimate_upgrade_item_Func002C())then
-call UltimateUpgrade(GetTriggerUnit(),'O00F')
-elseif(Trig_the_ultimate_upgrade_item_Func004C())then
-call UltimateUpgrade(GetTriggerUnit(),'U01M')
-elseif(Trig_the_ultimate_upgrade_item_Func006C())then
-call UltimateUpgrade(GetTriggerUnit(),'N03F')
-elseif(GetUnitTypeId(GetManipulatingUnit())=='DDW0')then
-call UltimateUpgrade(GetTriggerUnit(),'DDW1')
-elseif(Trig_the_ultimate_upgrade_item_Func008C())then
-call UltimateUpgrade(GetTriggerUnit(),'Opgh')
-elseif(Trig_the_ultimate_upgrade_item_Func011C())then
-call UltimateUpgrade(GetTriggerUnit(),'N01H')
-elseif(Trig_the_ultimate_upgrade_item_Func013C())then
-call UltimateUpgrade(GetTriggerUnit(),'N01N')
-call CreateNUnitsAtLocBonuses(1,'n01M',GetOwningPlayer(GetTriggerUnit()),GetUnitLoc(GetLastCreatedUnit()),bj_UNIT_FACING)
-call CreateNUnitsAtLocBonuses(1,'n01J',GetOwningPlayer(GetTriggerUnit()),GetUnitLoc(GetLastCreatedUnit()),bj_UNIT_FACING)
-call CreateNUnitsAtLocBonuses(1,'n01L',GetOwningPlayer(GetTriggerUnit()),GetUnitLoc(GetLastCreatedUnit()),bj_UNIT_FACING)
-call CreateNUnitsAtLocBonuses(1,'n01K',GetOwningPlayer(GetTriggerUnit()),GetUnitLoc(GetLastCreatedUnit()),bj_UNIT_FACING)
-elseif(Trig_the_ultimate_upgrade_item_Func015C())then
-call UltimateUpgrade(GetTriggerUnit(),'U00J')
-elseif(Trig_the_ultimate_upgrade_item_Func017C())then
-call UltimateUpgrade(GetTriggerUnit(),'n01I')
-elseif(Trig_the_ultimate_upgrade_item_Func019C())then
-call UltimateUpgrade(GetTriggerUnit(),'N01P')
-elseif(Trig_the_ultimate_upgrade_item_Func021C())then
-call UltimateUpgrade(GetTriggerUnit(),'N03K')
-elseif(Trig_the_ultimate_upgrade_item_Func023C())then
-call UltimateUpgrade(GetTriggerUnit(),'U00M')
-elseif(Trig_the_ultimate_upgrade_item_Func025C())then
-call UltimateUpgrade(GetTriggerUnit(),'U01W')
-elseif(Trig_the_ultimate_upgrade_item_Func027C())then
-call UltimateUpgrade(GetTriggerUnit(),'Z009')
-elseif(Trig_the_ultimate_upgrade_item_Func029C())then
-call UltimateUpgrade(GetTriggerUnit(),'O003')
-call CreateNUnitsAtLocBonuses(1,'ospw',GetOwningPlayer(GetTriggerUnit()),GetUnitLoc(GetLastCreatedUnit()),bj_UNIT_FACING)
-call CreateNUnitsAtLocBonuses(1,'ospw',GetOwningPlayer(GetTriggerUnit()),GetUnitLoc(GetLastCreatedUnit()),bj_UNIT_FACING)
-elseif(Trig_the_ultimate_upgrade_item_Func031C())then
-call UltimateUpgrade(GetTriggerUnit(),'U00O')
-elseif(Trig_the_ultimate_upgrade_item_Func033C())then
-call UltimateUpgrade(GetTriggerUnit(),'N04D')
-elseif(Trig_the_ultimate_upgrade_item_Func034C())then
-call UltimateUpgrade(GetTriggerUnit(),'N01U')
-elseif(Trig_the_ultimate_upgrade_item_Func035C())then
-call UltimateUpgrade(GetTriggerUnit(),'N01X')
-elseif(Trig_the_ultimate_upgrade_item_Func037C())then
-call UltimateUpgrade(GetTriggerUnit(),'h03W')
-elseif(Trig_the_ultimate_upgrade_item_Func039C())then
-call UltimateUpgrade(GetTriggerUnit(),'H028')
-elseif(Trig_the_ultimate_upgrade_item_Func040C())then
-call UltimateUpgrade(GetTriggerUnit(),'H03C')
-elseif(Trig_the_ultimate_upgrade_item_Func042C())then
-call UltimateUpgrade(GetTriggerUnit(),'E015')
-elseif(Trig_the_ultimate_upgrade_item_Func044C())then
-call UltimateUpgrade(GetTriggerUnit(),'H03I')
-elseif(Trig_the_ultimate_upgrade_item_Func045C())then
-call UltimateUpgrade(GetTriggerUnit(),'H05A')
-elseif(Trig_the_ultimate_upgrade_item_Func047C())then
-call UltimateUpgrade(GetTriggerUnit(),'E014')
-elseif(Trig_the_ultimate_upgrade_item_Func048C())then
-call UltimateUpgrade(GetTriggerUnit(),'H045')
-elseif(Trig_the_ultimate_upgrade_item_Func049C())then
-call UltimateUpgrade(GetTriggerUnit(),'H03J')
-elseif(Trig_the_ultimate_upgrade_item_Func051C())then
-call UltimateUpgrade(GetTriggerUnit(),'H029')
-elseif(Trig_the_ultimate_upgrade_item_Func053C())then
-call UltimateUpgrade(GetTriggerUnit(),'E006')
-elseif(Trig_the_ultimate_upgrade_item_Func055C())then
-call UltimateUpgrade(GetTriggerUnit(),'Hjai')
-elseif(Trig_the_ultimate_upgrade_item_Func057C())then
-call UltimateUpgrade(GetTriggerUnit(),'H05N')
-elseif(Trig_the_ultimate_upgrade_item_Func059C())then
-call UltimateUpgrade(GetTriggerUnit(),'E007')
-elseif(Trig_the_ultimate_upgrade_item_Func061C())then
-call UltimateUpgrade(GetTriggerUnit(),'H02A')
-elseif(Trig_the_ultimate_upgrade_item_Func063C())then
-call UltimateUpgrade(GetTriggerUnit(),'E00B')
-elseif(Trig_the_ultimate_upgrade_item_Func065C())then
-call UltimateUpgrade(GetTriggerUnit(),'H033')
-elseif(Trig_the_ultimate_upgrade_item_Func067C())then
-call UltimateUpgrade(GetTriggerUnit(),'nhew')
-elseif(Trig_the_ultimate_upgrade_item_Func069C())then
-call UltimateUpgrade(GetTriggerUnit(),'N022')
-elseif(Trig_the_ultimate_upgrade_item_Func071C())then
-call UltimateUpgrade(GetTriggerUnit(),'N021')
-else
-return
-endif
+function GandalfEffect takes nothing returns nothing
+    local unit u = UltimateUpgradingUnit
+    call DisplayTextToPlayer(GetOwningPlayer(u),0,0,"|cffff0000Death is but the next great adventure|r")
+    call AddLives(GetPlayerId(GetOwningPlayer(u)),1)
+    set u = null
 endfunction
-function InitTrig_the_ultimate_upgrade_item takes nothing returns nothing
+function IceGolemEffect takes nothing returns nothing
+    local unit u = UltimateUpgradingUnit
+    call CreateNUnitsAtLocBonuses(1,'n01M',GetOwningPlayer(u),GetUnitLoc(u),bj_UNIT_FACING)
+    call CreateNUnitsAtLocBonuses(1,'n01J',GetOwningPlayer(u),GetUnitLoc(u),bj_UNIT_FACING)
+    call CreateNUnitsAtLocBonuses(1,'n01L',GetOwningPlayer(u),GetUnitLoc(u),bj_UNIT_FACING)
+    call CreateNUnitsAtLocBonuses(1,'n01K',GetOwningPlayer(u),GetUnitLoc(u),bj_UNIT_FACING)
+    set u = null
+endfunction
+function TaurenEffect takes nothing returns nothing
+    local unit u = UltimateUpgradingUnit
+    call CreateNUnitsAtLocBonuses(1,'ospw',GetOwningPlayer(u),GetUnitLoc(u),bj_UNIT_FACING)
+    call CreateNUnitsAtLocBonuses(1,'ospw',GetOwningPlayer(u),GetUnitLoc(u),bj_UNIT_FACING)
+    set u = null
+endfunction
+function UltimateUpgrade_Actions takes unit u returns unit
+    local integer id
+    local string func = null
+    if(IsUnitInGroup(u,morphs))then
+    return null
+    endif
+    set id = GetUltimateUpgradeId(GetUnitTypeId(u),not udg_NO_FLYING_UNITS)
+    if(id!=0) then
+        set u = UltimateUpgrade(u,id)
+        set func = GetUltimateUpgradeSideEffectFromId(GetUnitTypeId(u),not udg_NO_FLYING_UNITS)
+        set UltimateUpgradingUnit = u
+        //call BJDebugMsg(func)
+        if(func!=null) then
+            call ExecuteFunc(func)
+        endif
+        
+    endif
+    set UltimateUpgradingUnit = u
+return UltimateUpgradingUnit
+endfunction
+function Trig_UltimateUpgrade_item_Actions takes nothing returns nothing
+    if(UltimateUpgrade_Actions(GetTriggerUnit())!=null) then
+        call RemoveItem(GetManipulatedItem())
+    endif
+endfunction
+
+function InitTrig_UltimateUpgrade_item takes nothing returns nothing
 set udg_trg_the_ultimate_upgrade_item=CreateTrigger()
 call TriggerRegisterAnyUnitEventBJ(udg_trg_the_ultimate_upgrade_item,EVENT_PLAYER_UNIT_PICKUP_ITEM)
-call TriggerAddCondition(udg_trg_the_ultimate_upgrade_item,Condition(function Trig_the_ultimate_upgrade_item_Conditions))
-call TriggerAddAction(udg_trg_the_ultimate_upgrade_item,function Trig_the_ultimate_upgrade_item_Actions)
+call TriggerAddCondition(udg_trg_the_ultimate_upgrade_item,Condition(function Trig_UltimateUpgrade_item_Conditions))
+call TriggerAddAction(udg_trg_the_ultimate_upgrade_item,function Trig_UltimateUpgrade_item_Actions)
 endfunction
-function Trig_the_ultimate_upgrade_2_Conditions takes nothing returns boolean
-if(not(GetItemTypeId(GetManipulatedItem())=='I00N'))then
-return false
-endif
-return true
+
+
+function Trig_UltimateUpgrade_unit_Conditions takes nothing returns boolean
+    if(not(GetUnitTypeId(GetSoldUnit())=='h080'))then
+    return false
+    endif
+    return true
+endfunction 
+function Trig_UltimateUpgrade_unit_Actions takes nothing returns nothing
+    call UltimateUpgrade_Actions(GetBuyingUnit())
+    call RemoveUnit(GetSoldUnit())
+
 endfunction
-function Trig_the_ultimate_upgrade_2_Func002Func001C takes nothing returns boolean
-if((GetUnitTypeId(GetManipulatingUnit())=='Efur'))then
-return true
-endif
-return false
+
+function InitTrig_UltimateUpgrade_unit takes nothing returns nothing
+set udg_trg_the_ultimate_upgrade_unit=CreateTrigger()
+call TriggerRegisterAnyUnitEventBJ(udg_trg_the_ultimate_upgrade_unit,EVENT_PLAYER_UNIT_SELL)
+call TriggerAddCondition(udg_trg_the_ultimate_upgrade_unit,Condition(function Trig_UltimateUpgrade_unit_Conditions))
+call TriggerAddAction(udg_trg_the_ultimate_upgrade_unit,function Trig_UltimateUpgrade_unit_Actions)
 endfunction
-function Trig_the_ultimate_upgrade_2_Func002Func025C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_2_Func002C takes nothing returns boolean
-if(not Trig_the_ultimate_upgrade_2_Func002Func001C())then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_2_Func006Func001C takes nothing returns boolean
-if((GetUnitTypeId(GetManipulatingUnit())=='Hmkg'))then
-return true
-endif
-return false
-endfunction
-function Trig_the_ultimate_upgrade_2_Func006Func025C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_2_Func006C takes nothing returns boolean
-if(not Trig_the_ultimate_upgrade_2_Func006Func001C())then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_2_Func008Func001C takes nothing returns boolean
-if((GetUnitTypeId(GetManipulatingUnit())=='H06W'))then
-return true
-endif
-return false
-endfunction
-function Trig_the_ultimate_upgrade_2_Func008Func025C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_2_Func008C takes nothing returns boolean
-if(not Trig_the_ultimate_upgrade_2_Func008Func001C())then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_2_Func010Func001C takes nothing returns boolean
-if((GetUnitTypeId(GetManipulatingUnit())=='H079'))then
-return true
-endif
-return false
-endfunction
-function Trig_the_ultimate_upgrade_2_Func010Func025C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_2_Func010C takes nothing returns boolean
-if(not Trig_the_ultimate_upgrade_2_Func010Func001C())then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_2_Func012Func001C takes nothing returns boolean
-if((GetUnitTypeId(GetManipulatingUnit())=='Edem'))then
-return true
-endif
-return false
-endfunction
-function Trig_the_ultimate_upgrade_2_Func012Func025C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_2_Func012C takes nothing returns boolean
-if(not Trig_the_ultimate_upgrade_2_Func012Func001C())then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_2_Func014Func001C takes nothing returns boolean
-if((GetUnitTypeId(GetManipulatingUnit())=='H059'))then
-return true
-endif
-return false
-endfunction
-function Trig_the_ultimate_upgrade_2_Func014Func025C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_2_Func014C takes nothing returns boolean
-if(not Trig_the_ultimate_upgrade_2_Func014Func001C())then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_2_Func016Func001C takes nothing returns boolean
-if((GetUnitTypeId(GetManipulatingUnit())=='H06X'))then
-return true
-endif
-return false
-endfunction
-function Trig_the_ultimate_upgrade_2_Func016Func025C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_2_Func016C takes nothing returns boolean
-if(not Trig_the_ultimate_upgrade_2_Func016Func001C())then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_2_Func018Func001C takes nothing returns boolean
-if((GetUnitTypeId(GetManipulatingUnit())=='H06L'))then
-return true
-endif
-return false
-endfunction
-function Trig_the_ultimate_upgrade_2_Func018Func025C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_2_Func018C takes nothing returns boolean
-if(not Trig_the_ultimate_upgrade_2_Func018Func001C())then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_2_Func020Func001C takes nothing returns boolean
-if((GetUnitTypeId(GetManipulatingUnit())=='N034'))then
-return true
-endif
-return false
-endfunction
-function Trig_the_ultimate_upgrade_2_Func020Func025C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_2_Func020C takes nothing returns boolean
-if(not Trig_the_ultimate_upgrade_2_Func020Func001C())then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_2_Func022Func001C takes nothing returns boolean
-if((GetUnitTypeId(GetManipulatingUnit())=='U02B'))then
-return true
-endif
-return false
-endfunction
-function Trig_the_ultimate_upgrade_2_Func022Func025C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_2_Func022C takes nothing returns boolean
-if(not Trig_the_ultimate_upgrade_2_Func022Func001C())then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_2_Func024Func001C takes nothing returns boolean
-if((GetUnitTypeId(GetManipulatingUnit())=='U02L'))then
-return true
-endif
-return false
-endfunction
-function Trig_the_ultimate_upgrade_2_Func024Func025C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_2_Func024C takes nothing returns boolean
-if(not Trig_the_ultimate_upgrade_2_Func024Func001C())then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_2_Actions takes nothing returns nothing
-if(IsUnitInGroup(GetTriggerUnit(),morphs))then
-return
-endif
-if(Trig_the_ultimate_upgrade_2_Func002C())then
-call UltimateUpgrade(GetTriggerUnit(),'Emns')
-elseif(Trig_the_ultimate_upgrade_2_Func006C())then
-call UltimateUpgrade(GetTriggerUnit(),'H06G')
-elseif(Trig_the_ultimate_upgrade_2_Func008C())then
-call UltimateUpgrade(GetTriggerUnit(),'H06S')
-elseif(GetUnitTypeId(GetManipulatingUnit())=='H07W')then
-call UltimateUpgrade(GetTriggerUnit(),'H07V')
-call DisplayTextToPlayer(GetOwningPlayer(GetTriggerUnit()),0,0,"|cffff0000Death is but the next great adventure|r")
-call AddLives(GetPlayerId(GetOwningPlayer(GetTriggerUnit())),1)
-elseif(Trig_the_ultimate_upgrade_2_Func010C())then
-call UltimateUpgrade(GetTriggerUnit(),'H07A')
-elseif(Trig_the_ultimate_upgrade_2_Func012C())then
-call UltimateUpgrade(GetTriggerUnit(),'E017')
-elseif(Trig_the_ultimate_upgrade_2_Func014C())then
-call UltimateUpgrade(GetTriggerUnit(),'H07D')
-elseif(Trig_the_ultimate_upgrade_2_Func016C())then
-call UltimateUpgrade(GetTriggerUnit(),'H06Y')
-elseif(Trig_the_ultimate_upgrade_2_Func018C())then
-call UltimateUpgrade(GetTriggerUnit(),'H06K')
-elseif(Trig_the_ultimate_upgrade_2_Func020C())then
-call UltimateUpgrade(GetTriggerUnit(),'N05Q')
-elseif(Trig_the_ultimate_upgrade_2_Func022C())then
-call UltimateUpgrade(GetTriggerUnit(),'U02G')
-elseif(Trig_the_ultimate_upgrade_2_Func024C())then
-call UltimateUpgrade(GetTriggerUnit(),'O00N')
-else
-return
-endif
-call RemoveItem(GetManipulatedItem())
-endfunction
-function InitTrig_the_ultimate_upgrade_2 takes nothing returns nothing
-set udg_trg_the_ultimate_upgrade_2=CreateTrigger()
-call TriggerRegisterAnyUnitEventBJ(udg_trg_the_ultimate_upgrade_2,EVENT_PLAYER_UNIT_PICKUP_ITEM)
-call TriggerAddCondition(udg_trg_the_ultimate_upgrade_2,Condition(function Trig_the_ultimate_upgrade_2_Conditions))
-call TriggerAddAction(udg_trg_the_ultimate_upgrade_2,function Trig_the_ultimate_upgrade_2_Actions)
-endfunction
-function Trig_the_ultimate_upgrade_flying_units_Conditions takes nothing returns boolean
-if(not(GetItemTypeId(GetManipulatedItem())=='I00N'))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_flying_units_Func004Func007C takes nothing returns boolean
-if(not(udg_NO_FLYING_UNITS==false))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_flying_units_Func004Func023C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_flying_units_Func004C takes nothing returns boolean
-if(not(GetUnitTypeId(GetManipulatingUnit())=='Udre'))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_flying_units_Func006Func008C takes nothing returns boolean
-if(not(udg_NO_FLYING_UNITS==false))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_flying_units_Func006Func024C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_flying_units_Func006C takes nothing returns boolean
-if(not(GetUnitTypeId(GetManipulatingUnit())=='U00X'))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_flying_units_Func008Func001C takes nothing returns boolean
-if((GetUnitTypeId(GetManipulatingUnit())=='u00G'))then
-return true
-endif
-return false
-endfunction
-function Trig_the_ultimate_upgrade_flying_units_Func008Func009C takes nothing returns boolean
-if(not(udg_NO_FLYING_UNITS==false))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_flying_units_Func008Func024C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_flying_units_Func008C takes nothing returns boolean
-if(not Trig_the_ultimate_upgrade_flying_units_Func008Func001C())then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_flying_units_Func010Func001C takes nothing returns boolean
-if((GetUnitTypeId(GetManipulatingUnit())=='H031'))then
-return true
-endif
-if((GetUnitTypeId(GetManipulatingUnit())=='H032'))then
-return true
-endif
-return false
-endfunction
-function Trig_the_ultimate_upgrade_flying_units_Func010Func009C takes nothing returns boolean
-if(not(udg_NO_FLYING_UNITS==false))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_flying_units_Func010Func025C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_flying_units_Func010C takes nothing returns boolean
-if(not Trig_the_ultimate_upgrade_flying_units_Func010Func001C())then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_flying_units_Func012Func009C takes nothing returns boolean
-if(not(udg_NO_FLYING_UNITS==false))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_flying_units_Func012Func025C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_flying_units_Func012C takes nothing returns boolean
-if(not(GetUnitTypeId(GetManipulatingUnit())=='H01Y'))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_flying_units_Func014Func009C takes nothing returns boolean
-if(not(udg_NO_FLYING_UNITS==false))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_flying_units_Func014Func018C takes nothing returns boolean
-if(not(UnitHasItemOfTypeBJ(GetLastCreatedUnit(),'I00N')==true))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_flying_units_Func014C takes nothing returns boolean
-if(not(GetUnitTypeId(GetManipulatingUnit())=='Hblm'))then
-return false
-endif
-return true
-endfunction
-function Trig_the_ultimate_upgrade_flying_units_Actions takes nothing returns nothing
-if(IsUnitInGroup(GetTriggerUnit(),morphs))then
-return
-endif
-if(Trig_the_ultimate_upgrade_flying_units_Func004C())then
-if(udg_NO_FLYING_UNITS==false)then
-call UltimateUpgrade(GetTriggerUnit(),'U010')
-else
-call UltimateUpgrade(GetTriggerUnit(),'U026')
-endif
-elseif(Trig_the_ultimate_upgrade_flying_units_Func006C())then
-if(udg_NO_FLYING_UNITS==false)then
-call UltimateUpgrade(GetTriggerUnit(),'U00N')
-else
-call UltimateUpgrade(GetTriggerUnit(),'U028')
-endif
-elseif(Trig_the_ultimate_upgrade_flying_units_Func008C())then
-if(udg_NO_FLYING_UNITS==false)then
-call UltimateUpgrade(GetTriggerUnit(),'U00P')
-else
-call UltimateUpgrade(GetTriggerUnit(),'U021')
-endif
-elseif(Trig_the_ultimate_upgrade_flying_units_Func010C())then
-if(udg_NO_FLYING_UNITS==false)then
-call UltimateUpgrade(GetTriggerUnit(),'H027')
-else
-call UltimateUpgrade(GetTriggerUnit(),'H06J')
-endif
-elseif(Trig_the_ultimate_upgrade_flying_units_Func012C())then
-if(udg_NO_FLYING_UNITS==false)then
-call UltimateUpgrade(GetTriggerUnit(),'H037')
-else
-call UltimateUpgrade(GetTriggerUnit(),'H06O')
-endif
-elseif(Trig_the_ultimate_upgrade_flying_units_Func014C())then
-if(udg_NO_FLYING_UNITS==false)then
-call UltimateUpgrade(GetTriggerUnit(),'n02A')
-else
-call UltimateUpgrade(GetTriggerUnit(),'H06T')
-endif
-else
-return
-endif
-call RemoveItem(GetManipulatedItem())
-endfunction
-function InitTrig_the_ultimate_upgrade_flying_units takes nothing returns nothing
-set udg_trg_the_ultimate_upgrade_flying_units=CreateTrigger()
-call TriggerRegisterAnyUnitEventBJ(udg_trg_the_ultimate_upgrade_flying_units,EVENT_PLAYER_UNIT_PICKUP_ITEM)
-call TriggerAddCondition(udg_trg_the_ultimate_upgrade_flying_units,Condition(function Trig_the_ultimate_upgrade_flying_units_Conditions))
-call TriggerAddAction(udg_trg_the_ultimate_upgrade_flying_units,function Trig_the_ultimate_upgrade_flying_units_Actions)
-endfunction
+
 function Trig_Disable_Marine_Flying_Conditions takes nothing returns boolean
 if(not(udg_NO_FLYING_UNITS==true))then
 return false
@@ -52865,9 +51869,10 @@ call InitTrig_gnoll_creep_camp()
 call InitTrig_gnoll_houses()
 call InitTrig_Ice_creep_camp()
 call InitTrig_drop_ultimate_upgrade_item()
-call InitTrig_the_ultimate_upgrade_item()
-call InitTrig_the_ultimate_upgrade_2()
-call InitTrig_the_ultimate_upgrade_flying_units()
+call InitTrig_UltimateUpgrade_item()
+call InitTrig_UltimateUpgrade_unit()
+//call InitTrig_the_ultimate_upgrade_2()
+//call InitTrig_the_ultimate_upgrade_flying_units()
 call InitTrig_Disable_undead_flying()
 call InitTrig_remove_ultimate_upgrade_item()
 call InitTrig_settings()
