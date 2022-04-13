@@ -106,8 +106,8 @@ library UltimateUpgrades
         SaveInteger(UltimateUpgrades,1,'Hblm','n02A');
         SaveInteger(UltimateUpgrades,0,'Hblm','H06T');
         //side effects
-        SaveStr(UltimateUpgrades,2,'H07W',"GandalfEffect");
-        SaveStr(UltimateUpgrades,2,'O006',"TaurenEffect");
-        SaveStr(UltimateUpgrades,2,'N033',"IceGolemEffect");
+        SaveStr(UltimateUpgrades,2,'H07V',"GandalfEffect");
+        SaveStr(UltimateUpgrades,2,'O003',"TaurenEffect");
+        SaveStr(UltimateUpgrades,2,'N01N',"IceGolemEffect");
     }
 }
