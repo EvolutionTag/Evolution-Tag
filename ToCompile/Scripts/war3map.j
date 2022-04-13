@@ -10485,7 +10485,8 @@ set playerid=playerid + 1
 exitwhen playerid >= 12
 endloop
 call SaveInteger(SyncHashTable, GetHandleId(t), 0, this)
-call TimerStart(t, 0.0325, true, function s__Sync_SyncPlayersInfoCallback)
+//call BJDebugMsg("this: "+I2S(this)+" timer: "+I2S(GetHandleId(t))+" ht: "+I2S(GetHandleId(SyncHashTable)))
+call TimerStart(t, SyncDataTimeout, true, function s__Sync_SyncPlayersInfoCallback)
 endfunction
 
 function Trig_PlayerLeaveHack_Actions takes nothing returns nothing

@@ -5,13 +5,14 @@ library SyncData requires APIMemoryBitwise
     public integer previousgroups[];
     public integer prevpreviousgroups[];
     public integer no_data_marker=0;
-
+    public constant real SyncDataTimeout = 0.1;
 
     public constant integer si__Sync=1;
     public integer si__Sync_F=0;
     public integer si__Sync_I=0;
     public integer si__Sync_V[];
     public integer s__Sync_sync_offset=8192;
+    boolean Prevoiousdesync = false;
 
     function s__Sync_deallocate(integer this)
     {
@@ -39,19 +40,32 @@ library SyncData requires APIMemoryBitwise
         boolean b=true;
         trigger t;
         string datakey;
+        boolean TrueDesync = false;
+        //BJDebugMsg("this checked: "+I2S(this)+" timer: "+I2S(GetHandleId(GetExpiredTimer())));
         for(0<=playerid<=11)
         {
-            datakey=I2S(this + s__Sync_sync_offset    * playerid);
-            playerdata[playerid]=GetStoredInteger(PlayerDataCache, "0", datakey);
-            if ( GetPlayerSlotState(Player(playerid)) == PLAYER_SLOT_STATE_PLAYING ) {
-                if ( playerdata[playerid] == no_data_marker ) {
+            datakey=I2S(this + s__Sync_sync_offset* playerid);
+            //BJDebugMsg("Checking sync");
+            if(GetPlayerSlotState(Player(playerid)) == PLAYER_SLOT_STATE_PLAYING)
+            {
+                playerdata[playerid]=GetStoredInteger(PlayerDataCache, "0", datakey);
+            }
+            else
+            {
+                playerdata[playerid]=no_data_marker;
+            }
+            if ( GetPlayerSlotState(Player(playerid)) == PLAYER_SLOT_STATE_PLAYING )
+            {
+                if ( playerdata[playerid] == no_data_marker ) 
+                {
                     b=false;
+                    //BJDebugMsg("player not synced: "+I2S(playerid));
                 }
             }
-            playerid=playerid + 1;
         }
         if ( b ) 
         {
+            //BJDebugMsg("synced!");
             b=false;
             for(0<=i<=11)
             {
@@ -86,12 +100,35 @@ library SyncData requires APIMemoryBitwise
             }
             if ( b ) 
             {
-                BJDebugMsg("|cfffc0707Desync Warning!|r");
+                ExecuteFunc("TryDump");
+                if(!Prevoiousdesync)
+                {
+                    for(0<=i<=11)
+                    {
+                        prevpreviousgroups[i] = previousgroups[i];
+                    }
+                    //BJDebugMsg("Maybe Desync!");
+                    Prevoiousdesync = true;
+                }
                 for(0<=i<=11)
                 {
                     previousgroups[i]=playergroup[i];
                 }
-                ExecuteFunc("TryDump");
+            }
+            if(Prevoiousdesync)
+            {
+                for(0<=i<=11)
+                {
+                    if(prevpreviousgroups[i]!=playergroup[i])
+                    {
+                        TrueDesync = true;
+                    }
+                }
+                if(TrueDesync)
+                {
+                    BJDebugMsg("|cfffc0707Desync Warning!|r");
+                }
+                Prevoiousdesync = false;
             }
             for(0<=playerid<=11)
             {
@@ -103,7 +140,7 @@ library SyncData requires APIMemoryBitwise
             s__Sync_deallocate(this);
         }
     }
-    function OnInit()
+    function onInit()
     {
         integer i;
         PlayerDataCache=InitGameCache("Sync");

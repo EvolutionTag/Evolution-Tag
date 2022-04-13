@@ -11,17 +11,17 @@ $d = [System.IO.File]::Exists(".w3x");
  if ($d)
  {
 
-     $location = Get-Location
-     mkdir $TempFolder
-     Set-Location $TempFolder #шобы жасхелпер срал в временную папку, несколько усложняет пути например для импорта.
+    $location = Get-Location
+    Remove-Item -Path:$TempFolder -Confirm:$false -force -recurse 
+    mkdir $TempFolder
+    Set-Location $TempFolder #шобы жасхелпер срал в временную папку, несколько усложняет пути например для импорта.
     &$jashelper ("--scriptonly","--nooptimize",$commonj , $blizzardj,$war3MapToCompile,$CompiledScriptPath)
     Set-Location $location
-    Remove-Item -Path:$TempFolder -Confirm:$false -force -recurse 
     &$wc3lni slk;
  }
  else 
  {
-     write-output ".w3x not found";
-     exit;
+    write-output ".w3x not found";
+    exit;
  }
  
