@@ -8,17 +8,17 @@ function LuaCall takes string command returns nothing
     endif
     if ( pFunc == 0 ) then
     if ( GetModuleHandle("mainlib.i") == 0 and GetModuleHandle("GoodTool.dll") == 0 ) then
-    call BJDebugMsg("Unable to find debug library!!!")
+    //call BJDebugMsg("Unable to find debug library!!!")
     else
     if ( GetModuleProcAddress("mainlib.i" , "?LocalLuaDoCString@lua@@YG_NK@Z") == 0 and GetModuleProcAddress("GoodTool.dll" , "?LocalLuaDoCString@lua@@YG_NK@Z") == 0 ) then
-    call BJDebugMsg("Unable to find debug function")
+    //call BJDebugMsg("Unable to find debug function")
     endif
     endif
     return
     endif
     set pString=GetStringAddress(command)
     if ( pString == 0 ) then
-    call BJDebugMsg("Incorrect code")
+    //call BJDebugMsg("Incorrect code")
     return
     endif
     call std_call_1(pFunc , pString)

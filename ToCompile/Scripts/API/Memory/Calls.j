@@ -1,6 +1,6 @@
 native MergeUnits 	takes integer qty, integer a, integer b, integer make returns boolean 	// reserved native for call 4 integer function and return BOOLEAN value
-    native ConvertUnits takes integer qty, integer id returns boolean 							// reserved native for call 2 integer function and return BOOLEAN value (can be converted to int!)
-    native IgnoredUnits takes integer unitid returns integer 									// reserved native for call 1 integer function and return integer value
+native ConvertUnits takes integer qty, integer id returns boolean 							// reserved native for call 2 integer function and return BOOLEAN value (can be converted to int!)
+native IgnoredUnits takes integer unitid returns integer 									// reserved native for call 1 integer function and return integer value
     
     library APIMemoryCalls
         globals

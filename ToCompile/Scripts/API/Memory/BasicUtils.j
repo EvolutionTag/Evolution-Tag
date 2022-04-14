@@ -202,6 +202,6 @@ endlibrary
 
 //===========================================================================
 function InitTrig_APIBasicUtils takes nothing returns nothing
-    set gg_trg_APIBasicUtils = CreateTrigger(  )
+    //set gg_trg_APIBasicUtils = CreateTrigger(  )
 endfunction
 //! endnocjass
