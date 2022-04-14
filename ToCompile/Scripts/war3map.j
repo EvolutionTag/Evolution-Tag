@@ -3166,6 +3166,7 @@ native UnitAlive takes unit id returns boolean
 //! import zinc "..\ToCompile\Scripts\timerdata.j"
 //! import zinc "..\ToCompile\Scripts\plan.j"
 //! import zinc "..\ToCompile\Scripts\JumpSystem.j"
+//! import zinc "..\ToCompile\Scripts\Morphs.j"
 //! import zinc "..\ToCompile\Scripts\SharedVisionWithAllies.j"
 //! import zinc "..\ToCompile\Scripts\SharedVisionDefault.j"
 //! import zinc "..\ToCompile\Scripts\UltimateUpgrades.j"
@@ -8737,6 +8738,17 @@ function ApplyAllNotStatBonuses takes unit u returns nothing
         endif
      endif
 endfunction
+function ApplyDmgBonuses takes unit u returns nothing
+    local real mult
+    set udg_CS_Unit=u
+    set udg_CS_Player=GetOwningPlayer(u)
+    set udg_CS_Value=udg_Player_DamagePoints[GetConvertedPlayerId(udg_CS_Player)]
+    call AddWhiteDamageRestricted(udg_CS_Unit,udg_CS_Value)
+    if(GetOwningPlayer(u)!=null) then
+        set mult=GetUnitStatMultiplier(u)
+        call AddWhiteDamage(u,mult*damageBonuses[GetPlayerId(GetOwningPlayer(u))])
+    endif
+endfunction
 function ApplyStatBonuses takes unit u returns nothing
 set udg_CS_Unit=u
 set udg_CS_Player=GetOwningPlayer(u)
@@ -8819,19 +8831,14 @@ endfunction
 function RecreateUnitPosBonusesNotRemove takes unit u,real x,real y returns unit
 local unit u2
 local integer idx=0
+local real mult
 call UnregUnitBonuses(u)
 loop
 set itemexchange[idx] = UnitRemoveItemFromSlot(u,idx)
 set idx=idx+1
 exitwhen idx>5
 endloop
-call StoreUnit(unitrestore,"0","0",u)
-set u2 = RestoreUnit(unitrestore,"0","0",GetOwningPlayer(u),x,y,0)
-if not IsUnitType(u2,UNIT_TYPE_HERO) then
-    call ApplyStatBonuses(u2)
-endif
-call AddRevengeCheck(u2)
-call ApplyAllNotStatBonuses(u2)
+set u2 = CreateUnitBonuses(GetOwningPlayer(u),GetUnitTypeId(u),x,y,0)
 set idx = 0
 loop
     call UnitAddItem(u2,itemexchange[idx])
@@ -36287,51 +36294,24 @@ call TriggerRegisterTimerEventPeriodic(udg_trg_Random_hippo_move,4.65)
 call TriggerAddAction(udg_trg_Random_hippo_move,function Trig_Random_hippo_move_Actions)
 endfunction
 function SaveMorphBonuses_Condition takes nothing returns boolean
-if(GetSpellAbilityId()=='A04X')then
-return true
-elseif(GetSpellAbilityId()=='A0G8')then
-return true
-elseif(GetSpellAbilityId()=='A0JE')then
-return true
-elseif(GetSpellAbilityId()=='A0CB')then
-return true
-elseif(GetSpellAbilityId()=='A0BH')then
-return true
-elseif(GetSpellAbilityId()=='A08J')then
-return true
-elseif(GetSpellAbilityId()=='A0CS')then
-return true
-elseif(GetSpellAbilityId()=='A037')then
-return true
-elseif(GetSpellAbilityId()=='A0DR')then
-return true
-elseif(GetSpellAbilityId()=='A09Q')then
-return true
-elseif(GetSpellAbilityId()=='A05D')then
-return true
-elseif(GetSpellAbilityId()=='A08U')then
-return true
-elseif(GetSpellAbilityId()=='A04Y')then
-return true
-elseif(GetSpellAbilityId()=='A0FL')then
-return true
-elseif(GetSpellAbilityId()=='A09E')then
-return true
-elseif(GetSpellAbilityId()=='A04A')then
-return true
-elseif(GetSpellAbilityId()=='A04W')then
-return true
-elseif(GetSpellAbilityId()=='A0LG')then
-return true
-elseif(GetSpellAbilityId()=='A07G')then
-return true
-elseif(GetSpellAbilityId()=='A0FL')then
-return true
-endif
-return false
+return IsMorphAbilityId(GetSpellAbilityId())
 endfunction
+
+function ApplyDmgBonusesTimed takes nothing returns nothing
+    local timer t = GetExpiredTimer()
+    local unit u = LoadUnitHandle(timerdata,GetHandleId(t),0)
+    call ApplyDmgBonuses(u)
+    call FlushChildHashtable(timerdata,GetHandleId(t))
+    call DestroyTimer(t)
+    set t = null
+    set u = null
+endfunction
+
 function SaveMorphBonuses_Actions takes nothing returns nothing
-call ApplyBookDmgBonuses(GetTriggerUnit())
+    local timer t = CreateTimer()
+    call SaveUnitHandle(timerdata,GetHandleId(t),0,GetTriggerUnit())
+    call TimerStart(t,0,false,function ApplyDmgBonusesTimed)
+    set t = null
 endfunction
 function InitTrig_SaveMorphBonuses takes nothing returns nothing
 set udg_SaveMorphBonuses=CreateTrigger()
