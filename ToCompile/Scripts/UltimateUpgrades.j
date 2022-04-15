@@ -91,6 +91,8 @@ library UltimateUpgrades
         SaveInteger(UltimateUpgrades,0,'N034','N05Q');
         SaveInteger(UltimateUpgrades,0,'U02B','U02G');
         SaveInteger(UltimateUpgrades,0,'U02L','O00N');
+        SaveInteger(UltimateUpgrades,0,'U02R','U02Q');
+        ////////////////////////////////////////////
         SaveInteger(UltimateUpgrades,1,'Udre','U010');
         SaveInteger(UltimateUpgrades,0,'Udre','U026');
         SaveInteger(UltimateUpgrades,1,'U00X','U00N');
