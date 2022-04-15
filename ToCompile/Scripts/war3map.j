@@ -33189,7 +33189,6 @@ set udg_CL_Damage[udg_CL_Index[2]]=(45+(5*udg_CL_AbilityLevel[udg_CL_Index[2]]))
 set udg_CL_AOE[udg_CL_Index[2]]=625.00
 call AddSpecialEffectTargetUnitBJ("weapon",udg_CL_Caster[udg_CL_Index[2]],"Abilities\\Weapons\\PhoenixMissile\\Phoenix_Missile.mdl")
 set udg_CL_Special[udg_CL_Index[2]]=GetLastCreatedEffectBJ()
-call PauseUnitBJ(true,udg_CL_Caster[udg_CL_Index[2]])
 endfunction
 function InitTrig_Omnislash takes nothing returns nothing
 set udg_trg_Omnislash=CreateTrigger()
@@ -33197,20 +33196,8 @@ call TriggerRegisterAnyUnitEventBJ(udg_trg_Omnislash,EVENT_PLAYER_UNIT_SPELL_EFF
 call TriggerAddCondition(udg_trg_Omnislash,Condition(function Trig_Omnislash_Conditions))
 call TriggerAddAction(udg_trg_Omnislash,function Trig_Omnislash_Actions)
 endfunction
-function Trig_Omnislash_Loop_Func002Func002Func015002003001 takes nothing returns boolean
-return(IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false)
-endfunction
-function Trig_Omnislash_Loop_Func002Func002Func015002003002001 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
-endfunction
-function Trig_Omnislash_Loop_Func002Func002Func015002003002002 takes nothing returns boolean
-return(IsUnitEnemy(GetFilterUnit(),udg_CL_Player[udg_CL_Index[3]])==true)
-endfunction
-function Trig_Omnislash_Loop_Func002Func002Func015002003002 takes nothing returns boolean
-return GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),udg_CL_Player[udg_CL_Index[3]])==true))
-endfunction
-function Trig_Omnislash_Loop_Func002Func002Func015002003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),udg_CL_Player[udg_CL_Index[3]])==true))))
+function Trig_Omnislash_Condition takes nothing returns boolean
+return (GetWidgetLife(GetFilterUnit())>0.5) and(IsUnitEnemy(GetFilterUnit(),udg_CL_Player[udg_CL_Index[3]])==true)
 endfunction
 function Trig_Omnislash_Loop_Func002Func002Func021Func018C takes nothing returns boolean
 if(not(udg_CL_Index[1]==0))then
@@ -33240,14 +33227,14 @@ exitwhen udg_CL_Index[3]>udg_CL_Index[2]
 if(Trig_Omnislash_Loop_Func002Func002C())then
 set udg_CL_Slashes[udg_CL_Index[3]]=(udg_CL_Slashes[udg_CL_Index[3]]-1)
 set udg_CL_Loc[1]=GetUnitLoc(udg_CL_Target[udg_CL_Index[3]])
-set udg_CL_Group[1]=GetUnitsInRangeOfLocMatching(udg_CL_AOE[udg_CL_Index[3]],udg_CL_Loc[1],Condition(function Trig_Omnislash_Loop_Func002Func002Func015002003))
+set udg_CL_Group[1]=GetUnitsInRangeOfLocMatching(udg_CL_AOE[udg_CL_Index[3]],udg_CL_Loc[1],Condition(function Trig_Omnislash_Condition))
 call RemoveLocation(udg_CL_Loc[1])
 if(Trig_Omnislash_Loop_Func002Func002Func021C())then
 set udg_CL_Victim[udg_CL_Index[3]]=GroupPickRandomUnit(udg_CL_Group[1])
 set udg_CL_Loc[2]=GetUnitLoc(udg_CL_Victim[udg_CL_Index[3]])
 call SetUnitPositionLoc(udg_CL_Caster[udg_CL_Index[3]],udg_CL_Loc[2])
 call SetUnitFacingToFaceLocTimed(udg_CL_Caster[udg_CL_Index[3]],udg_CL_Loc[2],0)
-call UnitDamageTargetBJ(udg_CL_Caster[udg_CL_Index[3]],udg_CL_Victim[udg_CL_Index[3]],I2R(udg_CL_Damage[udg_CL_Index[3]]),ATTACK_TYPE_MELEE,DAMAGE_TYPE_NORMAL)
+call UnitDamageTargetBJ(udg_CL_Caster[udg_CL_Index[3]],udg_CL_Victim[udg_CL_Index[3]],I2R(udg_CL_Damage[udg_CL_Index[3]])+GetUnitAttackDamage(udg_CL_Caster[udg_CL_Index[3]]),ATTACK_TYPE_MELEE,DAMAGE_TYPE_NORMAL)
 call SetUnitAnimation(udg_CL_Caster[udg_CL_Index[3]],"attack")
 call AddSpecialEffectTargetUnitBJ("origin",udg_CL_Caster[udg_CL_Index[3]],"Abilities\\Spells\\NightElf\\Blink\\BlinkCaster.mdl")
 call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -33256,7 +33243,6 @@ else
 set udg_CL_Index[1]=(udg_CL_Index[1]-1)
 set udg_CL_Boolean[udg_CL_Index[3]]=false
 call DestroyEffectBJ(udg_CL_Special[udg_CL_Index[3]])
-call PauseUnitBJ(false,udg_CL_Caster[udg_CL_Index[3]])
 if(Trig_Omnislash_Loop_Func002Func002Func021Func018C())then
 set udg_CL_Index[2]=0
 call DisableTrigger(GetTriggeringTrigger())
