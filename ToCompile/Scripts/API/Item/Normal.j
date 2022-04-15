@@ -119,9 +119,9 @@ library MemoryHackItemNormalAPI
         if PatchVersion != "" then
             if PatchVersion == "1.24e" then
                 set pStartItemCD    = pGameDLL + 0x0E4B50
-                set pUnitAddItemVirtual = pGameDLL+0x2B9600
         elseif PatchVersion == "1.26a" then
                 set pStartItemCD    = pGameDLL + 0x0E3F30
+                set pUnitAddItemVirtual = pGameDLL+0x2B9600
         elseif PatchVersion == "1.27a" then
                 set pStartItemCD    = pGameDLL + 0x54C2E0
         elseif PatchVersion == "1.27b" then
