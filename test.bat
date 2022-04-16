@@ -1,0 +1,1 @@
+"D:\Games\Warcraft 3.3\War3.exe" -loadfile "D:\Games\Warcraft 3.3\Maps\Evolution Tag\Evolution Tag.w3x" -windowed

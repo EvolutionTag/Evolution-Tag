@@ -33956,6 +33956,7 @@ endif
 set udg_DashInteger[0]=(udg_DashInteger[0]+1)
 set udg_DashInteger[1]=(udg_DashInteger[1]+1)
 set udg_DashCaster[udg_DashInteger[1]]=GetTriggerUnit()
+call PauseUnitBJ(true,udg_DashCaster[udg_DashInteger[1]])
 set udg_DashReal1[udg_DashInteger[1]]=GetUnitFacing(udg_DashCaster[udg_DashInteger[1]])
 set udg_DashDamage[udg_DashInteger[1]]=(I2R(GetUnitAbilityLevelSwapped('A0E0',udg_DashCaster[udg_DashInteger[1]]))*200.00)
 set udg_DashSpeed[udg_DashInteger[1]]=40.00
@@ -34013,7 +34014,6 @@ function Trig_Spell_Loop_Actions takes nothing returns nothing
 set udg_DashInteger[2]=1
 loop
 exitwhen udg_DashInteger[2]>udg_DashInteger[1]
-call IssueTargetOrder(stun_dispatcher003,"thunderbolt",udg_DashCaster[udg_DashInteger[2]])
 set udg_DashDistance[udg_DashInteger[2]]=(udg_DashDistance[udg_DashInteger[2]]-1)
 set udg_DashPoint3[udg_DashInteger[2]]=GetUnitLoc(udg_DashCaster[udg_DashInteger[2]])
 set udg_DashPoint4[udg_DashInteger[2]]=PolarProjectionBJ(udg_DashPoint3[udg_DashInteger[2]],udg_DashSpeed[udg_DashInteger[2]],udg_DashReal1[udg_DashInteger[2]])
@@ -34032,6 +34032,7 @@ set udg_DashInteger[2]=1
 loop
 exitwhen udg_DashInteger[2]>udg_DashInteger[1]
 call SetUnitPathing(udg_DashCaster[udg_DashInteger[2]],true)
+call PauseUnitBJ(false,udg_DashCaster[udg_DashInteger[2]])
 set udg_DashInteger[2]=udg_DashInteger[2]+1
 endloop
 set udg_DashInteger[1]=0
@@ -34379,6 +34380,7 @@ set udg_TS2_Hero[udg_TS2_Times]=GetSpellAbilityUnit()
 set udg_TS2_Target[udg_TS2_Times]=GetSpellTargetUnit()
 call SetUnitTimeScalePercent(udg_TS2_Target[udg_TS2_Times],0.00)
 call UnitAddAbilityBJ('Arav',udg_TS2_Target[udg_TS2_Times])
+call PauseUnitBJ(true,udg_TS2_Target[udg_TS2_Times])
 call SetUnitPathing(udg_TS2_Target[udg_TS2_Times],false)
 set udg_TS2_Point[0]=GetUnitLoc(udg_TS2_Hero[udg_TS2_Times])
 set udg_TS2_Point[1]=GetUnitLoc(udg_TS2_Target[udg_TS2_Times])
@@ -34532,7 +34534,6 @@ function Trig_Telekinetic_Seizure_Loop_Actions takes nothing returns nothing
 set udg_TS2=1
 loop
 exitwhen udg_TS2>udg_TS2_Times
-call IssueTargetOrder(stun_dispatcher002,"thunderbolt",udg_TS2_Target[udg_TS2])
 if(Trig_Telekinetic_Seizure_Loop_Func001Func001C())then
 if(Trig_Telekinetic_Seizure_Loop_Func001Func001Func001C())then
 if(Trig_Telekinetic_Seizure_Loop_Func001Func001Func001Func016C())then
@@ -34578,6 +34579,7 @@ call ResetUnitLookAt(udg_TS2_Hero[udg_TS2])
 call UnitRemoveBuffBJ('B01H',udg_TS2_Target[udg_TS2])
 call UnitRemoveAbilityBJ('Arav',udg_TS2_Target[udg_TS2])
 call SetUnitPathing(udg_TS2_Target[udg_TS2],true)
+call PauseUnitBJ(false,udg_TS2_Target[udg_TS2])
 set udg_TS2_Skip=(udg_TS2_Skip-1)
 set udg_TS2_Off[udg_TS2]=false
 if(Trig_Telekinetic_Seizure_Loop_Func001Func001Func001Func015C())then
@@ -35092,6 +35094,7 @@ set udg_SB_Angle[udg_SB_Times]=AngleBetweenPoints(udg_SB_Point[0],udg_SB_Point[1
 set udg_SB_Speed[udg_SB_Times]=(20.00+(2.00*I2R(udg_SB_Level[udg_SB_Times])))
 set udg_SB_Damage[udg_SB_Times]=(60.00+(40.00*I2R(udg_SB_Level[udg_SB_Times])))
 set udg_SB_Spam[udg_SB_Times]=0
+call PauseUnitBJ(true,GetTriggerUnit())
 call SetUnitPathing(udg_SB_Hero[udg_SB_Times],false)
 call SetUnitAnimation(GetTriggerUnit(),"defend")
 call RemoveLocation(udg_SB_Point[0])
@@ -35176,6 +35179,7 @@ set udg_KB_Skip=(udg_KB_Skip+1)
 set udg_KB_Times=(udg_KB_Times+1)
 set udg_KB_Off[udg_KB_Times]=true
 set udg_KB_Target[udg_KB_Times]=GetEnumUnit()
+call PauseUnitBJ(true,udg_KB_Target[udg_KB_Times])
 set udg_KB_Point[1]=GetUnitLoc(udg_KB_Target[udg_KB_Times])
 set udg_KB_Angle[udg_KB_Times]=AngleBetweenPoints(udg_KB_Point[0],udg_KB_Point[1])
 set udg_KB_Distance[udg_KB_Times]=(150.00+(50.00*I2R(udg_SB_Level[udg_SB])))
@@ -35245,6 +35249,7 @@ if(Trig_Shield_bash_Loop_Func001Func001C())then
 if(Trig_Shield_bash_Loop_Func001Func001Func001C())then
 call ResetUnitAnimation(udg_SB_Hero[udg_SB])
 call SetUnitPathing(udg_SB_Hero[udg_SB],true)
+call PauseUnitBJ(false,udg_SB_Hero[udg_SB])
 set udg_SB_On[udg_SB]=false
 set udg_SB_Skip=(udg_SB_Skip-1)
 if(Trig_Shield_bash_Loop_Func001Func001Func001Func016C())then
@@ -35253,7 +35258,6 @@ call DisableTrigger(GetTriggeringTrigger())
 else
 endif
 else
-call IssueTargetOrder(stun_dispatcher002,"thunderbolt",udg_SB_Hero[udg_SB])
 if(Trig_Shield_bash_Loop_Func001Func001Func001Func004C())then
 set udg_SB_Distance[udg_SB]=0.00
 else
@@ -35340,6 +35344,7 @@ loop
 exitwhen udg_KB>udg_KB_Times
 if(Trig_Knockback_System_Func001Func001C())then
 if(Trig_Knockback_System_Func001Func001Func001C())then
+call PauseUnitBJ(false,udg_KB_Target[udg_KB])
 set udg_KB_Off[udg_KB]=false
 if(Trig_Knockback_System_Func001Func001Func001Func027C())then
 set udg_KB_Off[udg_KB]=udg_KB_Off[udg_KB_Times]
@@ -35358,8 +35363,6 @@ call DisableTrigger(GetTriggeringTrigger())
 else
 endif
 else
-call IssueTargetOrder(stun_dispatcher004,"thunderbolt",udg_KB_Target[udg_KB])
-
 set udg_KB_Point[2]=GetUnitLoc(udg_KB_Target[udg_KB])
 set udg_KB_Point[3]=PolarProjectionBJ(udg_KB_Point[2],udg_KB_Speed[udg_KB],udg_KB_Angle[udg_KB])
 if(Trig_Knockback_System_Func001Func001Func001Func010C())then
@@ -40522,6 +40525,7 @@ call GroupAddUnitSimple(udg_TK_Unit[udg_TK_Integers[2]],udg_TK_FlyingUnits)
 call UnitAddAbilityBJ('Arav',udg_TK_Unit[udg_TK_Integers[2]])
 call UnitRemoveAbilityBJ('Arav',udg_TK_Unit[udg_TK_Integers[2]])
 if(Trig_Initial_Telekinesis_GUI_Func043Func014C())then
+call PauseUnitBJ(true,udg_TK_Unit[udg_TK_Integers[2]])
 else
 endif
 set udg_TK_TempPoint[2]=GetUnitLoc(udg_TK_Unit[udg_TK_Integers[2]])
@@ -40600,7 +40604,6 @@ if(Trig_Telekinesis_GUI_Func001Func001Func001C())then
 set udg_TK_Interval[udg_TK_Integers[3]]=(udg_TK_Interval[udg_TK_Integers[3]]+udg_TK_FSpeed[udg_TK_Integers[3]])
 set udg_TK_LsfxT[udg_TK_Integers[3]]=(udg_TK_LsfxT[udg_TK_Integers[3]]+0.01)
 call SetUnitFlyHeightBJ(udg_TK_Unit[udg_TK_Integers[3]],((SinBJ(udg_TK_Interval[udg_TK_Integers[3]])*udg_TK_MaxHeight[udg_TK_Integers[3]])+GetUnitDefaultFlyHeight(udg_TK_Unit[udg_TK_Integers[3]])),0.00)
-call IssueTargetOrder(stun_dispatcher001,"thunderbolt",udg_TK_Unit[udg_TK_Integers[3]])
 if(Trig_Telekinesis_GUI_Func001Func001Func001Func015C())then
 call AddSpecialEffectTargetUnitBJ("chest",udg_TK_Unit[udg_TK_Integers[3]],udg_TK_LiftSFX)
 call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -40611,6 +40614,7 @@ else
 set udg_TK_TempPoint[1]=GetUnitLoc(udg_TK_Unit[udg_TK_Integers[3]])
 call GroupRemoveUnitSimple(udg_TK_Unit[udg_TK_Integers[3]],udg_TK_FlyingUnits)
 if(Trig_Telekinesis_GUI_Func001Func001Func001Func003C())then
+call PauseUnitBJ(false,udg_TK_Unit[udg_TK_Integers[3]])
 else
 endif
 call AddSpecialEffectLocBJ(udg_TK_TempPoint[1],udg_TK_ImpactSFX)
