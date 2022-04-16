@@ -3101,7 +3101,8 @@ string HCLcommand=""
 constant integer dumytype='dDUM'
 constant integer dumyhamm='dHAM'
 constant integer revengeid='dARV'
-constant integer revengeham='dHAM'
+constant integer RevengeThunderbolt='dHAM'
+constant integer DummyThunderbolt='AE0K'
 constant integer IMAGE_TYPE_INVALID=-1
 constant integer IMAGE_TYPE_SHADOW=0
 constant integer IMAGE_TYPE_SELECTION=1
@@ -3158,6 +3159,24 @@ trigger gg_trg_SyncLeaderboard = null
 itempool DestDrop = null
 trigger trg_DestDropBonus = null
 unit general_tp_respawn_bufferex = null
+unit stun_dispatcher001 = null
+unit stun_dispatcher002 = null
+unit stun_dispatcher003 = null
+unit stun_dispatcher004 = null
+unit stun_dispatcher005 = null
+unit stun_dispatcher006 = null
+unit stun_dispatcher007 = null
+unit stun_dispatcher008 = null
+unit stun_dispatcher009 = null
+unit stun_dispatcher01 = null
+unit stun_dispatcher02 = null
+unit stun_dispatcher03 = null
+unit stun_dispatcher04 = null
+unit stun_dispatcher05 = null
+unit stun_dispatcher06 = null
+unit stun_dispatcher07 = null
+unit stun_dispatcher08 = null
+unit stun_dispatcher09 = null
 group TeleportedUnits = null
 endglobals
 native UnitAlive takes unit id returns boolean
@@ -8167,9 +8186,9 @@ local unit dumy
 local integer lvl=GetUnitAbilityLevel(atacked,revengeid)
 if(not isDumy(atacker)and atacked!=null and atacker!=null and lvl>0 and GetEventDamage()>0.4)then
 set dumy=CreateDumy(GetOwningPlayer(atacked),GetUnitX(atacked),GetUnitY(atacked))
-call UnitAddAbility(dumy,revengeham)
-call SetUnitAbilityLevel(dumy,revengeham,GetUnitAbilityLevel(atacked,revengeid))
-call SetThunderboltData(dumy,revengeham,lvl*0.05,lvl*0.05,lvl*5+GetHeroStr(atacked,true)*0.3)
+call UnitAddAbility(dumy,RevengeThunderbolt)
+call SetUnitAbilityLevel(dumy,RevengeThunderbolt,GetUnitAbilityLevel(atacked,revengeid))
+call SetThunderboltData(dumy,RevengeThunderbolt,lvl*0.05,lvl*0.05,lvl*5+GetHeroStr(atacked,true)*0.3)
 call UnitApplyTimedLife(dumy,'BTLF',2)
 call IssueTargetOrder(dumy,"thunderbolt",atacker)
 endif
@@ -8177,6 +8196,42 @@ set atacked=null
 set atacker=null
 set dumy=null
 return false
+endfunction
+function StunTimed takes unit u, real duration returns nothing
+    local unit dumy
+    set dumy=CreateDumy(GetOwningPlayer(u),GetUnitX(u),GetUnitY(u))
+    call UnitAddAbility(dumy,DummyThunderbolt)
+    call SetThunderboltData(dumy,DummyThunderbolt,duration,duration,0)
+    call IssueTargetOrder(dumy,"thunderbolt",u)
+    call UnitApplyTimedLife(dumy,'BTLF',0)
+    set dumy=null
+endfunction
+function AddStunWithData takes unit u, real duration returns nothing
+    call UnitAddAbility(u,DummyThunderbolt)
+    call SetThunderboltData(u,DummyThunderbolt,duration,duration,0)
+    //call BJDebugMsg("added thunderbolt, unit: "+I2S(GetHandleId(u))+" lvl: "+I2S(GetUnitAbilityLevel(u,DummyThunderbolt)))
+endfunction
+function InitStunDispatchers takes nothing returns nothing
+
+    //call BJDebugMsg("InitStunDispatchers")
+    call AddStunWithData( stun_dispatcher001,0.01)
+    call AddStunWithData( stun_dispatcher002,0.02)
+    call AddStunWithData( stun_dispatcher003,0.03)
+    call AddStunWithData( stun_dispatcher004,0.04)
+    call AddStunWithData( stun_dispatcher005,0.05)
+    call AddStunWithData( stun_dispatcher006,0.06)
+    call AddStunWithData( stun_dispatcher007,0.07)
+    call AddStunWithData( stun_dispatcher008,0.08)
+    call AddStunWithData( stun_dispatcher009,0.09)
+    call AddStunWithData( stun_dispatcher01,0.10)
+    call AddStunWithData( stun_dispatcher02,0.20)
+    call AddStunWithData( stun_dispatcher03,0.30)
+    call AddStunWithData( stun_dispatcher04,0.4)
+    call AddStunWithData( stun_dispatcher05,0.5)
+    call AddStunWithData( stun_dispatcher06,0.6)
+    call AddStunWithData( stun_dispatcher07,0.7)
+    call AddStunWithData( stun_dispatcher08,0.8)
+    call AddStunWithData( stun_dispatcher09,0.9)
 endfunction
 function AddRevenge takes unit u returns nothing
 call TriggerRegisterUnitEvent(gg_trg_revenge,u,EVENT_UNIT_DAMAGED)
@@ -11790,6 +11845,24 @@ endloop
 set general_tp_dispatcher = CreateUnit(Player(15),'h07U',6656.0,-5408.0,0)
 set general_tp_respawn_buffer = CreateUnit(Player(15),'dDUM',6656.0,-5408.0,0)
 set general_tp_respawn_bufferex = CreateUnit(Player(15),'dDUM',6656.0,-5408.0,0)
+set stun_dispatcher001 = CreateUnit(Player(15),'dDUM',6656,-5408,0)
+set stun_dispatcher002 = CreateUnit(Player(15),'dDUM',6656,-5408,0)
+set stun_dispatcher003 = CreateUnit(Player(15),'dDUM',6656,-5408,0)
+set stun_dispatcher004 = CreateUnit(Player(15),'dDUM',6656,-5408,0)
+set stun_dispatcher005 = CreateUnit(Player(15),'dDUM',6656,-5408,0)
+set stun_dispatcher006 = CreateUnit(Player(15),'dDUM',6656,-5408,0)
+set stun_dispatcher007 = CreateUnit(Player(15),'dDUM',6656,-5408,0)
+set stun_dispatcher008 = CreateUnit(Player(15),'dDUM',6656,-5408,0)
+set stun_dispatcher009 = CreateUnit(Player(15),'dDUM',6656,-5408,0)
+set stun_dispatcher01 = CreateUnit(Player(15),'dDUM',6656,-5408,0)
+set stun_dispatcher02 = CreateUnit(Player(15),'dDUM',6656,-5408,0)
+set stun_dispatcher03 = CreateUnit(Player(15),'dDUM',6656,-5408,0)
+set stun_dispatcher04 = CreateUnit(Player(15),'dDUM',6656,-5408,0)
+set stun_dispatcher05 = CreateUnit(Player(15),'dDUM',6656,-5408,0)
+set stun_dispatcher06 = CreateUnit(Player(15),'dDUM',6656,-5408,0)
+set stun_dispatcher07 = CreateUnit(Player(15),'dDUM',6656,-5408,0)
+set stun_dispatcher08 = CreateUnit(Player(15),'dDUM',6656,-5408,0)
+set stun_dispatcher09 = CreateUnit(Player(15),'dDUM',6656,-5408,0)
 call UnitAddAbility(general_tp_respawn_bufferex,'A0M2')
 call UnitAddAbility(general_tp_respawn_buffer,'A0LV')
 call UnitAddAbility(general_tp_dispatcher,'A0LU')
@@ -33883,7 +33956,6 @@ endif
 set udg_DashInteger[0]=(udg_DashInteger[0]+1)
 set udg_DashInteger[1]=(udg_DashInteger[1]+1)
 set udg_DashCaster[udg_DashInteger[1]]=GetTriggerUnit()
-call PauseUnitBJ(true,udg_DashCaster[udg_DashInteger[1]])
 set udg_DashReal1[udg_DashInteger[1]]=GetUnitFacing(udg_DashCaster[udg_DashInteger[1]])
 set udg_DashDamage[udg_DashInteger[1]]=(I2R(GetUnitAbilityLevelSwapped('A0E0',udg_DashCaster[udg_DashInteger[1]]))*200.00)
 set udg_DashSpeed[udg_DashInteger[1]]=40.00
@@ -33941,6 +34013,7 @@ function Trig_Spell_Loop_Actions takes nothing returns nothing
 set udg_DashInteger[2]=1
 loop
 exitwhen udg_DashInteger[2]>udg_DashInteger[1]
+call IssueTargetOrder(stun_dispatcher003,"thunderbolt",udg_DashCaster[udg_DashInteger[2]])
 set udg_DashDistance[udg_DashInteger[2]]=(udg_DashDistance[udg_DashInteger[2]]-1)
 set udg_DashPoint3[udg_DashInteger[2]]=GetUnitLoc(udg_DashCaster[udg_DashInteger[2]])
 set udg_DashPoint4[udg_DashInteger[2]]=PolarProjectionBJ(udg_DashPoint3[udg_DashInteger[2]],udg_DashSpeed[udg_DashInteger[2]],udg_DashReal1[udg_DashInteger[2]])
@@ -33959,7 +34032,6 @@ set udg_DashInteger[2]=1
 loop
 exitwhen udg_DashInteger[2]>udg_DashInteger[1]
 call SetUnitPathing(udg_DashCaster[udg_DashInteger[2]],true)
-call PauseUnitBJ(false,udg_DashCaster[udg_DashInteger[2]])
 set udg_DashInteger[2]=udg_DashInteger[2]+1
 endloop
 set udg_DashInteger[1]=0
@@ -34307,7 +34379,6 @@ set udg_TS2_Hero[udg_TS2_Times]=GetSpellAbilityUnit()
 set udg_TS2_Target[udg_TS2_Times]=GetSpellTargetUnit()
 call SetUnitTimeScalePercent(udg_TS2_Target[udg_TS2_Times],0.00)
 call UnitAddAbilityBJ('Arav',udg_TS2_Target[udg_TS2_Times])
-call PauseUnitBJ(true,udg_TS2_Target[udg_TS2_Times])
 call SetUnitPathing(udg_TS2_Target[udg_TS2_Times],false)
 set udg_TS2_Point[0]=GetUnitLoc(udg_TS2_Hero[udg_TS2_Times])
 set udg_TS2_Point[1]=GetUnitLoc(udg_TS2_Target[udg_TS2_Times])
@@ -34461,6 +34532,7 @@ function Trig_Telekinetic_Seizure_Loop_Actions takes nothing returns nothing
 set udg_TS2=1
 loop
 exitwhen udg_TS2>udg_TS2_Times
+call IssueTargetOrder(stun_dispatcher002,"thunderbolt",udg_TS2_Target[udg_TS2])
 if(Trig_Telekinetic_Seizure_Loop_Func001Func001C())then
 if(Trig_Telekinetic_Seizure_Loop_Func001Func001Func001C())then
 if(Trig_Telekinetic_Seizure_Loop_Func001Func001Func001Func016C())then
@@ -34506,7 +34578,6 @@ call ResetUnitLookAt(udg_TS2_Hero[udg_TS2])
 call UnitRemoveBuffBJ('B01H',udg_TS2_Target[udg_TS2])
 call UnitRemoveAbilityBJ('Arav',udg_TS2_Target[udg_TS2])
 call SetUnitPathing(udg_TS2_Target[udg_TS2],true)
-call PauseUnitBJ(false,udg_TS2_Target[udg_TS2])
 set udg_TS2_Skip=(udg_TS2_Skip-1)
 set udg_TS2_Off[udg_TS2]=false
 if(Trig_Telekinetic_Seizure_Loop_Func001Func001Func001Func015C())then
@@ -35021,7 +35092,6 @@ set udg_SB_Angle[udg_SB_Times]=AngleBetweenPoints(udg_SB_Point[0],udg_SB_Point[1
 set udg_SB_Speed[udg_SB_Times]=(20.00+(2.00*I2R(udg_SB_Level[udg_SB_Times])))
 set udg_SB_Damage[udg_SB_Times]=(60.00+(40.00*I2R(udg_SB_Level[udg_SB_Times])))
 set udg_SB_Spam[udg_SB_Times]=0
-call PauseUnitBJ(true,GetTriggerUnit())
 call SetUnitPathing(udg_SB_Hero[udg_SB_Times],false)
 call SetUnitAnimation(GetTriggerUnit(),"defend")
 call RemoveLocation(udg_SB_Point[0])
@@ -35106,7 +35176,6 @@ set udg_KB_Skip=(udg_KB_Skip+1)
 set udg_KB_Times=(udg_KB_Times+1)
 set udg_KB_Off[udg_KB_Times]=true
 set udg_KB_Target[udg_KB_Times]=GetEnumUnit()
-call PauseUnitBJ(true,udg_KB_Target[udg_KB_Times])
 set udg_KB_Point[1]=GetUnitLoc(udg_KB_Target[udg_KB_Times])
 set udg_KB_Angle[udg_KB_Times]=AngleBetweenPoints(udg_KB_Point[0],udg_KB_Point[1])
 set udg_KB_Distance[udg_KB_Times]=(150.00+(50.00*I2R(udg_SB_Level[udg_SB])))
@@ -35176,7 +35245,6 @@ if(Trig_Shield_bash_Loop_Func001Func001C())then
 if(Trig_Shield_bash_Loop_Func001Func001Func001C())then
 call ResetUnitAnimation(udg_SB_Hero[udg_SB])
 call SetUnitPathing(udg_SB_Hero[udg_SB],true)
-call PauseUnitBJ(false,udg_SB_Hero[udg_SB])
 set udg_SB_On[udg_SB]=false
 set udg_SB_Skip=(udg_SB_Skip-1)
 if(Trig_Shield_bash_Loop_Func001Func001Func001Func016C())then
@@ -35185,6 +35253,7 @@ call DisableTrigger(GetTriggeringTrigger())
 else
 endif
 else
+call IssueTargetOrder(stun_dispatcher002,"thunderbolt",udg_SB_Hero[udg_SB])
 if(Trig_Shield_bash_Loop_Func001Func001Func001Func004C())then
 set udg_SB_Distance[udg_SB]=0.00
 else
@@ -35271,7 +35340,6 @@ loop
 exitwhen udg_KB>udg_KB_Times
 if(Trig_Knockback_System_Func001Func001C())then
 if(Trig_Knockback_System_Func001Func001Func001C())then
-call PauseUnitBJ(false,udg_KB_Target[udg_KB])
 set udg_KB_Off[udg_KB]=false
 if(Trig_Knockback_System_Func001Func001Func001Func027C())then
 set udg_KB_Off[udg_KB]=udg_KB_Off[udg_KB_Times]
@@ -35290,6 +35358,8 @@ call DisableTrigger(GetTriggeringTrigger())
 else
 endif
 else
+call IssueTargetOrder(stun_dispatcher004,"thunderbolt",udg_KB_Target[udg_KB])
+
 set udg_KB_Point[2]=GetUnitLoc(udg_KB_Target[udg_KB])
 set udg_KB_Point[3]=PolarProjectionBJ(udg_KB_Point[2],udg_KB_Speed[udg_KB],udg_KB_Angle[udg_KB])
 if(Trig_Knockback_System_Func001Func001Func001Func010C())then
@@ -40452,7 +40522,6 @@ call GroupAddUnitSimple(udg_TK_Unit[udg_TK_Integers[2]],udg_TK_FlyingUnits)
 call UnitAddAbilityBJ('Arav',udg_TK_Unit[udg_TK_Integers[2]])
 call UnitRemoveAbilityBJ('Arav',udg_TK_Unit[udg_TK_Integers[2]])
 if(Trig_Initial_Telekinesis_GUI_Func043Func014C())then
-call PauseUnitBJ(true,udg_TK_Unit[udg_TK_Integers[2]])
 else
 endif
 set udg_TK_TempPoint[2]=GetUnitLoc(udg_TK_Unit[udg_TK_Integers[2]])
@@ -40531,6 +40600,7 @@ if(Trig_Telekinesis_GUI_Func001Func001Func001C())then
 set udg_TK_Interval[udg_TK_Integers[3]]=(udg_TK_Interval[udg_TK_Integers[3]]+udg_TK_FSpeed[udg_TK_Integers[3]])
 set udg_TK_LsfxT[udg_TK_Integers[3]]=(udg_TK_LsfxT[udg_TK_Integers[3]]+0.01)
 call SetUnitFlyHeightBJ(udg_TK_Unit[udg_TK_Integers[3]],((SinBJ(udg_TK_Interval[udg_TK_Integers[3]])*udg_TK_MaxHeight[udg_TK_Integers[3]])+GetUnitDefaultFlyHeight(udg_TK_Unit[udg_TK_Integers[3]])),0.00)
+call IssueTargetOrder(stun_dispatcher001,"thunderbolt",udg_TK_Unit[udg_TK_Integers[3]])
 if(Trig_Telekinesis_GUI_Func001Func001Func001Func015C())then
 call AddSpecialEffectTargetUnitBJ("chest",udg_TK_Unit[udg_TK_Integers[3]],udg_TK_LiftSFX)
 call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -40541,7 +40611,6 @@ else
 set udg_TK_TempPoint[1]=GetUnitLoc(udg_TK_Unit[udg_TK_Integers[3]])
 call GroupRemoveUnitSimple(udg_TK_Unit[udg_TK_Integers[3]],udg_TK_FlyingUnits)
 if(Trig_Telekinesis_GUI_Func001Func001Func001Func003C())then
-call PauseUnitBJ(false,udg_TK_Unit[udg_TK_Integers[3]])
 else
 endif
 call AddSpecialEffectLocBJ(udg_TK_TempPoint[1],udg_TK_ImpactSFX)
@@ -42177,6 +42246,7 @@ call TriggerRegisterTimerEventPeriodic(udg_trg_Passive_Death_Coil,10.00)
 call TriggerAddAction(udg_trg_Passive_Death_Coil,function Trig_Passive_Death_Coil_Actions)
 endfunction
 function InitCustomTriggers2 takes nothing returns nothing
+call TimerStart(CreateTimer(),6,false,function InitStunDispatchers)
 call LuaCall_Init()
 call NeutralAI___Init()
 call InitTrig_Dead_area_top_left()
