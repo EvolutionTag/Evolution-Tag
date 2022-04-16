@@ -36,6 +36,27 @@ VirtualEvent.cancel = function() end
 
 VirtualEvent.__index = VirtualEvent
 
+
+
+function CancelCurrentModeSafe()
+	local pGameUi = GetGameUI(0,0)
+	if(not pGameUi or pGameUi==0) then
+		return
+	end
+	SafeToCancel = {}
+	local pMode = ReadInt(pGameUi+0x21c)
+	if(not pMode or pMode==0) then
+		return
+	end
+	SafeToCancel[0x935DEC] = true --TargetMode
+	SafeToCancel[0x941748] = true --BuildMode
+	SafeToCancel[0x934B58] = true --SignalMode
+	SafeToCancel[0x934AF8] = true --DragSelectMode
+	SafeToCancel[0x934B28] = true --DragScrollMode
+	if(SafeToCancel[ReadInt(pMode)-AC.game])then
+		CancelCurrentMode()
+	end
+end
 function ProcessKey(key,code,e)
 	if(not IsInGame()) then return end
 	--gprint(1)
@@ -65,7 +86,7 @@ function ProcessKey(key,code,e)
 	local bmode = ReadRealMemory(ui+0x220)
 	local tmode = ReadRealMemory(ui+0x210)
 	local smode = ReadRealMemory(ui+0x214)
-	if(not IsSelectMode() and (curr ~= bmode)) then CancelCurrentMode()  end
+	if(not IsSelectMode() and (curr ~= bmode)) then CancelCurrentModeSafe()  end
 	curr = ReadRealMemory(ui+0x1b4)
 	if(not IsSelectMode() and (curr ~= bmode)) then return  end
 	--gprint(10)
@@ -109,7 +130,7 @@ function ProcessKey(key,code,e)
 	if(ClickableFrames[target] or ClickableFrames[pUbertipTarget] or ClickableFrames[TargetVF]) then
 	else
 		if((not IsSelectMode()) and curr~=bmode) then 
-			CancelCurrentMode()
+			CancelCurrentModeSafe()
 			return;
 		end
 		if(curr == bmode) then
@@ -124,7 +145,7 @@ function ProcessKey(key,code,e)
 	e:cancel()
 	--gprint(13)
 	if(not IsSelectMode() ) then 
-		CancelCurrentMode()
+		CancelCurrentModeSafe()
 	else
 		return
 	end
