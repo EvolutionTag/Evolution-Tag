@@ -1,14 +1,19 @@
 library PauseUnitsInRectEx
 {
     hashtable pausetable = null;
+    group activegroup = null;
     boolean PauseFlag = false;
     boolean enabled = false;
-    function PauseUnitsAllExEnum()
+    function PauseEnum()
     {
+        //BJDebugMsg("1000--w8489489749874789");
         PauseUnit(GetEnumUnit(),PauseFlag);
+        
         if(PauseFlag)
         {
-            SaveReal(pausetable,0,GetHandleId(GetEnumUnit()),GetWidgetLife(GetEnumUnit()));
+            if(GetHandleId(GetEnumUnit())!=0){
+                SaveReal(pausetable,0,GetHandleId(GetEnumUnit()),GetWidgetLife(GetEnumUnit()));
+            }
         }
         else
         {
@@ -19,42 +24,31 @@ library PauseUnitsInRectEx
     public function PauseUnitsAllEx(boolean pause)
     {
         integer index;
-        player indexPlayer;
-        group g;
-        group g0;
         PauseFlag=pause;
         if(pause==enabled)
         {
+            //BJDebugMsg("return!!!");
             return;
         }
         enabled = pause;
         if(pause) 
         {
-            g0 = CreateGroup();
-            g=CreateGroup();
-            for(0<=index<bj_MAX_PLAYER_SLOTS)
-            {
-                indexPlayer=Player(index);
-                GroupEnumUnitsOfPlayer(g0,indexPlayer,null);
-               // BJDebugMsg(I2S(CountUnitsInGroup(g)));
-                GroupAddGroup(g0,g);
-            }
-            SaveGroupHandle(pausetable,0,0,g);
-            DestroyGroup(g0);
-            g0 = null;
-            ForGroup(g,function PauseUnitsAllExEnum);
+            activegroup=CreateGroup();
+            GroupEnumUnitsInRect(activegroup,GetPlayableMapRect(),null);
+            //BJDebugMsg(I2S(CountUnitsInGroup(activegroup))+" "+I2S(GetHandleId(activegroup)));
+            ForGroup(activegroup,function PauseEnum);
+            //BJDebugMsg(I2S(CountUnitsInGroup(activegroup))+" "+I2S(GetHandleId(activegroup)));
         }
-        else
+    else
         {
-            g = LoadGroupHandle(pausetable,0,0);
-
-            //BJDebugMsg(I2S(CountUnitsInGroup(g))+" "+I2S(GetHandleId(g)));
-            ForGroup(g,function PauseUnitsAllExEnum);
+            //BJDebugMsg(I2S(GetHandleId(activegroup)));
+            //BJDebugMsg(I2S(CountUnitsInGroup(activegroup))+" "+I2S(GetHandleId(activegroup)));
+            ForGroup(activegroup,function PauseEnum);
             FlushChildHashtable(pausetable,0);
-            DestroyGroup(g);
+            DestroyGroup(activegroup);
+            activegroup = null;
         }
-        
-        g = null;
+    
     }
     function onInit()
     {
