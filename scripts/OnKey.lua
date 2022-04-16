@@ -43,17 +43,17 @@ function CancelCurrentModeSafe()
 	if(not pGameUi or pGameUi==0) then
 		return
 	end
-	SafeToCancel = {}
-	local pMode = ReadInt(pGameUi+0x21c)
+	local pMode = ReadInt(pGameUi+0x1b4)
 	if(not pMode or pMode==0) then
 		return
 	end
+	SafeToCancel = {}
 	SafeToCancel[0x935DEC] = true --TargetMode
 	SafeToCancel[0x941748] = true --BuildMode
 	SafeToCancel[0x934B58] = true --SignalMode
 	SafeToCancel[0x934AF8] = true --DragSelectMode
 	SafeToCancel[0x934B28] = true --DragScrollMode
-	if(SafeToCancel[ReadInt(pMode)-AC.game])then
+	if(SafeToCancel[ReadInt(pMode)-AC.game]) then
 		CancelCurrentMode()
 	end
 end
