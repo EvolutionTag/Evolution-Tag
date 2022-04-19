@@ -127,6 +127,7 @@ library SyncData requires APIMemoryBitwise
                 if(TrueDesync)
                 {
                     BJDebugMsg("|cfffc0707Desync Warning!|r");
+                    TrueDesync = false;
                 }
                 Prevoiousdesync = false;
             }
