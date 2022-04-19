@@ -1,27 +1,4 @@
-$jashelper = "D:\\Program Files\\wc3 we\\Jass New Gen Pack Rebuild\\jasshelper\\clijasshelper.exe"
-$wc3lni = "d:\\program files\\wc3edit\\wc3lni\\w2l.exe"
-$TempFolder = ".\\Temp" #warning! will be deleted after compilation (нафиг удалится после компиляции)
-$commonj = "..\\Scripts\\common.j"
-$blizzardj = "..\\Scripts\\blizzard.j"
-$war3MapToCompile = "..\\ToCompile\\Scripts\\war3map.j"
-$CompiledScriptPath = "..\\Map\\war3map.j"
-
-
-$d = [System.IO.File]::Exists(".w3x");
- if ($d)
- {
-
-    $location = Get-Location
-    Remove-Item -Path:$TempFolder -Confirm:$false -force -recurse 
-    mkdir $TempFolder
-    Set-Location $TempFolder #шобы жасхелпер срал в временную папку, несколько усложняет пути например для импорта.
-    &$jashelper ("--scriptonly","--nooptimize",$commonj , $blizzardj,$war3MapToCompile,$CompiledScriptPath)
-    Set-Location $location
-    &$wc3lni slk;
- }
- else 
- {
-    write-output ".w3x not found";
-    exit;
- }
- 
+. .\build\lib\paths.ps1
+. .\build\lib\check.ps1
+. .\build\lib\jasshelper_build.ps1
+. .\build\lib\lnibuild.ps1
