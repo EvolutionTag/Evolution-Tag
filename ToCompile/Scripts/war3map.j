@@ -20967,9 +20967,9 @@ endif
 endfunction
 function Trig_Duel_Actions takes nothing returns nothing
 call ExecuteFunc("All_Morphs_return")
+set bj_wantDestroyGroup=true
 call ForGroupBJ(GetUnitsInRectAll(udg_rct_Dead_teleport_area),function Trig_Duel_Func007A)
 call CheckTriggers()
-set bj_wantDestroyGroup=true
 set udg_Duel_Boolean=true
 call EnableTrigger(udg_trg_DARK_TEAM)
 call EnableTrigger(udg_trg_LIGHT_TEAM)
@@ -21763,7 +21763,6 @@ function Trig_Duel_in_forest_area_Actions takes nothing returns nothing
 call ForGroupBJ(GetUnitsInRectAll(udg_rct_Dead_teleport_area),function Trig_Duel_in_forest_area_Func007A)
 call ExecuteFunc("All_Morphs_return")
 call CheckTriggers()
-set bj_wantDestroyGroup=true
 set udg_Duel_Boolean=true
 set udg_General_Index=1
 loop
@@ -33927,7 +33926,6 @@ else
 endif
 if(Trig_TOT_Tree_Func002C())then
 set udg_TOT_Point[99]=GetUnitLoc(GetTriggerUnit())
-set bj_wantDestroyGroup=true
 call EnumDestructablesInCircleBJ(100.00,udg_TOT_Point[99],function Trig_TOT_Tree_Func002Func003A)
 else
 endif
@@ -34023,7 +34021,6 @@ call CreateNUnitsAtLocBonuses(1,'h05M',GetOwningPlayer(udg_DashCaster[udg_DashIn
 call UnitApplyTimedLifeBJ(0.50,'BTLF',GetLastCreatedUnit())
 call GroupAddUnitSimple(GetLastCreatedUnit(),udg_DashGroup3)
 call SetUnitAnimation(GetLastCreatedUnit(),"walk")
-set bj_wantDestroyGroup=true
 call ForGroupBJ(udg_DashGroup3,function Trig_Spell_Loop_Func001Func014A)
 set udg_DashGroup1=GetUnitsInRangeOfLocMatching(150.00,udg_DashPoint4[udg_DashInteger[2]],Condition(function Trig_Spell_Loop_Func001Func016002003))
 call ForGroupBJ(udg_DashGroup1,function Trig_Spell_Loop_Func001Func017A)
