@@ -14801,9 +14801,9 @@ set u=CreateUnitBonuses(p,'nitr',3162.1,-4763.3,254.067)
 set u=CreateUnitBonuses(p,'nitr',3277.3,-4947.2,200.177)
 set u=CreateUnitBonuses(p,'nitr',1879.2,-5070.3,278.380)
 set u=CreateUnitBonuses(p,'nitr',1799.3,-4934.9,13.964)
+set u=CreateUnit(p,'n07E',-2541.4,-5758.2,107.560)
+set u=CreateUnit(Player(14),'n07E',-1097.4,-5970.2,107.560)
 set u=CreateUnitBonuses(p,'nitr',1799.3,-4934.9,13.964)
-set u=CreateUnitBonuses(p,'n07E',-2541.4,-5758.2,107.560)
-set u=CreateUnitBonuses(p,'n07E',-1097.4,-5970.2,107.560)
 call IssueImmediateOrder(u,"")
 set u=CreateUnitBonuses(p,'n05R',-5218.5,-757.3,0.000)
 call SetUnitAcquireRange(u,200.0)
@@ -19303,8 +19303,11 @@ endif
 endfunction
 function Trig_Hide_Units_and_Set_Groups_Actions takes nothing returns nothing
 set udg_PirateChance=6
+set bj_wantDestroyGroup = true
 call ForGroupBJ(GetUnitsInRectAll(udg_rct_Satyr_West_Units),function Trig_Hide_Units_and_Set_Groups_Func002A)
+set bj_wantDestroyGroup = true
 call ForGroupBJ(GetUnitsInRectAll(udg_rct_Satyr_West_Units),function Trig_Hide_Units_and_Set_Groups_Func003A)
+set bj_wantDestroyGroup = true
 call ForGroupBJ(GetUnitsInRectAll(udg_rct_Satyr_East_Units),function Trig_Hide_Units_and_Set_Groups_Func004A)
 endfunction
 function InitTrig_Hide_Units_and_Set_Groups takes nothing returns nothing
