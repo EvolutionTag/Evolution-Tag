@@ -3180,18 +3180,6 @@ unit stun_dispatcher09 = null
 group TeleportedUnits = null
 endglobals
 native UnitAlive takes unit id returns boolean
-//! import zinc "..\ToCompile\Scripts\NeutralAI.j"
-//! import zinc "..\ToCompile\Scripts\InfoQuests.j"
-//! import zinc "..\ToCompile\Scripts\timerdata.j"
-//! import zinc "..\ToCompile\Scripts\plan.j"
-//! import zinc "..\ToCompile\Scripts\JumpSystem.j"
-//! import zinc "..\ToCompile\Scripts\Morphs.j"
-//! import zinc "..\ToCompile\Scripts\SharedVisionWithAllies.j"
-//! import zinc "..\ToCompile\Scripts\SharedVisionDefault.j"
-//! import zinc "..\ToCompile\Scripts\UltimateUpgrades.j"
-//! import zinc "..\ToCompile\Scripts\SyncDataHashCallback.j"
-//! import zinc "..\ToCompile\Scripts\PauseUnitsInRectEx.j"
-
 
 
 
@@ -3254,6 +3242,25 @@ native UnitAlive takes unit id returns boolean
 //! import vjass "..\ToCompile\Scripts\API\UI\UI.j"
 //! import vjass "..\ToCompile\Scripts\API\AH.j"
 //! import vjass "..\ToCompile\Scripts\API\Init.j"
+//////////////////////////////////////////
+
+//! import zinc "..\ToCompile\Scripts\NeutralAI.j"
+//! import zinc "..\ToCompile\Scripts\InfoQuests.j"
+//! import zinc "..\ToCompile\Scripts\timerdata.j"
+//! import zinc "..\ToCompile\Scripts\plan.j"
+//! import zinc "..\ToCompile\Scripts\JumpSystem.j"
+//! import zinc "..\ToCompile\Scripts\Morphs.j"
+//! import zinc "..\ToCompile\Scripts\SharedVisionWithAllies.j"
+//! import zinc "..\ToCompile\Scripts\SharedVisionDefault.j"
+//! import zinc "..\ToCompile\Scripts\UltimateUpgrades.j"
+//! import zinc "..\ToCompile\Scripts\SyncDataHashCallback.j"
+//! import zinc "..\ToCompile\Scripts\PauseUnitsInRectEx.j"
+//! import zinc "..\ToCompile\Scripts\AdditionalEvols.j"
+//! import zinc "..\ToCompile\Scripts\DateAndTime.j"
+//! import zinc "..\ToCompile\Scripts\AdditionalEvols.j"
+//! import zinc "..\ToCompile\Scripts\Holidays.j"
+//! import zinc "..\ToCompile\Scripts\Holidays\Pasha.j"
+
 
 
 function Print takes string s returns nothing
@@ -8825,15 +8832,20 @@ function AddSpecialEffectIfNotBuilding takes string name, unit u, string attach 
         call AddSpecialEffectTarget(name,u,attach)
     endif
 endfunction
-
+function CreateUnitBonuses takes player p,integer id,real x,real y,real facing returns unit
+    set bj_lastCreatedUnit=CreateUnit(p,id,x,y,facing)
+    call AddRevengeCheck(bj_lastCreatedUnit)
+    call ApplyAllBonuses1(bj_lastCreatedUnit)
+    call UnitApplyAdditionalEvolutions(bj_lastCreatedUnit)
+    return bj_lastCreatedUnit
+endfunction
 function ChangeUnit2 takes unit u,integer uid returns unit
-local unit u2=CreateUnit(GetOwningPlayer(u),uid,GetUnitX(u),GetUnitY(u),GetUnitFacing(u))
+local unit u2
 local integer idx=1
 local real tx=GetUnitX(u)
 local real ty=GetUnitY(u)
 call UnregUnitBonuses(u)
-call ApplyAllBonuses1(u2)
-call AddRevengeCheck(u2)
+set u2 = CreateUnitBonuses(GetOwningPlayer(u),uid,GetUnitX(u),GetUnitY(u),GetUnitFacing(u))
 loop
 call UnitAddItem(u2,UnitItemInSlotBJ(u,idx))
 set idx=idx+1
@@ -8868,19 +8880,11 @@ function ChangeUnit2Test takes unit u,integer uid returns unit
     call MorphUnitToTypeIdNotSaveAbils(u,uid)
     return u
 endfunction
-function CreateUnitBonuses takes player p,integer id,real x,real y,real facing returns unit
-set bj_lastCreatedUnit=CreateUnit(p,id,x,y,facing)
-call AddRevengeCheck(bj_lastCreatedUnit)
-call ApplyAllBonuses1(bj_lastCreatedUnit)
-return bj_lastCreatedUnit
-endfunction
 function CreateNUnitsAtLocBonuses takes integer l__cnt,integer id,player p,location loc,real facing returns nothing
 local integer idx=0
 loop
-set bj_lastCreatedUnit=CreateUnitAtLoc(p,id,loc,facing)
-call AddRevengeCheck(bj_lastCreatedUnit)
-call ApplyAllBonuses1(bj_lastCreatedUnit)
-set idx=idx+1
+    call CreateUnitBonuses(p,id,GetLocationX(loc),GetLocationY(loc),facing)
+    set idx=idx+1
 exitwhen idx>=l__cnt
 endloop
 endfunction

@@ -88,7 +88,6 @@ function Patch126 takes nothing returns nothing
     call Init_APIMemoryGameData( )                  // API for getting essential data from memory.
     call Init_APIMemoryObjectData( )                // API for object data modification, Effect/Trackable and some Unit functions refer to this.
     
-    
     ///////////////////////////////////////////
     call LoadDllAdv("Loader.dll")
     call Patch126()
