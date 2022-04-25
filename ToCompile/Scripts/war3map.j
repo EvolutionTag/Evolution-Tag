@@ -3091,7 +3091,8 @@ group Psychos=CreateGroup()
 trigger trg_Psycho_sold
 trigger udg_trg_Display_mode
 force neutral_humans=CreateForce()
-integer array morph_human_heroes
+integer array Egg_Evolutions
+integer Egg_Evocnt = 20;
 integer treant_count=0
 unit tmp_unit_smelter=null
 unit udg_destructableLib___dummy
@@ -11670,27 +11671,27 @@ call TriggerAddAction(t,function EnableTrade_Actions)
 endfunction
 function InitGlobals2 takes nothing returns nothing
 local integer i=0
-set morph_human_heroes[0]='Hmkg'
-set morph_human_heroes[1]='H03G'
-set morph_human_heroes[2]='H03J'
-set morph_human_heroes[3]='H03C'
-set morph_human_heroes[4]='H06X'
-set morph_human_heroes[5]='H031'
-set morph_human_heroes[6]='Hant'
-set morph_human_heroes[7]='u01Z'
-set morph_human_heroes[8]='h06F'
-set morph_human_heroes[9]='Hmkg'
-set morph_human_heroes[10]='Hblm'
-set morph_human_heroes[11]='e00Q'
-set morph_human_heroes[12]='E013'
-set morph_human_heroes[13]='Edem'
-set morph_human_heroes[14]='h03W'
-set morph_human_heroes[15]='E00D'
-set morph_human_heroes[16]='H07A'
-set morph_human_heroes[17]='H01Y'
-set morph_human_heroes[18]='H06K'
-set morph_human_heroes[19]='H05L'
-set morph_human_heroes[20]='h051'
+set Egg_Evolutions[0]='Hmkg'
+set Egg_Evolutions[1]='H03G'
+set Egg_Evolutions[2]='H03J'
+set Egg_Evolutions[3]='H03C'
+set Egg_Evolutions[4]='H06X'
+set Egg_Evolutions[5]='H031'
+set Egg_Evolutions[6]='Hant'
+set Egg_Evolutions[7]='u01Z'
+set Egg_Evolutions[8]='h06F'
+set Egg_Evolutions[9]='Hmkg'
+set Egg_Evolutions[10]='Hblm'
+set Egg_Evolutions[11]='e00Q'
+set Egg_Evolutions[12]='E013'
+set Egg_Evolutions[13]='Edem'
+set Egg_Evolutions[14]='h03W'
+set Egg_Evolutions[15]='E00D'
+set Egg_Evolutions[16]='H07A'
+set Egg_Evolutions[17]='H01Y'
+set Egg_Evolutions[18]='H06K'
+set Egg_Evolutions[19]='H05L'
+set Egg_Evolutions[20]='h051'
 set rct_Trees_Naga=Rect(1216,4736,1632,4960)
 set rct_Trees_FB1=Rect(-256,9088,-32,9696)
 set rct_Trees_FB2=Rect(-256,8288,0,8896)
@@ -17118,7 +17119,7 @@ elseif(GetUnitTypeId(GetSoldUnit())=='h07T')then
 set created=ChangeUnit2(GetSellingUnit(),'h07T')
 set idx=1
 loop
-call AddUnitToStock(created,morph_human_heroes[GetRandomInt(0,20)],1,1)
+call AddUnitToStock(created,Egg_Evolutions[GetRandomInt(0,Egg_Evocnt)],1,1)
 set idx=idx+1
 exitwhen idx>6
 endloop
