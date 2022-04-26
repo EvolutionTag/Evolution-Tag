@@ -32,6 +32,7 @@ library morphs
         SaveBoolean(Morphs,0,'A0DR',true);
         SaveBoolean(Morphs,0,'A0JE',true);
         SaveBoolean(Morphs,0,'AMPH',true);
+        SaveBoolean(Morphs,0,'ANcr',true);
     }
 
 }

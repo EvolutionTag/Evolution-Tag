@@ -3261,6 +3261,7 @@ native UnitAlive takes unit id returns boolean
 //! import zinc "..\ToCompile\Scripts\AdditionalEvols.j"
 //! import zinc "..\ToCompile\Scripts\Holidays.j"
 //! import zinc "..\ToCompile\Scripts\Holidays\Pasha.j"
+//! import zinc "..\ToCompile\Scripts\UnlearnAbilityOnDeath.j"
 
 
 
@@ -9158,55 +9159,50 @@ endfunction
 function RespawnPlayer takes unit u returns nothing
 local player owner=GetOwningPlayer(u)
 local location respoint = ResurrectionLocations[GetPlayerId(owner)]
+local integer abilid = DeathUnlearnCheck(u)
 if(IsPlayerInForce(owner,udg_Humans))then
 call PlaySoundBJ(snd_HumanDies)
 if(udg_FinalBattle_On)then
-set udg_CS_Unit=RecreateUnitPosBonusesNotRemove(u,GetLocationX(GetRectCenter(udg_rct_FB_Human_Spawn)),GetLocationY(GetRectCenter(udg_rct_FB_Human_Spawn)))
+set u = RecreateUnitPosBonusesNotRemove(u,GetLocationX(GetRectCenter(udg_rct_FB_Human_Spawn)),GetLocationY(GetRectCenter(udg_rct_FB_Human_Spawn)))
+set udg_CS_Unit=u
 call DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Human\\Resurrect\\ResurrectCaster.mdl",udg_CS_Unit,"origin"))
-if((GetUnitTypeId(udg_CS_Unit)=='u00S')or(GetUnitTypeId(udg_CS_Unit)=='u00T'))then
-if(CountUnitsInGroup(Psychos)==0)then
-call EnableTrigger(udg_trg_Kitapsycho)
-endif
-call GroupAddUnit(Psychos,udg_CS_Unit)
-endif
 else
 call PlaySoundBJ(snd_UndedadDies)
 if(respoint==null) then
     set respoint = GetRectCenter(udg_rct_Dead_area_entry)
 endif
-set udg_CS_Unit=RecreateUnitPosBonusesNotRemove(u,GetLocationX(respoint),GetLocationY(respoint))
+set u = RecreateUnitPosBonusesNotRemove(u,GetLocationX(respoint),GetLocationY(respoint))
+set udg_CS_Unit=u
 call DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Human\\Resurrect\\ResurrectCaster.mdl",udg_CS_Unit,"origin"))
 call SetPlayerToTp(owner)
-if((GetUnitTypeId(udg_CS_Unit)=='u00S')or(GetUnitTypeId(udg_CS_Unit)=='u00T'))then
-if(CountUnitsInGroup(Psychos)==0)then
-call EnableTrigger(udg_trg_Kitapsycho)
-endif
-call GroupAddUnit(Psychos,udg_CS_Unit)
-endif
 endif
 else
 if(udg_FinalBattle_On)then
-set udg_CS_Unit=RecreateUnitPosBonusesNotRemove(u,GetLocationX(GetRectCenter(udg_rct_FB_Undead_Spawn)),GetLocationY(GetRectCenter(udg_rct_FB_Undead_Spawn)))
+set u = RecreateUnitPosBonusesNotRemove(u,GetLocationX(GetRectCenter(udg_rct_FB_Undead_Spawn)),GetLocationY(GetRectCenter(udg_rct_FB_Undead_Spawn)))
+set udg_CS_Unit=u
 call DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Human\\Resurrect\\ResurrectCaster.mdl",udg_CS_Unit,"origin"))
-if((GetUnitTypeId(udg_CS_Unit)=='u00S')or(GetUnitTypeId(udg_CS_Unit)=='u00T'))then
-if(CountUnitsInGroup(Psychos)==0)then
-call EnableTrigger(udg_trg_Kitapsycho)
-endif
-call GroupAddUnit(Psychos,udg_CS_Unit)
-endif
 else
 if(respoint==null) then
     set respoint = GetRectCenter(udg_rct_The_ring_of_trees)
 endif
-set udg_CS_Unit=RecreateUnitPosBonusesNotRemove(u,GetLocationX(respoint),GetLocationY(respoint))
+set u = RecreateUnitPosBonusesNotRemove(u,GetLocationX(respoint),GetLocationY(respoint))
+set udg_CS_Unit=u
 call DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Human\\Resurrect\\ResurrectCaster.mdl",udg_CS_Unit,"origin"))
-if((GetUnitTypeId(udg_CS_Unit)=='u00S')or(GetUnitTypeId(udg_CS_Unit)=='u00T'))then
-if(CountUnitsInGroup(Psychos)==0)then
-call EnableTrigger(udg_trg_Kitapsycho)
-endif
-call GroupAddUnit(Psychos,udg_CS_Unit)
 endif
 endif
+if(u!=null) then
+    call DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Human\\Resurrect\\ResurrectCaster.mdl",u,"origin"))
+    if((GetUnitTypeId(u)=='u00S')or(GetUnitTypeId(u)=='u00T'))then
+    if(CountUnitsInGroup(Psychos)==0)then
+    call EnableTrigger(udg_trg_Kitapsycho)
+    endif
+    call GroupAddUnit(Psychos,u)
+    endif
+    if(abilid!=0) then
+
+        call UnitAddAbility(u,abilid)
+        call UnitRemoveAbility(u,abilid)
+    endif
 endif
 set owner=null
 set respoint = null
