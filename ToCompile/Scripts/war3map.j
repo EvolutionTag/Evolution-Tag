@@ -3092,7 +3092,7 @@ trigger trg_Psycho_sold
 trigger udg_trg_Display_mode
 force neutral_humans=CreateForce()
 integer array Egg_Evolutions
-integer Egg_Evocnt = 20;
+integer Egg_Evocnt = 0
 integer treant_count=0
 unit tmp_unit_smelter=null
 unit udg_destructableLib___dummy
@@ -11669,29 +11669,39 @@ local trigger t=CreateTrigger()
 call TriggerRegisterTimerEventSingle(t,420.)
 call TriggerAddAction(t,function EnableTrade_Actions)
 endfunction
+function AddEggEvolution takes integer id returns nothing
+    set Egg_Evolutions[Egg_Evocnt] = id
+    set Egg_Evocnt = Egg_Evocnt + 1
+endfunction
 function InitGlobals2 takes nothing returns nothing
 local integer i=0
-set Egg_Evolutions[0]='Hmkg'
-set Egg_Evolutions[1]='H03G'
-set Egg_Evolutions[2]='H03J'
-set Egg_Evolutions[3]='H03C'
-set Egg_Evolutions[4]='H06X'
-set Egg_Evolutions[5]='H031'
-set Egg_Evolutions[6]='Hant'
-set Egg_Evolutions[7]='u01Z'
-set Egg_Evolutions[8]='h06F'
-set Egg_Evolutions[9]='Hmkg'
-set Egg_Evolutions[10]='Hblm'
-set Egg_Evolutions[11]='e00Q'
-set Egg_Evolutions[12]='E013'
-set Egg_Evolutions[13]='Edem'
-set Egg_Evolutions[14]='h03W'
-set Egg_Evolutions[15]='E00D'
-set Egg_Evolutions[16]='H07A'
-set Egg_Evolutions[17]='H01Y'
-set Egg_Evolutions[18]='H06K'
-set Egg_Evolutions[19]='H05L'
-set Egg_Evolutions[20]='h051'
+call AddEggEvolution('H03G')
+call AddEggEvolution('H03J')
+call AddEggEvolution('H03C')
+call AddEggEvolution('H06X')
+call AddEggEvolution('Hant')
+call AddEggEvolution('u01Z')
+call AddEggEvolution('h068') //Terrorist 5
+call AddEggEvolution('Hblm')
+call AddEggEvolution('e00N') //Ancient of Wind 2
+call AddEggEvolution('E013')
+call AddEggEvolution('Edem')
+call AddEggEvolution('h03W')
+call AddEggEvolution('E00D')
+call AddEggEvolution('H07A')
+call AddEggEvolution('H01Y')
+call AddEggEvolution('H06K')
+call AddEggEvolution('H05L')
+call AddEggEvolution('h04W') //Tinker 5
+call AddEggEvolution('N01X')
+call AddEggEvolution('N04D')
+call AddEggEvolution('Hmbr')
+call AddEggEvolution('nvlk')
+call AddEggEvolution('Ogrh')
+call AddEggEvolution('Orex')
+call AddEggEvolution('Nalc')
+call AddEggEvolution('Ntin')
+call AddEggEvolution('O00U')
 set rct_Trees_Naga=Rect(1216,4736,1632,4960)
 set rct_Trees_FB1=Rect(-256,9088,-32,9696)
 set rct_Trees_FB2=Rect(-256,8288,0,8896)
