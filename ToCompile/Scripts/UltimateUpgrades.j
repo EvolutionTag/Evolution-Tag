@@ -44,7 +44,7 @@ library UltimateUpgrades
         SaveInteger(UltimateUpgrades,0,'Nfir','N01H');
         SaveInteger(UltimateUpgrades,0,'N033','N01N');
         SaveInteger(UltimateUpgrades,0,'U00W','U00J');
-        SaveInteger(UltimateUpgrades,0,'n00P','n01I');
+        SaveInteger(UltimateUpgrades,0,'n00P','N01I');
         SaveInteger(UltimateUpgrades,0,'edoc','N01P');
         SaveInteger(UltimateUpgrades,0,'edcm','N01P');
         SaveInteger(UltimateUpgrades,0,'N02J','N03K');
@@ -76,7 +76,7 @@ library UltimateUpgrades
         SaveInteger(UltimateUpgrades,0,'H00B','H02A');
         SaveInteger(UltimateUpgrades,0,'E00E','E00B');
         SaveInteger(UltimateUpgrades,0,'Hvwd','H033');
-        SaveInteger(UltimateUpgrades,0,'h00R','nhew');
+        SaveInteger(UltimateUpgrades,0,'h00R','Nhew');
         SaveInteger(UltimateUpgrades,0,'Npbm','N022');
         SaveInteger(UltimateUpgrades,0,'Naka','N021');
         SaveInteger(UltimateUpgrades,0,'Efur','Emns');

@@ -17234,7 +17234,7 @@ endif
 if((GetUnitTypeId(GetBuyingUnit())=='N01P'))then
 return true
 endif
-if((GetUnitTypeId(GetBuyingUnit())=='n01I'))then
+if((GetUnitTypeId(GetBuyingUnit())=='N01I'))then
 return true
 endif
 if((GetUnitTypeId(GetBuyingUnit())=='N03K'))then
@@ -17612,7 +17612,7 @@ endif
 if((GetUnitTypeId(GetTriggerUnit())=='h050'))then
 return true
 endif
-if((GetUnitTypeId(GetTriggerUnit())=='h051'))then
+if((GetUnitTypeId(GetTriggerUnit())=='H051'))then
 return true
 endif
 if((GetUnitTypeId(GetTriggerUnit())=='h05W'))then
@@ -36968,7 +36968,7 @@ function Trig_GSkeleWarriorMETA_Func002C takes nothing returns boolean
 if((GetUnitTypeId(GetAttacker())=='n00V'))then
 return true
 endif
-if((GetUnitTypeId(GetAttacker())=='n00Q'))then
+if((GetUnitTypeId(GetAttacker())=='N00Q'))then
 return true
 endif
 return false
