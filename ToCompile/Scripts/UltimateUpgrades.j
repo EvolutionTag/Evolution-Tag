@@ -76,7 +76,7 @@ library UltimateUpgrades
         SaveInteger(UltimateUpgrades,0,'H00B','H02A');
         SaveInteger(UltimateUpgrades,0,'E00E','E00B');
         SaveInteger(UltimateUpgrades,0,'Hvwd','H033');
-        SaveInteger(UltimateUpgrades,0,'h00R','Nhew');
+        SaveInteger(UltimateUpgrades,0,'h00R','N07F');
         SaveInteger(UltimateUpgrades,0,'Npbm','N022');
         SaveInteger(UltimateUpgrades,0,'Naka','N021');
         SaveInteger(UltimateUpgrades,0,'Efur','Emns');
