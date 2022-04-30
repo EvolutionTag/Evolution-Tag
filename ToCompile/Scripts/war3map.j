@@ -36368,7 +36368,7 @@ call TriggerRegisterTimerEventPeriodic(udg_trg_Random_hippo_move,4.65)
 call TriggerAddAction(udg_trg_Random_hippo_move,function Trig_Random_hippo_move_Actions)
 endfunction
 function SaveMorphBonuses_Condition takes nothing returns boolean
-return IsMorphAbilityId(GetSpellAbilityId())
+    return IsMorphAbilityId(GetSpellAbilityId())
 endfunction
 
 function ApplyDmgBonusesTimed takes nothing returns nothing
@@ -36384,7 +36384,8 @@ endfunction
 function SaveMorphBonuses_Actions takes nothing returns nothing
     local timer t = CreateTimer()
     call SaveUnitHandle(timerdata,GetHandleId(t),0,GetTriggerUnit())
-    call TimerStart(t,0,false,function ApplyDmgBonusesTimed)
+    call TimerStart(t,0.01,false,function ApplyDmgBonusesTimed)
+
     set t = null
 endfunction
 function InitTrig_SaveMorphBonuses takes nothing returns nothing
