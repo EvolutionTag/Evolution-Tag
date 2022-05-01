@@ -4,6 +4,7 @@ location array ResurrectionLocations
 trigger gg_trg_GandalfTeleport= null
 trigger gg_trg_GandalfTeleport_Effect= null
 trigger gg_trg_ForceFieldTLF = null
+trigger udg_trg_Warrior_Evolve = null
 unit general_tp_dispatcher = null
 unit general_tp_respawn_buffer = null
 unit udg_DestructableLib___dummy=null
@@ -6814,6 +6815,7 @@ set udg_trg_Firelord_Attacks=CreateTrigger()
 set udg_trg_Fire_minion=CreateTrigger()
 set udg_trg_Mount_Horse=CreateTrigger()
 set udg_trg_Mount_Horse_Copy=CreateTrigger()
+set udg_trg_Warrior_Evolve = CreateTrigger()
 set udg_trg_Horse_movement=CreateTrigger()
 set udg_trg_Mount_hippogryph=CreateTrigger()
 set udg_trg_Random_hippo_move=CreateTrigger()
@@ -36284,6 +36286,23 @@ call TriggerRegisterAnyUnitEventBJ(udg_trg_Mount_Horse,EVENT_PLAYER_UNIT_SPELL_C
 call TriggerAddCondition(udg_trg_Mount_Horse,Condition(function Trig_Mount_Horse_Conditions))
 call TriggerAddAction(udg_trg_Mount_Horse,function Trig_Mount_Horse_Actions)
 endfunction
+function Trig_Warrior_Evolve_Conditions takes nothing returns boolean
+    if(not(GetSpellAbilityId()=='A0LG'))then
+    return false
+    endif
+    return true
+endfunction
+    function Trig_Warrior_Evolve_Actions takes nothing returns nothing
+    call AddSpecialEffectLocBJ(GetUnitLoc(GetSpellAbilityUnit()),"Abilities\\Spells\\Orc\\Disenchant\\DisenchantSpecialArt.mdl")
+    call AddSpecialEffectLocBJ(GetUnitLoc(GetSpellTargetUnit()),"Abilities\\Spells\\Orc\\Disenchant\\DisenchantSpecialArt.mdl")
+    call ChangeUnit2(GetSpellAbilityUnit(),'Harf')
+endfunction
+    function InitTrig_Warrior_Evolve takes nothing returns nothing
+    set udg_trg_Warrior_Evolve=CreateTrigger()
+    call TriggerRegisterAnyUnitEventBJ(udg_trg_Warrior_Evolve,EVENT_PLAYER_UNIT_SPELL_CAST)
+    call TriggerAddCondition(udg_trg_Warrior_Evolve,Condition(function Trig_Warrior_Evolve_Conditions))
+    call TriggerAddAction(udg_trg_Warrior_Evolve,function Trig_Warrior_Evolve_Actions)
+endfunction
 function Trig_Mount_Horse_Copy_Conditions takes nothing returns boolean
 if(not(GetSpellAbilityId()=='A00R'))then
 return false
@@ -42717,6 +42736,7 @@ call InitTrig_Firelord_Attacks()
 call InitTrig_Fire_minion()
 call InitTrig_Mount_Horse()
 call InitTrig_Mount_Horse_Copy()
+call InitTrig_Warrior_Evolve()
 call InitTrig_Horse_movement()
 call InitTrig_Mount_hippogryph()
 call InitTrig_Random_hippo_move()
