@@ -3231,6 +3231,7 @@ native UnitAlive takes unit id returns boolean
 //! import vjass "..\ToCompile\Scripts\API\Agent\Effect.j"
 //! import vjass "..\ToCompile\Scripts\API\Agent\Trackable.j"
 //! import vjass "..\ToCompile\Scripts\API\Constants\Constants.j"
+//! import zinc "..\ToCompile\Scripts\API\Constants\OpLimitEX.j"
 //! import vjass "..\ToCompile\Scripts\API\FolderDllMisc\FolderDllMisc.j"
 //! import vjass "..\ToCompile\Scripts\API\Group\Group.j"
 //! import vjass "..\ToCompile\Scripts\API\Item\Base.j"
@@ -3263,6 +3264,9 @@ native UnitAlive takes unit id returns boolean
 //! import zinc "..\ToCompile\Scripts\Holidays.j"
 //! import zinc "..\ToCompile\Scripts\Holidays\Pasha.j"
 //! import zinc "..\ToCompile\Scripts\UnlearnAbilityOnDeath.j"
+
+//////////////////////////////////////////////////
+//! import zinc "..\ToCompile\Scripts\Fixes\TerrainDeformFix.j"
 
 
 
