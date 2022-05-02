@@ -3262,7 +3262,7 @@ native UnitAlive takes unit id returns boolean
 //! import zinc "..\ToCompile\Scripts\DateAndTime.j"
 //! import zinc "..\ToCompile\Scripts\AdditionalEvols.j"
 //! import zinc "..\ToCompile\Scripts\Holidays.j"
-//! import zinc "..\ToCompile\Scripts\Holidays\Pasha.j"
+//! import zinc "..\ToCompile\Scripts\Holidays\Easter.j"
 //! import zinc "..\ToCompile\Scripts\DeathUnitTypeCheck.j"
 
 //////////////////////////////////////////////////
@@ -11678,14 +11678,12 @@ local integer i=0
 call AddEggEvolution('H03G')
 call AddEggEvolution('H03J')
 call AddEggEvolution('H03C')
-call AddEggEvolution('H06X')
 call AddEggEvolution('Hant')
 call AddEggEvolution('u01Z')
 call AddEggEvolution('h068') //Terrorist 5
 call AddEggEvolution('Hblm')
 call AddEggEvolution('e00N') //Ancient of Wind 2
 call AddEggEvolution('E013')
-call AddEggEvolution('Edem')
 call AddEggEvolution('h03W')
 call AddEggEvolution('E00D')
 call AddEggEvolution('H07A')
