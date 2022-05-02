@@ -3263,7 +3263,7 @@ native UnitAlive takes unit id returns boolean
 //! import zinc "..\ToCompile\Scripts\AdditionalEvols.j"
 //! import zinc "..\ToCompile\Scripts\Holidays.j"
 //! import zinc "..\ToCompile\Scripts\Holidays\Pasha.j"
-//! import zinc "..\ToCompile\Scripts\UnlearnAbilityOnDeath.j"
+//! import zinc "..\ToCompile\Scripts\DeathUnitTypeCheck.j"
 
 //////////////////////////////////////////////////
 //! import zinc "..\ToCompile\Scripts\Fixes\TerrainDeformFix.j"
@@ -9165,7 +9165,10 @@ endfunction
 function RespawnPlayer takes unit u returns nothing
 local player owner=GetOwningPlayer(u)
 local location respoint = ResurrectionLocations[GetPlayerId(owner)]
-local integer abilid = DeathUnlearnCheck(u)
+local integer unitid = DeathUnitTypeCheck(u)
+if(GetUnitTypeId(u)!=0 and unitid!=0) then
+    call SetUnitTypeId(u,unitid)
+endif
 if(IsPlayerInForce(owner,udg_Humans))then
 call PlaySoundBJ(snd_HumanDies)
 if(udg_FinalBattle_On)then
@@ -9203,11 +9206,6 @@ if(u!=null) then
     call EnableTrigger(udg_trg_Kitapsycho)
     endif
     call GroupAddUnit(Psychos,u)
-    endif
-    if(abilid!=0) then
-
-        call UnitAddAbility(u,abilid)
-        call UnitRemoveAbility(u,abilid)
     endif
 endif
 set owner=null
