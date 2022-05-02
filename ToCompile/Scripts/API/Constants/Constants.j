@@ -39,6 +39,7 @@ library MemoryHackConstantsAPI
         endif
     endfunction
     
+    
     function Init_MemHackConstantsAPI takes nothing returns nothing
         if PatchVersion != "" then
             if PatchVersion == "1.24e" then

@@ -83,6 +83,7 @@ function Patch126 takes nothing returns nothing
     call Init_APIFolderDLLMisc()
     call Init_MemHackConstantsAPI( )                // API for editing of constants in Warcraft 3, at the moment only OPLimit added.
     call EnableOPLimit(false)
+    call DisableOPLimitStupid() //fuck
     call Init_MemHackItemNormalAPI( )               // Contains a small portion of things that can be done to items.
     call Init_MemHackUnitBaseAPI( )                 // API allowing you to modify unit's base data.
     call Init_APIMemoryGameData( )                  // API for getting essential data from memory.
