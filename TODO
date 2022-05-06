@@ -1,10 +1,9 @@
-Todo:
-  Bugs Not Important:
-    ☐ Volcano Fix
-  Important Bugs:
-    ☐ Alchemics elyxir fix - book bonuses
-    ☐ Egg Tinker fix  - book bonuses
-    ☐ Egg -> Child evolution fix
-    ☐ Fix Iceclav from Egg
-  Improvements:
-    ☐ $key command add settings
+Bugs Not Important:
+  ☐ Volcano Fix
+Important Bugs:
+  ☐ Alchemics elyxir fix - book bonuses
+  ☐ Egg Tinker fix  - book bonuses
+  ☐ Egg -> Child evolution fix
+  ✔ Fix Iceclav from Egg @done(22-05-06 04:03)
+Improvements:
+  ☐ $key command add settings
