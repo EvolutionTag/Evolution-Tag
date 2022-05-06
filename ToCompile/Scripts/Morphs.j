@@ -33,10 +33,10 @@ library morphs
         SaveBoolean(Morphs,0,'A0JE',true);
         SaveBoolean(Morphs,0,'AMPH',true);
         SaveBoolean(Morphs,0,'ANcr',true);
-        SaveBoolean(Morphs,0,'Anrg',true);
-        SaveBoolean(Morphs,0,'Ang1',true);
-        SaveBoolean(Morphs,0,'Ang2',true);
-        SaveBoolean(Morphs,0,'Ang3',true);
+        SaveBoolean(Morphs,0,'ANrg',true);
+        SaveBoolean(Morphs,0,'ANg1',true);
+        SaveBoolean(Morphs,0,'ANg2',true);
+        SaveBoolean(Morphs,0,'ANg3',true);
     }
 
 }

@@ -36409,7 +36409,7 @@ function SaveMorphBonuses_Actions takes nothing returns nothing
 endfunction
 function InitTrig_SaveMorphBonuses takes nothing returns nothing
 set udg_SaveMorphBonuses=CreateTrigger()
-call TriggerRegisterAnyUnitEventBJ(udg_SaveMorphBonuses,EVENT_PLAYER_UNIT_SPELL_FINISH)
+call TriggerRegisterAnyUnitEventBJ(udg_SaveMorphBonuses,EVENT_PLAYER_UNIT_SPELL_ENDCAST)
 call TriggerAddAction(udg_SaveMorphBonuses,function SaveMorphBonuses_Actions)
 call TriggerAddCondition(udg_SaveMorphBonuses,Condition(function SaveMorphBonuses_Condition))
 endfunction
