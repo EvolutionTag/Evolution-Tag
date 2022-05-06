@@ -3,7 +3,7 @@ Bugs Not Important:
 Important Bugs:
   ☐ Alchemics elyxir fix - book bonuses
   ☐ Egg Tinker fix  - book bonuses
-  ☐ Egg -> Child evolution fix
+  ✔ Egg -> Child evolution fix @done(22-05-06 04:09)
   ✔ Fix Iceclav from Egg @done(22-05-06 04:03)
 Improvements:
   ☐ $key command add settings
