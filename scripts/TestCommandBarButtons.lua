@@ -218,22 +218,27 @@ end
 function CreateCFont(pButton)
 	pFrame=CreateCSimpleFont(pButton)
 	SetCSimpleRegionVertexColourEx(pFrame , 0xFF , 0xFF , 0xFF , 0xFF)
-	SetCSimpleFontStringFont(pFrame , "Fonts\\FRIZQT__.TTF" , .030 , 0)
+	SetCSimpleFontStringFont(pFrame , "Fonts\\FRIZQT__.TTF" , 100 , 0)
 	SetCSimpleFontText(pFrame , "")
 	SetFramePoint(pFrame , ANCHOR_CENTER , pButton , ANCHOR_CENTER , 0. , 0.)
 	SetFrameText(pFrame,"")
 	return pFrame
 end
 
+function SetTextCD(pFrame,cd)
+	if(cd and cd>0) then
+		local cd = tostring(BeatifyCooldown(cd))
+		SetFrameText(pFrame,cd)
+	else
+		SetFrameText(pFrame,"")
+	end
+end
+
 function PrintCdForCBBtn(i,j)
 	local btn = GetCommandBarButton(i,j)
 	if(IsCommandBarButtonShown(btn)) then
 		local cd = GetAbyButtonCD(btn)
-		if(cd and cd>0) then
-			SetFrameText(CDFrames[1][i][j],tostring(BeatifyCooldown(cd)))
-		else 
-			SetFrameText(CDFrames[1][i][j],"")
-		end
+		SetTextCD(CDFrames[1][i][j],cd)
 	else
 		SetFrameText(CDFrames[1][i][j],"")
 	end
@@ -244,11 +249,7 @@ function PrintCdForIBtn(i)
 	if(IsCommandBarButtonShown(btn)) then
 		--gprint(1)
 		local cd = GetAbyButtonCD(btn)
-		if(cd and cd>0) then
-			SetFrameText(CDFrames[2][i],tostring(BeatifyCooldown(cd)))
-		else 
-			SetFrameText(CDFrames[2][i],"")
-		end
+		SetTextCD(CDFrames[2][i],cd)
 	else
 		SetFrameText(CDFrames[2][i],"")
 	end
@@ -276,7 +277,7 @@ function testcd()
 		cdevent = event:new(EVENT_ID_SCREEN_UPDATE,function()
 			if(CDTimestamp) then
 				local ctimestamp = GetTickCount64()
-				if(ctimestamp-CDTimestamp<10 and not ctimestamp<0 and not CDTimestamp<0) then return end
+				if((ctimestamp-CDTimestamp)<10 and not ctimestamp<0 and not CDTimestamp<0) then return end
 			end
 			CDTimestamp = GetTickCount64()
 				
