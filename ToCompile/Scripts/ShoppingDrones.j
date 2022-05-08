@@ -174,6 +174,11 @@ library ShoppingDrones
         AddItemToStock(u,'brac',5,5);
         AddItemToStock(u,'rlif',5,5);
         AddItemToStock(u,'I01X',5,5);
+        u = CreateUnit(p,'o00v',x,y,0);
+        UnitApplyTimedLife(u,'BTLF',60);
+        UnitHideMovement(u);
+        AddItemToStock(u,'I04E',5,5);
+        AddItemToStock(u,'I04D',5,5);
     }
     function onInit()
     {

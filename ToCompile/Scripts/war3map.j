@@ -3266,6 +3266,7 @@ native UnitAlive takes unit id returns boolean
 //! import zinc "..\ToCompile\Scripts\DeathUnitTypeCheck.j"
 //! import zinc "..\ToCompile\Scripts\DoNotUseRabbitLure.j"
 //! import zinc "..\ToCompile\Scripts\ShoppingDrones.j"
+//! import zinc "..\ToCompile\Scripts\Waifu.j"
 
 //////////////////////////////////////////////////
 //! import zinc "..\ToCompile\Scripts\Fixes\TerrainDeformFix.j"
