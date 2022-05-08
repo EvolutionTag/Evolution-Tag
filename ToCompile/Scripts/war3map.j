@@ -11687,9 +11687,9 @@ call AddEggEvolution('Hblm')
 call AddEggEvolution('e00N') //Ancient of Wind 2
 call AddEggEvolution('E013')
 call AddEggEvolution('h03W')
-call AddEggEvolution('E00D')
+// call AddEggEvolution('E00D')
 call AddEggEvolution('H07A')
-call AddEggEvolution('H01Y')
+// call AddEggEvolution('H01Y')
 call AddEggEvolution('H06K')
 call AddEggEvolution('H05L')
 call AddEggEvolution('h04W') //Tinker 5
