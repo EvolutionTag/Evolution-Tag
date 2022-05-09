@@ -3267,9 +3267,10 @@ native UnitAlive takes unit id returns boolean
 //! import zinc "..\ToCompile\Scripts\DoNotUseRabbitLure.j"
 //! import zinc "..\ToCompile\Scripts\ShoppingDrones.j"
 //! import zinc "..\ToCompile\Scripts\Waifu.j"
+//! import zinc "..\ToCompile\Scripts\BombBlast.j"
 
 //////////////////////////////////////////////////
-//! import zinc "..\ToCompile\Scripts\Fixes\TerrainDeformFix.j"
+// //! import zinc "..\ToCompile\Scripts\Fixes\TerrainDeformFix.j"
 
 
 
@@ -33655,113 +33656,24 @@ call TriggerRegisterTimerEventPeriodic(udg_trg_Loop_v101,0.03)
 call TriggerAddAction(udg_trg_Loop_v101,function Trig_Loop_v101_Actions)
 endfunction
 function Trig_Throw_Bomb_Conditions takes nothing returns boolean
-if(not(GetSpellAbilityId()=='A0F0'))then
-return false
-endif
-return true
-endfunction
-function throw_bomb_bomb_blast takes nothing returns nothing
-local unit u=CreateUnit(GetOwningPlayer(GetDyingUnit()),'h06C',GetUnitX(GetDyingUnit()),GetUnitY(GetDyingUnit()),bj_UNIT_FACING)
-call DestroyTrigger(GetTriggeringTrigger())
-call IssueImmediateOrderBJ(u,"thunderclap")
-call UnitApplyTimedLifeBJ(5.00,'BTLF',u)
-set u=null
+    if(not(GetSpellAbilityId()=='A0F0'))then
+    return false
+    endif
+    return true
 endfunction
 function Trig_Throw_Bomb_Actions takes nothing returns nothing
-local trigger t=CreateTrigger()
 local unit u=CreateUnit(GetOwningPlayer(GetTriggerUnit()),'h06B',GetUnitX(GetTriggerUnit()),GetUnitY(GetTriggerUnit()),GetUnitFacing(GetTriggerUnit()))
 set udg_Bomb_Point=GetSpellTargetLoc()
 call IssuePointOrderLocBJ(u,"cloudoffog",udg_Bomb_Point)
 call UnitApplyTimedLifeBJ(7.00,'BTLF',u)
-call TriggerRegisterUnitEvent(t,u,EVENT_UNIT_DEATH)
-call TriggerAddCondition(t,Condition(function throw_bomb_bomb_blast))
-call EnableTrigger(udg_trg_Bomb_Timer)
 call RemoveLocation(udg_Bomb_Point)
 set u=null
-set t=null
 endfunction
 function InitTrig_Throw_Bomb takes nothing returns nothing
 set udg_trg_Throw_Bomb=CreateTrigger()
 call TriggerRegisterAnyUnitEventBJ(udg_trg_Throw_Bomb,EVENT_PLAYER_UNIT_SPELL_EFFECT)
 call TriggerAddCondition(udg_trg_Throw_Bomb,Condition(function Trig_Throw_Bomb_Conditions))
 call TriggerAddAction(udg_trg_Throw_Bomb,function Trig_Throw_Bomb_Actions)
-endfunction
-function Trig_Bomb_Timer_Func001Func001Func007Func001Func010Func001C takes nothing returns boolean
-if(not(IsUnitEnemy(GetEnumUnit(),GetOwningPlayer(GetLastCreatedUnit()))==true))then
-return false
-endif
-return true
-endfunction
-function Trig_Bomb_Timer_Func001Func001Func007Func001Func010A takes nothing returns nothing
-if(Trig_Bomb_Timer_Func001Func001Func007Func001Func010Func001C())then
-call UnitDamageTargetBJ(GetLastCreatedUnit(),GetEnumUnit(),400.00,ATTACK_TYPE_NORMAL,DAMAGE_TYPE_NORMAL)
-else
-endif
-endfunction
-function Trig_Bomb_Timer_Func001Func001Func007Func001Func011A takes nothing returns nothing
-if IsDestructableTree(GetEnumDestructable())then
-call KillDestructable(GetEnumDestructable())
-endif
-endfunction
-function Trig_Bomb_Timer_Func001Func001Func007Func001C takes nothing returns boolean
-if(not(GetUnitUserData(GetEnumUnit())>=233))then
-return false
-endif
-return true
-endfunction
-function Trig_Bomb_Timer_Func001Func001Func007C takes nothing returns boolean
-if(not(IsUnitDeadBJ(GetEnumUnit())==true))then
-return false
-endif
-return true
-endfunction
-function Trig_Bomb_Timer_Func001Func001C takes nothing returns boolean
-if(not(CountUnitsInGroup(udg_Bomb_Group)>0))then
-return false
-endif
-return true
-endfunction
-function Trig_Bomb_Timer_Func001A takes nothing returns nothing
-if(Trig_Bomb_Timer_Func001Func001C())then
-call SetUnitUserData(GetEnumUnit(),(GetUnitUserData(GetEnumUnit())+1))
-set udg_Bomb_Size=(100.00+(5.00*SinBJ(I2R((GetUnitUserData(GetEnumUnit())*4)))))
-call SetUnitVertexColorBJ(GetEnumUnit(),100,(100.00-(I2R(GetUnitUserData(GetEnumUnit()))*0.43)),(100.00-(I2R(GetUnitUserData(GetEnumUnit()))*0.43)),0)
-call SetUnitScalePercent(GetEnumUnit(),udg_Bomb_Size,udg_Bomb_Size,udg_Bomb_Size)
-if(Trig_Bomb_Timer_Func001Func001Func007C())then
-call GroupRemoveUnitSimple(GetEnumUnit(),udg_Bomb_Group)
-else
-if(Trig_Bomb_Timer_Func001Func001Func007Func001C())then
-set udg_Bomb_Point=GetUnitLoc(GetEnumUnit())
-set udg_Bomb_Region=RectFromCenterSizeBJ(udg_Bomb_Point,515.00,515.00)
-call KillUnit(GetEnumUnit())
-call AddSpecialEffectLocBJ(udg_Bomb_Point,"Abilities\\Spells\\Human\\ThunderClap\\ThunderClapCaster.mdl")
-call DestroyEffectBJ(GetLastCreatedEffectBJ())
-call AddSpecialEffectLocBJ(udg_Bomb_Point,"Abilities\\Weapons\\SteamTank\\SteamTankImpact.mdl")
-call DestroyEffectBJ(GetLastCreatedEffectBJ())
-call CreateNUnitsAtLocBonuses(1,'h06C',GetOwningPlayer(GetEnumUnit()),udg_Bomb_Point,bj_UNIT_FACING)
-set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectAll(udg_Bomb_Region),function Trig_Bomb_Timer_Func001Func001Func007Func001Func010A)
-call EnumDestructablesInRectAll(udg_Bomb_Region,function Trig_Bomb_Timer_Func001Func001Func007Func001Func011A)
-call IssueImmediateOrderBJ(GetLastCreatedUnit(),"thunderclap")
-call UnitApplyTimedLifeBJ(5.00,'BTLF',GetLastCreatedUnit())
-call GroupRemoveUnitSimple(GetEnumUnit(),udg_Bomb_Group)
-call RemoveLocation(udg_Bomb_Point)
-call RemoveRect(udg_Bomb_Region)
-else
-endif
-endif
-else
-call DisableTrigger(GetTriggeringTrigger())
-endif
-endfunction
-function Trig_Bomb_Timer_Actions takes nothing returns nothing
-call ForGroupBJ(udg_Bomb_Group,function Trig_Bomb_Timer_Func001A)
-endfunction
-function InitTrig_Bomb_Timer takes nothing returns nothing
-set udg_trg_Bomb_Timer=CreateTrigger()
-call DisableTrigger(udg_trg_Bomb_Timer)
-call TriggerRegisterTimerEventPeriodic(udg_trg_Bomb_Timer,0.03)
-call TriggerAddAction(udg_trg_Bomb_Timer,function Trig_Bomb_Timer_Actions)
 endfunction
 function Trig_Bomb_Jump_Conditions takes nothing returns boolean
 if(not(GetSpellAbilityId()=='A0EZ'))then
