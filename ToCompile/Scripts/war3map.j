@@ -11692,7 +11692,7 @@ call AddEggEvolution('h03W')
 // call AddEggEvolution('E00D')
 call AddEggEvolution('H07A')
 // call AddEggEvolution('H01Y')
-call AddEggEvolution('H06K')
+//call AddEggEvolution('H06K') //Iron Knight
 call AddEggEvolution('H05L')
 call AddEggEvolution('h04W') //Tinker 5
 call AddEggEvolution('N01X')
