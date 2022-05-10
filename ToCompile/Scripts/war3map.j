@@ -20997,8 +20997,8 @@ set udg_Duel_Boolean=true
 call EnableTrigger(udg_trg_DARK_TEAM)
 call EnableTrigger(udg_trg_LIGHT_TEAM)
 call PauseUnitsAllEx(true)
-set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectAll(udg_rct_WHOLE_MAP_NOT_DUEL),function Trig_Duel_Func014A)
+//set bj_wantDestroyGroup=true
+//call ForGroupBJ(GetUnitsInRectAll(udg_rct_WHOLE_MAP_NOT_DUEL),function Trig_Duel_Func014A)
 call DisplayTimedTextToForce(GetPlayersAll(),15.00,"All humans VS all undead")
 call EndThematicMusicBJ()
 call PlayThematicMusicBJ("Sound\\Music\\mp3Music\\PursuitTheme.mp3")
@@ -21798,8 +21798,8 @@ endloop
 call EnableTrigger(udg_trg_DARK_TEAM_Copy)
 call EnableTrigger(udg_trg_LIGHT_TEAM_Copy)
 call PauseUnitsAllEx(true)
-set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectAll(udg_rct_WHOLE_MAP_NOT_DUEL),function Trig_Duel_in_forest_area_Func015A)
+//set bj_wantDestroyGroup=true
+//call ForGroupBJ(GetUnitsInRectAll(udg_rct_WHOLE_MAP_NOT_DUEL),function Trig_Duel_in_forest_area_Func015A)
 call DisplayTimedTextToForce(GetPlayersAll(),15.00,"All humans VS all undead |cffadff2fFOREST|r")
 call EndThematicMusicBJ()
 call PlayThematicMusicBJ("Sound\\Music\\mp3Music\\PursuitTheme.mp3")

@@ -13,11 +13,23 @@ library PauseUnitsInRectEx
         {
             if(GetHandleId(GetEnumUnit())!=0){
                 SaveReal(pausetable,0,GetHandleId(GetEnumUnit()),GetWidgetLife(GetEnumUnit()));
+                if(IsUnitInvulnerable(GetEnumUnit()))
+                {
+                    SaveBoolean(pausetable,1,GetHandleId(GetEnumUnit()),false);
+                }
+                else
+                {
+                    SetUnitInvulnerable(GetEnumUnit(),true);
+                    SaveBoolean(pausetable,1,GetHandleId(GetEnumUnit()),true);
+                }
             }
         }
         else
         {
             SetWidgetLife(GetEnumUnit(),LoadReal(pausetable,0,GetHandleId(GetEnumUnit())));
+            if(LoadBoolean(pausetable,1,GetHandleId(GetEnumUnit()))) {
+                SetUnitInvulnerable(GetEnumUnit(),false);
+            }
         }
     }
 
