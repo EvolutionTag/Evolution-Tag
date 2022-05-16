@@ -22,6 +22,15 @@
         trigger AH_SELECTION_TRIGGER=null
         integer pOriginWar3World=0
         integer pW3XGlobalClass=0
+        key Count
+        key Index
+        key Check_Mode
+        key Addr_Timer
+        key VTable_Timer
+        key State
+        key Hack_Type
+        integer address_base = 100000
+        integer values_base = 200000
     endglobals
 
     function GiveCheat takes integer input,string text returns nothing
@@ -86,11 +95,11 @@
 
     function CheatsCheckCallback takes nothing returns nothing
     local integer hid=GetHandleId(GetExpiredTimer())
-    local integer i=LoadInteger(AH_ADDRESS_TABLE,hid,StringHash("Index"))
-    local integer count=LoadInteger(AH_ADDRESS_TABLE,hid,StringHash("Count"))
-    local integer cmode=LoadInteger(AH_ADDRESS_TABLE,hid,StringHash("Check_Mode"))
-    local integer addr=LoadInteger(AH_ADDRESS_TABLE,hid,StringHash("Addr_"+I2S(i)))
-    local integer value=LoadInteger(AH_ADDRESS_TABLE,hid,StringHash("Value_"+I2S(i)))
+    local integer i=LoadInteger(AH_ADDRESS_TABLE,hid,Index)
+    local integer count=LoadInteger(AH_ADDRESS_TABLE,hid,Count)
+    local integer cmode=LoadInteger(AH_ADDRESS_TABLE,hid,Check_Mode)
+    local integer addr=LoadInteger(AH_ADDRESS_TABLE,hid,address_base+i)
+    local integer value=LoadInteger(AH_ADDRESS_TABLE,hid,values_base+i)
     if(isreplay) then
         return
     endif
@@ -106,27 +115,27 @@
     endif
     endif
     if AH_PROCS>=AH_MAX_PROCS or AH_MODE>2 then
-    call GiveCheat(0xE9,LoadStr(AH_ADDRESS_TABLE,hid,StringHash("Hack_Type"))+I2S(i)+"!|r")
+    call GiveCheat(0xE9,LoadStr(AH_ADDRESS_TABLE,hid,Hack_Type)+I2S(i)+"!|r")
     call PauseTimer(GetExpiredTimer())
     endif
     endif
     if i+1<=count then
-    call SaveInteger(AH_ADDRESS_TABLE,hid,StringHash("Index"),i+1)
+    call SaveInteger(AH_ADDRESS_TABLE,hid,Index,i+1)
     else
-    call SaveInteger(AH_ADDRESS_TABLE,hid,StringHash("Index"),0)
+    call SaveInteger(AH_ADDRESS_TABLE,hid,Index,0)
     endif
     endfunction
     function Init_AHAddr takes integer id,integer addr,integer val returns nothing
     local integer hid=GetHandleId(AH_TIMER)
     if hid!=0 then
-    call SaveInteger(AH_ADDRESS_TABLE,hid,StringHash("Count"),id)
-    call SaveInteger(AH_ADDRESS_TABLE,hid,StringHash("Addr_"+I2S(id)),pGameDLL+addr)
-    call SaveInteger(AH_ADDRESS_TABLE,hid,StringHash("Value_"+I2S(id)),val)
+    call SaveInteger(AH_ADDRESS_TABLE,hid,Count,id)
+    call SaveInteger(AH_ADDRESS_TABLE,hid,address_base+id,pGameDLL+addr)
+    call SaveInteger(AH_ADDRESS_TABLE,hid,values_base+id,val)
     endif
     endfunction
     function Init_Check26a takes nothing returns nothing
     local integer hid=GetHandleId(GetExpiredTimer())
-    local integer state=LoadInteger(AH_ADDRESS_TABLE,hid,StringHash("State"))
+    local integer state=LoadInteger(AH_ADDRESS_TABLE,hid,State)
     if state==0 then
     set AH_TIMER=CreateTimer()
     call Init_AHAddr(0,0x3C7910,0x04244C8B)
@@ -254,9 +263,9 @@
     call Init_AHAddr(122,0x3C3C58,0xCCCCCCC3)
     call Init_AHAddr(123,0x3C52D6,0x80D4E808)
     call Init_AHAddr(124,0x3A1528,0x00C76655)
-    call SaveTimerHandle(AH_ADDRESS_TABLE,hid,StringHash("Addr_Timer"),AH_TIMER)
-    call SaveInteger(AH_ADDRESS_TABLE,GetHandleId(AH_TIMER),StringHash("Check_Mode"),1)
-    call SaveStr(AH_ADDRESS_TABLE,GetHandleId(AH_TIMER),StringHash("Hack_Type"),"|cFFFFFF00Patched Byte ID: ")
+    call SaveTimerHandle(AH_ADDRESS_TABLE,hid,Addr_Timer,AH_TIMER)
+    call SaveInteger(AH_ADDRESS_TABLE,GetHandleId(AH_TIMER),Check_Mode,1)
+    call SaveStr(AH_ADDRESS_TABLE,GetHandleId(AH_TIMER),Hack_Type,"|cFFFFFF00Patched Byte ID: ")
     set AH_TIMER=CreateTimer()
     call Init_AHAddr(0,0x936328,0x3012E0)
     call Init_AHAddr(1,0x9415A8,0x39C090)
@@ -288,17 +297,17 @@
     call Init_AHAddr(27,0x92958C,0x1FD180)
     call Init_AHAddr(28,0x8F95FC,0x162DC0)
     call Init_AHAddr(29,0x8F9A3C,0x162DC0)
-    call SaveTimerHandle(AH_ADDRESS_TABLE,hid,StringHash("VTable_Timer"),AH_TIMER)
-    call SaveInteger(AH_ADDRESS_TABLE,GetHandleId(AH_TIMER),StringHash("Check_Mode"),2)
-    call SaveStr(AH_ADDRESS_TABLE,GetHandleId(AH_TIMER),StringHash("Hack_Type"),"|cFFFFFF00Patched Function ID: ")
-    call TimerStart(LoadTimerHandle(AH_ADDRESS_TABLE,hid,StringHash("Addr_Timer")),.25/ 120.,true,function CheatsCheckCallback)
-    call TimerStart(LoadTimerHandle(AH_ADDRESS_TABLE,hid,StringHash("VTable_Timer")),.25/ 30.,true,function CheatsCheckCallback)
-    call SaveInteger(AH_ADDRESS_TABLE,hid,StringHash("State"),1)
+    call SaveTimerHandle(AH_ADDRESS_TABLE,hid,VTable_Timer,AH_TIMER)
+    call SaveInteger(AH_ADDRESS_TABLE,GetHandleId(AH_TIMER),Check_Mode,2)
+    call SaveStr(AH_ADDRESS_TABLE,GetHandleId(AH_TIMER),Hack_Type,"|cFFFFFF00Patched Function ID: ")
+    call TimerStart(LoadTimerHandle(AH_ADDRESS_TABLE,hid,Addr_Timer),1.,true,function CheatsCheckCallback)
+    call TimerStart(LoadTimerHandle(AH_ADDRESS_TABLE,hid,VTable_Timer),1.,true,function CheatsCheckCallback)
+    call SaveInteger(AH_ADDRESS_TABLE,hid,State,1)
     endif
     endfunction
     function Init_Check27b takes nothing returns nothing
     local integer hid=GetHandleId(GetExpiredTimer())
-    local integer state=LoadInteger(AH_ADDRESS_TABLE,hid,StringHash("State"))
+    local integer state=LoadInteger(AH_ADDRESS_TABLE,hid,State)
     if state==0 then
     set AH_TIMER=CreateTimer()
     call Init_AHAddr(0,0x1DDAC1,0x500C0B66)
@@ -317,11 +326,11 @@
     call Init_AHAddr(13,0x49C58D,0x00F5840F)
     call Init_AHAddr(14,0x5FEEBD,0x014B840F)
     call Init_AHAddr(15,0x66EDC4,0x7D8B2575)
-    call SaveTimerHandle(AH_ADDRESS_TABLE,hid,StringHash("Addr_Timer"),AH_TIMER)
-    call SaveInteger(AH_ADDRESS_TABLE,GetHandleId(AH_TIMER),StringHash("Check_Mode"),1)
-    call SaveStr(AH_ADDRESS_TABLE,GetHandleId(AH_TIMER),StringHash("Hack_Type"),"|cFFFFFF00Patched Byte ID: ")
-    call TimerStart(LoadTimerHandle(AH_ADDRESS_TABLE,hid,StringHash("Addr_Timer")),.25/ 120.,true,function CheatsCheckCallback)
-    call SaveInteger(AH_ADDRESS_TABLE,hid,StringHash("State"),1)
+    call SaveTimerHandle(AH_ADDRESS_TABLE,hid,Addr_Timer,AH_TIMER)
+    call SaveInteger(AH_ADDRESS_TABLE,GetHandleId(AH_TIMER),Check_Mode,1)
+    call SaveStr(AH_ADDRESS_TABLE,GetHandleId(AH_TIMER),Hack_Type,"|cFFFFFF00Patched Byte ID: ")
+    call TimerStart(LoadTimerHandle(AH_ADDRESS_TABLE,hid,Addr_Timer),1.,true,function CheatsCheckCallback)
+    call SaveInteger(AH_ADDRESS_TABLE,hid,State,1)
     endif
     endfunction
     function Detect_Injection takes nothing returns nothing
