@@ -3268,6 +3268,7 @@ native UnitAlive takes unit id returns boolean
 //! import zinc "..\ToCompile\Scripts\ShoppingDrones.j"
 //! import zinc "..\ToCompile\Scripts\Waifu.j"
 //! import zinc "..\ToCompile\Scripts\BombBlast.j"
+//! import zinc "..\ToCompile\Scripts\TreeDetection.j"
 
 //////////////////////////////////////////////////
 // //! import zinc "..\ToCompile\Scripts\Fixes\TerrainDeformFix.j"
@@ -10243,7 +10244,9 @@ return(x1-x2)*(x1-x2)+(y1-y2)*(y1-y2)<KBS__MAX_RANGE*KBS__MAX_RANGE
 endfunction
 function KBS__Destroy_trees takes nothing returns nothing
 if udg_KBS__BA[0]then
+if(IsTree(GetEnumDestructable())) then
 call KillDestructable(GetEnumDestructable())
+endif
 else
 set udg_KBS__BA[1]=true
 endif
@@ -28785,7 +28788,7 @@ endfunction
 function InitTrig_Knockback_Loop takes nothing returns nothing
 set udg_trg_Knockback_Loop=CreateTrigger()
 call DisableTrigger(udg_trg_Knockback_Loop)
-call TriggerRegisterTimerEventPeriodic(udg_trg_Knockback_Loop,0.04)
+call TriggerRegisterTimerEventPeriodic(udg_trg_Knockback_Loop,0.05)
 call TriggerAddAction(udg_trg_Knockback_Loop,function Trig_Knockback_Loop_Actions)
 endfunction
 function Trig_Owner_pick_up_shield_only_Conditions takes nothing returns boolean
@@ -31951,7 +31954,9 @@ endif
 return true
 endfunction
 function Trig_Projectile_Dash_by_Paladon_Func001Func001Func001Func016Func001003 takes nothing returns nothing
-call KillDestructable(GetEnumDestructable())
+if(IsTree(GetEnumDestructable())) then
+    call KillDestructable(GetEnumDestructable())
+endif
 endfunction
 function Trig_Projectile_Dash_by_Paladon_Func001Func001Func001Func016C takes nothing returns boolean
 if(not(udg_PD_TreesDestroy[udg_PD_Integers[3]]==true))then
@@ -36569,7 +36574,9 @@ endif
 return true
 endfunction
 function Trig_Get_Knockback_Func001Func001Func002Func014Func002A takes nothing returns nothing
+if(IsTree(GetEnumDestructable())) then
 call KillDestructable(GetEnumDestructable())
+endif
 endfunction
 function Trig_Get_Knockback_Func001Func001Func002Func014C takes nothing returns boolean
 if(not(udg_KB_DestroyTrees[udg_KB_GeneralIntegers[1]]==true))then
@@ -36744,7 +36751,9 @@ function Trig_Tauren_Stomp_Func008002003 takes nothing returns boolean
 return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(GetTriggerUnit()))==true))))))
 endfunction
 function Trig_Tauren_Stomp_Func009A takes nothing returns nothing
+if(IsTree(GetEnumDestructable())) then
 call KillDestructable(GetEnumDestructable())
+endif
 endfunction
 function Trig_Tauren_Stomp_Func014A takes nothing returns nothing
 set udg_KBA_Caster=GetTriggerUnit()
@@ -36841,7 +36850,9 @@ function Trig_Sample_Explosion_Spell_Func004002003 takes nothing returns boolean
 return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(GetTriggerUnit()))==true))))))
 endfunction
 function Trig_Sample_Explosion_Spell_Func005A takes nothing returns nothing
+if(IsTree(GetEnumDestructable())) then
 call KillDestructable(GetEnumDestructable())
+endif
 endfunction
 function Trig_Sample_Explosion_Spell_Func010A takes nothing returns nothing
 set udg_KBA_Caster=GetTriggerUnit()
@@ -37177,7 +37188,9 @@ return true
 endfunction
 function Trig_SandStormMovement_Func001Func002Func020A takes nothing returns nothing
 if(Trig_SandStormMovement_Func001Func002Func020Func001C())then
+if(IsTree(GetEnumDestructable())) then
 call KillDestructable(GetEnumDestructable())
+endif
 else
 endif
 endfunction
@@ -40277,7 +40290,9 @@ function Trig_Sheep_Loop_Func004Func029Func003A takes nothing returns nothing
 call UnitDamageTargetBJ(udg_ES_Cast,GetEnumUnit(),udg_ES_Damage,ATTACK_TYPE_NORMAL,DAMAGE_TYPE_NORMAL)
 endfunction
 function Trig_Sheep_Loop_Func004Func029Func006Func001A takes nothing returns nothing
+    if(IsTree(GetEnumDestructable())) then
 call KillDestructable(GetEnumDestructable())
+    endif
 endfunction
 function Trig_Sheep_Loop_Func004Func029Func006C takes nothing returns boolean
 if(not(LoadBooleanBJ(8,GetHandleIdBJ(GetEnumUnit()),udg_ES_Hash)==true))then
@@ -41949,7 +41964,9 @@ endif
 return true
 endfunction
 function Trig_Jump_System_2_Func001Func001Func001Func011Func001003 takes nothing returns nothing
+    if(IsTree(GetEnumDestructable())) then
 call KillDestructable(GetEnumDestructable())
+    endif
 endfunction
 function Trig_Jump_System_2_Func001Func001Func001Func011C takes nothing returns boolean
 if(not(udg_JD_TreesDestroy[udg_JD_Integers[3]]==true))then

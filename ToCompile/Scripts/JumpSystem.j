@@ -3,7 +3,10 @@ library JumpSystem requires TimerData, Plan
         real period = 0.05;
         real globalheightfactor = 0.3;
         function RemoveDestructableEnum(){
-            KillDestructable(GetEnumDestructable());
+            if(IsTree(GetEnumDestructable()))
+            {
+                KillDestructable(GetEnumDestructable());
+            }
         }  
         function JumpCallback()
         {
