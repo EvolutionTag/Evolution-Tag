@@ -8205,7 +8205,7 @@ local unit atacked=GetTriggerUnit()
 local unit atacker=GetEventDamageSource()
 local unit dumy
 local integer lvl=GetUnitAbilityLevel(atacked,revengeid)
-if(not isDumy(atacker)and atacked!=null and atacker!=null and lvl>0 and GetEventDamage()>0.4)then
+if(not isDumy(atacker)and atacked!=null and atacker!=null and lvl>0 and (not IsUnitType(atacker,UNIT_TYPE_HERO) and (GetEventDamage()>0.4)) or (GetEventDamage()>GetRandomReal(0,50)))then
 set dumy=CreateDumy(GetOwningPlayer(atacked),GetUnitX(atacked),GetUnitY(atacked))
 call UnitAddAbility(dumy,RevengeThunderbolt)
 call SetUnitAbilityLevel(dumy,RevengeThunderbolt,GetUnitAbilityLevel(atacked,revengeid))
