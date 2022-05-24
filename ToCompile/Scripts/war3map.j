@@ -26977,12 +26977,10 @@ endif
 set udg_General_Index=1
 loop
 exitwhen udg_General_Index>14
-set udg_AAAA_GP=GetRectCenter(udg_rct_ice_creep_event)
 call CreateNUnitsAtLocBonuses(1,'n077',Player(bj_PLAYER_NEUTRAL_EXTRA),udg_AAAA_GP,bj_UNIT_FACING)
 call SetUnitCreepGuard(GetLastCreatedUnit(),false)
 call RemoveGuardPosition(GetLastCreatedUnit())
-call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
-call RemoveLocation(udg_AAAA_GP)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
 set udg_General_Index=udg_General_Index+1
 endloop
 set udg_AAAA_GP=GetRectCenter(udg_rct_ice_creep_event)
