@@ -11691,7 +11691,7 @@ call AddEggEvolution('h068') //Terrorist 5
 call AddEggEvolution('Hblm')
 call AddEggEvolution('e00N') //Ancient of Wind 2
 call AddEggEvolution('E013')
-call AddEggEvolution('h03W')
+call AddEggEvolution('H03W')
 // call AddEggEvolution('E00D')
 call AddEggEvolution('H07A')
 // call AddEggEvolution('H01Y')
@@ -17623,7 +17623,7 @@ endif
 if((GetUnitTypeId(GetTriggerUnit())=='h05W'))then
 return true
 endif
-if((GetUnitTypeId(GetTriggerUnit())=='h06F'))then
+if((GetUnitTypeId(GetTriggerUnit())=='H06F'))then
 return true
 endif
 if((GetUnitTypeId(GetTriggerUnit())=='h065'))then
@@ -22566,7 +22566,7 @@ call TriggerRegisterPlayerChatEvent(udg_trg_Lives,Player(11),"-em",true)
 call TriggerAddCondition(udg_trg_Lives,Condition(function Trig_Lives_Conditions))
 call TriggerAddAction(udg_trg_Lives,function Trig_Lives_Actions)
 endfunction
-function Trig_Lives_Cop_Func005C takes nothing returns boolean
+function Trig_FinalBattle_Run_Func005C takes nothing returns boolean
 if((udg_SETTINGS_CHOICE2_YES==true))then
 return true
 endif
@@ -22575,22 +22575,22 @@ return true
 endif
 return false
 endfunction
-function Trig_Lives_Cop_Conditions takes nothing returns boolean
+function Trig_FinalBattle_Run_Conditions takes nothing returns boolean
 if(not(udg_Neutral_Alliance_Chance==0))then
 return false
 endif
-if(not Trig_Lives_Cop_Func005C())then
+if(not Trig_FinalBattle_Run_Func005C())then
 return false
 endif
 return true
 endfunction
-function Trig_Lives_Cop_Func012A takes nothing returns nothing
+function Trig_FinalBattle_Run_Func012A takes nothing returns nothing
 call SmartCameraPanBJModified(GetEnumPlayer(),GetRectCenter(udg_rct_FB_Human_Spawn),0)
 endfunction
-function Trig_Lives_Cop_Func013A takes nothing returns nothing
+function Trig_FinalBattle_Run_Func013A takes nothing returns nothing
 call SmartCameraPanBJModified(GetEnumPlayer(),GetRectCenter(udg_rct_FB_Undead_Spawn),0)
 endfunction
-function Trig_Lives_Cop_Func015Func001Func005C takes nothing returns boolean
+function Trig_FinalBattle_Run_Func015Func001Func005C takes nothing returns boolean
 if((IsUnitType(GetEnumUnit(),UNIT_TYPE_STRUCTURE)==false))then
 return true
 endif
@@ -22632,11 +22632,11 @@ return true
 endif
 return false
 endfunction
-function Trig_Lives_Cop_Func015Func001C takes nothing returns boolean
+function Trig_FinalBattle_Run_Func015Func001C takes nothing returns boolean
 if(not(IsPlayerInForce(GetOwningPlayer(GetEnumUnit()),udg_Humans)==true))then
 return false
 endif
-if(not Trig_Lives_Cop_Func015Func001Func005C())then
+if(not Trig_FinalBattle_Run_Func015Func001Func005C())then
 return false
 endif
 if(not(IsUnitType(GetEnumUnit(),UNIT_TYPE_SUMMONED)==false))then
@@ -22644,7 +22644,7 @@ return false
 endif
 return true
 endfunction
-function Trig_Lives_Cop_Func015Func002C takes nothing returns boolean
+function Trig_FinalBattle_Run_Func015Func002C takes nothing returns boolean
 if(not(IsPlayerInForce(GetOwningPlayer(GetEnumUnit()),udg_Evil)==true))then
 return false
 endif
@@ -22656,7 +22656,7 @@ return false
 endif
 return true
 endfunction
-function Trig_Lives_Cop_Func015Func003C takes nothing returns boolean
+function Trig_FinalBattle_Run_Func015Func003C takes nothing returns boolean
 if(not(IsPlayerAlly(GetOwningPlayer(GetEnumUnit()),Player(bj_PLAYER_NEUTRAL_EXTRA))==true))then
 return false
 endif
@@ -22680,7 +22680,7 @@ return false
 endif
 return true
 endfunction
-function Trig_Lives_Cop_Func015Func004C takes nothing returns boolean
+function Trig_FinalBattle_Run_Func015Func004C takes nothing returns boolean
 if(not(IsPlayerAlly(GetOwningPlayer(GetEnumUnit()),Player(PLAYER_NEUTRAL_AGGRESSIVE))==true))then
 return false
 endif
@@ -22704,7 +22704,7 @@ return false
 endif
 return true
 endfunction
-function Trig_Lives_Cop_Func015Func006Func001C takes nothing returns boolean
+function Trig_FinalBattle_Run_Func015Func006Func001C takes nothing returns boolean
 if((IsUnitType(GetEnumUnit(),UNIT_TYPE_STRUCTURE)==false))then
 return false
 endif
@@ -22746,49 +22746,37 @@ return false
 endif
 return true
 endfunction
-function Trig_Lives_Cop_Func015Func006A takes nothing returns nothing
-if(Trig_Lives_Cop_Func015Func006Func001C())then
-call RemoveUnit(GetEnumUnit())
+function Final_Battle_Building_Interaction takes nothing returns nothing
+if(Trig_FinalBattle_Run_Func015Func006Func001C())then
+if(GetPlayerId(GetOwningPlayer(GetEnumUnit()))<11) then
+call PauseUnit(GetEnumUnit(),true)
+endif
 else
 endif
 endfunction
-function Trig_Lives_Cop_Func015A takes nothing returns nothing
-if(Trig_Lives_Cop_Func015Func001C())then
+function Trig_FinalBattle_Run_Func015A takes nothing returns nothing
+if(Trig_FinalBattle_Run_Func015Func001C())then
 set udg_AAAA_GP=GetRandomLocInRect(udg_rct_FB_Human_Spawn)
 call SetUnitPositionLoc(GetEnumUnit(),udg_AAAA_GP)
 call RemoveLocation(udg_AAAA_GP)
 else
 endif
-if(Trig_Lives_Cop_Func015Func002C())then
+if(Trig_FinalBattle_Run_Func015Func002C())then
 set udg_AAAA_GP=GetRandomLocInRect(udg_rct_FB_Undead_Spawn)
 call SetUnitPositionLoc(GetEnumUnit(),udg_AAAA_GP)
 call RemoveLocation(udg_AAAA_GP)
 else
 endif
-if(Trig_Lives_Cop_Func015Func003C())then
-set udg_AAAA_GP=GetRandomLocInRect(udg_rct_FB_Neutral_Spawn_Undead_Side)
-call SetUnitPositionLoc(GetEnumUnit(),udg_AAAA_GP)
-call RemoveLocation(udg_AAAA_GP)
-else
-endif
-if(Trig_Lives_Cop_Func015Func004C())then
-set udg_AAAA_GP=GetRandomLocInRect(udg_rct_FB_Neutral_Spawn_Human_Side)
-call SetUnitPositionLoc(GetEnumUnit(),GetRandomLocInRect(udg_rct_FB_Neutral_Spawn_Human_Side))
-call RemoveLocation(udg_AAAA_GP)
-else
-endif
-set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectAll(udg_rct_WHOLE_MAP_NOT_DUEL),function Trig_Lives_Cop_Func015Func006A)
 endfunction
-function Trig_Lives_Cop_Func016C takes nothing returns boolean
+function Trig_FinalBattle_Run_Func016C takes nothing returns boolean
 if(not(IsDestructableDeadBJ(gg_dest_LTg3_4382)==true))then
 return false
 endif
 return true
 endfunction
 
-function Trig_Lives_Cop_Actions takes nothing returns nothing
-    //call PrintHidden("Trig_Lives_Cop_Actions")
+function Final_Battle_Run takes nothing returns nothing
+    //call PrintHidden("Trig_FinalBattle_Run_Actions")
 call EnableFinalBattle()
 call DisableTrigger(trg_UnitLeftsMainMap)
 call PauseTimerBJ(true,udg_CountdownTimer_Copy)
@@ -22798,14 +22786,12 @@ call StopMusicBJ(false)
 call PlayMusicBJ(udg_snd_PH1)
 call FogEnableOff()
 call FogMaskEnableOff()
-call ForForce(udg_Humans,function Trig_Lives_Cop_Func012A)
-call ForForce(udg_Evil,function Trig_Lives_Cop_Func013A)
+call ForForce(udg_Humans,function Trig_FinalBattle_Run_Func012A)
+call ForForce(udg_Evil,function Trig_FinalBattle_Run_Func013A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectMatchingFiltered(GetPlayableMapRect()),function Trig_Lives_Cop_Func015A)
-if(Trig_Lives_Cop_Func016C())then
+call ForGroupBJ(GetUnitsInRectMatchingFiltered(GetPlayableMapRect()),function Trig_FinalBattle_Run_Func015A)
+call ForGroupBJ(GetUnitsInRectAll(udg_rct_WHOLE_MAP_NOT_DUEL),function Final_Battle_Building_Interaction)
 call DestructableRestoreLife(gg_dest_LTg3_4382,GetDestructableMaxLife(gg_dest_LTg3_4382),true)
-else
-endif
 call DisableTrigger(udg_trg_Dead_area_bot_left)
 call DisableTrigger(udg_trg_Dead_area_bot_right)
 call DisableTrigger(udg_trg_Dead_area_top_left)
@@ -22813,13 +22799,13 @@ call DisableTrigger(udg_trg_Dead_area_top_right_Copy)
 call EnableTrigger(udg_trg_stop_tele_FB)
 call DisableTrigger(GetTriggeringTrigger())
 endfunction
-function InitTrig_Lives_Cop takes nothing returns nothing
+function InitTrig_FinalBattle_Run takes nothing returns nothing
 set udg_trg_Lives_Cop=CreateTrigger()
 call TriggerRegisterTimerEventSingle(udg_trg_Lives_Cop,1740.00)
-call TriggerAddCondition(udg_trg_Lives_Cop,Condition(function Trig_Lives_Cop_Conditions))
-call TriggerAddAction(udg_trg_Lives_Cop,function Trig_Lives_Cop_Actions)
+call TriggerAddCondition(udg_trg_Lives_Cop,Condition(function Trig_FinalBattle_Run_Conditions))
+call TriggerAddAction(udg_trg_Lives_Cop,function Final_Battle_Run)
 endfunction
-function Trig_Lives_Cop_neut_alliance_1a_Func001C takes nothing returns boolean
+function Trig_FinalBattle_Run_neut_alliance_1a_Func001C takes nothing returns boolean
 if((udg_Neutral_Alliance_Chance==1))then
 return true
 endif
@@ -22828,7 +22814,7 @@ return true
 endif
 return false
 endfunction
-function Trig_Lives_Cop_neut_alliance_1a_Func006C takes nothing returns boolean
+function Trig_FinalBattle_Run_neut_alliance_1a_Func006C takes nothing returns boolean
 if((udg_SETTINGS_CHOICE2_YES==true))then
 return true
 endif
@@ -22837,22 +22823,22 @@ return true
 endif
 return false
 endfunction
-function Trig_Lives_Cop_neut_alliance_1a_Conditions takes nothing returns boolean
-if(not Trig_Lives_Cop_neut_alliance_1a_Func001C())then
+function Trig_FinalBattle_Run_neut_alliance_1a_Conditions takes nothing returns boolean
+if(not Trig_FinalBattle_Run_neut_alliance_1a_Func001C())then
 return false
 endif
-if(not Trig_Lives_Cop_neut_alliance_1a_Func006C())then
+if(not Trig_FinalBattle_Run_neut_alliance_1a_Func006C())then
 return false
 endif
 return true
 endfunction
-function Trig_Lives_Cop_neut_alliance_1a_Func012A takes nothing returns nothing
+function Trig_FinalBattle_Run_neut_alliance_1a_Func012A takes nothing returns nothing
 call SmartCameraPanBJModified(GetEnumPlayer(),GetRectCenter(udg_rct_FB_Human_Spawn),0)
 endfunction
-function Trig_Lives_Cop_neut_alliance_1a_Func013A takes nothing returns nothing
+function Trig_FinalBattle_Run_neut_alliance_1a_Func013A takes nothing returns nothing
 call SmartCameraPanBJModified(GetEnumPlayer(),GetRectCenter(udg_rct_FB_Undead_Spawn),0)
 endfunction
-function Trig_Lives_Cop_neut_alliance_1a_Func015Func001Func003C takes nothing returns boolean
+function Trig_FinalBattle_Run_neut_alliance_1a_Func015Func001Func003C takes nothing returns boolean
 if((IsUnitType(GetEnumUnit(),UNIT_TYPE_STRUCTURE)==false))then
 return true
 endif
@@ -22894,11 +22880,11 @@ return true
 endif
 return false
 endfunction
-function Trig_Lives_Cop_neut_alliance_1a_Func015Func001C takes nothing returns boolean
+function Trig_FinalBattle_Run_neut_alliance_1a_Func015Func001C takes nothing returns boolean
 if(not(IsPlayerInForce(GetOwningPlayer(GetEnumUnit()),udg_Humans)==true))then
 return false
 endif
-if(not Trig_Lives_Cop_neut_alliance_1a_Func015Func001Func003C())then
+if(not Trig_FinalBattle_Run_neut_alliance_1a_Func015Func001Func003C())then
 return false
 endif
 if(not(IsUnitType(GetEnumUnit(),UNIT_TYPE_SUMMONED)==false))then
@@ -22906,13 +22892,13 @@ return false
 endif
 return true
 endfunction
-function Trig_Lives_Cop_neut_alliance_1a_Func015A takes nothing returns nothing
-if(Trig_Lives_Cop_neut_alliance_1a_Func015Func001C())then
+function Trig_FinalBattle_Run_neut_alliance_1a_Func015A takes nothing returns nothing
+if(Trig_FinalBattle_Run_neut_alliance_1a_Func015Func001C())then
 call SetUnitPositionLoc(GetEnumUnit(),GetRandomLocInRect(udg_rct_FB_Human_Spawn))
 else
 endif
 endfunction
-function Trig_Lives_Cop_neut_alliance_1a_Func017Func001C takes nothing returns boolean
+function Trig_FinalBattle_Run_neut_alliance_1a_Func017Func001C takes nothing returns boolean
 if(not(IsPlayerInForce(GetOwningPlayer(GetEnumUnit()),udg_Evil)==true))then
 return false
 endif
@@ -22924,13 +22910,13 @@ return false
 endif
 return true
 endfunction
-function Trig_Lives_Cop_neut_alliance_1a_Func017A takes nothing returns nothing
-if(Trig_Lives_Cop_neut_alliance_1a_Func017Func001C())then
+function Trig_FinalBattle_Run_neut_alliance_1a_Func017A takes nothing returns nothing
+if(Trig_FinalBattle_Run_neut_alliance_1a_Func017Func001C())then
 call SetUnitPositionLoc(GetEnumUnit(),GetRandomLocInRect(udg_rct_FB_Undead_Spawn))
 else
 endif
 endfunction
-function Trig_Lives_Cop_neut_alliance_1a_Func019Func001C takes nothing returns boolean
+function Trig_FinalBattle_Run_neut_alliance_1a_Func019Func001C takes nothing returns boolean
 if(not(GetOwningPlayer(GetEnumUnit())!=Player(PLAYER_NEUTRAL_PASSIVE)))then
 return false
 endif
@@ -22951,13 +22937,13 @@ return false
 endif
 return true
 endfunction
-function Trig_Lives_Cop_neut_alliance_1a_Func019A takes nothing returns nothing
-if(Trig_Lives_Cop_neut_alliance_1a_Func019Func001C())then
+function Trig_FinalBattle_Run_neut_alliance_1a_Func019A takes nothing returns nothing
+if(Trig_FinalBattle_Run_neut_alliance_1a_Func019Func001C())then
 call SetUnitPositionLoc(GetEnumUnit(),GetRandomLocInRect(udg_rct_FB_Neutral_Spawn_Human_Side))
 else
 endif
 endfunction
-function Trig_Lives_Cop_neut_alliance_1a_Func021Func001C takes nothing returns boolean
+function Trig_FinalBattle_Run_neut_alliance_1a_Func021Func001C takes nothing returns boolean
 if(not(GetOwningPlayer(GetEnumUnit())!=Player(PLAYER_NEUTRAL_PASSIVE)))then
 return false
 endif
@@ -22978,13 +22964,13 @@ return false
 endif
 return true
 endfunction
-function Trig_Lives_Cop_neut_alliance_1a_Func021A takes nothing returns nothing
-if(Trig_Lives_Cop_neut_alliance_1a_Func021Func001C())then
+function Trig_FinalBattle_Run_neut_alliance_1a_Func021A takes nothing returns nothing
+if(Trig_FinalBattle_Run_neut_alliance_1a_Func021Func001C())then
 call SetUnitPositionLoc(GetEnumUnit(),GetRandomLocInRect(udg_rct_FB_Neutral_Spawn_Undead_Side))
 else
 endif
 endfunction
-function Trig_Lives_Cop_neut_alliance_1a_Func023Func001Func001C takes nothing returns boolean
+function Trig_FinalBattle_Run_neut_alliance_1a_Func023Func001Func001C takes nothing returns boolean
 if((GetOwningPlayer(GetEnumUnit())==Player(PLAYER_NEUTRAL_AGGRESSIVE)))then
 return true
 endif
@@ -22996,20 +22982,20 @@ return true
 endif
 return false
 endfunction
-function Trig_Lives_Cop_neut_alliance_1a_Func023Func001C takes nothing returns boolean
-if(not Trig_Lives_Cop_neut_alliance_1a_Func023Func001Func001C())then
+function Trig_FinalBattle_Run_neut_alliance_1a_Func023Func001C takes nothing returns boolean
+if(not Trig_FinalBattle_Run_neut_alliance_1a_Func023Func001Func001C())then
 return false
 endif
 return true
 endfunction
-function Trig_Lives_Cop_neut_alliance_1a_Func023A takes nothing returns nothing
-if(Trig_Lives_Cop_neut_alliance_1a_Func023Func001C())then
+function Trig_FinalBattle_Run_neut_alliance_1a_Func023A takes nothing returns nothing
+if(Trig_FinalBattle_Run_neut_alliance_1a_Func023Func001C())then
 call GroupAddUnitSimple(GetEnumUnit(),udg_FB_Neutral_Group[1])
 call IssueTargetDestructableOrder(GetEnumUnit(),"attack",gg_dest_LTg3_4382)
 else
 endif
 endfunction
-function Trig_Lives_Cop_neut_alliance_1a_Func025Func001Func001C takes nothing returns boolean
+function Trig_FinalBattle_Run_neut_alliance_1a_Func025Func001Func001C takes nothing returns boolean
 if((GetOwningPlayer(GetEnumUnit())==Player(PLAYER_NEUTRAL_AGGRESSIVE)))then
 return true
 endif
@@ -23021,20 +23007,20 @@ return true
 endif
 return false
 endfunction
-function Trig_Lives_Cop_neut_alliance_1a_Func025Func001C takes nothing returns boolean
-if(not Trig_Lives_Cop_neut_alliance_1a_Func025Func001Func001C())then
+function Trig_FinalBattle_Run_neut_alliance_1a_Func025Func001C takes nothing returns boolean
+if(not Trig_FinalBattle_Run_neut_alliance_1a_Func025Func001Func001C())then
 return false
 endif
 return true
 endfunction
-function Trig_Lives_Cop_neut_alliance_1a_Func025A takes nothing returns nothing
-if(Trig_Lives_Cop_neut_alliance_1a_Func025Func001C())then
+function Trig_FinalBattle_Run_neut_alliance_1a_Func025A takes nothing returns nothing
+if(Trig_FinalBattle_Run_neut_alliance_1a_Func025Func001C())then
 call GroupAddUnitSimple(GetEnumUnit(),udg_FB_Neutral_Group[2])
 call IssueTargetDestructableOrder(GetEnumUnit(),"attack",gg_dest_LTg3_4382)
 else
 endif
 endfunction
-function Trig_Lives_Cop_neut_alliance_1a_Func027Func001C takes nothing returns boolean
+function Trig_FinalBattle_Run_neut_alliance_1a_Func027Func001C takes nothing returns boolean
 if((IsUnitType(GetEnumUnit(),UNIT_TYPE_STRUCTURE)==false))then
 return false
 endif
@@ -23076,19 +23062,35 @@ return false
 endif
 return true
 endfunction
-function Trig_Lives_Cop_neut_alliance_1a_Func027A takes nothing returns nothing
-if(Trig_Lives_Cop_neut_alliance_1a_Func027Func001C())then
+function Trig_FinalBattle_Run_neut_alliance_1a_Func027A takes nothing returns nothing
+if(Trig_FinalBattle_Run_neut_alliance_1a_Func027Func001C())then
 call RemoveUnit(GetEnumUnit())
 else
 endif
 endfunction
-function Trig_Lives_Cop_neut_alliance_1a_Func028C takes nothing returns boolean
+function Trig_FinalBattle_Run_neut_alliance_1a_Func028C takes nothing returns boolean
 if(not(IsDestructableDeadBJ(gg_dest_LTg3_4382)==true))then
 return false
 endif
 return true
 endfunction
-function Trig_Lives_Cop_neut_alliance_1a_Actions takes nothing returns nothing
+function Final_Battle_Run_Neut_alliance takes nothing returns nothing
+    set bj_wantDestroyGroup=true
+    call ForGroupBJ(GetUnitsInRectMatchingFiltered(GetPlayableMapRect()),function Trig_FinalBattle_Run_neut_alliance_1a_Func015A)
+    set bj_wantDestroyGroup=true
+    call ForGroupBJ(GetUnitsInRectMatchingFiltered(GetPlayableMapRect()),function Trig_FinalBattle_Run_neut_alliance_1a_Func017A)
+    set bj_wantDestroyGroup=true
+    call ForGroupBJ(GetUnitsInRectMatchingFiltered(GetPlayableMapRect()),function Trig_FinalBattle_Run_neut_alliance_1a_Func019A)
+    set bj_wantDestroyGroup=true
+    call ForGroupBJ(GetUnitsInRectMatchingFiltered(GetPlayableMapRect()),function Trig_FinalBattle_Run_neut_alliance_1a_Func021A)
+    set bj_wantDestroyGroup=true
+    call ForGroupBJ(GetUnitsInRectAll(udg_rct_FB_Neutral_Spawn_Undead_Side),function Trig_FinalBattle_Run_neut_alliance_1a_Func023A)
+    set bj_wantDestroyGroup=true
+    call ForGroupBJ(GetUnitsInRectAll(udg_rct_FB_Neutral_Spawn_Human_Side),function Trig_FinalBattle_Run_neut_alliance_1a_Func025A)
+    set bj_wantDestroyGroup=true
+    call ForGroupBJ(GetUnitsInRectAll(udg_rct_WHOLE_MAP_NOT_DUEL),function Trig_FinalBattle_Run_neut_alliance_1a_Func027A)
+endfunction
+function Trig_FinalBattle_Run_neut_alliance_1a_Actions takes nothing returns nothing
 call EnableFinalBattle()
 call DisableTrigger(trg_UnitLeftsMainMap)
 call PauseTimerBJ(true,udg_CountdownTimer_Copy)
@@ -23098,23 +23100,23 @@ call StopMusicBJ(false)
 call PlayMusicBJ(udg_snd_PH1)
 call FogEnableOff()
 call FogMaskEnableOff()
-call ForForce(udg_Humans,function Trig_Lives_Cop_neut_alliance_1a_Func012A)
-call ForForce(udg_Evil,function Trig_Lives_Cop_neut_alliance_1a_Func013A)
+call ForForce(udg_Humans,function Trig_FinalBattle_Run_neut_alliance_1a_Func012A)
+call ForForce(udg_Evil,function Trig_FinalBattle_Run_neut_alliance_1a_Func013A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectMatchingFiltered(GetPlayableMapRect()),function Trig_Lives_Cop_neut_alliance_1a_Func015A)
+call ForGroupBJ(GetUnitsInRectMatchingFiltered(GetPlayableMapRect()),function Trig_FinalBattle_Run_neut_alliance_1a_Func015A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectMatchingFiltered(GetPlayableMapRect()),function Trig_Lives_Cop_neut_alliance_1a_Func017A)
+call ForGroupBJ(GetUnitsInRectMatchingFiltered(GetPlayableMapRect()),function Trig_FinalBattle_Run_neut_alliance_1a_Func017A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectMatchingFiltered(GetPlayableMapRect()),function Trig_Lives_Cop_neut_alliance_1a_Func019A)
+call ForGroupBJ(GetUnitsInRectMatchingFiltered(GetPlayableMapRect()),function Trig_FinalBattle_Run_neut_alliance_1a_Func019A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectMatchingFiltered(GetPlayableMapRect()),function Trig_Lives_Cop_neut_alliance_1a_Func021A)
+call ForGroupBJ(GetUnitsInRectMatchingFiltered(GetPlayableMapRect()),function Trig_FinalBattle_Run_neut_alliance_1a_Func021A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectAll(udg_rct_FB_Neutral_Spawn_Undead_Side),function Trig_Lives_Cop_neut_alliance_1a_Func023A)
+call ForGroupBJ(GetUnitsInRectAll(udg_rct_FB_Neutral_Spawn_Undead_Side),function Trig_FinalBattle_Run_neut_alliance_1a_Func023A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectAll(udg_rct_FB_Neutral_Spawn_Human_Side),function Trig_Lives_Cop_neut_alliance_1a_Func025A)
+call ForGroupBJ(GetUnitsInRectAll(udg_rct_FB_Neutral_Spawn_Human_Side),function Trig_FinalBattle_Run_neut_alliance_1a_Func025A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectAll(udg_rct_WHOLE_MAP_NOT_DUEL),function Trig_Lives_Cop_neut_alliance_1a_Func027A)
-if(Trig_Lives_Cop_neut_alliance_1a_Func028C())then
+call ForGroupBJ(GetUnitsInRectAll(udg_rct_WHOLE_MAP_NOT_DUEL),function Trig_FinalBattle_Run_neut_alliance_1a_Func027A)
+if(Trig_FinalBattle_Run_neut_alliance_1a_Func028C())then
 call DestructableRestoreLife(gg_dest_LTg3_4382,GetDestructableMaxLife(gg_dest_LTg3_4382),true)
 else
 endif
@@ -23125,11 +23127,12 @@ call DisableTrigger(udg_trg_Dead_area_top_right_Copy)
 call EnableTrigger(udg_trg_stop_tele_FB)
 call DisableTrigger(GetTriggeringTrigger())
 endfunction
-function InitTrig_Lives_Cop_neut_alliance_1a takes nothing returns nothing
+function InitTrig_FinalBattle_Run_neut_alliance_1a takes nothing returns nothing
 set udg_trg_Lives_Cop_neut_alliance_1a=CreateTrigger()
 call TriggerRegisterTimerEventSingle(udg_trg_Lives_Cop_neut_alliance_1a,1740.00)
-call TriggerAddCondition(udg_trg_Lives_Cop_neut_alliance_1a,Condition(function Trig_Lives_Cop_neut_alliance_1a_Conditions))
-call TriggerAddAction(udg_trg_Lives_Cop_neut_alliance_1a,function Trig_Lives_Cop_neut_alliance_1a_Actions)
+call TriggerAddCondition(udg_trg_Lives_Cop_neut_alliance_1a,Condition(function Trig_FinalBattle_Run_neut_alliance_1a_Conditions))
+call TriggerAddAction(udg_trg_Lives_Cop_neut_alliance_1a,function Final_Battle_Run)
+//call TriggerAddAction(udg_trg_Lives_Cop_neut_alliance_1a,function Final_Battle_Run_Neut_alliance)
 endfunction
 function Trig_initiate_send_in_neuts_Conditions takes nothing returns boolean
 if(not(udg_SETTINGS_CHOICE2_YES==true))then
@@ -23162,7 +23165,7 @@ call TriggerRegisterTimerEventSingle(udg_trg_initiate_send_in_neuts,2140.00)
 call TriggerAddCondition(udg_trg_initiate_send_in_neuts,Condition(function Trig_initiate_send_in_neuts_Conditions))
 call TriggerAddAction(udg_trg_initiate_send_in_neuts,function Trig_initiate_send_in_neuts_Actions)
 endfunction
-function Trig_Lives_Copy_Copy_Conditions takes nothing returns boolean
+function Trig_FinalBattle_Runy_Copy_Conditions takes nothing returns boolean
 if(not(udg_Neutral_Alliance_Chance==0))then
 return false
 endif
@@ -23171,13 +23174,13 @@ return false
 endif
 return true
 endfunction
-function Trig_Lives_Copy_Copy_Func011A takes nothing returns nothing
+function Trig_FinalBattle_Runy_Copy_Func011A takes nothing returns nothing
 call SmartCameraPanBJModified(GetEnumPlayer(),GetRectCenter(udg_rct_FB_Human_Spawn),0)
 endfunction
-function Trig_Lives_Copy_Copy_Func012A takes nothing returns nothing
+function Trig_FinalBattle_Runy_Copy_Func012A takes nothing returns nothing
 call SmartCameraPanBJModified(GetEnumPlayer(),GetRectCenter(udg_rct_FB_Undead_Spawn),0)
 endfunction
-function Trig_Lives_Copy_Copy_Func014Func001Func003C takes nothing returns boolean
+function Trig_FinalBattle_Runy_Copy_Func014Func001Func003C takes nothing returns boolean
 if((IsUnitType(GetEnumUnit(),UNIT_TYPE_STRUCTURE)==false))then
 return true
 endif
@@ -23219,11 +23222,11 @@ return true
 endif
 return false
 endfunction
-function Trig_Lives_Copy_Copy_Func014Func001C takes nothing returns boolean
+function Trig_FinalBattle_Runy_Copy_Func014Func001C takes nothing returns boolean
 if(not(IsPlayerInForce(GetOwningPlayer(GetEnumUnit()),udg_Humans)==true))then
 return false
 endif
-if(not Trig_Lives_Copy_Copy_Func014Func001Func003C())then
+if(not Trig_FinalBattle_Runy_Copy_Func014Func001Func003C())then
 return false
 endif
 if(not(IsUnitType(GetEnumUnit(),UNIT_TYPE_SUMMONED)==false))then
@@ -23231,7 +23234,7 @@ return false
 endif
 return true
 endfunction
-function Trig_Lives_Copy_Copy_Func014Func002C takes nothing returns boolean
+function Trig_FinalBattle_Runy_Copy_Func014Func002C takes nothing returns boolean
 if(not(IsPlayerInForce(GetOwningPlayer(GetEnumUnit()),udg_Evil)==true))then
 return false
 endif
@@ -23243,7 +23246,7 @@ return false
 endif
 return true
 endfunction
-function Trig_Lives_Copy_Copy_Func014Func003C takes nothing returns boolean
+function Trig_FinalBattle_Runy_Copy_Func014Func003C takes nothing returns boolean
 if(not(IsPlayerAlly(GetOwningPlayer(GetEnumUnit()),Player(bj_PLAYER_NEUTRAL_EXTRA))==true))then
 return false
 endif
@@ -23264,7 +23267,7 @@ return false
 endif
 return true
 endfunction
-function Trig_Lives_Copy_Copy_Func014Func004C takes nothing returns boolean
+function Trig_FinalBattle_Runy_Copy_Func014Func004C takes nothing returns boolean
 if(not(IsPlayerAlly(GetOwningPlayer(GetEnumUnit()),Player(PLAYER_NEUTRAL_AGGRESSIVE))==true))then
 return false
 endif
@@ -23285,7 +23288,7 @@ return false
 endif
 return true
 endfunction
-function Trig_Lives_Copy_Copy_Func014Func006Func001C takes nothing returns boolean
+function Trig_FinalBattle_Runy_Copy_Func014Func006Func001C takes nothing returns boolean
 if((IsUnitType(GetEnumUnit(),UNIT_TYPE_STRUCTURE)==false))then
 return false
 endif
@@ -23327,41 +23330,40 @@ return false
 endif
 return true
 endfunction
-function Trig_Lives_Copy_Copy_Func014Func006A takes nothing returns nothing
-if(Trig_Lives_Copy_Copy_Func014Func006Func001C())then
+function Trig_FinalBattle_Runy_Copy_Func014Func006A takes nothing returns nothing
+if(Trig_FinalBattle_Runy_Copy_Func014Func006Func001C())then
 call RemoveUnit(GetEnumUnit())
 else
 endif
 endfunction
-function Trig_Lives_Copy_Copy_Func014A takes nothing returns nothing
-if(Trig_Lives_Copy_Copy_Func014Func001C())then
+function Trig_FinalBattle_Runy_Copy_Func014A takes nothing returns nothing
+if(Trig_FinalBattle_Runy_Copy_Func014Func001C())then
 call SetUnitPositionLoc(GetEnumUnit(),GetRandomLocInRect(udg_rct_FB_Human_Spawn))
 else
 endif
-if(Trig_Lives_Copy_Copy_Func014Func002C())then
+if(Trig_FinalBattle_Runy_Copy_Func014Func002C())then
 call SetUnitPositionLoc(GetEnumUnit(),GetRandomLocInRect(udg_rct_FB_Undead_Spawn))
 else
 endif
-if(Trig_Lives_Copy_Copy_Func014Func003C())then
+if(Trig_FinalBattle_Runy_Copy_Func014Func003C())then
 call SetUnitPositionLoc(GetEnumUnit(),GetRandomLocInRect(udg_rct_FB_Neutral_Spawn_Undead_Side))
 else
 endif
-if(Trig_Lives_Copy_Copy_Func014Func004C())then
+if(Trig_FinalBattle_Runy_Copy_Func014Func004C())then
 call SetUnitPositionLoc(GetEnumUnit(),GetRandomLocInRect(udg_rct_FB_Neutral_Spawn_Human_Side))
 else
 endif
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectAll(udg_rct_WHOLE_MAP_NOT_DUEL),function Trig_Lives_Copy_Copy_Func014Func006A)
+call ForGroupBJ(GetUnitsInRectAll(udg_rct_WHOLE_MAP_NOT_DUEL),function Trig_FinalBattle_Runy_Copy_Func014Func006A)
 endfunction
-function Trig_Lives_Copy_Copy_Func015C takes nothing returns boolean
+function Trig_FinalBattle_Runy_Copy_Func015C takes nothing returns boolean
 if(not(IsDestructableDeadBJ(gg_dest_LTg3_4382)==true))then
 return false
 endif
 return true
 endfunction
-function Trig_Lives_Copy_Copy_Actions takes nothing returns nothing
-    //call PrintHidden("Trig_Lives_Copy_Copy_Actions")
-call DisableTrigger(trg_UnitLeftsMainMap)
+function Trig_FinalBattle_Runy_Copy_Actions takes nothing returns nothing
+    //call PrintHidden("Trig_FinalBattle_Runy_Copy_Actions")
 call EnableFinalBattle()
 call DisableTrigger(trg_UnitLeftsMainMap)
 call PauseTimerBJ(true,udg_CountdownTimer_Copy)
@@ -23371,11 +23373,11 @@ call StopMusicBJ(false)
 call PlayMusicBJ(udg_snd_PH1)
 call FogEnableOff()
 call FogMaskEnableOff()
-call ForForce(udg_Humans,function Trig_Lives_Copy_Copy_Func011A)
-call ForForce(udg_Evil,function Trig_Lives_Copy_Copy_Func012A)
+call ForForce(udg_Humans,function Trig_FinalBattle_Runy_Copy_Func011A)
+call ForForce(udg_Evil,function Trig_FinalBattle_Runy_Copy_Func012A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectMatchingFiltered(GetPlayableMapRect()),function Trig_Lives_Copy_Copy_Func014A)
-if(Trig_Lives_Copy_Copy_Func015C())then
+call ForGroupBJ(GetUnitsInRectMatchingFiltered(GetPlayableMapRect()),function Trig_FinalBattle_Runy_Copy_Func014A)
+if(Trig_FinalBattle_Runy_Copy_Func015C())then
 call DestructableRestoreLife(gg_dest_LTg3_4382,GetDestructableMaxLife(gg_dest_LTg3_4382),true)
 else
 endif
@@ -23386,13 +23388,13 @@ call DisableTrigger(udg_trg_Dead_area_top_right_Copy)
 call EnableTrigger(udg_trg_stop_tele_FB)
 call DisableTrigger(GetTriggeringTrigger())
 endfunction
-function InitTrig_Lives_Copy_Copy takes nothing returns nothing
+function InitTrig_FinalBattle_Runy_Copy takes nothing returns nothing
 set udg_trg_Lives_Copy_Copy=CreateTrigger()
 call TriggerRegisterTimerEventSingle(udg_trg_Lives_Copy_Copy,2460.00)
-call TriggerAddCondition(udg_trg_Lives_Copy_Copy,Condition(function Trig_Lives_Copy_Copy_Conditions))
-call TriggerAddAction(udg_trg_Lives_Copy_Copy,function Trig_Lives_Copy_Copy_Actions)
+call TriggerAddCondition(udg_trg_Lives_Copy_Copy,Condition(function Trig_FinalBattle_Runy_Copy_Conditions))
+call TriggerAddAction(udg_trg_Lives_Copy_Copy,function Final_Battle_Run)
 endfunction
-function Trig_Lives_Copy_Copy_neut_alliance_1a_Func001C takes nothing returns boolean
+function Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func001C takes nothing returns boolean
 if((udg_Neutral_Alliance_Chance==1))then
 return true
 endif
@@ -23401,8 +23403,8 @@ return true
 endif
 return false
 endfunction
-function Trig_Lives_Copy_Copy_neut_alliance_1a_Conditions takes nothing returns boolean
-if(not Trig_Lives_Copy_Copy_neut_alliance_1a_Func001C())then
+function Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Conditions takes nothing returns boolean
+if(not Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func001C())then
 return false
 endif
 if(not(udg_SETTINGS_CHOICE1_YES==true))then
@@ -23410,13 +23412,13 @@ return false
 endif
 return true
 endfunction
-function Trig_Lives_Copy_Copy_neut_alliance_1a_Func011A takes nothing returns nothing
+function Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func011A takes nothing returns nothing
 call SmartCameraPanBJModified(GetEnumPlayer(),GetRectCenter(udg_rct_FB_Human_Spawn),0)
 endfunction
-function Trig_Lives_Copy_Copy_neut_alliance_1a_Func012A takes nothing returns nothing
+function Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func012A takes nothing returns nothing
 call SmartCameraPanBJModified(GetEnumPlayer(),GetRectCenter(udg_rct_FB_Undead_Spawn),0)
 endfunction
-function Trig_Lives_Copy_Copy_neut_alliance_1a_Func014Func001Func003C takes nothing returns boolean
+function Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func014Func001Func003C takes nothing returns boolean
 if((IsUnitType(GetEnumUnit(),UNIT_TYPE_STRUCTURE)==false))then
 return true
 endif
@@ -23458,11 +23460,11 @@ return true
 endif
 return false
 endfunction
-function Trig_Lives_Copy_Copy_neut_alliance_1a_Func014Func001C takes nothing returns boolean
+function Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func014Func001C takes nothing returns boolean
 if(not(IsPlayerInForce(GetOwningPlayer(GetEnumUnit()),udg_Humans)==true))then
 return false
 endif
-if(not Trig_Lives_Copy_Copy_neut_alliance_1a_Func014Func001Func003C())then
+if(not Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func014Func001Func003C())then
 return false
 endif
 if(not(IsUnitType(GetEnumUnit(),UNIT_TYPE_SUMMONED)==false))then
@@ -23470,13 +23472,13 @@ return false
 endif
 return true
 endfunction
-function Trig_Lives_Copy_Copy_neut_alliance_1a_Func014A takes nothing returns nothing
-if(Trig_Lives_Copy_Copy_neut_alliance_1a_Func014Func001C())then
+function Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func014A takes nothing returns nothing
+if(Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func014Func001C())then
 call SetUnitPositionLoc(GetEnumUnit(),GetRandomLocInRect(udg_rct_FB_Human_Spawn))
 else
 endif
 endfunction
-function Trig_Lives_Copy_Copy_neut_alliance_1a_Func016Func001C takes nothing returns boolean
+function Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func016Func001C takes nothing returns boolean
 if(not(IsPlayerInForce(GetOwningPlayer(GetEnumUnit()),udg_Evil)==true))then
 return false
 endif
@@ -23488,13 +23490,13 @@ return false
 endif
 return true
 endfunction
-function Trig_Lives_Copy_Copy_neut_alliance_1a_Func016A takes nothing returns nothing
-if(Trig_Lives_Copy_Copy_neut_alliance_1a_Func016Func001C())then
+function Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func016A takes nothing returns nothing
+if(Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func016Func001C())then
 call SetUnitPositionLoc(GetEnumUnit(),GetRandomLocInRect(udg_rct_FB_Undead_Spawn))
 else
 endif
 endfunction
-function Trig_Lives_Copy_Copy_neut_alliance_1a_Func018Func001C takes nothing returns boolean
+function Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func018Func001C takes nothing returns boolean
 if(not(GetOwningPlayer(GetEnumUnit())!=Player(PLAYER_NEUTRAL_PASSIVE)))then
 return false
 endif
@@ -23515,13 +23517,13 @@ return false
 endif
 return true
 endfunction
-function Trig_Lives_Copy_Copy_neut_alliance_1a_Func018A takes nothing returns nothing
-if(Trig_Lives_Copy_Copy_neut_alliance_1a_Func018Func001C())then
+function Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func018A takes nothing returns nothing
+if(Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func018Func001C())then
 call SetUnitPositionLoc(GetEnumUnit(),GetRandomLocInRect(udg_rct_FB_Neutral_Spawn_Human_Side))
 else
 endif
 endfunction
-function Trig_Lives_Copy_Copy_neut_alliance_1a_Func020Func001C takes nothing returns boolean
+function Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func020Func001C takes nothing returns boolean
 if(not(GetOwningPlayer(GetEnumUnit())!=Player(PLAYER_NEUTRAL_PASSIVE)))then
 return false
 endif
@@ -23542,13 +23544,13 @@ return false
 endif
 return true
 endfunction
-function Trig_Lives_Copy_Copy_neut_alliance_1a_Func020A takes nothing returns nothing
-if(Trig_Lives_Copy_Copy_neut_alliance_1a_Func020Func001C())then
+function Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func020A takes nothing returns nothing
+if(Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func020Func001C())then
 call SetUnitPositionLoc(GetEnumUnit(),GetRandomLocInRect(udg_rct_FB_Neutral_Spawn_Undead_Side))
 else
 endif
 endfunction
-function Trig_Lives_Copy_Copy_neut_alliance_1a_Func022Func001Func001C takes nothing returns boolean
+function Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func022Func001Func001C takes nothing returns boolean
 if((GetOwningPlayer(GetEnumUnit())==Player(PLAYER_NEUTRAL_AGGRESSIVE)))then
 return true
 endif
@@ -23560,20 +23562,20 @@ return true
 endif
 return false
 endfunction
-function Trig_Lives_Copy_Copy_neut_alliance_1a_Func022Func001C takes nothing returns boolean
-if(not Trig_Lives_Copy_Copy_neut_alliance_1a_Func022Func001Func001C())then
+function Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func022Func001C takes nothing returns boolean
+if(not Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func022Func001Func001C())then
 return false
 endif
 return true
 endfunction
-function Trig_Lives_Copy_Copy_neut_alliance_1a_Func022A takes nothing returns nothing
-if(Trig_Lives_Copy_Copy_neut_alliance_1a_Func022Func001C())then
+function Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func022A takes nothing returns nothing
+if(Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func022Func001C())then
 call GroupAddUnitSimple(GetEnumUnit(),udg_FB_Neutral_Group[1])
 call IssueTargetDestructableOrder(GetEnumUnit(),"attack",gg_dest_LTg3_4382)
 else
 endif
 endfunction
-function Trig_Lives_Copy_Copy_neut_alliance_1a_Func024Func001Func001C takes nothing returns boolean
+function Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func024Func001Func001C takes nothing returns boolean
 if((GetOwningPlayer(GetEnumUnit())==Player(PLAYER_NEUTRAL_AGGRESSIVE)))then
 return true
 endif
@@ -23585,20 +23587,20 @@ return true
 endif
 return false
 endfunction
-function Trig_Lives_Copy_Copy_neut_alliance_1a_Func024Func001C takes nothing returns boolean
-if(not Trig_Lives_Copy_Copy_neut_alliance_1a_Func024Func001Func001C())then
+function Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func024Func001C takes nothing returns boolean
+if(not Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func024Func001Func001C())then
 return false
 endif
 return true
 endfunction
-function Trig_Lives_Copy_Copy_neut_alliance_1a_Func024A takes nothing returns nothing
-if(Trig_Lives_Copy_Copy_neut_alliance_1a_Func024Func001C())then
+function Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func024A takes nothing returns nothing
+if(Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func024Func001C())then
 call GroupAddUnitSimple(GetEnumUnit(),udg_FB_Neutral_Group[2])
 call IssueTargetDestructableOrder(GetEnumUnit(),"attack",gg_dest_LTg3_4382)
 else
 endif
 endfunction
-function Trig_Lives_Copy_Copy_neut_alliance_1a_Func026Func001C takes nothing returns boolean
+function Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func026Func001C takes nothing returns boolean
 if((IsUnitType(GetEnumUnit(),UNIT_TYPE_STRUCTURE)==false))then
 return false
 endif
@@ -23640,19 +23642,19 @@ return false
 endif
 return true
 endfunction
-function Trig_Lives_Copy_Copy_neut_alliance_1a_Func026A takes nothing returns nothing
-if(Trig_Lives_Copy_Copy_neut_alliance_1a_Func026Func001C())then
+function Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func026A takes nothing returns nothing
+if(Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func026Func001C())then
 call RemoveUnit(GetEnumUnit())
 else
 endif
 endfunction
-function Trig_Lives_Copy_Copy_neut_alliance_1a_Func027C takes nothing returns boolean
+function Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func027C takes nothing returns boolean
 if(not(IsDestructableDeadBJ(gg_dest_LTg3_4382)==true))then
 return false
 endif
 return true
 endfunction
-function Trig_Lives_Copy_Copy_neut_alliance_1a_Actions takes nothing returns nothing
+function Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Actions takes nothing returns nothing
 call EnableFinalBattle()
 call DisableTrigger(trg_UnitLeftsMainMap)
 call PauseTimerBJ(true,udg_CountdownTimer_Copy)
@@ -23662,23 +23664,23 @@ call StopMusicBJ(false)
 call PlayMusicBJ(udg_snd_PH1)
 call FogEnableOff()
 call FogMaskEnableOff()
-call ForForce(udg_Humans,function Trig_Lives_Copy_Copy_neut_alliance_1a_Func011A)
-call ForForce(udg_Evil,function Trig_Lives_Copy_Copy_neut_alliance_1a_Func012A)
+call ForForce(udg_Humans,function Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func011A)
+call ForForce(udg_Evil,function Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func012A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectMatchingFiltered(GetPlayableMapRect()),function Trig_Lives_Copy_Copy_neut_alliance_1a_Func014A)
+call ForGroupBJ(GetUnitsInRectMatchingFiltered(GetPlayableMapRect()),function Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func014A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectMatchingFiltered(GetPlayableMapRect()),function Trig_Lives_Copy_Copy_neut_alliance_1a_Func016A)
+call ForGroupBJ(GetUnitsInRectMatchingFiltered(GetPlayableMapRect()),function Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func016A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectMatchingFiltered(GetPlayableMapRect()),function Trig_Lives_Copy_Copy_neut_alliance_1a_Func018A)
+call ForGroupBJ(GetUnitsInRectMatchingFiltered(GetPlayableMapRect()),function Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func018A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectMatchingFiltered(GetPlayableMapRect()),function Trig_Lives_Copy_Copy_neut_alliance_1a_Func020A)
+call ForGroupBJ(GetUnitsInRectMatchingFiltered(GetPlayableMapRect()),function Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func020A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectAll(udg_rct_FB_Neutral_Spawn_Undead_Side),function Trig_Lives_Copy_Copy_neut_alliance_1a_Func022A)
+call ForGroupBJ(GetUnitsInRectAll(udg_rct_FB_Neutral_Spawn_Undead_Side),function Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func022A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectAll(udg_rct_FB_Neutral_Spawn_Human_Side),function Trig_Lives_Copy_Copy_neut_alliance_1a_Func024A)
+call ForGroupBJ(GetUnitsInRectAll(udg_rct_FB_Neutral_Spawn_Human_Side),function Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func024A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectAll(udg_rct_WHOLE_MAP_NOT_DUEL),function Trig_Lives_Copy_Copy_neut_alliance_1a_Func026A)
-if(Trig_Lives_Copy_Copy_neut_alliance_1a_Func027C())then
+call ForGroupBJ(GetUnitsInRectAll(udg_rct_WHOLE_MAP_NOT_DUEL),function Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func026A)
+if(Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func027C())then
 call DestructableRestoreLife(gg_dest_LTg3_4382,GetDestructableMaxLife(gg_dest_LTg3_4382),true)
 else
 endif
@@ -23689,11 +23691,12 @@ call DisableTrigger(udg_trg_Dead_area_top_right_Copy)
 call EnableTrigger(udg_trg_stop_tele_FB)
 call DisableTrigger(GetTriggeringTrigger())
 endfunction
-function InitTrig_Lives_Copy_Copy_neut_alliance_1a takes nothing returns nothing
+function InitTrig_FinalBattle_Runy_Copy_neut_alliance_1a takes nothing returns nothing
 set udg_trg_Lives_Copy_Copy_neut_alliance_1a=CreateTrigger()
 call TriggerRegisterTimerEventSingle(udg_trg_Lives_Copy_Copy_neut_alliance_1a,2460.00)
-call TriggerAddCondition(udg_trg_Lives_Copy_Copy_neut_alliance_1a,Condition(function Trig_Lives_Copy_Copy_neut_alliance_1a_Conditions))
-call TriggerAddAction(udg_trg_Lives_Copy_Copy_neut_alliance_1a,function Trig_Lives_Copy_Copy_neut_alliance_1a_Actions)
+call TriggerAddCondition(udg_trg_Lives_Copy_Copy_neut_alliance_1a,Condition(function Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Conditions))
+call TriggerAddAction(udg_trg_Lives_Copy_Copy_neut_alliance_1a,function Final_Battle_Run)
+//call TriggerAddAction(udg_trg_Lives_Copy_Copy_neut_alliance_1a,function Final_Battle_Run_Neut_alliance)
 endfunction
 function Trig_initiate_send_in_neutrals_Conditions takes nothing returns boolean
 if(not(udg_SETTINGS_CHOICE2_YES==true))then
@@ -42386,11 +42389,11 @@ call InitTrig_LIGHT_TEAM_Copy()
 call InitTrig_DARK_TEAM_Copy()
 call InitTrig_Duel_condition_v2_Copy()
 call InitTrig_Lives()
-call InitTrig_Lives_Cop()
-call InitTrig_Lives_Cop_neut_alliance_1a()
+call InitTrig_FinalBattle_Run()
+call InitTrig_FinalBattle_Run_neut_alliance_1a()
 call InitTrig_initiate_send_in_neuts()
-call InitTrig_Lives_Copy_Copy()
-call InitTrig_Lives_Copy_Copy_neut_alliance_1a()
+call InitTrig_FinalBattle_Runy_Copy()
+call InitTrig_FinalBattle_Runy_Copy_neut_alliance_1a()
 call InitTrig_initiate_send_in_neutrals()
 call InitTrig_Gate_destroyed()
 call InitTrig_Send_in_the_neutrals_2()
