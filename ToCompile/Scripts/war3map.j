@@ -17527,6 +17527,14 @@ return false
 endif
 return true
 endfunction
+function Trig_Remove_Selling_Unit_HERO_SHOP_HUMAN_Func002C_cultist takes nothing returns boolean
+if(not (GetUnitTypeId(GetSoldUnit())=='u02S'))then
+return false
+elseif(GetUnitAbilityLevel(GetBuyingUnit(),'ACCP')==0) then
+return false
+endif
+return true
+endfunction
 function Trig_Remove_Selling_Unit_HERO_SHOP_HUMAN_Actions takes nothing returns nothing
 if(IsUnitInGroup(GetBuyingUnit(),morphs))then
 call AdjustPlayerStateSimpleBJ(GetOwningPlayer(GetBuyingUnit()),PLAYER_STATE_RESOURCE_GOLD,50)
@@ -17539,9 +17547,16 @@ call RemoveUnit(GetSoldUnit())
 elseif(Trig_Remove_Selling_Unit_HERO_SHOP_HUMAN_Func002C_2()) then
 call RemoveUnit(GetSoldUnit())
 call ChangeUnit2(GetBuyingUnit(),'H07W')
+elseif(Trig_Remove_Selling_Unit_HERO_SHOP_HUMAN_Func002C_cultist()) then
+    call RemoveUnit(GetSoldUnit())
+    call ChangeUnit2(GetBuyingUnit(),'u02S')
 else
-call AdjustPlayerStateSimpleBJ(GetOwningPlayer(GetBuyingUnit()),PLAYER_STATE_RESOURCE_GOLD,50)
-call RemoveUnit(GetSoldUnit())
+    call RemoveUnit(GetSoldUnit())
+    if(GetUnitTypeId(GetSoldUnit())=='u02S')  then
+        call AdjustPlayerStateSimpleBJ(GetOwningPlayer(GetBuyingUnit()),PLAYER_STATE_RESOURCE_GOLD,25)
+    else
+        call AdjustPlayerStateSimpleBJ(GetOwningPlayer(GetBuyingUnit()),PLAYER_STATE_RESOURCE_GOLD,50)
+    endif
 endif
 endfunction
 function InitTrig_Remove_Selling_Unit_HERO_SHOP_HUMAN takes nothing returns nothing
