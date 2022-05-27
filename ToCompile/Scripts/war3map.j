@@ -17550,6 +17550,10 @@ call ChangeUnit2(GetBuyingUnit(),'H07W')
 elseif(Trig_Remove_Selling_Unit_HERO_SHOP_HUMAN_Func002C_cultist()) then
     call RemoveUnit(GetSoldUnit())
     call ChangeUnit2(GetBuyingUnit(),'u02S')
+    call SetPlayerTechMaxAllowed(GetOwningPlayer(GetSoldUnit()),'Ulic',5)
+    call SetPlayerTechMaxAllowed(GetOwningPlayer(GetSoldUnit()),'Ucrl',3)
+    call SetPlayerTechMaxAllowed(GetOwningPlayer(GetSoldUnit()),'Nplh',3)
+    call SetPlayerTechMaxAllowed(GetOwningPlayer(GetSoldUnit()),'u018',30)
 else
     call RemoveUnit(GetSoldUnit())
     if(GetUnitTypeId(GetSoldUnit())=='u02S')  then
