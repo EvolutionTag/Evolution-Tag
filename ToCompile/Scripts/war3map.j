@@ -9055,10 +9055,10 @@ if(killer==null)then
 call DisplayTimedTextToForce(GetPlayersAll(),10.00,(GetPlayerName(GetOwningPlayer(GetDyingUnit()))+" has lost a life!"))
 elseif(GetPlayerId(GetOwningPlayer(killer))>11)then
 call CheckBonusesForKiller()
-call DisplayTimedTextToForce(GetPlayersAll(),10.,(GetUnitName(killer)+(" has killed "+udg_AAA_Player_Colors[GetConvertedPlayerId(GetOwningPlayer(GetDyingUnit()))])))
+call DisplayTextToPlayer(GetLocalPlayer(),0,0,(GetUnitName(killer)+(" has killed "+udg_AAA_Player_Colors[GetConvertedPlayerId(GetOwningPlayer(GetDyingUnit()))])))
 else
 call CheckBonusesForKiller()
-call DisplayTimedTextToForce(GetPlayersAll(),10.,(udg_AAA_Player_Colors[GetConvertedPlayerId(GetOwningPlayer(killer))]+(" has killed "+udg_AAA_Player_Colors[GetConvertedPlayerId(GetOwningPlayer(GetDyingUnit()))])))
+call DisplayTimedTextToForce(GetPlayersAll(),10,(udg_AAA_Player_Colors[GetConvertedPlayerId(GetOwningPlayer(killer))]+(" has killed "+udg_AAA_Player_Colors[GetConvertedPlayerId(GetOwningPlayer(GetDyingUnit()))])))
 endif
 set killer=null
 endfunction
