@@ -3111,7 +3111,6 @@ constant integer IMAGE_TYPE_OCCLUSION_MASK=3
 constant integer IMAGE_TYPE_UBERSPLAT=4
 constant integer IMAGE_TYPE_TOPMOST=5
 constant string dummy_texture="ReplaceableTextures\\CommandButtons\\BTNWallOfFire.blp"
-hashtable RecycleTable=InitHashtable()
 itempool runes_pool
 integer array Smelter_counts
 integer array Smelter_ids
@@ -8307,34 +8306,9 @@ function RecreateImageCentered takes image i,string file,real sizeX,real sizeY,r
 call DestroyImage(i)
 return CreateImageCentered(file,sizeX,sizeY,sizeZ,posX,posY,posZ,imageType)
 endfunction
-function RecycleUnit takes nothing returns nothing
-local timer t=GetExpiredTimer()
-local unit u=LoadUnitHandle(RecycleTable,StringHash("UnitsToRecycle"),GetHandleId(t))
-call RemoveUnit(u)
-call DestroyTimer(t)
-set t=null
-set u=null
-endfunction
-function PlanUnitRecycle takes unit u returns nothing
-local timer t=CreateTimer()
-call SaveUnitHandle(RecycleTable,StringHash("UnitsToRecycle"),GetHandleId(t),u)
-call TimerStart(t,30,false,function RecycleUnit)
-set t=null
-endfunction
-function RecycleHeroStep1 takes nothing returns nothing
-local timer t=GetExpiredTimer()
-local unit u=LoadUnitHandle(RecycleTable,StringHash("UnitsToRecycle"),GetHandleId(t))
-call SetUnitOwner(u,Player(14),false)
-call DestroyTimer(t)
-call PlanUnitRecycle(u)
-set t=null
-set u=null
-endfunction
-function PlanHeroRecycle takes unit u returns nothing
-local timer t=CreateTimer()
-call SaveUnitHandle(RecycleTable,StringHash("UnitsToRecycle"),GetHandleId(t),u)
-call TimerStart(t,10,false,function RecycleHeroStep1)
-set t=null
+function RemoveUnit_CreateSkeleton takes unit u returns nothing
+call SetUnitOwner(u,Player(15),false)
+call PlanUnitRemoval(u,15)
 endfunction
 function CreateRandomRune takes real x,real y returns nothing
 call PlaceRandomItem(runes_pool,x,y)
@@ -9124,11 +9098,14 @@ endfunction
 function MoveUnit_d takes nothing returns nothing
 call SetUnitPositionLoc(GetEnumUnit(),temp_location_d)
 endfunction
+function IsEnumUnitDead takes nothing returns boolean
+    return not (GetWidgetLife(GetEnumUnit())<=0)
+endfunction
 function TpHuman takes nothing returns nothing
 local group g=CreateGroup()
 local timer t=GetExpiredTimer()
 local player p=LoadPlayerHandle(tpsystem_HT,GetHandleId(t),0)
-call GroupEnumUnitsInRect(g,udg_rct_Dead_teleport_area,null)
+call GroupEnumUnitsInRect(g,udg_rct_Dead_teleport_area,function IsEnumUnitDead)
 set temp_player_d=p
 set temp_group_d=g
 call ForGroup(g,function GroupRemoveUnitsOfPlayer)
@@ -9344,7 +9321,7 @@ if(GetUnitTypeId(DyingUnit)!=0) then
     else
     call RespawnPlayer(DyingUnit)
     endif
-    call PlanHeroRecycle(DyingUnit)
+    call RemoveUnit_CreateSkeleton(DyingUnit)
 endif
 set DyingUnit = null
 endfunction
