@@ -3267,6 +3267,7 @@ native UnitAlive takes unit id returns boolean
 //! import zinc "..\ToCompile\Scripts\Waifu.j"
 //! import zinc "..\ToCompile\Scripts\BombBlast.j"
 //! import zinc "..\ToCompile\Scripts\TreeDetection.j"
+//! import zinc "..\ToCompile\Scripts\FlyingUnits.j"
 
 //////////////////////////////////////////////////
 // //! import zinc "..\ToCompile\Scripts\Fixes\TerrainDeformFix.j"
@@ -8845,6 +8846,9 @@ function CreateUnitBonuses takes player p,integer id,real x,real y,real facing r
     set bj_lastCreatedUnit=CreateUnit(p,id,x,y,facing)
     call AddRevengeCheck(bj_lastCreatedUnit)
     call ApplyAllBonuses1(bj_lastCreatedUnit)
+    if(not udg_NO_FLYING_UNITS) then
+        call AddFlyingUnits(bj_lastCreatedUnit)
+    endif
     call UnitApplyAdditionalEvolutions(bj_lastCreatedUnit)
     return bj_lastCreatedUnit
 endfunction
@@ -43157,7 +43161,7 @@ function DisableFly takes nothing returns nothing
     local integer i=0
     loop
     call SetPlayerAbilityAvailable(Player(i),'A00K',false)
-    call SetPlayerTechMaxAllowed(Player(i),'ugar',0)
+    call SetPlayerAbilityAvailable(Player(i),'dI08',false)
     set i=i+1
     exitwhen i>14
     endloop
@@ -43694,7 +43698,6 @@ endif
 else
 endif
 if(Trig_Dialogue_pt4_Func001Func001Func003C())then
-if(Trig_Dialogue_pt4_Func001Func001Func003Func001C())then
 set udg_SatyrBarracks_Point=GetRectCenter(udg_rct_Satyr_Barracks)
 call CreateNUnitsAtLoc(1,'o00M',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
 set udg_Satyr_Barracks=GetLastCreatedUnit()
@@ -43703,10 +43706,6 @@ call EnableTrigger(udg_trg_Satyr_Spawn)
 set udg_Extreme_Mode=true
 call DisplayTimedTextToForce(GetPlayersAll(),30,"|cff32cd32Extreme Mode: +1 lives!|r")
 call DialogDisplayBJ(false,udg_CHOOSE_SETTINGS_3,GetEnumPlayer())
-else
-call DialogDisplayBJ(false,udg_CHOOSE_SETTINGS_3,GetEnumPlayer())
-call DisplayTimedTextToForce(GetPlayersAll(),30,"|cff32cd32Normal Mode|r")
-endif
 else
 endif
 else
