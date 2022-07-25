@@ -1669,7 +1669,7 @@ trigger udg_trg_Pirate_Tele_pt1=null
 trigger udg_trg_Pirate_Tele_Timer=null
 trigger udg_trg_Pirate_Tele_pt2=null
 trigger udg_trg_Pirate_Coin_Spell=null
-trigger udg_trg_Hide_Units_and_Set_Groups=null
+trigger udg_trg_Create3rdTeam=null
 trigger udg_trg_Satyr_Research_upgrades=null
 trigger udg_trg_Satyr_Spawn=null
 trigger udg_trg_Level_1=null
@@ -6441,7 +6441,7 @@ set udg_trg_Pirate_Tele_pt1=CreateTrigger()
 set udg_trg_Pirate_Tele_Timer=CreateTrigger()
 set udg_trg_Pirate_Tele_pt2=CreateTrigger()
 set udg_trg_Pirate_Coin_Spell=CreateTrigger()
-set udg_trg_Hide_Units_and_Set_Groups=CreateTrigger()
+set udg_trg_Create3rdTeam=CreateTrigger()
 set udg_trg_Satyr_Research_upgrades=CreateTrigger()
 set udg_trg_Satyr_Spawn=CreateTrigger()
 set udg_trg_Level_1=CreateTrigger()
@@ -15037,12 +15037,337 @@ call DisableTrigger(GetTriggeringTrigger())
 call DestroyTrigger(GetTriggeringTrigger())
 call DestroyTimer(GetExpiredTimer())
 endfunction
+function CreateShops takes nothing returns nothing
+	call CreateUnitBonuses( Player(15) , 'nrac', -2513.941 , -684.056 , 314.141 )
+	call CreateUnitBonuses( Player(15) , 'nrac', -2793.274 , 1252.538 , 92.153 )
+	call CreateUnitBonuses( Player(15) , 'nrac', -1822.750 , 4451.000 , 119.762 )
+	call CreateUnitBonuses( Player(15) , 'npig', -2983.046 , -3388.022 , 285.053 )
+	call CreateUnitBonuses( Player(15) , 'npig', -1695.373 , -3854.734 , 52.589 )
+	call CreateUnitBonuses( Player(15) , 'npig', -3297.143 , -3982.730 , 103.971 )
+	call CreateUnitBonuses( Player(15) , 'ehip', -4505.223 , 1269.555 , 213.965 )
+	call CreateUnitBonuses( Player(15) , 'ehip', 987.336 , 290.636 , 104.035 )
+	call CreateUnitBonuses( Player(15) , 'npng', 3309.917 , -3326.557 , 11.348 )
+	call CreateUnitBonuses( Player(15) , 'npng', 3235.246 , -2991.540 , 96.651 )
+	call CreateUnitBonuses( Player(15) , 'npng', 3036.940 , -2091.736 , 119.586 )
+	call CreateUnitBonuses( Player(15) , 'npng', 2171.290 , -3373.388 , 298.066 )
+	call CreateUnitBonuses( Player(15) , 'npng', 2555.361 , -3057.947 , 359.812 )
+	call CreateUnitBonuses( Player(15) , 'npng', 3300.551 , -3718.431 , 3.516 )
+	call CreateUnitBonuses( Player(15) , 'npng', 3587.834 , -2213.259 , 194.924 )
+	call CreateUnitBonuses( Player(15) , 'npng', 2581.059 , -3564.266 , 37.776 )
+	call CreateUnitBonuses( Player(15) , 'npig', -3572.479 , -2236.050 , 132.513 )
+	call CreateUnitBonuses( Player(15) , 'npig', -3854.408 , -3520.899 , 321.279 )
+	call CreateUnitBonuses( Player(15) , 'npng', 2789.271 , -2888.513 , 284.704 )
+	call CreateUnitBonuses( Player(15) , 'npng', 2084.646 , -3589.821 , 314.415 )
+	call CreateUnitBonuses( Player(15) , 'npng', 1909.250 , -3302.000 , 305.666 )
+	call CreateUnitBonuses( Player(15) , 'n067', -1047.750 , -2451.500 , 230.000 )
+	call CreateUnitBonuses( Player(15) , 'n068', 1072.000 , -2352.000 , 30.000 )
+	call CreateUnitBonuses( Player(15) , 'nfro', -1869.302 , -542.688 , 8.064 )
+	call CreateUnitBonuses( Player(15) , 'nfro', 1673.552 , -1754.478 , 53.804 )
+	call CreateUnitBonuses( Player(15) , 'nech', -3906.692 , 1774.803 , 117.562 )
+	call CreateUnitBonuses( Player(15) , 'nech', -3733.411 , -1041.108 , 288.421 )
+	call CreateUnitBonuses( Player(15) , 'nfro', 1966.894 , -281.308 , 91.173 )
+	call CreateUnitBonuses( Player(15) , 'nzep', -808.003 , -1331.791 , 337.986 )
+	call CreateUnitBonuses( Player(15) , 'nshe', -2771.029 , 254.473 , 356.660 )
+	call CreateUnitBonuses( Player(15) , 'hhdl', -3600.000 , 907.595 , 176.656 )
+	call CreateUnitBonuses( Player(15) , 'nshe', -3420.113 , 1001.849 , 86.929 )
+	call CreateUnitBonuses( Player(15) , 'n061', -3536.000 , 1168.000 , 280.000 )
+	call CreateUnitBonuses( Player(15) , 'hhdl', 826.514 , 1328.006 , 181.015 )
+	call CreateUnitBonuses( Player(15) , 'n062', -3853.750 , 1836.500 , 355.671 )
+	call CreateUnitBonuses( Player(15) , 'npig', -2054.659 , 2021.318 , 138.434 )
+	call CreateUnitBonuses( Player(15) , 'npig', -7447.750 , 4832.250 , 277.217 )
+	call CreateUnitBonuses( Player(15) , 'n065', -4048.000 , 5552.000 , 320.000 )
+endfunction
+function CreateNagas takes nothing returns nothing
+	call CreateUnitBonuses( Player(12) , 'h01G', 1280.000 , 5376.000 , 270.000 )
+	call CreateUnitBonuses( Player(12) , 'n079', -1344.000 , 5324.750 , 352.270 )
+	call CreateUnitBonuses( Player(12) , 'n079', -1310.500 , 4489.500 , 348.560 )
+	call CreateUnitBonuses( Player(12) , 'nntg', -1280.000 , 4864.000 , 270.000 )
+	call CreateUnitBonuses( Player(12) , 'n07A', 1277.000 , 5271.000 , 132.830 )
+	call CreateUnitBonuses( Player(12) , 'n07A', 2189.500 , 5239.000 , 45.300 )
+	call CreateUnitBonuses( Player(12) , 'n07A', -123.500 , 5313.000 , 180.860 )
+	call CreateUnitBonuses( Player(12) , 'n07A', -529.750 , 4709.500 , 157.660 )
+	call CreateUnitBonuses( Player(12) , 'nntg', 832.000 , 4928.000 , 270.000 )
+	call CreateUnitBonuses( Player(12) , 'nntg', -320.000 , 4800.000 , 270.000 )
+	call CreateUnitBonuses( Player(12) , 'nnsw', 2482.250 , 5466.250 , 31.455 )
+	call CreateUnitBonuses( Player(12) , 'nnsw', 2512.000 , 4912.000 , 169.173 )
+	call CreateUnitBonuses( Player(12) , 'nnsw', 3513.250 , 4676.500 , 83.751 )
+	call CreateUnitBonuses( Player(12) , 'nmpe', -1232.000 , 4976.000 , 84.480 )
+	call CreateUnitBonuses( Player(12) , 'n073', 428.000 , 5363.250 , 24.620 )
+	call CreateUnitBonuses( Player(12) , 'n073', -346.000 , 5034.500 , 297.450 )
+	call CreateUnitBonuses( Player(12) , 'n073', 2930.000 , 5301.500 , 101.550 )
+	call CreateUnitBonuses( Player(12) , 'n073', 2926.000 , 4963.500 , 198.320 )
+	call CreateUnitBonuses( Player(12) , 'nUWP', 3200.000 , 5120.000 , 270.000 )
+	call CreateUnitBonuses( Player(12) , 'nnrg', 3481.500 , 5116.750 , 4.240 )
+	call CreateUnitBonuses( Player(12) , 'nhyc', -625.000 , 5331.250 , 247.380 )
+	call CreateUnitBonuses( Player(12) , 'nntg', 3648.000 , 5440.000 , 270.000 )
+	call CreateUnitBonuses( Player(12) , 'nntg', 832.000 , 5440.000 , 270.000 )
+	call CreateUnitBonuses( Player(12) , 'n079', 1187.750 , 5265.000 , 109.360 )
+	call CreateUnitBonuses( Player(12) , 'n079', 1395.500 , 5262.000 , 85.550 )
+endfunction
+function CreateSatyrsXTreme takes nothing returns nothing
+	call CreateUnitBonuses( Player(13) , 'nsty', 1117.000 , 3942.000 , 173.985 )
+	call CreateUnitBonuses( Player(13) , 'nsty', 848.000 , 3664.000 , 219.393 )
+	call CreateUnitBonuses( Player(13) , 'nsty', 1126.750 , 3704.500 , 44.716 )
+	call CreateUnitBonuses( Player(13) , 'nsty', 1409.000 , 3689.000 , 303.858 )
+	call CreateUnitBonuses( Player(13) , 'nsty', 1118.750 , 3453.750 , 152.011 )
+	call CreateUnitBonuses( Player(13) , 'nsty', 1265.750 , -3522.750 , 190.366 )
+	call CreateUnitBonuses( Player(13) , 'nsty', 1535.750 , -3537.500 , 118.414 )
+	call CreateUnitBonuses( Player(13) , 'nsty', -2820.750 , -3577.000 , 119.667 )
+	call CreateUnitBonuses( Player(13) , 'nsty', -2567.500 , -3757.250 , 64.085 )
+	call CreateUnitBonuses( Player(13) , 'nsty', 2087.250 , -2396.000 , 340.905 )
+	call CreateUnitBonuses( Player(13) , 'nsty', 2729.250 , -496.750 , 293.827 )
+	call CreateUnitBonuses( Player(13) , 'nsty', 2012.250 , 1405.000 , 103.791 )
+	call CreateUnitBonuses( Player(13) , 'nsty', -2117.000 , 1389.000 , 348.211 )
+	call CreateUnitBonuses( Player(13) , 'nsty', -2759.750 , -748.000 , 3.208 )
+	call CreateUnitBonuses( Player(13) , 'nsty', -2421.500 , -1564.500 , 59.647 )
+	call CreateUnitBonuses( Player(13) , 'nsty', -1423.500 , -2629.750 , 223.743 )
+	call CreateUnitBonuses( Player(13) , 'nsty', -4009.000 , -2508.750 , 258.033 )
+	call CreateUnitBonuses( Player(13) , 'nsty', -2358.250 , 350.250 , 142.156 )
+	call CreateUnitBonuses( Player(13) , 'nsty', -3143.500 , 1412.000 , 295.981 )
+	call CreateUnitBonuses( Player(13) , 'nsty', -2630.500 , -3883.250 , 173.330 )
+	call CreateUnitBonuses( Player(13) , 'nsty', -2973.750 , -3587.500 , 54.650 )
+	call CreateUnitBonuses( Player(13) , 'nsty', 1636.500 , -3620.500 , 286.270 )
+	call CreateUnitBonuses( Player(13) , 'nsty', 951.750 , -3592.750 , 207.050 )
+	call CreateUnitBonuses( Player(13) , 'nsty', 3777.000 , -2918.500 , 332.390 )
+	call CreateUnitBonuses( Player(13) , 'nsty', -2524.750 , 3152.500 , 186.213 )
+	call CreateUnitBonuses( Player(13) , 'nsty', -3868.000 , 3605.500 , 141.970 )
+	call CreateUnitBonuses( Player(13) , 'nsty', -1839.500 , 3758.000 , 183.130 )
+	call CreateUnitBonuses( Player(13) , 'nsty', -1977.750 , 2687.500 , 317.780 )
+	call CreateUnitBonuses( Player(13) , 'nsty', 2974.500 , 2382.250 , 89.728 )
+	call CreateUnitBonuses( Player(13) , 'nsty', 3223.000 , 903.000 , 203.000 )
+	call CreateUnitBonuses( Player(13) , 'nsty', 3888.000 , 216.500 , 75.560 )
+	call CreateUnitBonuses( Player(13) , 'nsty', 3966.500 , -1947.000 , 178.379 )
+	call CreateUnitBonuses( Player(13) , 'nsty', 3512.500 , 3498.750 , 52.967 )
+	call CreateUnitBonuses( Player(13) , 'nsty', -5469.500 , -4535.500 , 310.055 )
+	call CreateUnitBonuses( Player(13) , 'nsty', -889.000 , -3622.500 , 97.390 )
+	call CreateUnitBonuses( Player(13) , 'nsty', 38.500 , -2724.750 , 124.204 )
+	call CreateUnitBonuses( Player(13) , 'nsty', 432.000 , -4048.000 , 191.706 )
+	call CreateUnitBonuses( Player(13) , 'o00K', 1216.000 , 3584.000 , 270.000 )
+	call CreateUnitBonuses( Player(13) , 'o00K', -4160.000 , 2560.000 , 270.000 )
+	call CreateUnitBonuses( Player(13) , 'o00K', -4160.000 , 2176.000 , 270.000 )
+	call CreateUnitBonuses( Player(13) , 'o00K', -4736.000 , 384.000 , 270.000 )
+	call CreateUnitBonuses( Player(13) , 'o00K', -5824.000 , -320.000 , 270.000 )
+	call CreateUnitBonuses( Player(13) , 'o00K', -6784.000 , -3264.000 , 270.000 )
+	call CreateUnitBonuses( Player(13) , 'o00K', -5056.000 , -576.000 , 270.000 )
+	call CreateUnitBonuses( Player(13) , 'o00K', -5120.000 , 1664.000 , 270.000 )
+	call CreateUnitBonuses( Player(13) , 'o00K', -5952.000 , -1856.000 , 270.000 )
+	call CreateUnitBonuses( Player(13) , 'o00K', 1408.000 , -3648.000 , 270.000 )
+	call CreateUnitBonuses( Player(13) , 'o00K', -2688.000 , -3648.000 , 270.000 )
+	call CreateUnitBonuses( Player(13) , 'n05R', -4309.250 , 2340.500 , 7.100 )
+	call CreateUnitBonuses( Player(13) , 'n05R', -5675.500 , 595.750 , 326.381 )
+	call CreateUnitBonuses( Player(13) , 'n05R', -4725.000 , 623.000 , 354.200 )
+	call CreateUnitBonuses( Player(13) , 'n05R', -4476.750 , 227.500 , 90.000 )
+	call CreateUnitBonuses( Player(13) , 'n05R', -4873.250 , -1693.750 , 69.765 )
+	call CreateUnitBonuses( Player(13) , 'n05R', -6611.500 , -2885.000 , 148.298 )
+	call CreateUnitBonuses( Player(13) , 'n05R', -6081.000 , -3240.500 , 189.360 )
+	call CreateUnitBonuses( Player(13) , 'n05T', -7248.000 , -1752.250 , 8.767 )
+	call CreateUnitBonuses( Player(13) , 'n05T', -7183.000 , -1672.000 , 349.013 )
+	call CreateUnitBonuses( Player(13) , 'n05T', -7192.250 , -1816.000 , 224.545 )
+	call CreateUnitBonuses( Player(13) , 'n05S', -7058.500 , -1597.500 , 316.581 )
+	call CreateUnitBonuses( Player(13) , 'n05S', -7079.000 , -1961.000 , 334.720 )
+	call CreateUnitBonuses( Player(13) , 'o00L', -6528.000 , 1536.000 , 270.000 )
+	call CreateUnitBonuses( Player(13) , 'o00L', -6848.000 , -1792.000 , 270.000 )
+	call CreateUnitBonuses( Player(13) , 'n05R', -5444.000 , -2000.500 , 118.280 )
+	call CreateUnitBonuses( Player(13) , 'n05R', -5218.500 , -757.500 , 0.000 )
+	call CreateUnitBonuses( Player(13) , 'n05R', -5876.000 , -1448.000 , 3.779 )
+	call CreateUnitBonuses( Player(13) , 'n05R', -6480.000 , -142.750 , 295.135 )
+	call CreateUnitBonuses( Player(13) , 'n05R', -6303.750 , 1220.500 , 118.887 )
+	call CreateUnitBonuses( Player(13) , 'n05R', -6745.000 , 1227.750 , 19.172 )
+	call CreateUnitBonuses( Player(13) , 'n05R', -7231.250 , 1799.750 , 265.328 )
+	call CreateUnitBonuses( Player(13) , 'n05S', -6703.500 , 1709.000 , 59.020 )
+	call CreateUnitBonuses( Player(13) , 'n05T', -6602.000 , 1805.500 , 66.557 )
+	call CreateUnitBonuses( Player(13) , 'n05T', -6803.250 , 1586.500 , 234.181 )
+	call CreateUnitBonuses( Player(13) , 'n05T', -5220.500 , 1574.000 , 143.068 )
+	call CreateUnitBonuses( Player(13) , 'n05R', -7332.250 , 2080.000 , 282.247 )
+	call CreateUnitBonuses( Player(13) , 'n05R', -7437.500 , 2068.000 , 296.904 )
+	call CreateUnitBonuses( Player(13) , 'n05R', -7376.000 , 2192.000 , 4.010 )
+	call CreateUnitBonuses( Player(13) , 'n05R', -7404.250 , 2351.000 , 186.740 )
+	call CreateUnitBonuses( Player(13) , 'o00L', -6976.000 , 2496.000 , 270.000 )
+	call CreateUnitBonuses( Player(13) , 'o00L', -6912.000 , 3328.000 , 270.000 )
+	call CreateUnitBonuses( Player(13) , 'o00L', -7360.000 , 3328.000 , 270.000 )
+	call CreateUnitBonuses( Player(13) , 'n05R', -6598.000 , 3109.750 , 93.024 )
+	call CreateUnitBonuses( Player(13) , 'n05R', -6222.000 , 3465.500 , 302.232 )
+	call CreateUnitBonuses( Player(13) , 'n05U', -7295.250 , 3856.750 , 270.000 )
+	call CreateUnitBonuses( Player(13) , 'n05U', -6966.750 , 3824.750 , 270.000 )
+	call CreateUnitBonuses( Player(13) , 'n05V', -7130.750 , 3708.250 , 270.000 )
+	call CreateUnitBonuses( Player(13) , 'o00L', -6336.000 , 3840.000 , 270.000 )
+	call CreateUnitBonuses( Player(13) , 'n05R', -5444.000 , 4214.750 , 111.163 )
+	call CreateUnitBonuses( Player(13) , 'n05R', -5920.000 , 3818.250 , 310.307 )
+	call CreateUnitBonuses( Player(13) , 'nsat', 937.500 , 3812.250 , 240.550 )
+	call CreateUnitBonuses( Player(13) , 'n05R', -5665.250 , 4035.500 , 39.167 )
+	call CreateUnitBonuses( Player(13) , 'n05V', -6024.500 , 4167.500 , 354.693 )
+	call CreateUnitBonuses( Player(13) , 'o00L', -5952.000 , 5184.000 , 270.000 )
+	call CreateUnitBonuses( Player(13) , 'o00L', -5952.000 , 5824.000 , 270.000 )
+	call CreateUnitBonuses( Player(13) , 'o00L', -5312.000 , 4288.000 , 270.000 )
+	call CreateUnitBonuses( Player(13) , 'n05W', -6847.750 , 4446.500 , 346.870 )
+	call CreateUnitBonuses( Player(13) , 'n05U', -6268.250 , 4459.000 , 282.423 )
+	call CreateUnitBonuses( Player(13) , 'nspg', -3603.250 , 5191.250 , 65.777 )
+	call CreateUnitBonuses( Player(13) , 'n05V', -6437.750 , 5527.000 , 161.910 )
+endfunction
+
+function CreateBottomTeam takes nothing returns nothing
+	call CreateUnitBonuses( Player(14) , 'n07E', -2541.500 , -5758.250 , 107.560 )
+	call CreateUnitBonuses( Player(14) , 'n07E', -1097.500 , -5970.250 , 107.560 )
+	call CreateUnitBonuses( Player(14) , 'n06T', 2256.000 , -5040.000 , 296.660 )
+	call CreateUnitBonuses( Player(14) , 'n06T', 1191.000 , -5921.500 , 296.660 )
+	call CreateUnitBonuses( Player(14) , 'n075', -2363.000 , -5397.250 , 60.000 )
+	call CreateUnitBonuses( Player(14) , 'n075', -5055.000 , -5708.000 , 60.000 )
+	call CreateUnitBonuses( Player(14) , 'n01A', -1357.000 , -5027.250 , 80.510 )
+	call CreateUnitBonuses( Player(14) , 'n01A', -4936.000 , -5721.500 , 80.510 )
+	call CreateUnitBonuses( Player(14) , 'n075', -4796.750 , -5718.250 , 60.000 )
+	call CreateUnitBonuses( Player(14) , 'ndrn', -7283.000 , -5395.000 , 223.568 )
+	call CreateUnitBonuses( Player(14) , 'ndrt', -6788.750 , -5291.000 , 191.531 )
+	call CreateUnitBonuses( Player(14) , 'ndrt', -6255.250 , -4980.500 , 319.119 )
+	call CreateUnitBonuses( Player(14) , 'ndrt', -6017.500 , -5451.500 , 340.817 )
+	call CreateUnitBonuses( Player(14) , 'n016', -1841.000 , -5240.500 , 180.000 )
+	call CreateUnitBonuses( Player(14) , 'n016', -3884.500 , -5347.500 , 56.090 )
+	call CreateUnitBonuses( Player(14) , 'n06M', -2806.000 , -5469.500 , 116.000 )
+	call CreateUnitBonuses( Player(14) , 'n019', -2558.000 , -5449.750 , 104.130 )
+	call CreateUnitBonuses( Player(14) , 'n06U', -2066.500 , -5497.750 , 150.000 )
+	call CreateUnitBonuses( Player(14) , 'n06U', -2254.250 , -5499.000 , 35.762 )
+	call CreateUnitBonuses( Player(14) , 'ndrs', -2160.000 , -5488.000 , 90.000 )
+	call CreateUnitBonuses( Player(14) , 'n017', -1967.250 , -5401.250 , 120.000 )
+	call CreateUnitBonuses( Player(14) , 'n074', -3007.000 , -4789.750 , 127.676 )
+	call CreateUnitBonuses( Player(14) , 'n074', -2929.000 , -4782.250 , 168.733 )
+	call CreateUnitBonuses( Player(14) , 'n074', -1664.750 , -5361.500 , 305.418 )
+	call CreateUnitBonuses( Player(14) , 'h01G', 3648.000 , -5504.000 , 270.000 )
+	call CreateUnitBonuses( Player(14) , 'nitr', 3727.500 , -5395.000 , 69.425 )
+	call CreateUnitBonuses( Player(14) , 'n072', -2491.000 , -5329.500 , 0.000 )
+	call CreateUnitBonuses( Player(14) , 'ntn2', -1312.000 , -5216.000 , 270.000 )
+	call CreateUnitBonuses( Player(14) , 'n078', 3888.000 , -5232.000 , 164.086 )
+	call CreateUnitBonuses( Player(14) , 'nrac', -7184.000 , -4944.000 , 264.086 )
+	call CreateUnitBonuses( Player(14) , 'nten', -1632.000 , -4832.000 , 270.000 )
+	call CreateUnitBonuses( Player(14) , 'n078', 3024.000 , -5008.000 , 164.086 )
+	call CreateUnitBonuses( Player(14) , 'n078', 1590.500 , -4975.000 , 164.086 )
+	call CreateUnitBonuses( Player(14) , 'nitr', 1913.000 , -4907.000 , 170.063 )
+	call CreateUnitBonuses( Player(14) , 'nitr', 3066.000 , -4812.500 , 341.850 )
+	call CreateUnitBonuses( Player(14) , 'nitr', 3132.750 , -5085.250 , 107.417 )
+	call CreateUnitBonuses( Player(14) , 'nitr', 3162.000 , -4763.500 , 254.067 )
+	call CreateUnitBonuses( Player(14) , 'nitr', 3277.250 , -4947.250 , 200.177 )
+	call CreateUnitBonuses( Player(14) , 'nitr', 1879.000 , -5070.500 , 278.380 )
+	call CreateUnitBonuses( Player(14) , 'nitr', 1799.250 , -4935.000 , 13.964 )
+	call CreateUnitBonuses( Player(14) , 'nitr', 1744.000 , -5040.000 , 13.964 )
+	call CreateUnitBonuses( Player(14) , 'n06L', 2596.500 , -5033.500 , 81.370 )
+	call CreateUnitBonuses( Player(14) , 'ndrs', 2908.000 , -5087.250 , 180.000 )
+	call CreateUnitBonuses( Player(14) , 'n078', 3254.000 , -5042.500 , 90.000 )
+	call CreateUnitBonuses( Player(14) , 'nfr1', -2560.000 , -4608.000 , 270.000 )
+	call CreateUnitBonuses( Player(14) , 'n072', -2377.000 , -4557.000 , 300.000 )
+	call CreateUnitBonuses( Player(14) , 'n072', -2064.000 , -4624.000 , 240.000 )
+	call CreateUnitBonuses( Player(14) , 'nfr2', -1856.000 , -4608.000 , 270.000 )
+	call CreateUnitBonuses( Player(14) , 'ngno', 1295.750 , -673.750 , 204.835 )
+	call CreateUnitBonuses( Player(14) , 'ngno', -1292.000 , -627.500 , 267.690 )
+endfunction
+
+function CreatePirates takes nothing returns nothing
+	call CreateUnitBonuses( Player(13), 'h07L',-5784.000 , 4073.750 , 300.000 )
+	call CreateUnitBonuses( Player(13), 'h07L',-7080.250 , 2640.000 , 220.760 )
+	call CreateUnitBonuses( Player(13), 'h07L',-4594.250 , 2202.000 , 0.000 )
+	call CreateUnitBonuses( Player(13), 'h07L',-6508.750 , 774.000 , 270.000 )
+	call CreateUnitBonuses( Player(13), 'h07M',-6695.000 , 3664.000 , 148.320 )
+	call CreateUnitBonuses( Player(13), 'h07M',-7368.500 , 3676.250 , 34.564 )
+	call CreateUnitBonuses( Player(13), 'h07M',-6363.500 , 3355.500 , 180.764 )
+	call CreateUnitBonuses( Player(13), 'h07M',-4683.500 , 2089.500 , 0.000 )
+	call CreateUnitBonuses( Player(13), 'h07M',-4725.250 , 2304.750 , 345.000 )
+	call CreateUnitBonuses( Player(13), 'h07M',-4478.500 , 1402.500 , 159.669 )
+	call CreateUnitBonuses( Player(13), 'h07M',-5712.000 , 1552.000 , 230.610 )
+	call CreateUnitBonuses( Player(13), 'h07M',-6608.500 , 848.750 , 270.000 )
+	call CreateUnitBonuses( Player(13), 'h07M',-6419.500 , 843.750 , 241.550 )
+	call CreateUnitBonuses( Player(13), 'ncop',-4352.000 , 1344.000 , 270.000 )
+	call CreateUnitBonuses( Player(13), 'h07J',-6108.000 , 2822.500 , 283.126 )
+	call CreateUnitBonuses( Player(13), 'h01G',-6848.000 , 4160.000 , 270.000 )
+	call CreateUnitBonuses( Player(13), 'ncop',-6592.000 , 3968.000 , 270.000 )
+	call CreateUnitBonuses( Player(13), 'h07N',-7296.000 , 4352.000 , 270.000 )
+	call CreateUnitBonuses( Player(13), 'h07K',-6649.000 , 4333.000 , 270.000 )
+	call CreateUnitBonuses( Player(13), 'h07K',-7037.500 , 4346.750 , 270.000 )
+	call CreateUnitBonuses( Player(13), 'nspg',-3603.250 , 5191.250 , 65.777 )
+endfunction
+
+function CreateSatyrsHard takes nothing returns nothing
+	call CreateUnitBonuses( Player( 13), 'nsty', -4009.000, -2508.750 , 258.033)
+	call CreateUnitBonuses( Player( 13), 'nsty', -5469.500, -4535.500 , 310.055)
+	call CreateUnitBonuses( Player( 13), 'o00K', -4160.000, 2560.000 , 270.000)
+	call CreateUnitBonuses( Player( 13), 'o00K', -4160.000, 2176.000 , 270.000)
+	call CreateUnitBonuses( Player( 13), 'o00K', -4736.000, 384.000 , 270.000)
+	call CreateUnitBonuses( Player( 13), 'o00K', -5824.000, -320.000 , 270.000)
+	call CreateUnitBonuses( Player( 13), 'o00K', -6784.000, -3264.000 , 270.000)
+	call CreateUnitBonuses( Player( 13), 'o00K', -5056.000, -576.000 , 270.000)
+	call CreateUnitBonuses( Player( 13), 'o00K', -5120.000, 1664.000 , 270.000)
+	call CreateUnitBonuses( Player( 13), 'o00K', -5952.000, -1856.000 , 270.000)
+	call CreateUnitBonuses( Player( 13), 'n05R', -4309.250, 2340.500 , 7.100)
+	call CreateUnitBonuses( Player( 13), 'n05R', -5675.500, 595.750 , 326.381)
+	call CreateUnitBonuses( Player( 13), 'n05R', -4725.000, 623.000 , 354.200)
+	call CreateUnitBonuses( Player( 13), 'n05R', -4476.750, 227.500 , 90.000)
+	call CreateUnitBonuses( Player( 13), 'n05R', -4873.250, -1693.750 , 69.765)
+	call CreateUnitBonuses( Player( 13), 'n05R', -6611.500, -2885.000 , 148.298)
+	call CreateUnitBonuses( Player( 13), 'n05R', -6081.000, -3240.500 , 189.360)
+	call CreateUnitBonuses( Player( 13), 'n05T', -7248.000, -1752.250 , 8.767)
+	call CreateUnitBonuses( Player( 13), 'n05T', -7183.000, -1672.000 , 349.013)
+	call CreateUnitBonuses( Player( 13), 'n05T', -7192.250, -1816.000 , 224.545)
+	call CreateUnitBonuses( Player( 13), 'n05S', -7058.500, -1597.500 , 316.581)
+	call CreateUnitBonuses( Player( 13), 'n05S', -7079.000, -1961.000 , 334.720)
+	call CreateUnitBonuses( Player( 13), 'o00L', -6528.000, 1536.000 , 270.000)
+	call CreateUnitBonuses( Player( 13), 'o00L', -6848.000, -1792.000 , 270.000)
+	call CreateUnitBonuses( Player( 13), 'n05R', -5444.000, -2000.500 , 118.280)
+	call CreateUnitBonuses( Player( 13), 'n05R', -5218.500, -757.500 , 0.000)
+	call CreateUnitBonuses( Player( 13), 'n05R', -5876.000, -1448.000 , 3.779)
+	call CreateUnitBonuses( Player( 13), 'n05R', -6480.000, -142.750 , 295.135)
+	call CreateUnitBonuses( Player( 13), 'n05R', -6303.750, 1220.500 , 118.887)
+	call CreateUnitBonuses( Player( 13), 'n05R', -6745.000, 1227.750 , 19.172)
+	call CreateUnitBonuses( Player( 13), 'n05R', -7231.250, 1799.750 , 265.328)
+	call CreateUnitBonuses( Player( 13), 'n05S', -6703.500, 1709.000 , 59.020)
+	call CreateUnitBonuses( Player( 13), 'n05T', -6602.000, 1805.500 , 66.557)
+	call CreateUnitBonuses( Player( 13), 'n05T', -6803.250, 1586.500 , 234.181)
+	call CreateUnitBonuses( Player( 13), 'n05T', -5220.500, 1574.000 , 143.068)
+	call CreateUnitBonuses( Player( 13), 'n05R', -7332.250, 2080.000 , 282.247)
+	call CreateUnitBonuses( Player( 13), 'n05R', -7437.500, 2068.000 , 296.904)
+	call CreateUnitBonuses( Player( 13), 'n05R', -7376.000, 2192.000 , 4.010)
+	call CreateUnitBonuses( Player( 13), 'n05R', -7404.250, 2351.000 , 186.740)
+	call CreateUnitBonuses( Player( 13), 'o00L', -6976.000, 2496.000 , 270.000)
+	call CreateUnitBonuses( Player( 13), 'o00L', -6912.000, 3328.000 , 270.000)
+	call CreateUnitBonuses( Player( 13), 'o00L', -7360.000, 3328.000 , 270.000)
+	call CreateUnitBonuses( Player( 13), 'n05R', -6598.000, 3109.750 , 93.024)
+	call CreateUnitBonuses( Player( 13), 'n05R', -6222.000, 3465.500 , 302.232)
+	call CreateUnitBonuses( Player( 13), 'n05U', -7295.250, 3856.750 , 270.000)
+	call CreateUnitBonuses( Player( 13), 'n05U', -6966.750, 3824.750 , 270.000)
+	call CreateUnitBonuses( Player( 13), 'n05V', -7130.750, 3708.250 , 270.000)
+	call CreateUnitBonuses( Player( 13), 'o00L', -6336.000, 3840.000 , 270.000)
+	call CreateUnitBonuses( Player( 13), 'n05R', -5444.000, 4214.750 , 111.163)
+	call CreateUnitBonuses( Player( 13), 'n05R', -5920.000, 3818.250 , 310.307)
+	call CreateUnitBonuses( Player( 13), 'n05R', -5665.250, 4035.500 , 39.167)
+	call CreateUnitBonuses( Player( 13), 'n05V', -6024.500, 4167.500 , 354.693)
+	call CreateUnitBonuses( Player( 13), 'o00L', -5952.000, 5184.000 , 270.000)
+	call CreateUnitBonuses( Player( 13), 'o00L', -5952.000, 5824.000 , 270.000)
+	call CreateUnitBonuses( Player( 13), 'o00L', -5312.000, 4288.000 , 270.000)
+	call CreateUnitBonuses( Player( 13), 'n05W', -6847.750, 4446.500 , 346.870)
+	call CreateUnitBonuses( Player( 13), 'n05U', -6268.250, 4459.000 , 282.423)
+	call CreateUnitBonuses( Player( 13), 'nspg', -3603.250, 5191.250 , 65.777)
+	call CreateUnitBonuses( Player( 13), 'n05V', -6437.750, 5527.000 , 161.910)
+endfunction
+
+function CreateSatyrTowers takes nothing returns nothing
+	CreateUnit(Player(13),'nsty',1117.000 , 3942.000 , 173.985)
+	CreateUnit(Player(13),'nsty',848.000 , 3664.000 , 219.393)
+	CreateUnit(Player(13),'nsty',1126.750 , 3704.500 , 44.716)
+	CreateUnit(Player(13),'nsty',1409.000 , 3689.000 , 303.858)
+	CreateUnit(Player(13),'nsty',1118.750 , 3453.750 , 152.011)
+	CreateUnit(Player(13),'nsty',1265.750 , -3522.750 , 190.366)
+	CreateUnit(Player(13),'nsty',1535.750 , -3537.500 , 118.414)
+	CreateUnit(Player(13),'nsty',-2820.750 , -3577.000 , 119.667)
+	CreateUnit(Player(13),'nsty',-2567.500 , -3757.250 , 64.085)
+	CreateUnit(Player(13),'nsty',-2630.500 , -3883.250 , 173.330)
+	CreateUnit(Player(13),'nsty',-2973.750 , -3587.500 , 54.650)
+	CreateUnit(Player(13),'nsty',1636.500 , -3620.500 , 286.270)
+	CreateUnit(Player(13),'nsty',951.750 , -3592.750 , 207.050)
+	CreateUnit(Player(13),'o00K',1216.000 , 3584.000 , 270.000)
+	CreateUnit(Player(13),'o00K',1408.000 , -3648.000 , 270.000)
+	CreateUnit(Player(13),'o00K',-2688.000 , -3648.000 , 270.000)
+	CreateUnit(Player(13),'nsat',937.500 , 3812.250 , 240.550)
+endfunction
+
 function CreateAllUnits2 takes nothing returns nothing
-call CreateNeutralHostileBuildings()
-call CreateNeutralPassiveBuildings2()
-call CreatePlayerBuildings2()
-call CreateNeutralHostile()
-call CreateNeutralPassive2()
+call CreateBottomTeam()
+call CreateNagas()
+call CreateShops()
 call TimerStart(CreateTimer(),0,false,function CreatePlayerUnits2)
 endfunction
 function CreateRegions2 takes nothing returns nothing
@@ -19102,257 +19427,19 @@ call TriggerRegisterAnyUnitEventBJ(udg_trg_Pirate_Coin_Spell,EVENT_PLAYER_UNIT_S
 call TriggerAddCondition(udg_trg_Pirate_Coin_Spell,Condition(function Trig_Pirate_Coin_Spell_Conditions))
 call TriggerAddAction(udg_trg_Pirate_Coin_Spell,function Trig_Pirate_Coin_Spell_Actions)
 endfunction
-function Trig_Hide_Units_and_Set_Groups_Func002Func001Func001C takes nothing returns boolean
-if(not(GetUnitTypeId(GetEnumUnit())!='n062'))then
-return false
-endif
-if(not(GetUnitTypeId(GetEnumUnit())!='n065'))then
-return false
-endif
-if(not(GetUnitTypeId(GetEnumUnit())!='n061'))then
-return false
-endif
-return true
-endfunction
-function Trig_Hide_Units_and_Set_Groups_Func002Func001Func002Func003C takes nothing returns boolean
-if((GetUnitTypeId(GetEnumUnit())=='h07L'))then
-return true
-endif
-if((GetUnitTypeId(GetEnumUnit())=='h07K'))then
-return true
-endif
-if((GetUnitTypeId(GetEnumUnit())=='h07M'))then
-return true
-endif
-if((GetUnitTypeId(GetEnumUnit())=='h01G'))then
-return true
-endif
-if((GetUnitTypeId(GetEnumUnit())=='h07J'))then
-return true
-endif
-if((GetUnitTypeId(GetEnumUnit())=='h07N'))then
-return true
-endif
-if((GetUnitTypeId(GetEnumUnit())=='ncop'))then
-return true
-endif
-return false
-endfunction
-function Trig_Hide_Units_and_Set_Groups_Func002Func001Func002C takes nothing returns boolean
-if(not Trig_Hide_Units_and_Set_Groups_Func002Func001Func002Func003C())then
-return false
-endif
-return true
-endfunction
-function Trig_Hide_Units_and_Set_Groups_Func002Func001C takes nothing returns boolean
-if(not(udg_PirateChance>4))then
-return false
-endif
-return true
-endfunction
-function Trig_Hide_Units_and_Set_Groups_Func002Func002Func004C takes nothing returns boolean
-if((GetUnitTypeId(GetEnumUnit())=='nsty'))then
-return true
-endif
-if((GetUnitTypeId(GetEnumUnit())=='nsat'))then
-return true
-endif
-if((GetUnitTypeId(GetEnumUnit())=='n05R'))then
-return true
-endif
-if((GetUnitTypeId(GetEnumUnit())=='n05T'))then
-return true
-endif
-if((GetUnitTypeId(GetEnumUnit())=='n05U'))then
-return true
-endif
-if((GetUnitTypeId(GetEnumUnit())=='n05S'))then
-return true
-endif
-if((GetUnitTypeId(GetEnumUnit())=='n05V'))then
-return true
-endif
-if((GetUnitTypeId(GetEnumUnit())=='n05W'))then
-return true
-endif
-if((GetUnitTypeId(GetEnumUnit())=='o00K'))then
-return true
-endif
-if((GetUnitTypeId(GetEnumUnit())=='o00L'))then
-return true
-endif
-return false
-endfunction
-function Trig_Hide_Units_and_Set_Groups_Func002Func002C takes nothing returns boolean
-if(not Trig_Hide_Units_and_Set_Groups_Func002Func002Func004C())then
-return false
-endif
-return true
-endfunction
-function Trig_Hide_Units_and_Set_Groups_Func002A takes nothing returns nothing
-if(Trig_Hide_Units_and_Set_Groups_Func002Func001C())then
-if(Trig_Hide_Units_and_Set_Groups_Func002Func001Func002C())then
-call SetUnitOwner(GetEnumUnit(),Player(bj_PLAYER_NEUTRAL_VICTIM),true)
-call GroupAddUnitSimple(GetEnumUnit(),udg_PirateGroup)
-else
-endif
-else
-if(Trig_Hide_Units_and_Set_Groups_Func002Func001Func001C())then
-call RemoveUnit(GetEnumUnit())
-else
-endif
-endif
-if(Trig_Hide_Units_and_Set_Groups_Func002Func002C())then
-call SetUnitOwner(GetEnumUnit(),Player(bj_PLAYER_NEUTRAL_VICTIM),true)
-call GroupAddUnitSimple(GetEnumUnit(),udg_Satyr_All_Units_West)
-call ShowUnitHide(GetEnumUnit())
-else
-endif
-endfunction
-function Trig_Hide_Units_and_Set_Groups_Func003Func001Func004C takes nothing returns boolean
-if((GetUnitTypeId(GetEnumUnit())=='nsty'))then
-return true
-endif
-if((GetUnitTypeId(GetEnumUnit())=='nsat'))then
-return true
-endif
-if((GetUnitTypeId(GetEnumUnit())=='n05R'))then
-return true
-endif
-if((GetUnitTypeId(GetEnumUnit())=='n05T'))then
-return true
-endif
-if((GetUnitTypeId(GetEnumUnit())=='n05U'))then
-return true
-endif
-if((GetUnitTypeId(GetEnumUnit())=='n05S'))then
-return true
-endif
-if((GetUnitTypeId(GetEnumUnit())=='n05V'))then
-return true
-endif
-if((GetUnitTypeId(GetEnumUnit())=='n05W'))then
-return true
-endif
-if((GetUnitTypeId(GetEnumUnit())=='o00K'))then
-return true
-endif
-if((GetUnitTypeId(GetEnumUnit())=='o00L'))then
-return true
-endif
-return false
-endfunction
-function Trig_Hide_Units_and_Set_Groups_Func003Func001C takes nothing returns boolean
-if(not Trig_Hide_Units_and_Set_Groups_Func003Func001Func004C())then
-return false
-endif
-return true
-endfunction
-function Trig_Hide_Units_and_Set_Groups_Func003A takes nothing returns nothing
-if(Trig_Hide_Units_and_Set_Groups_Func003Func001C())then
-call SetUnitOwner(GetEnumUnit(),Player(bj_PLAYER_NEUTRAL_VICTIM),true)
-call GroupAddUnitSimple(GetEnumUnit(),udg_Satyr_All_Units_West)
-call ShowUnitHide(GetEnumUnit())
-else
-endif
-endfunction
-function Trig_Hide_Units_and_Set_Groups_Func004Func001Func002Func002C takes nothing returns boolean
-if((RectContainsUnit(udg_rct_Naga_Base_Entrance,GetEnumUnit())==true))then
-return true
-endif
-if((RectContainsUnit(udg_rct_Gnoll_Base_Entrance,GetEnumUnit())==true))then
-return true
-endif
-if((RectContainsUnit(udg_rct_Ice_Base_Entrance,GetEnumUnit())==true))then
-return true
-endif
-return false
-endfunction
-function Trig_Hide_Units_and_Set_Groups_Func004Func001Func002C takes nothing returns boolean
-if(not Trig_Hide_Units_and_Set_Groups_Func004Func001Func002Func002C())then
-return false
-endif
-return true
-endfunction
-function Trig_Hide_Units_and_Set_Groups_Func004Func001Func003C takes nothing returns boolean
-if(not(GetUnitTypeId(GetEnumUnit())!='n065'))then
-return false
-endif
-if(not(GetUnitTypeId(GetEnumUnit())!='n061'))then
-return false
-endif
-if(not(GetUnitTypeId(GetEnumUnit())!='n062'))then
-return false
-endif
-return true
-endfunction
-function Trig_Hide_Units_and_Set_Groups_Func004Func001Func004C takes nothing returns boolean
-if((GetUnitTypeId(GetEnumUnit())=='nsty'))then
-return true
-endif
-if((GetUnitTypeId(GetEnumUnit())=='nsat'))then
-return true
-endif
-if((GetUnitTypeId(GetEnumUnit())=='n05R'))then
-return true
-endif
-if((GetUnitTypeId(GetEnumUnit())=='n05T'))then
-return true
-endif
-if((GetUnitTypeId(GetEnumUnit())=='n05U'))then
-return true
-endif
-if((GetUnitTypeId(GetEnumUnit())=='n05S'))then
-return true
-endif
-if((GetUnitTypeId(GetEnumUnit())=='n05V'))then
-return true
-endif
-if((GetUnitTypeId(GetEnumUnit())=='n05W'))then
-return true
-endif
-if((GetUnitTypeId(GetEnumUnit())=='o00K'))then
-return true
-endif
-if((GetUnitTypeId(GetEnumUnit())=='o00L'))then
-return true
-endif
-return false
-endfunction
-function Trig_Hide_Units_and_Set_Groups_Func004Func001C takes nothing returns boolean
-if(not Trig_Hide_Units_and_Set_Groups_Func004Func001Func004C())then
-return false
-endif
-return true
-endfunction
-function Trig_Hide_Units_and_Set_Groups_Func004A takes nothing returns nothing
-if(Trig_Hide_Units_and_Set_Groups_Func004Func001C())then
-call SetUnitOwner(GetEnumUnit(),Player(bj_PLAYER_NEUTRAL_VICTIM),true)
-if(Trig_Hide_Units_and_Set_Groups_Func004Func001Func002C())then
-call GroupAddUnitSimple(GetEnumUnit(),udg_Satyr_Units_NeutralGuards)
-else
-call GroupAddUnitSimple(GetEnumUnit(),udg_Satyr_All_Units_East)
-endif
-if(Trig_Hide_Units_and_Set_Groups_Func004Func001Func003C())then
-call ShowUnitHide(GetEnumUnit())
-else
-endif
-else
-endif
-endfunction
-function Trig_Hide_Units_and_Set_Groups_Actions takes nothing returns nothing
+function Trig_Create3rdTeam_Actions takes nothing returns nothing
 set udg_PirateChance=6
-set bj_wantDestroyGroup = true
-call ForGroupBJ(GetUnitsInRectAll(udg_rct_Satyr_West_Units),function Trig_Hide_Units_and_Set_Groups_Func002A)
-set bj_wantDestroyGroup = true
-call ForGroupBJ(GetUnitsInRectAll(udg_rct_Satyr_West_Units),function Trig_Hide_Units_and_Set_Groups_Func003A)
-set bj_wantDestroyGroup = true
-call ForGroupBJ(GetUnitsInRectAll(udg_rct_Satyr_East_Units),function Trig_Hide_Units_and_Set_Groups_Func004A)
+if(udg_Extreme_Mode) then
+    call CreateSatyrsXTreme()
+elseif(udg_Hard_Mode) then
+    call CreateSatyrsHard()
+else
+    call CreatePirates()
+endif
 endfunction
-function InitTrig_Hide_Units_and_Set_Groups takes nothing returns nothing
-set udg_trg_Hide_Units_and_Set_Groups=CreateTrigger()
-call TriggerRegisterTimerEventSingle(udg_trg_Hide_Units_and_Set_Groups,0.36)
-call TriggerAddAction(udg_trg_Hide_Units_and_Set_Groups,function Trig_Hide_Units_and_Set_Groups_Actions)
+function InitTrig_Create3rdTeam takes nothing returns nothing
+set udg_trg_Create3rdTeam=CreateTrigger()
+call TriggerAddAction(udg_trg_Create3rdTeam,function Trig_Create3rdTeam_Actions)
 endfunction
 function Trig_Satyr_Research_upgrades_Func001C takes nothing returns boolean
 if(not(IsUnitAliveBJ(udg_Satyr_Barracks)==true))then
@@ -42338,7 +42425,7 @@ call InitTrig_Pirate_Tele_pt1()
 call InitTrig_Pirate_Tele_Timer()
 call InitTrig_Pirate_Tele_pt2()
 call InitTrig_Pirate_Coin_Spell()
-call InitTrig_Hide_Units_and_Set_Groups()
+call InitTrig_Create3rdTeam()
 call InitTrig_Satyr_Research_upgrades()
 call InitTrig_Display_mode()
 call InitTrig_Satyr_Spawn()
@@ -43773,6 +43860,7 @@ else
 endif
 else
 endif
+call Trig_Create3rdTeam_Actions()
 endfunction
 function Trig_Dialogue_pt4_Func002Func001A takes nothing returns nothing
 call AddLivesP(GetEnumPlayer(),1)
@@ -44047,6 +44135,7 @@ call DisableTrigger(udg_trg_Team_2_Win)
 call DisableTrigger(udg_trg_Builder_Lumber_Income_Every_Seccond)
 call DisableTrigger(udg_trg_Builder_Lumber_Income_Every_Five_Secconds)
 endif
+call Trig_Create3rdTeam_Actions()
 set HCLcommand="Hcl successfully worked"
 endfunction
 function Trig_Game_settings_Conditions takes nothing returns boolean
