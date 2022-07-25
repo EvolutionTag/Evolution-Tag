@@ -21081,25 +21081,11 @@ return false
 endif
 return true
 endfunction
-function Trig_Duel_Copy_2_Func010Func001001 takes nothing returns boolean
-return(GetPlayerSlotState(GetEnumPlayer())==PLAYER_SLOT_STATE_PLAYING)
-endfunction
 function Trig_Duel_Copy_2_Func010A takes nothing returns nothing
-if((GetPlayerSlotState(GetEnumPlayer())==PLAYER_SLOT_STATE_PLAYING))then
 call SmartCameraPanBJModified(GetEnumPlayer(),GetRectCenter(udg_Region1),0)
-else
-call DoNothing()
-endif
-endfunction
-function Trig_Duel_Copy_2_Func011Func001001 takes nothing returns boolean
-return(GetPlayerSlotState(GetEnumPlayer())==PLAYER_SLOT_STATE_PLAYING)
 endfunction
 function Trig_Duel_Copy_2_Func011A takes nothing returns nothing
-if((GetPlayerSlotState(GetEnumPlayer())==PLAYER_SLOT_STATE_PLAYING))then
 call SmartCameraPanBJModified(GetEnumPlayer(),GetRectCenter(udg_Region2),0)
-else
-call DoNothing()
-endif
 endfunction
 function Trig_Duel_Copy_2_Func013Func001Func003001001 takes nothing returns boolean
 return(IsPlayerInForce(GetOwningPlayer(GetEnumUnit()),udg_Evil)==true)
@@ -21179,9 +21165,6 @@ else
 call DoNothing()
 endif
 endfunction
-function Trig_Duel_Copy_2_Func016Func001Func001001 takes nothing returns boolean
-return(GetPlayerSlotState(GetEnumPlayer())==PLAYER_SLOT_STATE_PLAYING)
-endfunction
 function Trig_Duel_Copy_2_Func016Func001C takes nothing returns boolean
 if(not(IsPlayerInForce(GetEnumPlayer(),udg_Humans)==false))then
 return false
@@ -21193,11 +21176,7 @@ return true
 endfunction
 function Trig_Duel_Copy_2_Func016A takes nothing returns nothing
 if(Trig_Duel_Copy_2_Func016Func001C())then
-if((GetPlayerSlotState(GetEnumPlayer())==PLAYER_SLOT_STATE_PLAYING))then
 call SmartCameraPanBJModified(GetEnumPlayer(),GetRectCenter(udg_rct_Creep_duel_spawn),0)
-else
-call DoNothing()
-endif
 else
 endif
 endfunction
@@ -21244,9 +21223,6 @@ else
 call DoNothing()
 endif
 endfunction
-function Trig_Duel_Copy_2_Func019Func001Func003001 takes nothing returns boolean
-return(GetPlayerSlotState(GetEnumPlayer())==PLAYER_SLOT_STATE_PLAYING)
-endfunction
 function Trig_Duel_Copy_2_Func019Func001C takes nothing returns boolean
 if(not(IsPlayerInForce(GetEnumPlayer(),udg_Humans)==false))then
 return false
@@ -21258,11 +21234,7 @@ return true
 endfunction
 function Trig_Duel_Copy_2_Func019A takes nothing returns nothing
 if(Trig_Duel_Copy_2_Func019Func001C())then
-if((GetPlayerSlotState(GetEnumPlayer())==PLAYER_SLOT_STATE_PLAYING))then
 call SmartCameraPanBJModified(GetEnumPlayer(),GetRectCenter(udg_rct_Naga_duel_spawn_area),0)
-else
-call DoNothing()
-endif
 else
 endif
 endfunction
@@ -21882,25 +21854,11 @@ return false
 endif
 return true
 endfunction
-function Trig_Duel_in_forest_area_Copy_Func010Func001001 takes nothing returns boolean
-return(GetPlayerSlotState(GetEnumPlayer())==PLAYER_SLOT_STATE_PLAYING)
-endfunction
 function Trig_Duel_in_forest_area_Copy_Func010A takes nothing returns nothing
-if((GetPlayerSlotState(GetEnumPlayer())==PLAYER_SLOT_STATE_PLAYING))then
 call SmartCameraPanBJModified(GetEnumPlayer(),GetRectCenter(udg_rct_undead_spawn_area_foest),0)
-else
-call DoNothing()
-endif
-endfunction
-function Trig_Duel_in_forest_area_Copy_Func011Func001001 takes nothing returns boolean
-return(GetPlayerSlotState(GetEnumPlayer())==PLAYER_SLOT_STATE_PLAYING)
 endfunction
 function Trig_Duel_in_forest_area_Copy_Func011A takes nothing returns nothing
-if((GetPlayerSlotState(GetEnumPlayer())==PLAYER_SLOT_STATE_PLAYING))then
 call SmartCameraPanBJModified(GetEnumPlayer(),GetRectCenter(udg_rct_human_spawn_area),0)
-else
-call DoNothing()
-endif
 endfunction
 function Trig_Duel_in_forest_area_Copy_Func013Func001Func003001001 takes nothing returns boolean
 return(IsPlayerInForce(GetOwningPlayer(GetEnumUnit()),udg_Evil)==true)
@@ -21980,9 +21938,6 @@ else
 call DoNothing()
 endif
 endfunction
-function Trig_Duel_in_forest_area_Copy_Func016Func001Func003001 takes nothing returns boolean
-return(GetPlayerSlotState(GetEnumPlayer())==PLAYER_SLOT_STATE_PLAYING)
-endfunction
 function Trig_Duel_in_forest_area_Copy_Func016Func001C takes nothing returns boolean
 if(not(IsPlayerInForce(GetEnumPlayer(),udg_Humans)==false))then
 return false
@@ -21994,11 +21949,7 @@ return true
 endfunction
 function Trig_Duel_in_forest_area_Copy_Func016A takes nothing returns nothing
 if(Trig_Duel_in_forest_area_Copy_Func016Func001C())then
-if((GetPlayerSlotState(GetEnumPlayer())==PLAYER_SLOT_STATE_PLAYING))then
 call SmartCameraPanBJModified(GetEnumPlayer(),GetRectCenter(udg_rct_Region_110),0)
-else
-call DoNothing()
-endif
 else
 endif
 endfunction
@@ -22045,9 +21996,6 @@ else
 call DoNothing()
 endif
 endfunction
-function Trig_Duel_in_forest_area_Copy_Func019Func001Func003001 takes nothing returns boolean
-return(GetPlayerSlotState(GetEnumPlayer())==PLAYER_SLOT_STATE_PLAYING)
-endfunction
 function Trig_Duel_in_forest_area_Copy_Func019Func001C takes nothing returns boolean
 if(not(IsPlayerInForce(GetEnumPlayer(),udg_Humans)==false))then
 return false
@@ -22059,11 +22007,7 @@ return true
 endfunction
 function Trig_Duel_in_forest_area_Copy_Func019A takes nothing returns nothing
 if(Trig_Duel_in_forest_area_Copy_Func019Func001C())then
-if((GetPlayerSlotState(GetEnumPlayer())==PLAYER_SLOT_STATE_PLAYING))then
 call SmartCameraPanBJModified(GetEnumPlayer(),GetRectCenter(udg_rct_Region_111),0)
-else
-call DoNothing()
-endif
 else
 endif
 endfunction
@@ -22175,7 +22119,6 @@ set udg_PG2=udg_Humans
 set udg_Point1=GetRectCenter(udg_rct_Humans_lose_zone)
 set udg_Point2=GetRectCenter(udg_rct_Undead_Lose_Zone)
 call ForForce(udg_PG1,function Trig_Duel_in_forest_area_Copy_Func010A)
-call ForForce(udg_PG2,function Trig_Duel_in_forest_area_Copy_Func011A)
 set bj_wantDestroyGroup=true
 call ForGroupBJ(GetUnitsInRectMatchingFilteredExcludeObservers(GetEntireMapRect()),function Trig_Duel_in_forest_area_Copy_Func013A)
 set bj_wantDestroyGroup=true
@@ -25940,11 +25883,7 @@ function Trig_Undead_Gold_Income_Func002Func001001 takes nothing returns boolean
 return(GetPlayerSlotState(GetEnumPlayer())==PLAYER_SLOT_STATE_PLAYING)
 endfunction
 function Trig_Undead_Gold_Income_Func002A takes nothing returns nothing
-if((GetPlayerSlotState(GetEnumPlayer())==PLAYER_SLOT_STATE_PLAYING))then
 call SetPlayerStateBJ(GetEnumPlayer(),PLAYER_STATE_RESOURCE_GOLD,(GetPlayerState(GetEnumPlayer(),PLAYER_STATE_RESOURCE_GOLD)+1))
-else
-call DoNothing()
-endif
 endfunction
 function Trig_Undead_Gold_Income_Actions takes nothing returns nothing
 call ForForce(udg_Evil,function Trig_Undead_Gold_Income_Func002A)

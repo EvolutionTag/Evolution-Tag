@@ -917,15 +917,8 @@ call PanCameraToTimedWithZ(GetLocationX(loc),GetLocationY(loc),zOffset,duration)
 endif
 endfunction
 function SmartCameraPanBJ takes player whichPlayer,location loc,real duration returns nothing
-local real dist
 if(GetLocalPlayer()==whichPlayer)then
-set dist=DistanceBetweenPoints(loc,GetCameraTargetPositionLoc())
-if(dist>=bj_SMARTPAN_TRESHOLD_SNAP)then
-call PanCameraToTimed(GetLocationX(loc),GetLocationY(loc),0)
-elseif(dist>=bj_SMARTPAN_TRESHOLD_PAN)then
 call PanCameraToTimed(GetLocationX(loc),GetLocationY(loc),duration)
-else
-endif
 endif
 endfunction
 function SetCinematicCameraForPlayer takes player whichPlayer,string cameraModelFile returns nothing
