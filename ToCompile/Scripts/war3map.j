@@ -1860,9 +1860,7 @@ trigger udg_trg_Mutate_critter=null
 trigger udg_trg_Creep_attack_event=null
 trigger udg_trg_Boot_drop_event_2=null
 trigger udg_trg_Team_1_Win=null
-trigger udg_trg_victorydefeat=null
 trigger udg_trg_Team_2_Win=null
-trigger udg_trg_victorydefeat_Copy=null
 trigger udg_trg_neutral_revive=null
 trigger udg_trg_Open_close_gate_Copy_2=null
 trigger udg_trg_gnoll_creep_camp=null
@@ -6632,9 +6630,7 @@ set udg_trg_Mutate_critter=CreateTrigger()
 set udg_trg_Creep_attack_event=CreateTrigger()
 set udg_trg_Boot_drop_event_2=CreateTrigger()
 set udg_trg_Team_1_Win=CreateTrigger()
-set udg_trg_victorydefeat=CreateTrigger()
 set udg_trg_Team_2_Win=CreateTrigger()
-set udg_trg_victorydefeat_Copy=CreateTrigger()
 set udg_trg_neutral_revive=CreateTrigger()
 set udg_trg_Open_close_gate_Copy_2=CreateTrigger()
 set udg_trg_gnoll_creep_camp=CreateTrigger()
@@ -15037,7 +15033,22 @@ call DisableTrigger(GetTriggeringTrigger())
 call DestroyTrigger(GetTriggeringTrigger())
 call DestroyTimer(GetExpiredTimer())
 endfunction
+
 function CreateShops takes nothing returns nothing
+    call CreateNUnitsAtLocBonuses(1,'ngme',Player(PLAYER_NEUTRAL_PASSIVE),GetRectCenter(udg_rct_Spell_Shop),bj_UNIT_FACING)
+    call CreateNUnitsAtLocBonuses(1,'nmrk',Player(PLAYER_NEUTRAL_PASSIVE),GetRectCenter(udg_rct_Item_Shop),bj_UNIT_FACING)
+    call CreateNUnitsAtLocBonuses(1,'nmer',Player(PLAYER_NEUTRAL_PASSIVE),GetRectCenter(udg_rct_mercenary_camp),bj_UNIT_FACING)
+    call CreateNUnitsAtLocBonuses(1,'n01Y',Player(PLAYER_NEUTRAL_PASSIVE),GetRectCenter(udg_rct_Recipe_Shop),bj_UNIT_FACING)
+    call CreateNUnitsAtLocBonuses(1,'ngad',Player(PLAYER_NEUTRAL_PASSIVE),GetRectCenter(udg_rct_Goblin_Lab_Shop),bj_UNIT_FACING)
+    call CreateUnit(Player(PLAYER_NEUTRAL_PASSIVE),'n06Y',375.,-5128,bj_UNIT_FACING)
+    call CreateNUnitsAtLocBonuses(1,'n023',Player(PLAYER_NEUTRAL_PASSIVE),GetRectCenter(udg_rct_Naga_Shop),bj_UNIT_FACING)
+    call CreateNUnitsAtLocBonuses(1,'n032',Player(PLAYER_NEUTRAL_PASSIVE),GetRectCenter(udg_rct_Tool_Shop_Spawn),bj_UNIT_FACING)
+    call CreateNUnitsAtLocBonuses(1,'nshp',Player(PLAYER_NEUTRAL_PASSIVE),GetRectCenter(udg_rct_shipyard_spawn),bj_UNIT_FACING)
+    call CreateNUnitsAtLocBonuses(1,'n03H',Player(PLAYER_NEUTRAL_PASSIVE),GetRectCenter(udg_rct_Magic_Shop_spawn),bj_UNIT_FACING)
+    call CreateNUnitsAtLocBonuses(1,'n047',Player(PLAYER_NEUTRAL_PASSIVE),GetRectCenter(udg_rct_random_items_shop_normal),bj_UNIT_FACING)
+    endfunction
+
+function CreateNeutralUnits takes nothing returns nothing
 	call CreateUnitBonuses( Player(15) , 'nrac', -2513.941 , -684.056 , 314.141 )
 	call CreateUnitBonuses( Player(15) , 'nrac', -2793.274 , 1252.538 , 92.153 )
 	call CreateUnitBonuses( Player(15) , 'nrac', -1822.750 , 4451.000 , 119.762 )
@@ -15076,6 +15087,7 @@ function CreateShops takes nothing returns nothing
 	call CreateUnitBonuses( Player(15) , 'npig', -2054.659 , 2021.318 , 138.434 )
 	call CreateUnitBonuses( Player(15) , 'npig', -7447.750 , 4832.250 , 277.217 )
 	call CreateUnitBonuses( Player(15) , 'n065', -4048.000 , 5552.000 , 320.000 )
+    call CreateShops()
 endfunction
 function CreateNagas takes nothing returns nothing
 	call CreateUnitBonuses( Player(12) , 'h01G', 1280.000 , 5376.000 , 270.000 )
@@ -15345,29 +15357,29 @@ function CreateSatyrsHard takes nothing returns nothing
 endfunction
 
 function CreateSatyrTowers takes nothing returns nothing
-	CreateUnit(Player(13),'nsty',1117.000 , 3942.000 , 173.985)
-	CreateUnit(Player(13),'nsty',848.000 , 3664.000 , 219.393)
-	CreateUnit(Player(13),'nsty',1126.750 , 3704.500 , 44.716)
-	CreateUnit(Player(13),'nsty',1409.000 , 3689.000 , 303.858)
-	CreateUnit(Player(13),'nsty',1118.750 , 3453.750 , 152.011)
-	CreateUnit(Player(13),'nsty',1265.750 , -3522.750 , 190.366)
-	CreateUnit(Player(13),'nsty',1535.750 , -3537.500 , 118.414)
-	CreateUnit(Player(13),'nsty',-2820.750 , -3577.000 , 119.667)
-	CreateUnit(Player(13),'nsty',-2567.500 , -3757.250 , 64.085)
-	CreateUnit(Player(13),'nsty',-2630.500 , -3883.250 , 173.330)
-	CreateUnit(Player(13),'nsty',-2973.750 , -3587.500 , 54.650)
-	CreateUnit(Player(13),'nsty',1636.500 , -3620.500 , 286.270)
-	CreateUnit(Player(13),'nsty',951.750 , -3592.750 , 207.050)
-	CreateUnit(Player(13),'o00K',1216.000 , 3584.000 , 270.000)
-	CreateUnit(Player(13),'o00K',1408.000 , -3648.000 , 270.000)
-	CreateUnit(Player(13),'o00K',-2688.000 , -3648.000 , 270.000)
-	CreateUnit(Player(13),'nsat',937.500 , 3812.250 , 240.550)
+	call CreateUnit(Player(13),'nsty',1117.000 , 3942.000 , 173.985)
+	call CreateUnit(Player(13),'nsty',848.000 , 3664.000 , 219.393)
+	call CreateUnit(Player(13),'nsty',1126.750 , 3704.500 , 44.716)
+	call CreateUnit(Player(13),'nsty',1409.000 , 3689.000 , 303.858)
+	call CreateUnit(Player(13),'nsty',1118.750 , 3453.750 , 152.011)
+	call CreateUnit(Player(13),'nsty',1265.750 , -3522.750 , 190.366)
+	call CreateUnit(Player(13),'nsty',1535.750 , -3537.500 , 118.414)
+	call CreateUnit(Player(13),'nsty',-2820.750 , -3577.000 , 119.667)
+	call CreateUnit(Player(13),'nsty',-2567.500 , -3757.250 , 64.085)
+	call CreateUnit(Player(13),'nsty',-2630.500 , -3883.250 , 173.330)
+	call CreateUnit(Player(13),'nsty',-2973.750 , -3587.500 , 54.650)
+	call CreateUnit(Player(13),'nsty',1636.500 , -3620.500 , 286.270)
+	call CreateUnit(Player(13),'nsty',951.750 , -3592.750 , 207.050)
+	call CreateUnit(Player(13),'o00K',1216.000 , 3584.000 , 270.000)
+	call CreateUnit(Player(13),'o00K',1408.000 , -3648.000 , 270.000)
+	call CreateUnit(Player(13),'o00K',-2688.000 , -3648.000 , 270.000)
+	call CreateUnit(Player(13),'nsat',937.500 , 3812.250 , 240.550)
 endfunction
 
 function CreateAllUnits2 takes nothing returns nothing
 call CreateBottomTeam()
 call CreateNagas()
-call CreateShops()
+call CreateNeutralUnits()
 call TimerStart(CreateTimer(),0,false,function CreatePlayerUnits2)
 endfunction
 function CreateRegions2 takes nothing returns nothing
@@ -27130,6 +27142,11 @@ call TriggerRegisterEnterRectSimple(udg_trg_Boot_drop_event_2,udg_rct_Boot_drop_
 call TriggerAddCondition(udg_trg_Boot_drop_event_2,Condition(function Trig_Boot_drop_event_2_Conditions))
 call TriggerAddAction(udg_trg_Boot_drop_event_2,function Trig_Boot_drop_event_2_Actions)
 endfunction
+function Activate_Team_Wins takes nothing returns nothing
+    call ExecuteFunc("InitTrig_Team_1_Win")
+    call ExecuteFunc("InitTrig_Team_2_Win")
+    call DestroyTimer(GetExpiredTimer())
+endfunction
 function Trig_Team_1_Win_Conditions takes nothing returns boolean
 if(not(udg_AAA_TurnOffTrigger==false))then
 return false
@@ -27229,43 +27246,14 @@ call DisableTrigger(udg_trg_Duel_Timer)
 call DisableTrigger(udg_trg_Duel_Timer_Copy)
 call DisableTrigger(udg_trg_Duel_Timer_Copy_Copy)
 call DisableTrigger(GetTriggeringTrigger())
+call DisableTrigger(udg_trg_Team_1_Win)
+call DisableTrigger(udg_trg_Team_2_Win)
 endfunction
 function InitTrig_Team_1_Win takes nothing returns nothing
 set udg_trg_Team_1_Win=CreateTrigger()
 call TriggerRegisterTimerEventPeriodic(udg_trg_Team_1_Win,15.00)
 call TriggerAddCondition(udg_trg_Team_1_Win,Condition(function Trig_Team_1_Win_Conditions))
 call TriggerAddAction(udg_trg_Team_1_Win,function Trig_Team_1_Win_Actions)
-endfunction
-function Trig_victorydefeat_Conditions takes nothing returns boolean
-if(not(udg_AAA_TurnOffTrigger==false))then
-return false
-endif
-if(not(udg_RESTART==false))then
-return false
-endif
-return true
-endfunction
-function Trig_victorydefeat_Actions takes nothing returns nothing
-call CustomVictoryBJ(Player(0),false,true)
-call CustomVictoryBJ(Player(1),false,true)
-call CustomVictoryBJ(Player(2),false,true)
-call CustomVictoryBJ(Player(3),false,true)
-call CustomVictoryBJ(Player(4),false,true)
-call CustomVictoryBJ(Player(5),false,true)
-call CustomVictoryBJ(Player(6),false,true)
-call CustomVictoryBJ(Player(7),false,true)
-call CustomDefeatBJ(Player(8),"You lose!")
-call CustomDefeatBJ(Player(9),"You lose!")
-call CustomDefeatBJ(Player(10),"You lose!")
-call CustomDefeatBJ(Player(11),"You lose!")
-call DisableTrigger(GetTriggeringTrigger())
-endfunction
-function InitTrig_victorydefeat takes nothing returns nothing
-set udg_trg_victorydefeat=CreateTrigger()
-call DisableTrigger(udg_trg_victorydefeat)
-call TriggerRegisterTimerEventPeriodic(udg_trg_victorydefeat,0.50)
-call TriggerAddCondition(udg_trg_victorydefeat,Condition(function Trig_victorydefeat_Conditions))
-call TriggerAddAction(udg_trg_victorydefeat,function Trig_victorydefeat_Actions)
 endfunction
 function Trig_Team_2_Win_Conditions takes nothing returns boolean
 if(not(udg_AAA_TurnOffTrigger==false))then
@@ -27327,43 +27315,14 @@ call DisableTrigger(udg_trg_Duel_Timer)
 call DisableTrigger(udg_trg_Duel_Timer_Copy)
 call DisableTrigger(udg_trg_Duel_Timer_Copy_Copy)
 call DisableTrigger(GetTriggeringTrigger())
+call DisableTrigger(udg_trg_Team_1_Win)
+call DisableTrigger(udg_trg_Team_2_Win)
 endfunction
 function InitTrig_Team_2_Win takes nothing returns nothing
 set udg_trg_Team_2_Win=CreateTrigger()
 call TriggerRegisterTimerEventPeriodic(udg_trg_Team_2_Win,15.00)
 call TriggerAddCondition(udg_trg_Team_2_Win,Condition(function Trig_Team_2_Win_Conditions))
 call TriggerAddAction(udg_trg_Team_2_Win,function Trig_Team_2_Win_Actions)
-endfunction
-function Trig_victorydefeat_Copy_Conditions takes nothing returns boolean
-if(not(udg_AAA_TurnOffTrigger==false))then
-return false
-endif
-if(not(udg_RESTART==false))then
-return false
-endif
-return true
-endfunction
-function Trig_victorydefeat_Copy_Actions takes nothing returns nothing
-call CustomVictoryBJ(Player(11),false,true)
-call CustomVictoryBJ(Player(10),false,true)
-call CustomVictoryBJ(Player(9),false,true)
-call CustomVictoryBJ(Player(8),false,true)
-call CustomDefeatBJ(Player(0),"You lose!")
-call CustomDefeatBJ(Player(1),"You lose!")
-call CustomDefeatBJ(Player(2),"You lose!")
-call CustomDefeatBJ(Player(3),"You lose!")
-call CustomDefeatBJ(Player(4),"You lose!")
-call CustomDefeatBJ(Player(5),"You lose!")
-call CustomDefeatBJ(Player(6),"You lose!")
-call CustomDefeatBJ(Player(7),"You lose!")
-call DisableTrigger(GetTriggeringTrigger())
-endfunction
-function InitTrig_victorydefeat_Copy takes nothing returns nothing
-set udg_trg_victorydefeat_Copy=CreateTrigger()
-call DisableTrigger(udg_trg_victorydefeat_Copy)
-call TriggerRegisterTimerEventPeriodic(udg_trg_victorydefeat_Copy,0.50)
-call TriggerAddCondition(udg_trg_victorydefeat_Copy,Condition(function Trig_victorydefeat_Copy_Conditions))
-call TriggerAddAction(udg_trg_victorydefeat_Copy,function Trig_victorydefeat_Copy_Actions)
 endfunction
 function Trig_neutral_revive_Func006C takes nothing returns boolean
 if((IsPlayerAlly(GetOwningPlayer(GetDyingUnit()),Player(bj_PLAYER_NEUTRAL_EXTRA))==true))then
@@ -29665,25 +29624,6 @@ if(not(udg_AAA_TurnOffEvents==false))then
 return false
 endif
 return true
-endfunction
-function Trig_Spawn_spell_shop_Actions takes nothing returns nothing
-call CreateNUnitsAtLocBonuses(1,'ngme',Player(PLAYER_NEUTRAL_PASSIVE),GetRectCenter(udg_rct_Spell_Shop),bj_UNIT_FACING)
-call CreateNUnitsAtLocBonuses(1,'nmrk',Player(PLAYER_NEUTRAL_PASSIVE),GetRectCenter(udg_rct_Item_Shop),bj_UNIT_FACING)
-call CreateNUnitsAtLocBonuses(1,'nmer',Player(PLAYER_NEUTRAL_PASSIVE),GetRectCenter(udg_rct_mercenary_camp),bj_UNIT_FACING)
-call CreateNUnitsAtLocBonuses(1,'n01Y',Player(PLAYER_NEUTRAL_PASSIVE),GetRectCenter(udg_rct_Recipe_Shop),bj_UNIT_FACING)
-call CreateNUnitsAtLocBonuses(1,'ngad',Player(PLAYER_NEUTRAL_PASSIVE),GetRectCenter(udg_rct_Goblin_Lab_Shop),bj_UNIT_FACING)
-call CreateUnit(Player(PLAYER_NEUTRAL_PASSIVE),'n06Y',375.,-5128,bj_UNIT_FACING)
-call CreateNUnitsAtLocBonuses(1,'n023',Player(PLAYER_NEUTRAL_PASSIVE),GetRectCenter(udg_rct_Naga_Shop),bj_UNIT_FACING)
-call CreateNUnitsAtLocBonuses(1,'n032',Player(PLAYER_NEUTRAL_PASSIVE),GetRectCenter(udg_rct_Tool_Shop_Spawn),bj_UNIT_FACING)
-call CreateNUnitsAtLocBonuses(1,'nshp',Player(PLAYER_NEUTRAL_PASSIVE),GetRectCenter(udg_rct_shipyard_spawn),bj_UNIT_FACING)
-call CreateNUnitsAtLocBonuses(1,'n03H',Player(PLAYER_NEUTRAL_PASSIVE),GetRectCenter(udg_rct_Magic_Shop_spawn),bj_UNIT_FACING)
-call CreateNUnitsAtLocBonuses(1,'n047',Player(PLAYER_NEUTRAL_PASSIVE),GetRectCenter(udg_rct_random_items_shop_normal),bj_UNIT_FACING)
-endfunction
-function InitTrig_Spawn_spell_shop takes nothing returns nothing
-set udg_trg_Spawn_spell_shop=CreateTrigger()
-call TriggerRegisterTimerEventSingle(udg_trg_Spawn_spell_shop,5)
-call TriggerAddCondition(udg_trg_Spawn_spell_shop,Condition(function Trig_Spawn_spell_shop_Conditions))
-call TriggerAddAction(udg_trg_Spawn_spell_shop,function Trig_Spawn_spell_shop_Actions)
 endfunction
 function Trig_Spawn_spell_shop_2_Conditions takes nothing returns boolean
 if(not(udg_AAA_TurnOffEvents==false))then
@@ -42591,10 +42531,7 @@ call InitTrig_Activate_A_Random_Event_Copy()
 call InitTrig_Mutate_critter()
 call InitTrig_Creep_attack_event()
 call InitTrig_Boot_drop_event_2()
-call InitTrig_Team_1_Win()
-call InitTrig_victorydefeat()
-call InitTrig_Team_2_Win()
-call InitTrig_victorydefeat_Copy()
+call TimerStart(CreateTimer(),40,false,function Activate_Team_Wins)
 call InitTrig_gnoll_creep_camp()
 call InitTrig_gnoll_houses()
 call InitTrig_Ice_creep_camp()
@@ -42648,7 +42585,6 @@ call InitTrig_Creep_Reinforcements_Lvl1()
 call InitTrig_Creep_Reinforcements_lvl2()
 call InitTrig_Creep_Reinforcements_lvl3()
 call InitTrig_Creep_Reinforcements_lvl4()
-call InitTrig_Spawn_spell_shop()
 call InitTrig_Spawn_spell_shop_2()
 call InitTrig_level_up_FE_Plant()
 call InitTrig_level_up_Rockfall()
@@ -43221,6 +43157,7 @@ function DisableFly takes nothing returns nothing
     local integer i=0
     loop
     call SetPlayerAbilityAvailable(Player(i),'A00K',false)
+    call SetPlayerTechMaxAllowed(Player(i),'ugar',0)
     set i=i+1
     exitwhen i>14
     endloop
@@ -43662,35 +43599,11 @@ set udg_trg_Dialogue_pt3=CreateTrigger()
 call TriggerRegisterDialogEventBJ(udg_trg_Dialogue_pt3,udg_CHOOSE_SETTINGS_2)
 call TriggerAddAction(udg_trg_Dialogue_pt3,function Trig_Dialogue_pt3_Actions)
 endfunction
-function Trig_Dialogue_pt4_Func001Func001Func001Func003A takes nothing returns nothing
-call RemoveUnit(GetEnumUnit())
-endfunction
-function Trig_Dialogue_pt4_Func001Func001Func001Func004A takes nothing returns nothing
-call RemoveUnit(GetEnumUnit())
-endfunction
-function Trig_Dialogue_pt4_Func001Func001Func001Func005A takes nothing returns nothing
-call RemoveUnit(GetEnumUnit())
-endfunction
 function Trig_Dialogue_pt4_Func001Func001Func001C takes nothing returns boolean
 if(not(GetClickedButtonBJ()==udg_SETTINGS3_CHOICE1))then
 return false
 endif
 return true
-endfunction
-function Trig_Dialogue_pt4_Func001Func001Func002Func001Func001A takes nothing returns nothing
-call RemoveUnit(GetEnumUnit())
-endfunction
-function Trig_Dialogue_pt4_Func001Func001Func002Func001Func002A takes nothing returns nothing
-call ShowUnitShow(GetEnumUnit())
-endfunction
-function Trig_Dialogue_pt4_Func001Func001Func002Func001Func003A takes nothing returns nothing
-call RemoveUnit(GetEnumUnit())
-endfunction
-function Trig_Dialogue_pt4_Func001Func001Func002Func001Func004A takes nothing returns nothing
-call RemoveUnit(GetEnumUnit())
-endfunction
-function Trig_Dialogue_pt4_Func001Func001Func002Func001Func005Func001A takes nothing returns nothing
-call RemoveUnit(GetEnumUnit())
 endfunction
 function Trig_Dialogue_pt4_Func001Func001Func002Func001Func005Func002C takes nothing returns boolean
 if((udg_Neutral_Alliance_Chance==1))then
@@ -43700,18 +43613,6 @@ if((udg_Neutral_Alliance_Chance==2))then
 return true
 endif
 return false
-endfunction
-function Trig_Dialogue_pt4_Func001Func001Func002Func001Func005Func003A takes nothing returns nothing
-call ShowUnitShow(GetEnumUnit())
-endfunction
-function Trig_Dialogue_pt4_Func001Func001Func002Func001Func015A takes nothing returns nothing
-call RemoveUnit(GetEnumUnit())
-endfunction
-function Trig_Dialogue_pt4_Func001Func001Func002Func001Func016A takes nothing returns nothing
-call RemoveUnit(GetEnumUnit())
-endfunction
-function Trig_Dialogue_pt4_Func001Func001Func002Func001Func017A takes nothing returns nothing
-call RemoveUnit(GetEnumUnit())
 endfunction
 function Trig_Dialogue_pt4_Func001Func001Func002Func001C takes nothing returns boolean
 if(not(udg_NO_FLYING_UNITS==true))then
@@ -43725,27 +43626,6 @@ return false
 endif
 return true
 endfunction
-function Trig_Dialogue_pt4_Func001Func001Func003Func001Func001A takes nothing returns nothing
-call RemoveUnit(GetEnumUnit())
-endfunction
-function Trig_Dialogue_pt4_Func001Func001Func003Func001Func004A takes nothing returns nothing
-call RemoveUnit(GetEnumUnit())
-endfunction
-function Trig_Dialogue_pt4_Func001Func001Func003Func001Func005A takes nothing returns nothing
-call RemoveUnit(GetEnumUnit())
-endfunction
-function Trig_Dialogue_pt4_Func001Func001Func003Func001Func006A takes nothing returns nothing
-call RemoveUnit(GetEnumUnit())
-endfunction
-function Trig_Dialogue_pt4_Func001Func001Func003Func001Func007A takes nothing returns nothing
-call ShowUnitShow(GetEnumUnit())
-endfunction
-function Trig_Dialogue_pt4_Func001Func001Func003Func001Func008A takes nothing returns nothing
-call ShowUnitShow(GetEnumUnit())
-endfunction
-function Trig_Dialogue_pt4_Func001Func001Func003Func001Func009Func001A takes nothing returns nothing
-call RemoveUnit(GetEnumUnit())
-endfunction
 function Trig_Dialogue_pt4_Func001Func001Func003Func001Func009Func002C takes nothing returns boolean
 if((udg_Neutral_Alliance_Chance==1))then
 return true
@@ -43755,17 +43635,11 @@ return true
 endif
 return false
 endfunction
-function Trig_Dialogue_pt4_Func001Func001Func003Func001Func009Func003A takes nothing returns nothing
-call ShowUnitShow(GetEnumUnit())
-endfunction
 function Trig_Dialogue_pt4_Func001Func001Func003Func001Func009C takes nothing returns boolean
 if(not Trig_Dialogue_pt4_Func001Func001Func003Func001Func009Func002C())then
 return false
 endif
 return true
-endfunction
-function Trig_Dialogue_pt4_Func001Func001Func003Func001Func010Func001A takes nothing returns nothing
-call RemoveUnit(GetEnumUnit())
 endfunction
 function Trig_Dialogue_pt4_Func001Func001Func003Func001Func010Func002C takes nothing returns boolean
 if((udg_Neutral_Alliance_Chance==1))then
@@ -43775,9 +43649,6 @@ if((udg_Neutral_Alliance_Chance==2))then
 return true
 endif
 return false
-endfunction
-function Trig_Dialogue_pt4_Func001Func001Func003Func001Func010Func003A takes nothing returns nothing
-call ShowUnitShow(GetEnumUnit())
 endfunction
 function Trig_Dialogue_pt4_Func001Func001Func003Func001C takes nothing returns boolean
 if(not(udg_NO_FLYING_UNITS==true))then
@@ -43802,16 +43673,10 @@ if(Trig_Dialogue_pt4_Func001Func001C())then
 if(Trig_Dialogue_pt4_Func001Func001Func001C())then
 call DisplayTimedTextToForce(GetPlayersAll(),30,"|cff32cd32Normal Mode|r")
 call DialogDisplayBJ(false,udg_CHOOSE_SETTINGS_3,GetEnumPlayer())
-call ForGroupBJ(udg_Satyr_All_Units_East,function Trig_Dialogue_pt4_Func001Func001Func001Func003A)
-call ForGroupBJ(udg_Satyr_All_Units_West,function Trig_Dialogue_pt4_Func001Func001Func001Func004A)
-call ForGroupBJ(udg_Satyr_Units_NeutralGuards,function Trig_Dialogue_pt4_Func001Func001Func001Func005A)
 else
 endif
 if(Trig_Dialogue_pt4_Func001Func001Func002C())then
 if(Trig_Dialogue_pt4_Func001Func001Func002Func001C())then
-call ForGroupBJ(udg_PirateGroup,function Trig_Dialogue_pt4_Func001Func001Func003Func001Func001A)
-call ForGroupBJ(udg_Satyr_All_Units_West,function Trig_Dialogue_pt4_Func001Func001Func003Func001Func008A)
-call ForGroupBJ(udg_Satyr_All_Units_East,function Trig_Dialogue_pt4_Func001Func001Func002Func001Func017A)
 set udg_SatyrBarracks_Point=GetRectCenter(udg_rct_Satyr_Barracks)
 set udg_Hard_Mode=true
 call CreateUnitBonuses(Player(13),'h01G',-6628,3892,270.000)
@@ -43825,22 +43690,11 @@ call DialogDisplayBJ(false,udg_CHOOSE_SETTINGS_3,GetEnumPlayer())
 else
 call DialogDisplayBJ(false,udg_CHOOSE_SETTINGS_3,GetEnumPlayer())
 call DisplayTimedTextToForce(GetPlayersAll(),30,"|cff32cd32Normal Mode|r")
-call ForGroupBJ(udg_Satyr_All_Units_East,function Trig_Dialogue_pt4_Func001Func001Func002Func001Func015A)
-call ForGroupBJ(udg_Satyr_All_Units_West,function Trig_Dialogue_pt4_Func001Func001Func002Func001Func016A)
-call ForGroupBJ(udg_Satyr_Units_NeutralGuards,function Trig_Dialogue_pt4_Func001Func001Func002Func001Func017A)
 endif
 else
 endif
 if(Trig_Dialogue_pt4_Func001Func001Func003C())then
 if(Trig_Dialogue_pt4_Func001Func001Func003Func001C())then
-call ForGroupBJ(udg_PirateGroup,function Trig_Dialogue_pt4_Func001Func001Func003Func001Func001A)
-call ForGroupBJ(udg_Satyr_All_Units_West,function Trig_Dialogue_pt4_Func001Func001Func003Func001Func007A)
-call ForGroupBJ(udg_Satyr_All_Units_East,function Trig_Dialogue_pt4_Func001Func001Func003Func001Func008A)
-if(Trig_Dialogue_pt4_Func001Func001Func003Func001Func009C())then
-call ForGroupBJ(udg_Satyr_Units_NeutralGuards,function Trig_Dialogue_pt4_Func001Func001Func003Func001Func009Func003A)
-else
-call ForGroupBJ(udg_Satyr_Units_NeutralGuards,function Trig_Dialogue_pt4_Func001Func001Func003Func001Func009Func001A)
-endif
 set udg_SatyrBarracks_Point=GetRectCenter(udg_rct_Satyr_Barracks)
 call CreateNUnitsAtLoc(1,'o00M',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
 set udg_Satyr_Barracks=GetLastCreatedUnit()
@@ -43852,9 +43706,6 @@ call DialogDisplayBJ(false,udg_CHOOSE_SETTINGS_3,GetEnumPlayer())
 else
 call DialogDisplayBJ(false,udg_CHOOSE_SETTINGS_3,GetEnumPlayer())
 call DisplayTimedTextToForce(GetPlayersAll(),30,"|cff32cd32Normal Mode|r")
-call ForGroupBJ(udg_Satyr_All_Units_East,function Trig_Dialogue_pt4_Func001Func001Func003Func001Func004A)
-call ForGroupBJ(udg_Satyr_All_Units_West,function Trig_Dialogue_pt4_Func001Func001Func003Func001Func005A)
-call ForGroupBJ(udg_Satyr_Units_NeutralGuards,function Trig_Dialogue_pt4_Func001Func001Func003Func001Func006A)
 endif
 else
 endif
@@ -44004,13 +43855,7 @@ call ReplaceUnitBJ(udg_unit_ngno_0005,'nmcf',bj_UNIT_STATE_METHOD_RELATIVE)
 endif
 if(SubString(HCLcommand,3,4)=="n")then
 call DisplayTimedTextToForce(GetPlayersAll(),30,"|cff32cd32Normal Mode|r")
-call ForGroupBJ(udg_Satyr_All_Units_East,function Trig_Dialogue_pt4_Func001Func001Func001Func003A)
-call ForGroupBJ(udg_Satyr_All_Units_West,function Trig_Dialogue_pt4_Func001Func001Func001Func004A)
-call ForGroupBJ(udg_Satyr_Units_NeutralGuards,function Trig_Dialogue_pt4_Func001Func001Func001Func005A)
 elseif(SubString(HCLcommand,3,4)=="h")then
-call ForGroupBJ(udg_PirateGroup,function Trig_Dialogue_pt4_Func001Func001Func003Func001Func001A)
-call ForGroupBJ(udg_Satyr_All_Units_West,function Trig_Dialogue_pt4_Func001Func001Func003Func001Func008A)
-call ForGroupBJ(udg_Satyr_All_Units_East,function Trig_Dialogue_pt4_Func001Func001Func002Func001Func017A)
 set udg_SatyrBarracks_Point=GetRectCenter(udg_rct_Satyr_Barracks)
 set udg_Hard_Mode=true
 set udg_PirateChance = 6
@@ -44025,14 +43870,6 @@ call DisplayTimedTextToForce(GetPlayersAll(),30,"|cff32cd32Hard Mode|r")
 set udg_SatyrBarracks_Point=GetRectCenter(udg_rct_Satyr_Barracks)
 elseif(SubString(HCLcommand,3,4)=="e")then
 set udg_PirateChance = 6
-call ForGroupBJ(udg_PirateGroup,function Trig_Dialogue_pt4_Func001Func001Func003Func001Func001A)
-call ForGroupBJ(udg_Satyr_All_Units_West,function Trig_Dialogue_pt4_Func001Func001Func003Func001Func007A)
-call ForGroupBJ(udg_Satyr_All_Units_East,function Trig_Dialogue_pt4_Func001Func001Func003Func001Func008A)
-if(Trig_Dialogue_pt4_Func001Func001Func003Func001Func009C())then
-call ForGroupBJ(udg_Satyr_Units_NeutralGuards,function Trig_Dialogue_pt4_Func001Func001Func003Func001Func009Func003A)
-else
-call ForGroupBJ(udg_Satyr_Units_NeutralGuards,function Trig_Dialogue_pt4_Func001Func001Func003Func001Func009Func001A)
-endif
 set udg_SatyrBarracks_Point=GetRectCenter(udg_rct_Satyr_Barracks)
 call CreateNUnitsAtLoc(1,'o00M',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
 set udg_Satyr_Barracks=GetLastCreatedUnit()
@@ -44045,10 +43882,6 @@ call ForForce(udg_Humans,function Trig_Dialogue_pt4_Func002Func001A)
 call ForForce(udg_Evil,function Trig_Dialogue_pt4_Func002Func002A)
 else
 set udg_PirateChance = 6
-call ForGroupBJ(udg_PirateGroup,function Trig_Dialogue_pt4_Func001Func001Func003Func001Func001A)
-call ForGroupBJ(udg_Satyr_All_Units_West,function Trig_Dialogue_pt4_Func001Func001Func003Func001Func007A)
-call ForGroupBJ(udg_Satyr_All_Units_East,function Trig_Dialogue_pt4_Func001Func001Func003Func001Func008A)
-call ForGroupBJ(udg_Satyr_Units_NeutralGuards,function Trig_Dialogue_pt4_Func001Func001Func003Func001Func009Func003A)
 set udg_SatyrBarracks_Point=GetRectCenter(udg_rct_Satyr_Barracks)
 call CreateNUnitsAtLoc(1,'o00M',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
 set udg_Satyr_Barracks=GetLastCreatedUnit()
