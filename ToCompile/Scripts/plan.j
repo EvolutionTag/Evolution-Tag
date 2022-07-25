@@ -17,6 +17,22 @@ library Plan requires TimerData
         t = null;
     }
 
+    function RemoveDestructableTimed (){
+        timer t = GetExpiredTimer();
+        destructable u = LoadDestructableHandle(timerdata,GetHandleId(t),0);
+        RemoveDestructable(u);
+        FlushChildHashtable(timerdata,GetHandleId(t));
+        DestroyTimer(t);
+        t = null;
+        u = null;
+    }
+    public function PlanDestructableRemoval (destructable u, real time ){
+        timer t = CreateTimer();
+        SaveDestructableHandle(timerdata,GetHandleId(t),0,u);
+        TimerStart(t,time,false,function RemoveDestructableTimed);
+        t = null;
+    }
+
     function DestroyTriggerTimed (){
         timer t = GetExpiredTimer();
         trigger tg = LoadTriggerHandle(timerdata,GetHandleId(t),0);

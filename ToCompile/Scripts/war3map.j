@@ -1599,7 +1599,6 @@ trigger udg_trg_Dialogue_pt2=null
 trigger udg_trg_Dialogue_pt3=null
 trigger udg_trg_Dialogue_pt4=null
 trigger udg_trg_Time_up_for_setting_settings=null
-trigger udg_trg_Time_up_for_setting_settings_Copy=null
 trigger udg_trg_Game_settings=null
 trigger udg_trg_Game_settings_2=null
 trigger udg_trg_Game_settings_3=null
@@ -1765,19 +1764,6 @@ trigger udg_trg_Dead_area_bot_right=null
 trigger udg_trg_Dead_area_top_right_Copy=null
 trigger udg_trg_stop_tele_FB=null
 trigger udg_trg_turn_on_ar=null
-trigger udg_trg_random=null
-trigger udg_trg_repick=null
-trigger udg_trg_repick_Copy=null
-trigger udg_trg_repick_Copy_Copy=null
-trigger udg_trg_repick_Copy_Copy_Copy=null
-trigger udg_trg_repick_Copy_Copy_Copy_2=null
-trigger udg_trg_repick_Copy_Copy_Copy_3=null
-trigger udg_trg_repick_Copy_Copy_Copy_4=null
-trigger udg_trg_repick_Copy_Copy_Copy_5=null
-trigger udg_trg_repick_Copy_Copy_Copy_6=null
-trigger udg_trg_repick_Copy_Copy_Copy_7=null
-trigger udg_trg_repick_Copy_Copy_Copy_8=null
-trigger udg_trg_repick_Copy_Copy_Copy_9=null
 trigger udg_trg_restart_game=null
 trigger udg_trg_coins=null
 trigger udg_trg_Spawn_Golden_Chickens=null
@@ -6369,7 +6355,6 @@ set udg_trg_Dialogue_pt2=CreateTrigger()
 set udg_trg_Dialogue_pt3=CreateTrigger()
 set udg_trg_Dialogue_pt4=CreateTrigger()
 set udg_trg_Time_up_for_setting_settings=CreateTrigger()
-set udg_trg_Time_up_for_setting_settings_Copy=CreateTrigger()
 set udg_trg_Game_settings=CreateTrigger()
 set udg_trg_Game_settings_2=CreateTrigger()
 set udg_trg_Game_settings_3=CreateTrigger()
@@ -6535,19 +6520,6 @@ set udg_trg_Dead_area_bot_right=CreateTrigger()
 set udg_trg_Dead_area_top_right_Copy=CreateTrigger()
 set udg_trg_stop_tele_FB=CreateTrigger()
 set udg_trg_turn_on_ar=CreateTrigger()
-set udg_trg_random=CreateTrigger()
-set udg_trg_repick=CreateTrigger()
-set udg_trg_repick_Copy=CreateTrigger()
-set udg_trg_repick_Copy_Copy=CreateTrigger()
-set udg_trg_repick_Copy_Copy_Copy=CreateTrigger()
-set udg_trg_repick_Copy_Copy_Copy_2=CreateTrigger()
-set udg_trg_repick_Copy_Copy_Copy_3=CreateTrigger()
-set udg_trg_repick_Copy_Copy_Copy_4=CreateTrigger()
-set udg_trg_repick_Copy_Copy_Copy_5=CreateTrigger()
-set udg_trg_repick_Copy_Copy_Copy_6=CreateTrigger()
-set udg_trg_repick_Copy_Copy_Copy_7=CreateTrigger()
-set udg_trg_repick_Copy_Copy_Copy_8=CreateTrigger()
-set udg_trg_repick_Copy_Copy_Copy_9=CreateTrigger()
 set udg_trg_restart_game=CreateTrigger()
 set udg_trg_coins=CreateTrigger()
 set udg_trg_Spawn_Golden_Chickens=CreateTrigger()
@@ -19831,7 +19803,6 @@ if(Trig_Creature_Event_Func001C())then
 call DisplayTimedTextToForce(GetPlayersAll(),7.50,"|cffffff00A creature approaches!|r")
 call EnumDestructablesInRectAll(udg_rct_Region_248,function Trig_Creature_Event_Func001Func002A)
 call CreateNUnitsAtLocBonuses(1,'n04I',Player(bj_PLAYER_NEUTRAL_VICTIM),GetRectCenter(udg_rct_ABC_loc_4),bj_UNIT_FACING)
-call PolledWait(1.00)
 call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
 set udg_ABC_Creature=GetLastCreatedUnit()
 call CreateNUnitsAtLocBonuses(1,'h05O',Player(bj_PLAYER_NEUTRAL_VICTIM),GetUnitLoc(GetLastCreatedUnit()),bj_UNIT_FACING)
@@ -19842,21 +19813,12 @@ if(Trig_Creature_Event_Func002C())then
 call DisplayTimedTextToForce(GetPlayersAll(),7.50,"|cffffff00A creature approaches!|r")
 call EnumDestructablesInRectAll(udg_rct_Region_249,function Trig_Creature_Event_Func002Func002A)
 call CreateNUnitsAtLocBonuses(1,'n04I',Player(bj_PLAYER_NEUTRAL_VICTIM),GetRectCenter(udg_rct_ABC_loc_5),bj_UNIT_FACING)
-call PolledWait(1.00)
 call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
 set udg_ABC_Creature=GetLastCreatedUnit()
 call CreateNUnitsAtLocBonuses(1,'h05O',Player(bj_PLAYER_NEUTRAL_VICTIM),GetUnitLoc(GetLastCreatedUnit()),bj_UNIT_FACING)
 call IssueTargetOrderBJ(GetLastCreatedUnit(),"bloodlust",udg_ABC_Creature)
 else
 endif
-// if(Trig_Creature_Event_Func003C())then
-// call DisplayTimedTextToForce(GetPlayersAll(),7.50,"|cffffff00A creature approaches!|r")
-// call EnumDestructablesInRectAll(udg_rct_Region_250,function Trig_Creature_Event_Func003Func002A)
-// call CreateNUnitsAtLocBonuses(1,'n04J',Player(bj_PLAYER_NEUTRAL_VICTIM),GetRectCenter(udg_rct_ABC_loc_2),bj_UNIT_FACING)
-// call PolledWait(1.00)
-// call IssuePointOrderLocBJ(GetLastCreatedUnit(),"patrol",GetRandomLocInRect(udg_rct_Rocks_middle))
-// else
-// endif
 if(Trig_Creature_Event_Func004C())then
 call DisplayTimedTextToForce(GetPlayersAll(),7.50,"|cffffff00A creature approaches!|r")
 call CreateNUnitsAtLocBonuses(1,'nhar',Player(bj_PLAYER_NEUTRAL_VICTIM),GetRectCenter(udg_rct_ABC_loc_1),bj_UNIT_FACING)
@@ -19867,7 +19829,6 @@ if(Trig_Creature_Event_Func005C())then
 call DisplayTimedTextToForce(GetPlayersAll(),7.50,"|cffffff00A creature approaches!|r")
 call EnumDestructablesInRectAll(udg_rct_Region_252,function Trig_Creature_Event_Func005Func002A)
 call CreateNUnitsAtLocBonuses(1,'n04K',Player(bj_PLAYER_NEUTRAL_VICTIM),GetRectCenter(udg_rct_ABC_loc_3),bj_UNIT_FACING)
-call PolledWait(1.00)
 call IssuePointOrderLocBJ(GetLastCreatedUnit(),"selfdestruct",GetRandomLocInRect(udg_rct_Region_253))
 else
 endif
@@ -24296,378 +24257,6 @@ call DisableTrigger(udg_trg_stop_tele_FB)
 call TriggerRegisterAnyUnitEventBJ(udg_trg_stop_tele_FB,EVENT_PLAYER_UNIT_SPELL_CAST)
 call TriggerAddCondition(udg_trg_stop_tele_FB,Condition(function Trig_stop_tele_FB_Conditions))
 call TriggerAddAction(udg_trg_stop_tele_FB,function Trig_stop_tele_FB_Actions)
-endfunction
-function Trig_random_Conditions takes nothing returns boolean
-if(not(GetPlayerColor(GetTriggerPlayer())==PLAYER_COLOR_RED))then
-return false
-endif
-return true
-endfunction
-function Trig_random_Func001Func001C takes nothing returns boolean
-if(not(GetOwningPlayer(GetEnumUnit())!=Player(PLAYER_NEUTRAL_PASSIVE)))then
-return false
-endif
-if(not(GetOwningPlayer(GetEnumUnit())!=Player(PLAYER_NEUTRAL_AGGRESSIVE)))then
-return false
-endif
-if(not(GetOwningPlayer(GetEnumUnit())!=Player(bj_PLAYER_NEUTRAL_EXTRA)))then
-return false
-endif
-return true
-endfunction
-function Trig_random_Func001A takes nothing returns nothing
-if(Trig_random_Func001Func001C())then
-call RemoveUnit(GetEnumUnit())
-else
-call DoNothing()
-endif
-endfunction
-function Trig_random_Func003A takes nothing returns nothing
-call CreateNUnitsAtLocBonuses(1,udg_Random_Unit[GetRandomInt(1,24)],GetEnumPlayer(),GetRectCenter(udg_rct_Human_Base),bj_UNIT_FACING)
-call SmartCameraPanBJModified(GetEnumPlayer(),GetRectCenter(udg_rct_Human_Base),0)
-endfunction
-function Trig_random_Func004A takes nothing returns nothing
-call CreateNUnitsAtLocBonuses(1,udg_Random_Unit_Undead[GetRandomInt(1,15)],GetEnumPlayer(),GetRectCenter(udg_rct_Undead_Base),bj_UNIT_FACING)
-call SmartCameraPanBJModified(GetEnumPlayer(),GetRectCenter(udg_rct_Undead_Base),0)
-endfunction
-function Trig_random_Actions takes nothing returns nothing
-call ForGroupBJ(GetUnitsInRectAll(GetEntireMapRect()),function Trig_random_Func001A)
-call ForForce(udg_Humans,function Trig_random_Func003A)
-call ForForce(udg_Evil,function Trig_random_Func004A)
-call CreateItemLoc('dust',GetRectCenter(udg_rct_human_tower_3))
-call CreateItemLoc('dust',GetRectCenter(udg_rct_Undead_tower_2))
-call EnableTrigger(udg_trg_repick)
-call EnableTrigger(udg_trg_repick_Copy)
-call EnableTrigger(udg_trg_repick_Copy_Copy)
-call EnableTrigger(udg_trg_repick_Copy_Copy_Copy_2)
-call EnableTrigger(udg_trg_repick_Copy_Copy_Copy_3)
-call EnableTrigger(udg_trg_repick_Copy_Copy_Copy_4)
-call EnableTrigger(udg_trg_repick_Copy_Copy_Copy_5)
-call EnableTrigger(udg_trg_repick_Copy_Copy_Copy_6)
-call EnableTrigger(udg_trg_repick_Copy_Copy_Copy_7)
-call EnableTrigger(udg_trg_repick_Copy_Copy_Copy_8)
-call EnableTrigger(udg_trg_repick_Copy_Copy_Copy_9)
-call DisplayTimedTextToForce(GetPlayersAll(),15.00,"You can -repick your unit once in the next 15 seconds")
-call TriggerSleepAction(15.00)
-call DisableTrigger(udg_trg_repick)
-call DisableTrigger(udg_trg_repick_Copy)
-call DisableTrigger(udg_trg_repick_Copy_Copy)
-call DisableTrigger(udg_trg_repick_Copy_Copy_Copy_2)
-call DisableTrigger(udg_trg_repick_Copy_Copy_Copy_3)
-call DisableTrigger(udg_trg_repick_Copy_Copy_Copy_4)
-call DisableTrigger(udg_trg_repick_Copy_Copy_Copy_5)
-call DisableTrigger(udg_trg_repick_Copy_Copy_Copy_6)
-call DisableTrigger(udg_trg_repick_Copy_Copy_Copy_7)
-call DisableTrigger(udg_trg_repick_Copy_Copy_Copy_8)
-call DisableTrigger(udg_trg_repick_Copy_Copy_Copy_9)
-call DisableTrigger(GetTriggeringTrigger())
-endfunction
-function InitTrig_random takes nothing returns nothing
-set udg_trg_random=CreateTrigger()
-call DisableTrigger(udg_trg_random)
-call TriggerRegisterPlayerChatEvent(udg_trg_random,Player(0),"-ar",true)
-call TriggerRegisterPlayerChatEvent(udg_trg_random,Player(1),"-ar",true)
-call TriggerRegisterPlayerChatEvent(udg_trg_random,Player(2),"-ar",true)
-call TriggerRegisterPlayerChatEvent(udg_trg_random,Player(3),"-ar",true)
-call TriggerRegisterPlayerChatEvent(udg_trg_random,Player(4),"-ar",true)
-call TriggerRegisterPlayerChatEvent(udg_trg_random,Player(5),"-ar",true)
-call TriggerRegisterPlayerChatEvent(udg_trg_random,Player(6),"-ar",true)
-call TriggerRegisterPlayerChatEvent(udg_trg_random,Player(7),"-ar",true)
-call TriggerRegisterPlayerChatEvent(udg_trg_random,Player(8),"-ar",true)
-call TriggerRegisterPlayerChatEvent(udg_trg_random,Player(9),"-ar",true)
-call TriggerRegisterPlayerChatEvent(udg_trg_random,Player(10),"-ar",true)
-call TriggerRegisterPlayerChatEvent(udg_trg_random,Player(11),"-ar",true)
-call TriggerAddCondition(udg_trg_random,Condition(function Trig_random_Conditions))
-call TriggerAddAction(udg_trg_random,function Trig_random_Actions)
-call DisableTrigger(udg_trg_random)
-endfunction
-function Trig_repick_Func002002 takes nothing returns nothing
-call RemoveUnit(GetEnumUnit())
-endfunction
-function Trig_repick_Func003C takes nothing returns boolean
-if(not(IsPlayerInForce(GetTriggerPlayer(),udg_Evil)==true))then
-return false
-endif
-return true
-endfunction
-function Trig_repick_Actions takes nothing returns nothing
-call DisableTrigger(GetTriggeringTrigger())
-call ForGroupBJ(GetUnitsOfPlayerAll(GetTriggerPlayer()),function Trig_repick_Func002002)
-if(Trig_repick_Func003C())then
-call CreateNUnitsAtLocBonuses(1,udg_Random_Unit_Undead[GetRandomInt(1,15)],GetTriggerPlayer(),GetRectCenter(udg_rct_Undead_Base),bj_UNIT_FACING)
-else
-call CreateNUnitsAtLocBonuses(1,udg_Random_Unit[GetRandomInt(1,24)],GetTriggerPlayer(),GetRectCenter(udg_rct_Human_Base),bj_UNIT_FACING)
-endif
-endfunction
-function InitTrig_repick takes nothing returns nothing
-set udg_trg_repick=CreateTrigger()
-call DisableTrigger(udg_trg_repick)
-call TriggerRegisterPlayerChatEvent(udg_trg_repick,Player(0),"-repick",true)
-call TriggerAddAction(udg_trg_repick,function Trig_repick_Actions)
-endfunction
-function Trig_repick_Copy_Func002002 takes nothing returns nothing
-call RemoveUnit(GetEnumUnit())
-endfunction
-function Trig_repick_Copy_Func003C takes nothing returns boolean
-if(not(IsPlayerInForce(GetTriggerPlayer(),udg_Evil)==true))then
-return false
-endif
-return true
-endfunction
-function Trig_repick_Copy_Actions takes nothing returns nothing
-call DisableTrigger(GetTriggeringTrigger())
-call ForGroupBJ(GetUnitsOfPlayerAll(GetTriggerPlayer()),function Trig_repick_Copy_Func002002)
-if(Trig_repick_Copy_Func003C())then
-call CreateNUnitsAtLocBonuses(1,udg_Random_Unit_Undead[GetRandomInt(1,15)],GetTriggerPlayer(),GetRectCenter(udg_rct_Undead_Base),bj_UNIT_FACING)
-else
-call CreateNUnitsAtLocBonuses(1,udg_Random_Unit[GetRandomInt(1,24)],GetTriggerPlayer(),GetRectCenter(udg_rct_Human_Base),bj_UNIT_FACING)
-endif
-endfunction
-function InitTrig_repick_Copy takes nothing returns nothing
-set udg_trg_repick_Copy=CreateTrigger()
-call DisableTrigger(udg_trg_repick_Copy)
-call TriggerRegisterPlayerChatEvent(udg_trg_repick_Copy,Player(1),"-repick",true)
-call TriggerAddAction(udg_trg_repick_Copy,function Trig_repick_Copy_Actions)
-endfunction
-function Trig_repick_Copy_Copy_Func002002 takes nothing returns nothing
-call RemoveUnit(GetEnumUnit())
-endfunction
-function Trig_repick_Copy_Copy_Func003C takes nothing returns boolean
-if(not(IsPlayerInForce(GetTriggerPlayer(),udg_Evil)==true))then
-return false
-endif
-return true
-endfunction
-function Trig_repick_Copy_Copy_Actions takes nothing returns nothing
-call DisableTrigger(GetTriggeringTrigger())
-call ForGroupBJ(GetUnitsOfPlayerAll(GetTriggerPlayer()),function Trig_repick_Copy_Copy_Func002002)
-if(Trig_repick_Copy_Copy_Func003C())then
-call CreateNUnitsAtLocBonuses(1,udg_Random_Unit_Undead[GetRandomInt(1,15)],GetTriggerPlayer(),GetRectCenter(udg_rct_Undead_Base),bj_UNIT_FACING)
-else
-call CreateNUnitsAtLocBonuses(1,udg_Random_Unit[GetRandomInt(1,24)],GetTriggerPlayer(),GetRectCenter(udg_rct_Human_Base),bj_UNIT_FACING)
-endif
-endfunction
-function InitTrig_repick_Copy_Copy takes nothing returns nothing
-set udg_trg_repick_Copy_Copy=CreateTrigger()
-call DisableTrigger(udg_trg_repick_Copy_Copy)
-call TriggerRegisterPlayerChatEvent(udg_trg_repick_Copy_Copy,Player(2),"-repick",true)
-call TriggerAddAction(udg_trg_repick_Copy_Copy,function Trig_repick_Copy_Copy_Actions)
-endfunction
-function Trig_repick_Copy_Copy_Copy_Func002002 takes nothing returns nothing
-call RemoveUnit(GetEnumUnit())
-endfunction
-function Trig_repick_Copy_Copy_Copy_Func003C takes nothing returns boolean
-if(not(IsPlayerInForce(GetTriggerPlayer(),udg_Evil)==true))then
-return false
-endif
-return true
-endfunction
-function Trig_repick_Copy_Copy_Copy_Actions takes nothing returns nothing
-call DisableTrigger(GetTriggeringTrigger())
-call ForGroupBJ(GetUnitsOfPlayerAll(GetTriggerPlayer()),function Trig_repick_Copy_Copy_Copy_Func002002)
-if(Trig_repick_Copy_Copy_Copy_Func003C())then
-call CreateNUnitsAtLocBonuses(1,udg_Random_Unit_Undead[GetRandomInt(1,15)],GetTriggerPlayer(),GetRectCenter(udg_rct_Undead_Base),bj_UNIT_FACING)
-else
-call CreateNUnitsAtLocBonuses(1,udg_Random_Unit[GetRandomInt(1,24)],GetTriggerPlayer(),GetRectCenter(udg_rct_Human_Base),bj_UNIT_FACING)
-endif
-endfunction
-function InitTrig_repick_Copy_Copy_Copy takes nothing returns nothing
-set udg_trg_repick_Copy_Copy_Copy=CreateTrigger()
-call DisableTrigger(udg_trg_repick_Copy_Copy_Copy)
-call TriggerRegisterPlayerChatEvent(udg_trg_repick_Copy_Copy_Copy,Player(3),"-repick",true)
-call TriggerAddAction(udg_trg_repick_Copy_Copy_Copy,function Trig_repick_Copy_Copy_Copy_Actions)
-endfunction
-function Trig_repick_Copy_Copy_Copy_2_Func002002 takes nothing returns nothing
-call RemoveUnit(GetEnumUnit())
-endfunction
-function Trig_repick_Copy_Copy_Copy_2_Func003C takes nothing returns boolean
-if(not(IsPlayerInForce(GetTriggerPlayer(),udg_Evil)==true))then
-return false
-endif
-return true
-endfunction
-function Trig_repick_Copy_Copy_Copy_2_Actions takes nothing returns nothing
-call DisableTrigger(GetTriggeringTrigger())
-call ForGroupBJ(GetUnitsOfPlayerAll(GetTriggerPlayer()),function Trig_repick_Copy_Copy_Copy_2_Func002002)
-if(Trig_repick_Copy_Copy_Copy_2_Func003C())then
-call CreateNUnitsAtLocBonuses(1,udg_Random_Unit_Undead[GetRandomInt(1,15)],GetTriggerPlayer(),GetRectCenter(udg_rct_Undead_Base),bj_UNIT_FACING)
-else
-call CreateNUnitsAtLocBonuses(1,udg_Random_Unit[GetRandomInt(1,24)],GetTriggerPlayer(),GetRectCenter(udg_rct_Human_Base),bj_UNIT_FACING)
-endif
-endfunction
-function InitTrig_repick_Copy_Copy_Copy_2 takes nothing returns nothing
-set udg_trg_repick_Copy_Copy_Copy_2=CreateTrigger()
-call DisableTrigger(udg_trg_repick_Copy_Copy_Copy_2)
-call TriggerRegisterPlayerChatEvent(udg_trg_repick_Copy_Copy_Copy_2,Player(4),"-repick",true)
-call TriggerAddAction(udg_trg_repick_Copy_Copy_Copy_2,function Trig_repick_Copy_Copy_Copy_2_Actions)
-endfunction
-function Trig_repick_Copy_Copy_Copy_3_Func002002 takes nothing returns nothing
-call RemoveUnit(GetEnumUnit())
-endfunction
-function Trig_repick_Copy_Copy_Copy_3_Func003C takes nothing returns boolean
-if(not(IsPlayerInForce(GetTriggerPlayer(),udg_Evil)==true))then
-return false
-endif
-return true
-endfunction
-function Trig_repick_Copy_Copy_Copy_3_Actions takes nothing returns nothing
-call DisableTrigger(GetTriggeringTrigger())
-call ForGroupBJ(GetUnitsOfPlayerAll(GetTriggerPlayer()),function Trig_repick_Copy_Copy_Copy_3_Func002002)
-if(Trig_repick_Copy_Copy_Copy_3_Func003C())then
-call CreateNUnitsAtLocBonuses(1,udg_Random_Unit_Undead[GetRandomInt(1,15)],GetTriggerPlayer(),GetRectCenter(udg_rct_Undead_Base),bj_UNIT_FACING)
-else
-call CreateNUnitsAtLocBonuses(1,udg_Random_Unit[GetRandomInt(1,24)],GetTriggerPlayer(),GetRectCenter(udg_rct_Human_Base),bj_UNIT_FACING)
-endif
-endfunction
-function InitTrig_repick_Copy_Copy_Copy_3 takes nothing returns nothing
-set udg_trg_repick_Copy_Copy_Copy_3=CreateTrigger()
-call DisableTrigger(udg_trg_repick_Copy_Copy_Copy_3)
-call TriggerRegisterPlayerChatEvent(udg_trg_repick_Copy_Copy_Copy_3,Player(5),"-repick",true)
-call TriggerAddAction(udg_trg_repick_Copy_Copy_Copy_3,function Trig_repick_Copy_Copy_Copy_3_Actions)
-endfunction
-function Trig_repick_Copy_Copy_Copy_4_Func002002 takes nothing returns nothing
-call RemoveUnit(GetEnumUnit())
-endfunction
-function Trig_repick_Copy_Copy_Copy_4_Func003C takes nothing returns boolean
-if(not(IsPlayerInForce(GetTriggerPlayer(),udg_Evil)==true))then
-return false
-endif
-return true
-endfunction
-function Trig_repick_Copy_Copy_Copy_4_Actions takes nothing returns nothing
-call DisableTrigger(GetTriggeringTrigger())
-call ForGroupBJ(GetUnitsOfPlayerAll(GetTriggerPlayer()),function Trig_repick_Copy_Copy_Copy_4_Func002002)
-if(Trig_repick_Copy_Copy_Copy_4_Func003C())then
-call CreateNUnitsAtLocBonuses(1,udg_Random_Unit_Undead[GetRandomInt(1,15)],GetTriggerPlayer(),GetRectCenter(udg_rct_Undead_Base),bj_UNIT_FACING)
-else
-call CreateNUnitsAtLocBonuses(1,udg_Random_Unit[GetRandomInt(1,24)],GetTriggerPlayer(),GetRectCenter(udg_rct_Human_Base),bj_UNIT_FACING)
-endif
-endfunction
-function InitTrig_repick_Copy_Copy_Copy_4 takes nothing returns nothing
-set udg_trg_repick_Copy_Copy_Copy_4=CreateTrigger()
-call DisableTrigger(udg_trg_repick_Copy_Copy_Copy_4)
-call TriggerRegisterPlayerChatEvent(udg_trg_repick_Copy_Copy_Copy_4,Player(6),"-repick",true)
-call TriggerAddAction(udg_trg_repick_Copy_Copy_Copy_4,function Trig_repick_Copy_Copy_Copy_4_Actions)
-endfunction
-function Trig_repick_Copy_Copy_Copy_5_Func002002 takes nothing returns nothing
-call RemoveUnit(GetEnumUnit())
-endfunction
-function Trig_repick_Copy_Copy_Copy_5_Func003C takes nothing returns boolean
-if(not(IsPlayerInForce(GetTriggerPlayer(),udg_Evil)==true))then
-return false
-endif
-return true
-endfunction
-function Trig_repick_Copy_Copy_Copy_5_Actions takes nothing returns nothing
-call DisableTrigger(GetTriggeringTrigger())
-call ForGroupBJ(GetUnitsOfPlayerAll(GetTriggerPlayer()),function Trig_repick_Copy_Copy_Copy_5_Func002002)
-if(Trig_repick_Copy_Copy_Copy_5_Func003C())then
-call CreateNUnitsAtLocBonuses(1,udg_Random_Unit_Undead[GetRandomInt(1,15)],GetTriggerPlayer(),GetRectCenter(udg_rct_Undead_Base),bj_UNIT_FACING)
-else
-call CreateNUnitsAtLocBonuses(1,udg_Random_Unit[GetRandomInt(1,24)],GetTriggerPlayer(),GetRectCenter(udg_rct_Human_Base),bj_UNIT_FACING)
-endif
-endfunction
-function InitTrig_repick_Copy_Copy_Copy_5 takes nothing returns nothing
-set udg_trg_repick_Copy_Copy_Copy_5=CreateTrigger()
-call DisableTrigger(udg_trg_repick_Copy_Copy_Copy_5)
-call TriggerRegisterPlayerChatEvent(udg_trg_repick_Copy_Copy_Copy_5,Player(7),"-repick",true)
-call TriggerAddAction(udg_trg_repick_Copy_Copy_Copy_5,function Trig_repick_Copy_Copy_Copy_5_Actions)
-endfunction
-function Trig_repick_Copy_Copy_Copy_6_Func002002 takes nothing returns nothing
-call RemoveUnit(GetEnumUnit())
-endfunction
-function Trig_repick_Copy_Copy_Copy_6_Func003C takes nothing returns boolean
-if(not(IsPlayerInForce(GetTriggerPlayer(),udg_Evil)==true))then
-return false
-endif
-return true
-endfunction
-function Trig_repick_Copy_Copy_Copy_6_Actions takes nothing returns nothing
-call DisableTrigger(GetTriggeringTrigger())
-call ForGroupBJ(GetUnitsOfPlayerAll(GetTriggerPlayer()),function Trig_repick_Copy_Copy_Copy_6_Func002002)
-if(Trig_repick_Copy_Copy_Copy_6_Func003C())then
-call CreateNUnitsAtLocBonuses(1,udg_Random_Unit_Undead[GetRandomInt(1,15)],GetTriggerPlayer(),GetRectCenter(udg_rct_Undead_Base),bj_UNIT_FACING)
-else
-call CreateNUnitsAtLocBonuses(1,udg_Random_Unit[GetRandomInt(1,24)],GetTriggerPlayer(),GetRectCenter(udg_rct_Human_Base),bj_UNIT_FACING)
-endif
-endfunction
-function InitTrig_repick_Copy_Copy_Copy_6 takes nothing returns nothing
-set udg_trg_repick_Copy_Copy_Copy_6=CreateTrigger()
-call DisableTrigger(udg_trg_repick_Copy_Copy_Copy_6)
-call TriggerRegisterPlayerChatEvent(udg_trg_repick_Copy_Copy_Copy_6,Player(8),"-repick",true)
-call TriggerAddAction(udg_trg_repick_Copy_Copy_Copy_6,function Trig_repick_Copy_Copy_Copy_6_Actions)
-endfunction
-function Trig_repick_Copy_Copy_Copy_7_Func002002 takes nothing returns nothing
-call RemoveUnit(GetEnumUnit())
-endfunction
-function Trig_repick_Copy_Copy_Copy_7_Func003C takes nothing returns boolean
-if(not(IsPlayerInForce(GetTriggerPlayer(),udg_Evil)==true))then
-return false
-endif
-return true
-endfunction
-function Trig_repick_Copy_Copy_Copy_7_Actions takes nothing returns nothing
-call DisableTrigger(GetTriggeringTrigger())
-call ForGroupBJ(GetUnitsOfPlayerAll(GetTriggerPlayer()),function Trig_repick_Copy_Copy_Copy_7_Func002002)
-if(Trig_repick_Copy_Copy_Copy_7_Func003C())then
-call CreateNUnitsAtLocBonuses(1,udg_Random_Unit_Undead[GetRandomInt(1,15)],GetTriggerPlayer(),GetRectCenter(udg_rct_Undead_Base),bj_UNIT_FACING)
-else
-call CreateNUnitsAtLocBonuses(1,udg_Random_Unit[GetRandomInt(1,24)],GetTriggerPlayer(),GetRectCenter(udg_rct_Human_Base),bj_UNIT_FACING)
-endif
-endfunction
-function InitTrig_repick_Copy_Copy_Copy_7 takes nothing returns nothing
-set udg_trg_repick_Copy_Copy_Copy_7=CreateTrigger()
-call DisableTrigger(udg_trg_repick_Copy_Copy_Copy_7)
-call TriggerRegisterPlayerChatEvent(udg_trg_repick_Copy_Copy_Copy_7,Player(9),"-repick",true)
-call TriggerAddAction(udg_trg_repick_Copy_Copy_Copy_7,function Trig_repick_Copy_Copy_Copy_7_Actions)
-endfunction
-function Trig_repick_Copy_Copy_Copy_8_Func002002 takes nothing returns nothing
-call RemoveUnit(GetEnumUnit())
-endfunction
-function Trig_repick_Copy_Copy_Copy_8_Func003C takes nothing returns boolean
-if(not(IsPlayerInForce(GetTriggerPlayer(),udg_Evil)==true))then
-return false
-endif
-return true
-endfunction
-function Trig_repick_Copy_Copy_Copy_8_Actions takes nothing returns nothing
-call DisableTrigger(GetTriggeringTrigger())
-call ForGroupBJ(GetUnitsOfPlayerAll(GetTriggerPlayer()),function Trig_repick_Copy_Copy_Copy_8_Func002002)
-if(Trig_repick_Copy_Copy_Copy_8_Func003C())then
-call CreateNUnitsAtLocBonuses(1,udg_Random_Unit_Undead[GetRandomInt(1,15)],GetTriggerPlayer(),GetRectCenter(udg_rct_Undead_Base),bj_UNIT_FACING)
-else
-call CreateNUnitsAtLocBonuses(1,udg_Random_Unit[GetRandomInt(1,24)],GetTriggerPlayer(),GetRectCenter(udg_rct_Human_Base),bj_UNIT_FACING)
-endif
-endfunction
-function InitTrig_repick_Copy_Copy_Copy_8 takes nothing returns nothing
-set udg_trg_repick_Copy_Copy_Copy_8=CreateTrigger()
-call DisableTrigger(udg_trg_repick_Copy_Copy_Copy_8)
-call TriggerRegisterPlayerChatEvent(udg_trg_repick_Copy_Copy_Copy_8,Player(10),"-repick",true)
-call TriggerAddAction(udg_trg_repick_Copy_Copy_Copy_8,function Trig_repick_Copy_Copy_Copy_8_Actions)
-endfunction
-function Trig_repick_Copy_Copy_Copy_9_Func002002 takes nothing returns nothing
-call RemoveUnit(GetEnumUnit())
-endfunction
-function Trig_repick_Copy_Copy_Copy_9_Func003C takes nothing returns boolean
-if(not(IsPlayerInForce(GetTriggerPlayer(),udg_Evil)==true))then
-return false
-endif
-return true
-endfunction
-function Trig_repick_Copy_Copy_Copy_9_Actions takes nothing returns nothing
-call DisableTrigger(GetTriggeringTrigger())
-call ForGroupBJ(GetUnitsOfPlayerAll(GetTriggerPlayer()),function Trig_repick_Copy_Copy_Copy_9_Func002002)
-if(Trig_repick_Copy_Copy_Copy_9_Func003C())then
-call CreateNUnitsAtLocBonuses(1,udg_Random_Unit_Undead[GetRandomInt(1,15)],GetTriggerPlayer(),GetRectCenter(udg_rct_Undead_Base),bj_UNIT_FACING)
-else
-call CreateNUnitsAtLocBonuses(1,udg_Random_Unit[GetRandomInt(1,24)],GetTriggerPlayer(),GetRectCenter(udg_rct_Human_Base),bj_UNIT_FACING)
-endif
-endfunction
-function InitTrig_repick_Copy_Copy_Copy_9 takes nothing returns nothing
-set udg_trg_repick_Copy_Copy_Copy_9=CreateTrigger()
-call DisableTrigger(udg_trg_repick_Copy_Copy_Copy_9)
-call TriggerRegisterPlayerChatEvent(udg_trg_repick_Copy_Copy_Copy_9,Player(11),"-repick",true)
-call TriggerAddAction(udg_trg_repick_Copy_Copy_Copy_9,function Trig_repick_Copy_Copy_Copy_9_Actions)
 endfunction
 function Trig_coins_Func003C takes nothing returns boolean
 if(not(udg_Topleft_integer_chance2==15))then
@@ -40840,7 +40429,7 @@ set udg_y2=udg_TOT2_Data[((udg_i*udg_TOT2_Size)+2)]
 if(Trig_TOT_Loop_Copy_Func001Func002Func015C())then
 set udg_d=CreateDestructable(udg_TOT2_DestructibleType[udg_i],udg_x2,udg_y2,0.00,1.00,0)
 call DestroyEffect(AddSpecialEffect(udg_TOT2_Sfx[udg_i],udg_x2,udg_y2))
-call ConditionalTriggerExecute(udg_trg_TOT_Remove)
+call PlanDestructableRemoval(udg_d,udg_TOT2_Data[( ( udg_i * udg_TOT2_Size ) + 3 )])
 set udg_a=Atan2BJ((udg_y-udg_y2),(udg_x-udg_x2))
 set udg_TOT2_Data[((udg_i*udg_TOT2_Size)+1)]=(udg_x2+(udg_TOT2_Data[(udg_i*udg_TOT2_Size)]*CosBJ(udg_a)))
 set udg_TOT2_Data[((udg_i*udg_TOT2_Size)+2)]=(udg_y2+(udg_TOT2_Data[(udg_i*udg_TOT2_Size)]*SinBJ(udg_a)))
@@ -40871,17 +40460,6 @@ set udg_trg_TOT_Loop_Copy=CreateTrigger()
 call DisableTrigger(udg_trg_TOT_Loop_Copy)
 call TriggerRegisterTimerEventPeriodic(udg_trg_TOT_Loop_Copy,0.10)
 call TriggerAddAction(udg_trg_TOT_Loop_Copy,function Trig_TOT_Loop_Copy_Actions)
-endfunction
-function Trig_TOT_Remove_Actions takes nothing returns nothing
-local destructable d=udg_d
-call PolledWait(udg_TOT2_Data[((udg_i*udg_TOT2_Size)+3)])
-set udg_d=d
-call KillDestructable(udg_d)
-set d=null
-endfunction
-function InitTrig_TOT_Remove takes nothing returns nothing
-set udg_trg_TOT_Remove=CreateTrigger()
-call TriggerAddAction(udg_trg_TOT_Remove,function Trig_TOT_Remove_Actions)
 endfunction
 function Trig_TOS_Cast_Conditions takes nothing returns boolean
 if(not(GetSpellAbilityId()=='A0C5'))then
@@ -42420,19 +41998,6 @@ call InitTrig_Send_in_the_neutrals_2()
 call InitTrig_Final_Battle_Timer()
 call InitTrig_Final_Battle_Timer_Copy()
 call InitTrig_stop_tele_FB()
-call InitTrig_random()
-call InitTrig_repick()
-call InitTrig_repick_Copy()
-call InitTrig_repick_Copy_Copy()
-call InitTrig_repick_Copy_Copy_Copy()
-call InitTrig_repick_Copy_Copy_Copy_2()
-call InitTrig_repick_Copy_Copy_Copy_3()
-call InitTrig_repick_Copy_Copy_Copy_4()
-call InitTrig_repick_Copy_Copy_Copy_5()
-call InitTrig_repick_Copy_Copy_Copy_6()
-call InitTrig_repick_Copy_Copy_Copy_7()
-call InitTrig_repick_Copy_Copy_Copy_8()
-call InitTrig_repick_Copy_Copy_Copy_9()
 call InitTrig_coins()
 call InitTrig_Spawn_Golden_Chickens()
 call InitTrig_Golden_Chicken()
@@ -42748,7 +42313,6 @@ call InitTrig_Heroic_Leap_Loop()
 call InitTrig_heroic_leap_stomp()
 call InitTrig_TOT_Cast_Copy()
 call InitTrig_TOT_Loop_Copy()
-call InitTrig_TOT_Remove()
 call InitTrig_SyncPeriodic()
 call InitTrig_PlayerLeaveHack()
 call InitTrig_TOS_Cast()
@@ -43720,14 +43284,6 @@ set udg_trg_Time_up_for_setting_settings=CreateTrigger()
 call TriggerRegisterTimerEventSingle(udg_trg_Time_up_for_setting_settings,25.00)
 call TriggerAddAction(udg_trg_Time_up_for_setting_settings,function Trig_Time_up_for_setting_settings_Actions)
 endfunction
-function Trig_Time_up_for_setting_settings_Copy_Actions takes nothing returns nothing
-call DisableTrigger(udg_trg_random)
-endfunction
-function InitTrig_Time_up_for_setting_settings_Copy takes nothing returns nothing
-set udg_trg_Time_up_for_setting_settings_Copy=CreateTrigger()
-call TriggerRegisterTimerEventSingle(udg_trg_Time_up_for_setting_settings_Copy,21.00)
-call TriggerAddAction(udg_trg_Time_up_for_setting_settings_Copy,function Trig_Time_up_for_setting_settings_Copy_Actions)
-endfunction
 function Trig_Game_settings_5_NEW_Conditions takes nothing returns boolean
 if(not(udg_AAA_TurnOffTrigger==false))then
 return false
@@ -44189,7 +43745,6 @@ call InitTrig_Dialogue_pt2()
 call InitTrig_Dialogue_pt3()
 call InitTrig_Dialogue_pt4()
 call InitTrig_Time_up_for_setting_settings()
-call InitTrig_Time_up_for_setting_settings_Copy()
 call InitTrig_Game_settings_5_NEW()
 call InitTrig_Game_settings()
 call InitTrig_Game_settings_2()
