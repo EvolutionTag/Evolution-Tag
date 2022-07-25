@@ -62,6 +62,7 @@ function DumpData(name)
 		handle["type"] = "unit"
 		handle["id"] = i2id(GetUnitTypeId(u))
 		handle["hp"] = GetWidgetLife(u)
+		handle["hidden"] = IsUnitHidden(u)
 		handle["mp"] = GetUnitState(u,UNIT_STATE_MANA)
 		handle["mmp"] = GetUnitState(u,UNIT_STATE_MAX_MANA)
 		handle["mhp"] = GetUnitState(u,UNIT_STATE_MAX_LIFE)

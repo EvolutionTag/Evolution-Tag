@@ -38663,13 +38663,6 @@ else
 call SetUnitAnimationByIndex(whichUnit,i+252)
 endif
 endfunction
-function GetUnitZ takes unit u returns real
-local location loc=GetUnitLoc(u)
-local real r=GetLocationZ(loc)
-call RemoveLocation(loc)
-set loc=null
-return r
-endfunction
 function Abs takes real a returns real
 local real ret=0
 if(a>=0)then
@@ -38736,10 +38729,10 @@ set a=1
 loop
 exitwhen a>udg_Plant__TendrilPartsNumber
 set xx=I2R(a)/ I2R(udg_Plant__TendrilPartsNumber)
-call SetUnitFlyHeight(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],Sin(xx*3.14159)*r+(xx*udg_Plant__TendrilDefaultHeightGround)+udg_Plant__TendrilStartHeight,0.00)
+call SetUnitFlyHeight(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],Sin(xx*bj_PI)*r+(xx*udg_Plant__TendrilDefaultHeightGround)+udg_Plant__TendrilStartHeight,0.00)
 call SetUnitX(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],GetUnitX(udg_s__Tendril_AttachUnit[data])+xx*udg_s__Tendril_Distance[data]*Cos(udg_s__Tendril_angle[data]*bj_DEGTORAD))
 call SetUnitY(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],GetUnitY(udg_s__Tendril_AttachUnit[data])+xx*udg_s__Tendril_Distance[data]*Sin(udg_s__Tendril_angle[data]*bj_DEGTORAD))
-call SetUnitZFacing(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],-90+Rad2Deg(Atan(r/(udg_s__Tendril_Distance[data])*3.14159*Cos(xx*3.14159))))
+call SetUnitZFacing(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],-90+Rad2Deg(Atan(r/(udg_s__Tendril_Distance[data])*bj_PI*Cos(xx*bj_PI))))
 set a=a+1
 endloop
 if udg_s__Tendril_Distance[data]==(udg_Plant__TendrilLength*udg_Plant__TendrilDefaultPosition)then
@@ -38751,16 +38744,16 @@ if udg_s__Tendril_Phase[data]==1 and run==1 then
 set r=udg_Plant__PlantHeight+udg_Plant__DefaultSinusHeight+(udg_Plant__TendrilDefaultHeight*(1-(udg_s__Tendril_Distance[data]/ udg_Plant__TendrilLength)))
 set udg_s__Tendril_DefaultMovement[data]=udg_s__Tendril_DefaultMovement[data]+udg_Plant__DefaultMovementSpeed
 set a=1
-if udg_s__Tendril_DefaultMovement[data]>(2*3.14159)then
-set udg_s__Tendril_DefaultMovement[data]=udg_s__Tendril_DefaultMovement[data]-(2*3.14159)
+if udg_s__Tendril_DefaultMovement[data]>(2*bj_PI)then
+set udg_s__Tendril_DefaultMovement[data]=udg_s__Tendril_DefaultMovement[data]-(2*bj_PI)
 endif
 loop
 exitwhen a>udg_Plant__TendrilPartsNumber
 set xx=I2R(a)/ I2R(udg_Plant__TendrilPartsNumber)
-call SetUnitFlyHeight(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],(xx*udg_Plant__TendrilTargetHeight)+Sin(xx*3.14159)*(r+(udg_Plant__DefaultMovementAmplitude*Sin(udg_s__Tendril_DefaultMovement[data]-3.14)))+(xx*udg_Plant__TendrilDefaultHeightGround)+udg_Plant__TendrilStartHeight,500000.00)
+call SetUnitFlyHeight(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],(xx*udg_Plant__TendrilTargetHeight)+Sin(xx*bj_PI)*(r+(udg_Plant__DefaultMovementAmplitude*Sin(udg_s__Tendril_DefaultMovement[data]-3.14)))+(xx*udg_Plant__TendrilDefaultHeightGround)+udg_Plant__TendrilStartHeight,500000.00)
 call SetUnitX(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],GetUnitX(udg_s__Tendril_AttachUnit[data])+xx*(udg_s__Tendril_Distance[data]+(udg_Plant__DefaultMovementAmplitude*Sin(udg_s__Tendril_DefaultMovement[data]-3.14)))*Cos(udg_s__Tendril_angle[data]*bj_DEGTORAD))
 call SetUnitY(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],GetUnitY(udg_s__Tendril_AttachUnit[data])+xx*(udg_s__Tendril_Distance[data]+(udg_Plant__DefaultMovementAmplitude*Sin(udg_s__Tendril_DefaultMovement[data]-3.14)))*Sin(udg_s__Tendril_angle[data]*bj_DEGTORAD))
-call SetUnitZFacing(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],-90+Rad2Deg(Atan(r/(udg_s__Tendril_Distance[data])*3.14159*Cos(xx*3.14159))))
+call SetUnitZFacing(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],-90+Rad2Deg(Atan(r/(udg_s__Tendril_Distance[data])*bj_PI*Cos(xx*bj_PI))))
 set a=a+1
 endloop
 set loc=GetUnitLoc(udg_s__Tendril_AttachUnit[data])
@@ -38798,10 +38791,10 @@ loop
 exitwhen a>udg_Plant__TendrilPartsNumber
 set xx=I2R(a)/ I2R(udg_Plant__TendrilPartsNumber)
 call SetUnitFacing(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],udg_s__Tendril_angle[data])
-call SetUnitFlyHeight(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],Sin(xx*3.14159)*r+(xx*udg_Plant__TendrilTargetHeight)+(xx*udg_Plant__TendrilDefaultHeightGround*(1-(udg_s__Tendril_Distance[data]/ d)))+udg_Plant__TendrilStartHeight,0.00)
+call SetUnitFlyHeight(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],Sin(xx*bj_PI)*r+(xx*udg_Plant__TendrilTargetHeight)+(xx*udg_Plant__TendrilDefaultHeightGround*(1-(udg_s__Tendril_Distance[data]/ d)))+udg_Plant__TendrilStartHeight,0.00)
 call SetUnitX(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],GetUnitX(udg_s__Tendril_AttachUnit[data])+xx*udg_s__Tendril_Distance[data]*Cos(udg_s__Tendril_angle[data]*bj_DEGTORAD))
 call SetUnitY(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],GetUnitY(udg_s__Tendril_AttachUnit[data])+xx*udg_s__Tendril_Distance[data]*Sin(udg_s__Tendril_angle[data]*bj_DEGTORAD))
-call SetUnitZFacing(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],-90+Rad2Deg(Atan(r/(udg_s__Tendril_Distance[data])*3.14159*Cos(xx*3.14159))))
+call SetUnitZFacing(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],-90+Rad2Deg(Atan(r/(udg_s__Tendril_Distance[data])*bj_PI*Cos(xx*bj_PI))))
 set a=a+1
 endloop
 set run=0
@@ -38818,10 +38811,10 @@ endif
 loop
 exitwhen a>udg_Plant__TendrilPartsNumber
 set xx=I2R(a)/ I2R(udg_Plant__TendrilPartsNumber)
-call SetUnitFlyHeight(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],Sin(xx*3.14159)*r+(xx*udg_Plant__TendrilTargetHeight)+udg_Plant__TendrilStartHeight,0.00)
+call SetUnitFlyHeight(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],Sin(xx*bj_PI)*r+(xx*udg_Plant__TendrilTargetHeight)+udg_Plant__TendrilStartHeight,0.00)
 call SetUnitX(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],GetUnitX(udg_s__Tendril_AttachUnit[data])+xx*udg_s__Tendril_Distance[data]*Cos(udg_s__Tendril_angle[data]*bj_DEGTORAD))
 call SetUnitY(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],GetUnitY(udg_s__Tendril_AttachUnit[data])+xx*udg_s__Tendril_Distance[data]*Sin(udg_s__Tendril_angle[data]*bj_DEGTORAD))
-call SetUnitZFacing(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],-90+Rad2Deg(Atan(r/(udg_s__Tendril_Distance[data])*3.14159*Cos(xx*3.14159))))
+call SetUnitZFacing(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],-90+Rad2Deg(Atan(r/(udg_s__Tendril_Distance[data])*bj_PI*Cos(xx*bj_PI))))
 set a=a+1
 endloop
 call SetUnitX(udg_s__Tendril_TargetUnit[data],GetUnitX(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+udg_Plant__TendrilPartsNumber]))
@@ -38839,10 +38832,10 @@ endif
 loop
 exitwhen a>udg_Plant__TendrilPartsNumber
 set xx=I2R(a)/ I2R(udg_Plant__TendrilPartsNumber)
-call SetUnitFlyHeight(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],Sin(xx*3.14159)*r+(xx*d)+udg_Plant__TendrilStartHeight,0.00)
+call SetUnitFlyHeight(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],Sin(xx*bj_PI)*r+(xx*d)+udg_Plant__TendrilStartHeight,0.00)
 call SetUnitX(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],GetUnitX(udg_s__Tendril_AttachUnit[data])+xx*udg_s__Tendril_Distance[data]*Cos(udg_s__Tendril_angle[data]*bj_DEGTORAD))
 call SetUnitY(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],GetUnitY(udg_s__Tendril_AttachUnit[data])+xx*udg_s__Tendril_Distance[data]*Sin(udg_s__Tendril_angle[data]*bj_DEGTORAD))
-call SetUnitZFacing(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],-90+Rad2Deg(Atan(r/(udg_s__Tendril_Distance[data])*3.14159*Cos(xx*3.14159))))
+call SetUnitZFacing(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],-90+Rad2Deg(Atan(r/(udg_s__Tendril_Distance[data])*bj_PI*Cos(xx*bj_PI))))
 set a=a+1
 endloop
 set loc=GetUnitLoc(udg_s__Tendril_AttachUnit[data])
@@ -38878,10 +38871,10 @@ if udg_s__Tendril_rem[data]!=udg_Plant__TendrilPartsNumber then
 loop
 exitwhen a>udg_Plant__TendrilPartsNumber
 set xx=I2R(a-udg_s__Tendril_rem[data])/ I2R(udg_Plant__TendrilPartsNumber-udg_s__Tendril_rem[data])
-call SetUnitFlyHeight(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],Sin(xx*3.14159)*r+(xx*d)+udg_Plant__TendrilStartHeight,0.00)
+call SetUnitFlyHeight(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],Sin(xx*bj_PI)*r+(xx*d)+udg_Plant__TendrilStartHeight,0.00)
 call SetUnitX(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],GetUnitX(udg_s__Tendril_AttachUnit[data])+xx*udg_s__Tendril_Distance[data]*Cos(udg_s__Tendril_angle[data]*bj_DEGTORAD))
 call SetUnitY(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],GetUnitY(udg_s__Tendril_AttachUnit[data])+xx*udg_s__Tendril_Distance[data]*Sin(udg_s__Tendril_angle[data]*bj_DEGTORAD))
-call SetUnitZFacing(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],-90+Rad2Deg(Atan(r/(udg_s__Tendril_Distance[data]+1)*3.14159*Cos(xx*3.14159))))
+call SetUnitZFacing(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],-90+Rad2Deg(Atan(r/(udg_s__Tendril_Distance[data]+1)*bj_PI*Cos(xx*bj_PI))))
 set a=a+1
 endloop
 endif
@@ -38972,7 +38965,7 @@ exitwhen i>udg_Plant__TendrilPartsNumber
 set x=I2R(i)/ I2R(udg_Plant__TendrilPartsNumber)
 set udg_s__Tendril_ExecutionsLeft[udg_s__Tendril_Data[udg_s__Tendril_Index-1]]=R2I((7+2*(I2R((level))))/ udg_Plant__TimerPeriod)
 set udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[udg_s__Tendril_Data[udg_s__Tendril_Index-1]]+i]=CreateUnit(GetOwningPlayer(GetTriggerUnit()),udg_Plant__DummyID,GetUnitX(udg_s__Tendril_AttachUnit[udg_s__Tendril_Data[udg_s__Tendril_Index-1]])+x*udg_s__Tendril_Distance[udg_s__Tendril_Data[udg_s__Tendril_Index-1]]*Cos(angle*bj_DEGTORAD),GetUnitY(udg_s__Tendril_AttachUnit[udg_s__Tendril_Data[udg_s__Tendril_Index-1]])+x*udg_s__Tendril_Distance[udg_s__Tendril_Data[udg_s__Tendril_Index-1]]*Sin(angle*bj_DEGTORAD),angle)
-call SetUnitZFacing(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[udg_s__Tendril_Data[udg_s__Tendril_Index-1]]+i],-90+Rad2Deg(Atan(udg_Plant__TendrilDefaultHeight/(udg_Plant__TendrilDefaultPosition*udg_Plant__TendrilLength)*3.14159*Cos(x*3.14159))))
+call SetUnitZFacing(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[udg_s__Tendril_Data[udg_s__Tendril_Index-1]]+i],-90+Rad2Deg(Atan(udg_Plant__TendrilDefaultHeight/(udg_Plant__TendrilDefaultPosition*udg_Plant__TendrilLength)*bj_PI*Cos(x*bj_PI))))
 set udg_s___Tendril_TendrilModel[udg_s__Tendril_TendrilModel[udg_s__Tendril_Data[udg_s__Tendril_Index-1]]+i]=AddSpecialEffectTarget(udg_Plant__TendrilDummyEffect,udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[udg_s__Tendril_Data[udg_s__Tendril_Index-1]]+i],"origin")
 call SetUnitScale(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[udg_s__Tendril_Data[udg_s__Tendril_Index-1]]+i],udg_Plant__TendrilSize-(i*udg_Plant__TendrilSizeReduction),udg_Plant__TendrilSize-(i*udg_Plant__TendrilSizeReduction),udg_Plant__TendrilSize-(i*udg_Plant__TendrilSizeReduction))
 set i=i+1
