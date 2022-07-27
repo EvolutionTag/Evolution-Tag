@@ -14200,7 +14200,7 @@ set LeaversFromAreas[3]=CreateGroup()
 set GeneralLeaversFromAreas = CreateGroup()
 set LeaversFromAreas[4]=CreateGroup()
 endfunction
-function Unit000066_DropItems takes nothing returns nothing
+function RaccoonDropItems takes nothing returns nothing
 local widget trigWidget=null
 local unit trigUnit=null
 local integer itemID=0
@@ -14939,7 +14939,7 @@ set u=CreateUnitBonuses(p,'nrac',-1822.6,4451.1,15.580)
 set t=CreateTrigger()
 call TriggerRegisterUnitEvent(t,u,EVENT_UNIT_DEATH)
 call TriggerRegisterUnitEvent(t,u,EVENT_UNIT_CHANGE_OWNER)
-call TriggerAddAction(t,function Unit000066_DropItems)
+call TriggerAddAction(t,function RaccoonDropItems)
 set u=CreateUnitBonuses(p,'nrac',-7201.0,-4972.1,220.110)
 set t=CreateTrigger()
 call TriggerRegisterUnitEvent(t,u,EVENT_UNIT_DEATH)
@@ -15002,9 +15002,15 @@ function CreateShops takes nothing returns nothing
     endfunction
 
 function CreateNeutralUnits takes nothing returns nothing
+    local unit u = null
+    local trigger t = null
 	call CreateUnitBonuses( Player(15) , 'nrac', -2513.941 , -684.056 , 314.141 )
 	call CreateUnitBonuses( Player(15) , 'nrac', -2793.274 , 1252.538 , 92.153 )
-	call CreateUnitBonuses( Player(15) , 'nrac', -1822.750 , 4451.000 , 119.762 )
+	set u = CreateUnitBonuses( Player(15) , 'nrac', -1822.750 , 4451.000 , 119.762 )
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t, u, EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t, u, EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t, function RaccoonDropItems)
 	call CreateUnitBonuses( Player(15) , 'npig', -2983.046 , -3388.022 , 285.053 )
 	call CreateUnitBonuses( Player(15) , 'npig', -1695.373 , -3854.734 , 52.589 )
 	call CreateUnitBonuses( Player(15) , 'npig', -3297.143 , -3982.730 , 103.971 )
@@ -15030,15 +15036,19 @@ function CreateNeutralUnits takes nothing returns nothing
 	call CreateUnitBonuses( Player(15) , 'nech', -3906.692 , 1774.803 , 117.562 )
 	call CreateUnitBonuses( Player(15) , 'nech', -3733.411 , -1041.108 , 288.421 )
 	call CreateUnitBonuses( Player(15) , 'nfro', 1966.894 , -281.308 , 91.173 )
-	call CreateUnitBonuses( Player(15) , 'nzep', -808.003 , -1331.791 , 337.986 )
+	set udg_unit_nzep_0261 =  CreateUnitBonuses( Player(15) , 'nzep', -808.003 , -1331.791 , 337.986 )
 	call CreateUnitBonuses( Player(15) , 'nshe', -2771.029 , 254.473 , 356.660 )
-	call CreateUnitBonuses( Player(15) , 'hhdl', -3600.000 , 907.595 , 176.656 )
+	set udg_unit_hhdl_0060 = CreateUnitBonuses( Player(15) , 'hhdl', -3600.000 , 907.595 , 176.656 )
 	call CreateUnitBonuses( Player(15) , 'nshe', -3420.113 , 1001.849 , 86.929 )
 	call CreateUnitBonuses( Player(15) , 'n061', -3536.000 , 1168.000 , 280.000 )
-	call CreateUnitBonuses( Player(15) , 'hhdl', 826.514 , 1328.006 , 181.015 )
+	set udg_unit_hhdl_0061 =  CreateUnitBonuses( Player(15) , 'hhdl', 826.514 , 1328.006 , 181.015 )
 	call CreateUnitBonuses( Player(15) , 'n062', -3853.750 , 1836.500 , 355.671 )
 	call CreateUnitBonuses( Player(15) , 'npig', -2054.659 , 2021.318 , 138.434 )
-	call CreateUnitBonuses( Player(15) , 'npig', -7447.750 , 4832.250 , 277.217 )
+    set u=CreateUnitBonuses(Player(15) , 'npig' , - 7447.7 , 4832.4 , 303.980)
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t, u, EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t, u, EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t, function Unit000311_DropItems)
 	call CreateUnitBonuses( Player(15) , 'n065', -4048.000 , 5552.000 , 320.000 )
     call CreateShops()
 endfunction
@@ -15166,11 +15176,13 @@ function CreateSatyrsXTreme takes nothing returns nothing
 	call CreateUnitBonuses( Player(13) , 'o00L', -5312.000 , 4288.000 , 270.000 )
 	call CreateUnitBonuses( Player(13) , 'n05W', -6847.750 , 4446.500 , 346.870 )
 	call CreateUnitBonuses( Player(13) , 'n05U', -6268.250 , 4459.000 , 282.423 )
-	call CreateUnitBonuses( Player(13) , 'nspg', -3603.250 , 5191.250 , 65.777 )
+	set udg_Spider =   CreateUnitBonuses( Player(13) , 'nspg', -3603.250 , 5191.250 , 65.777 )
 	call CreateUnitBonuses( Player(13) , 'n05V', -6437.750 , 5527.000 , 161.910 )
 endfunction
 
 function CreateBottomTeam takes nothing returns nothing
+    local unit u = null
+    local trigger t = null
 	call CreateUnitBonuses( Player(14) , 'n07E', -2541.500 , -5758.250 , 107.560 )
 	call CreateUnitBonuses( Player(14) , 'n07E', -1097.500 , -5970.250 , 107.560 )
 	call CreateUnitBonuses( Player(14) , 'n06T', 2256.000 , -5040.000 , 296.660 )
@@ -15200,7 +15212,11 @@ function CreateBottomTeam takes nothing returns nothing
 	call CreateUnitBonuses( Player(14) , 'n072', -2491.000 , -5329.500 , 0.000 )
 	call CreateUnitBonuses( Player(14) , 'ntn2', -1312.000 , -5216.000 , 270.000 )
 	call CreateUnitBonuses( Player(14) , 'n078', 3888.000 , -5232.000 , 164.086 )
-	call CreateUnitBonuses( Player(14) , 'nrac', -7184.000 , -4944.000 , 264.086 )
+	set u = CreateUnitBonuses( Player(14) , 'nrac', -7184.000 , -4944.000 , 264.086 )
+    set t=CreateTrigger()
+    call TriggerRegisterUnitEvent(t, u, EVENT_UNIT_DEATH)
+    call TriggerRegisterUnitEvent(t, u, EVENT_UNIT_CHANGE_OWNER)
+    call TriggerAddAction(t, function RaccoonDropItems)
 	call CreateUnitBonuses( Player(14) , 'nten', -1632.000 , -4832.000 , 270.000 )
 	call CreateUnitBonuses( Player(14) , 'n078', 3024.000 , -5008.000 , 164.086 )
 	call CreateUnitBonuses( Player(14) , 'n078', 1590.500 , -4975.000 , 164.086 )
@@ -15244,7 +15260,7 @@ function CreatePirates takes nothing returns nothing
 	call CreateUnitBonuses( Player(13), 'h07N',-7296.000 , 4352.000 , 270.000 )
 	call CreateUnitBonuses( Player(13), 'h07K',-6649.000 , 4333.000 , 270.000 )
 	call CreateUnitBonuses( Player(13), 'h07K',-7037.500 , 4346.750 , 270.000 )
-	call CreateUnitBonuses( Player(13), 'nspg',-3603.250 , 5191.250 , 65.777 )
+	set udg_Spider =   CreateUnitBonuses( Player(13), 'nspg',-3603.250 , 5191.250 , 65.777 )
 endfunction
 
 function CreateSatyrsHard takes nothing returns nothing
@@ -15305,7 +15321,7 @@ function CreateSatyrsHard takes nothing returns nothing
 	call CreateUnitBonuses( Player( 13), 'o00L', -5312.000, 4288.000 , 270.000)
 	call CreateUnitBonuses( Player( 13), 'n05W', -6847.750, 4446.500 , 346.870)
 	call CreateUnitBonuses( Player( 13), 'n05U', -6268.250, 4459.000 , 282.423)
-	call CreateUnitBonuses( Player( 13), 'nspg', -3603.250, 5191.250 , 65.777)
+	set udg_Spider =  CreateUnitBonuses( Player( 13), 'nspg', -3603.250, 5191.250 , 65.777)
 	call CreateUnitBonuses( Player( 13), 'n05V', -6437.750, 5527.000 , 161.910)
 endfunction
 
