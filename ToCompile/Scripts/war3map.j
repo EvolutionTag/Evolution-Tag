@@ -9077,7 +9077,7 @@ function TpHuman takes nothing returns nothing
 local group g=CreateGroup()
 local timer t=GetExpiredTimer()
 local player p=LoadPlayerHandle(tpsystem_HT,GetHandleId(t),0)
-call GroupEnumUnitsInRect(g,udg_rct_Dead_teleport_area,function IsEnumUnitDead)
+call GroupEnumUnitsInRect(g,udg_rct_Dead_teleport_area,null)
 set temp_player_d=p
 set temp_group_d=g
 call ForGroup(g,function GroupRemoveUnitsOfPlayer)
