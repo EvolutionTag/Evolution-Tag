@@ -14892,7 +14892,7 @@ function CreateBottomTeam takes nothing returns nothing
 	call CreateUnitBonuses( Player(14) , 'n074', -2929.000 , -4782.250 , 168.733 )
 	call CreateUnitBonuses( Player(14) , 'n074', -1664.750 , -5361.500 , 305.418 )
 	call CreateUnitBonuses( Player(14) , 'h01G', 3648.000 , -5504.000 , 270.000 )
-	call CreateUnitBonuses( Player(14) , 'nitr', 3727.500 , -5395.000 , 69.425 )
+	//call CreateUnitBonuses( Player(14) , 'nitr', 3727.500 , -5395.000 , 69.425 )
 	call CreateUnitBonuses( Player(14) , 'n072', -2491.000 , -5329.500 , 0.000 )
 	call CreateUnitBonuses( Player(14) , 'ntn2', -1312.000 , -5216.000 , 270.000 )
 	call CreateUnitBonuses( Player(14) , 'n078', 3888.000 , -5232.000 , 164.086 )
