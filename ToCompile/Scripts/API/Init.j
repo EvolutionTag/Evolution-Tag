@@ -8,11 +8,6 @@ endglobals
 function Patch126 takes nothing returns nothing
     if PatchVersion == "1.26a" then
     call PatchMemory(pGameDLL + 0x551808 , 0xD28513EB) //Desync
-    call PatchMemory(pGameDLL + 0x0c6780 , 0x000000B8) //Neutrals
-    call PatchMemory(pGameDLL + 0x0c6784 , 0x8B90C300) //Neutrals
-    call PatchMemory(pGameDLL + 0xC8B20 , 0x72D61CB9) //Neutrals
-    call PatchMemory(pGameDLL + 0xC8B24 , 0x746BBA4E) //Neutrals
-    call PatchMemory(pGameDLL + 0xC8B28 , 0x57C34161) //Neutrals
     call AddNewOffsetToRestore(pGameDLL + 0x551808 , 0xD2851374)
     endif
     endfunction
