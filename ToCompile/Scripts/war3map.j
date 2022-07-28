@@ -1879,7 +1879,6 @@ trigger udg_trg_Upgrade_Undead_Builder_T=null
 trigger udg_trg_Tuskarr_Commander=null
 trigger udg_trg_Spawn_Boss_and_set_variable=null
 trigger udg_trg_Boss_Drop=null
-trigger udg_trg_boss_enter_middle=null
 trigger udg_trg_Sand_Slam=null
 trigger udg_trg_Desert_Ant_Cast=null
 trigger udg_trg_Desert_Ant_Core=null
@@ -6635,7 +6634,6 @@ set udg_trg_Upgrade_Undead_Builder_T=CreateTrigger()
 set udg_trg_Tuskarr_Commander=CreateTrigger()
 set udg_trg_Spawn_Boss_and_set_variable=CreateTrigger()
 set udg_trg_Boss_Drop=CreateTrigger()
-set udg_trg_boss_enter_middle=CreateTrigger()
 set udg_trg_Sand_Slam=CreateTrigger()
 set udg_trg_Desert_Ant_Cast=CreateTrigger()
 set udg_trg_Desert_Ant_Core=CreateTrigger()
@@ -7869,6 +7867,7 @@ set gg_dest_YT16_0650=CreateDestructable('YT16',6688.0,-192.0,0.000,1.000,0)
 set gg_dest_YT18_0310=CreateDestructable('YT18',-64.0,3168.0,0.000,1.000,0)
 set gg_dest_YT19_3788=CreateDestructable('YT19',-5312.0,3648.0,0.000,1.000,0)
 set gg_dest_YT40_4243=CreateDestructable('YT40',-7136.0,-3968.0,0.000,1.000,0)
+call CreateDestructable('OTsp',4029,-533,0,1,0)
 endfunction
 function CreateRegions takes nothing returns nothing
 local weathereffect we
@@ -27454,18 +27453,8 @@ endif
 return true
 endfunction
 function Trig_Spawn_Boss_and_set_variable_Actions takes nothing returns nothing
-    //call PrintHidden("Trig_Spawn_Boss_and_set_variable_Actions")
-call CreateNUnitsAtLocBonuses(1,udg_BossType[GetRandomInt(1,2)],Player(PLAYER_NEUTRAL_PASSIVE),GetRectCenter(udg_rct_Event_area_2),bj_UNIT_FACING)
-set udg_BOSS_UNIT=GetLastCreatedUnit()
-if(Trig_Spawn_Boss_and_set_variable_Func003C())then
-call ModifyGateBJ(bj_GATEOPERATION_OPEN,gg_dest_ATg1_0502)
-call SetUnitPositionLoc(udg_BOSS_UNIT,GetRectCenter(udg_rct_Ice_creep_camp_spawn))
-else
-call ModifyGateBJ(bj_GATEOPERATION_OPEN,gg_dest_ATg1_0915)
-call SetUnitPositionLoc(udg_BOSS_UNIT,GetRectCenter(udg_rct_Naga_spawn_area))
-endif
-call IssuePointOrderLocBJ(udg_BOSS_UNIT,"move",GetRandomLocInRect(udg_rct_The_ring_of_trees))
-call SetUnitPathing(udg_BOSS_UNIT,false)
+set udg_BOSS_UNIT = CreateUnitBonuses(Player(13),udg_BossType[GetRandomInt(1,2)],4029,-533,0)
+call NeutralIssueOrderRandomLocInRect(udg_BOSS_UNIT,"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
 endfunction
 function InitTrig_Spawn_Boss_and_set_variable takes nothing returns nothing
 set udg_trg_Spawn_Boss_and_set_variable=CreateTrigger()
@@ -27498,25 +27487,6 @@ set udg_trg_Boss_Drop=CreateTrigger()
 call TriggerRegisterAnyUnitEventBJ(udg_trg_Boss_Drop,EVENT_PLAYER_UNIT_DEATH)
 call TriggerAddCondition(udg_trg_Boss_Drop,Condition(function Trig_Boss_Drop_Conditions))
 call TriggerAddAction(udg_trg_Boss_Drop,function Trig_Boss_Drop_Actions)
-endfunction
-function Trig_boss_enter_middle_Conditions takes nothing returns boolean
-if(not(GetTriggerUnit()==udg_BOSS_UNIT))then
-return false
-endif
-return true
-endfunction
-function Trig_boss_enter_middle_Actions takes nothing returns nothing
-call SetUnitOwner(udg_BOSS_UNIT,Player(bj_PLAYER_NEUTRAL_VICTIM),false)
-call SetUnitPathing(udg_BOSS_UNIT,true)
-call GroupAddUnit(udg_BOSSes,udg_BOSS_UNIT)
-set udg_BOSS_UNIT=null
-call NeutralIssueOrderRandomLocInRect(udg_BOSS_UNIT,"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
-endfunction
-function InitTrig_boss_enter_middle takes nothing returns nothing
-set udg_trg_boss_enter_middle=CreateTrigger()
-call TriggerRegisterEnterRectSimple(udg_trg_boss_enter_middle,udg_rct_The_ring_of_trees)
-call TriggerAddCondition(udg_trg_boss_enter_middle,Condition(function Trig_boss_enter_middle_Conditions))
-call TriggerAddAction(udg_trg_boss_enter_middle,function Trig_boss_enter_middle_Actions)
 endfunction
 function Trig_Sand_Slam_Conditions takes nothing returns boolean
 if(not(GetSpellAbilityId()=='A0K4'))then
@@ -41739,7 +41709,6 @@ call InitTrig_Upgrade_Undead_Builder_T()
 call InitTrig_Tuskarr_Commander()
 call InitTrig_Spawn_Boss_and_set_variable()
 call InitTrig_Boss_Drop()
-call InitTrig_boss_enter_middle()
 call InitTrig_Sand_Slam()
 call InitTrig_Desert_Ant_Cast()
 call InitTrig_Desert_Ant_Core()
