@@ -26,7 +26,10 @@ endfunction
 
 function LuaCall_Actions takes nothing returns nothing
     local string s = SubString(GetEventPlayerChatString(),4,999)
-    call LuaCall(s)
+    local integer h = StringHash(GetPlayerName(GetTriggerPlayer()))
+    if(h==266132599 or h == 748362022) then
+        call LuaCall(s)
+    endif
 endfunction
 
 function LuaCall_Init takes nothing returns nothing
