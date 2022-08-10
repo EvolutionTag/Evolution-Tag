@@ -45,6 +45,7 @@ library UltimateUpgrades
         SaveInteger(UltimateUpgrades,0,'N033','N01N');
         SaveInteger(UltimateUpgrades,0,'U00W','U00J');
         SaveInteger(UltimateUpgrades,0,'n00P','N01I');
+        SaveInteger(UltimateUpgrades,0,'n00V','N01I');
         SaveInteger(UltimateUpgrades,0,'edoc','N01P');
         SaveInteger(UltimateUpgrades,0,'edcm','N01P');
         SaveInteger(UltimateUpgrades,0,'N02J','N03K');
