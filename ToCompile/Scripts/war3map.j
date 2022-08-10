@@ -1,4 +1,5 @@
 globals
+key kDamage
 trigger udg_trg_Finger_of_Death_2
 location array ResurrectionLocations
 trigger gg_trg_GandalfTeleport= null
@@ -27963,44 +27964,31 @@ call TriggerAddCondition(udg_trg_Sand_Quaker,Condition(function Trig_Sand_Quaker
 call TriggerAddAction(udg_trg_Sand_Quaker,function Trig_Sand_Quaker_Actions)
 endfunction
 function Trig_Hyper_Knock_Conditions takes nothing returns boolean
-if(not(udg_HK_BOOL==false))then
-return false
-endif
 if(not(GetSpellAbilityId()=='A0JL'))then
 return false
 endif
 return true
 endfunction
+function HyerKnock_Callback takes nothing returns nothing
+    local integer id = GetHandleId(GetExpiredTimer())
+    local unit u = LoadUnitHandle(timerdata,id,kOwner)
+    local unit target = LoadUnitHandle(timerdata,id,kTarget)
+    local real damage =  LoadReal(timerdata,id,kDamage)
+    call BJDebugMsg("omg!!!! "+I2S(GetHandleId(u))+" "+I2S(GetHandleId(target))+" "+R2S(damage))
+    call UnitDamageTarget(u,target,damage,true,false,ATTACK_TYPE_CHAOS,DAMAGE_TYPE_MAGIC,WEAPON_TYPE_WHOKNOWS)
+endfunction
 function Trig_Hyper_Knock_Actions takes nothing returns nothing
-set udg_HK_BOOL=true
-set udg_HK_TC=GetTriggerUnit()
-set udg_HK_Target_Unit=GetSpellTargetUnit()
-set udg_HK_Location=GetUnitLoc(udg_HK_TC)
-set udg_HK_Strength=GetHeroStatBJ(bj_HEROSTAT_STR,udg_HK_TC,true)
-call CreateNUnitsAtLocFacingLocBJ(1,'h07H',GetOwningPlayer(udg_HK_TC),udg_HK_Location,udg_HK_Location)
-call UnitAddAbilityBJ('A0JM',GetLastCreatedUnit())
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"thunderbolt",udg_HK_Target_Unit)
-call UnitApplyTimedLifeBJ(2.00,'BTLF',GetLastCreatedUnit())
-call SetUnitTimeScalePercent(udg_HK_TC,38.00)
-call SetUnitAnimation(udg_HK_TC,"attack slam")
-call SetUnitPathing(udg_HK_TC,false)
-call SetUnitInvulnerable(udg_HK_TC,true)
-call SetUnitInvulnerable(udg_HK_TC,false)
-call SetUnitPathing(udg_HK_TC,true)
-call SetUnitTimeScalePercent(udg_HK_TC,100.00)
-call ResetUnitAnimation(udg_HK_TC)
-set udg_HK_Location2=GetUnitLoc(udg_HK_Target_Unit)
-call AddSpecialEffectLocBJ(udg_HK_Location2,"war3mapImported\\NewDirtEXNofire.mdx")
-call DestroyEffectBJ(GetLastCreatedEffectBJ())
-call UnitDamageTargetBJ(udg_HK_TC,udg_HK_Target_Unit,(I2R(udg_HK_Strength)+255.00),ATTACK_TYPE_NORMAL,DAMAGE_TYPE_NORMAL)
-call CreateTextTagLocBJ((R2S((I2R(udg_HK_Strength)+255.00))+"!!"),udg_HK_Location2,15.00,10.00,100.00,0.00,0.00,0.00)
-call SetTextTagVelocityBJ(GetLastCreatedTextTag(),55.00,120.00)
-call SetTextTagPermanentBJ(GetLastCreatedTextTag(),false)
-call SetTextTagFadepointBJ(GetLastCreatedTextTag(),2.00)
-call SetTextTagLifespanBJ(GetLastCreatedTextTag(),4.00)
-set udg_HK_BOOL=false
-call RemoveLocation(udg_HK_Location)
-call RemoveLocation(udg_HK_Location2)
+    local timer Timer = null
+    set udg_HK_BOOL=true
+    set udg_HK_TC=GetTriggerUnit()
+    set udg_HK_Target_Unit=GetSpellTargetUnit()
+    set udg_HK_Location=GetUnitLoc(udg_HK_TC)
+    set udg_HK_Strength=GetHeroStatBJ(bj_HEROSTAT_STR,udg_HK_TC,true)
+    set Timer = JumpUnitUnitEx(udg_HK_TC,udg_HK_Target_Unit,800,true,"walk","HyerKnock_Callback")
+    set udg_HK_Strength = udg_HK_Strength*4+255
+    call BJDebugMsg(R2S(udg_HK_Strength))
+    call SaveReal(timerdata,GetHandleId(Timer),kDamage,udg_HK_Strength)
+    set Timer = null
 endfunction
 function InitTrig_Hyper_Knock takes nothing returns nothing
 set udg_trg_Hyper_Knock=CreateTrigger()
