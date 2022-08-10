@@ -14699,8 +14699,8 @@ function CreateNeutralUnits takes nothing returns nothing
 	call CreateUnitBonuses( Player(15) , 'npig', -2983.046 , -3388.022 , 285.053 )
 	call CreateUnitBonuses( Player(15) , 'npig', -1695.373 , -3854.734 , 52.589 )
 	call CreateUnitBonuses( Player(15) , 'npig', -3297.143 , -3982.730 , 103.971 )
-	set udg_unit_ehip_0093 = CreateUnitBonuses( Player(15) , 'ehip', -4505.223 , 1269.555 , 213.965 )
-	set udg_unit_ehip_0092 = CreateUnitBonuses( Player(15) , 'ehip', 987.336 , 290.636 , 104.035 )
+	call CreateUnitBonuses( Player(15) , 'ehip', -4505.223 , 1269.555 , 213.965 )
+	call CreateUnitBonuses( Player(15) , 'ehip', 987.336 , 290.636 , 104.035 )
 	call CreateUnitBonuses( Player(15) , 'npng', 3309.917 , -3326.557 , 11.348 )
 	call CreateUnitBonuses( Player(15) , 'npng', 3235.246 , -2991.540 , 96.651 )
 	call CreateUnitBonuses( Player(15) , 'npng', 3036.940 , -2091.736 , 119.586 )
@@ -18669,17 +18669,17 @@ endif
 return true
 endfunction
 function Trig_Naga_Spawns_Actions takes nothing returns nothing
-// set udg_AAAA_GP=GetRectCenter(udg_rct_Naga_spawn_area)
-// call CreateNUnitsAtLocBonuses(1,'n07B',Player(PLAYER_NEUTRAL_AGGRESSIVE),udg_AAAA_GP,bj_UNIT_FACING)
-// call RemoveLocation(udg_AAAA_GP)
-// set udg_Topleft_Integer_Chance=GetRandomInt(1,20)
-// if(Trig_Naga_Spawns_Func008C())then
-// call SetUnitCreepGuard(GetLastCreatedUnit(),false)
-// call RemoveGuardPosition(GetLastCreatedUnit())
-// call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_outa_bounds_2)
-// else
-// call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
-// endif
+set udg_AAAA_GP=GetRectCenter(udg_rct_Naga_spawn_area)
+call CreateNUnitsAtLocBonuses(1,'n07B',Player(PLAYER_NEUTRAL_AGGRESSIVE),udg_AAAA_GP,bj_UNIT_FACING)
+call RemoveLocation(udg_AAAA_GP)
+set udg_Topleft_Integer_Chance=GetRandomInt(1,20)
+if(Trig_Naga_Spawns_Func008C())then
+call SetUnitCreepGuard(GetLastCreatedUnit(),false)
+call RemoveGuardPosition(GetLastCreatedUnit())
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_outa_bounds_2)
+else
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
+endif
 endfunction
 function InitTrig_Naga_Spawns takes nothing returns nothing
 set udg_trg_Naga_Spawns=CreateTrigger()
@@ -18716,17 +18716,17 @@ endif
 return true
 endfunction
 function Trig_Gnoll_Spawn_Actions takes nothing returns nothing
-// set udg_AAAA_GP=GetRectCenter(udg_rct_Gnoll_spawn_area)
-// call CreateNUnitsAtLocBonuses(1,'ngno',Player(bj_PLAYER_NEUTRAL_EXTRA),udg_AAAA_GP,bj_UNIT_FACING)
-// call SetUnitCreepGuard(GetLastCreatedUnit(),false)
-// call RemoveGuardPosition(GetLastCreatedUnit())
-// call RemoveLocation(udg_AAAA_GP)
-// set udg_Topleft_Integer_Chance=GetRandomInt(1,20)
-// if(Trig_Gnoll_Spawn_Func008C())then
-// call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_outa_bounds_2)
-// else
-// call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
-// endif
+set udg_AAAA_GP=GetRectCenter(udg_rct_Gnoll_spawn_area)
+call CreateNUnitsAtLocBonuses(1,'ngno',Player(bj_PLAYER_NEUTRAL_EXTRA),udg_AAAA_GP,bj_UNIT_FACING)
+call SetUnitCreepGuard(GetLastCreatedUnit(),false)
+call RemoveGuardPosition(GetLastCreatedUnit())
+call RemoveLocation(udg_AAAA_GP)
+set udg_Topleft_Integer_Chance=GetRandomInt(1,20)
+if(Trig_Gnoll_Spawn_Func008C())then
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_outa_bounds_2)
+else
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
+endif
 endfunction
 function InitTrig_Gnoll_Spawn takes nothing returns nothing
 set udg_trg_Gnoll_Spawn=CreateTrigger()
@@ -18763,17 +18763,17 @@ endif
 return true
 endfunction
 function Trig_Ice_Spawn_Actions takes nothing returns nothing
-// set udg_AAAA_GP=GetRectCenter(udg_rct_Ice_creep_camp_spawn)
-// call CreateNUnitsAtLocBonuses(1,'ntkf',Player(bj_PLAYER_NEUTRAL_EXTRA),udg_AAAA_GP,bj_UNIT_FACING)
-// call SetUnitCreepGuard(GetLastCreatedUnit(),false)
-// call RemoveGuardPosition(GetLastCreatedUnit())
-// call RemoveLocation(udg_AAAA_GP)
-// set udg_Topleft_Integer_Chance=GetRandomInt(1,20)
-// if(Trig_Ice_Spawn_Func008C())then
-// call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_outa_bounds_2)
-// else
-// call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
-// endif
+set udg_AAAA_GP=GetRectCenter(udg_rct_Ice_creep_camp_spawn)
+call CreateNUnitsAtLocBonuses(1,'ntkf',Player(bj_PLAYER_NEUTRAL_EXTRA),udg_AAAA_GP,bj_UNIT_FACING)
+call SetUnitCreepGuard(GetLastCreatedUnit(),false)
+call RemoveGuardPosition(GetLastCreatedUnit())
+call RemoveLocation(udg_AAAA_GP)
+set udg_Topleft_Integer_Chance=GetRandomInt(1,20)
+if(Trig_Ice_Spawn_Func008C())then
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_outa_bounds_2)
+else
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
+endif
 endfunction
 function InitTrig_Ice_Spawn takes nothing returns nothing
 set udg_trg_Ice_Spawn=CreateTrigger()
@@ -18810,17 +18810,17 @@ endif
 return true
 endfunction
 function Trig_Pirate_Spawn_Actions takes nothing returns nothing
-// set udg_AAAA_GP=GetRectCenter(udg_rct_Pirate_Spawn)
-// call CreateNUnitsAtLocBonuses(1,'h07O',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_AAAA_GP,bj_UNIT_FACING)
-// call SetUnitCreepGuard(GetLastCreatedUnit(),false)
-// call RemoveGuardPosition(GetLastCreatedUnit())
-// call RemoveLocation(udg_AAAA_GP)
-// set udg_Topleft_Integer_Chance=GetRandomInt(1,20)
-// if(Trig_Pirate_Spawn_Func008C())then
-// call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_outa_bounds_2)
-// else
-// call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
-// endif
+set udg_AAAA_GP=GetRectCenter(udg_rct_Pirate_Spawn)
+call CreateNUnitsAtLocBonuses(1,'h07O',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_AAAA_GP,bj_UNIT_FACING)
+call SetUnitCreepGuard(GetLastCreatedUnit(),false)
+call RemoveGuardPosition(GetLastCreatedUnit())
+call RemoveLocation(udg_AAAA_GP)
+set udg_Topleft_Integer_Chance=GetRandomInt(1,20)
+if(Trig_Pirate_Spawn_Func008C())then
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_outa_bounds_2)
+else
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
+endif
 endfunction
 function InitTrig_Pirate_Spawn takes nothing returns nothing
 set udg_trg_Pirate_Spawn=CreateTrigger()
@@ -19144,10 +19144,10 @@ return true
 endfunction
 function Trig_Satyr_Spawn_Actions takes nothing returns nothing
 if(Trig_Satyr_Spawn_Func003C())then
-// call CreateNUnitsAtLocBonuses(1,'n05X',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-// call SetUnitCreepGuard(GetLastCreatedUnit(),false)
-// call RemoveGuardPosition(GetLastCreatedUnit())
-// call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
+call CreateNUnitsAtLocBonuses(1,'n05X',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
+call SetUnitCreepGuard(GetLastCreatedUnit(),false)
+call RemoveGuardPosition(GetLastCreatedUnit())
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
 else
 endif
 endfunction
@@ -19163,18 +19163,18 @@ return true
 endfunction
 function Trig_Level_1_Actions takes nothing returns nothing
 call EnableTrigger(udg_trg_Pigs_lvl_1_spawn)
-// set udg_AAAA_GP=GetUnitLoc(udg_unit_h01G_0084)
-// call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-// call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
-// call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-// call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
-// call RemoveLocation(udg_AAAA_GP)
-// set udg_AAAA_GP2=GetUnitLoc(udg_unit_h01G_0215)
-// call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-// call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
-// call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-// call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
-// call RemoveLocation(udg_AAAA_GP2)
+set udg_AAAA_GP=GetUnitLoc(udg_unit_h01G_0084)
+call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
+call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
+call RemoveLocation(udg_AAAA_GP)
+set udg_AAAA_GP2=GetUnitLoc(udg_unit_h01G_0215)
+call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
+call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
+call RemoveLocation(udg_AAAA_GP2)
 endfunction
 function InitTrig_Level_1 takes nothing returns nothing
 set udg_trg_Level_1=CreateTrigger()
@@ -19198,14 +19198,14 @@ return true
 endfunction
 function Trig_Pigs_lvl_1_spawn_Actions takes nothing returns nothing
 if(Trig_Pigs_lvl_1_spawn_Func003C())then
-// call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-// call SetUnitCreepGuard(GetLastCreatedUnit(),false)
-// call RemoveGuardPosition(GetLastCreatedUnit())
-// call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
-// call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-// call SetUnitCreepGuard(GetLastCreatedUnit(),false)
-// call RemoveGuardPosition(GetLastCreatedUnit())
-// call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
+call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
+call SetUnitCreepGuard(GetLastCreatedUnit(),false)
+call RemoveGuardPosition(GetLastCreatedUnit())
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
+call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
+call SetUnitCreepGuard(GetLastCreatedUnit(),false)
+call RemoveGuardPosition(GetLastCreatedUnit())
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
 else
 endif
 endfunction
@@ -19225,22 +19225,22 @@ endfunction
 function Trig_Level_2_Actions takes nothing returns nothing
 call DisableTrigger(udg_trg_Pigs_lvl_1_spawn)
 call EnableTrigger(udg_trg_Pigs_lvl_2_spawn)
-// set udg_AAAA_GP=GetUnitLoc(udg_unit_h01G_0084)
-// call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-// call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
-// call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-// call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
-// call CreateNUnitsAtLocBonuses(1,'n05Z',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-// call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
-// call RemoveLocation(udg_AAAA_GP)
-// set udg_AAAA_GP2=GetUnitLoc(udg_unit_h01G_0215)
-// call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-// call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
-// call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-// call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
-// call CreateNUnitsAtLocBonuses(1,'n05Z',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-// call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
-// call RemoveLocation(udg_AAAA_GP2)
+set udg_AAAA_GP=GetUnitLoc(udg_unit_h01G_0084)
+call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
+call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
+call CreateNUnitsAtLocBonuses(1,'n05Z',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
+call RemoveLocation(udg_AAAA_GP)
+set udg_AAAA_GP2=GetUnitLoc(udg_unit_h01G_0215)
+call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
+call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
+call CreateNUnitsAtLocBonuses(1,'n05Z',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
+call RemoveLocation(udg_AAAA_GP2)
 endfunction
 function InitTrig_Level_2 takes nothing returns nothing
 set udg_trg_Level_2=CreateTrigger()
@@ -19264,18 +19264,18 @@ return true
 endfunction
 function Trig_Pigs_lvl_2_spawn_Actions takes nothing returns nothing
 if(Trig_Pigs_lvl_2_spawn_Func003C())then
-// call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-// call SetUnitCreepGuard(GetLastCreatedUnit(),false)
-// call RemoveGuardPosition(GetLastCreatedUnit())
-// call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
-// call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-// call SetUnitCreepGuard(GetLastCreatedUnit(),false)
-// call RemoveGuardPosition(GetLastCreatedUnit())
-// call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
-// call CreateNUnitsAtLocBonuses(1,'n05Z',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-// call SetUnitCreepGuard(GetLastCreatedUnit(),false)
-// call RemoveGuardPosition(GetLastCreatedUnit())
-// call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
+call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
+call SetUnitCreepGuard(GetLastCreatedUnit(),false)
+call RemoveGuardPosition(GetLastCreatedUnit())
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
+call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
+call SetUnitCreepGuard(GetLastCreatedUnit(),false)
+call RemoveGuardPosition(GetLastCreatedUnit())
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
+call CreateNUnitsAtLocBonuses(1,'n05Z',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
+call SetUnitCreepGuard(GetLastCreatedUnit(),false)
+call RemoveGuardPosition(GetLastCreatedUnit())
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
 else
 endif
 endfunction
@@ -19295,22 +19295,22 @@ endfunction
 function Trig_Level_3_Actions takes nothing returns nothing
 //call PrintHidden("Trig_Level_3_Actions")
 call EnableTrigger(udg_trg_Pigs_lvl_3_spawn)
-// set udg_AAAA_GP=GetUnitLoc(udg_unit_h01G_0084)
-// call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-// call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
-// call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-// call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
-// call CreateNUnitsAtLocBonuses(1,'n05Z',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-// call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
-// call RemoveLocation(udg_AAAA_GP)
-// set udg_AAAA_GP2=GetUnitLoc(udg_unit_h01G_0215)
-// call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-// call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
-// call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-// call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
-// call CreateNUnitsAtLocBonuses(1,'n05Z',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-// call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
-// call RemoveLocation(udg_AAAA_GP2)
+set udg_AAAA_GP=GetUnitLoc(udg_unit_h01G_0084)
+call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
+call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
+call CreateNUnitsAtLocBonuses(1,'n05Z',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
+call RemoveLocation(udg_AAAA_GP)
+set udg_AAAA_GP2=GetUnitLoc(udg_unit_h01G_0215)
+call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
+call CreateNUnitsAtLocBonuses(1,'n05Y',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
+call CreateNUnitsAtLocBonuses(1,'n05Z',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
+call RemoveLocation(udg_AAAA_GP2)
 endfunction
 function InitTrig_Level_3 takes nothing returns nothing
 set udg_trg_Level_3=CreateTrigger()
@@ -19325,14 +19325,14 @@ return true
 endfunction
 function Trig_Level_3_Part_2_Actions takes nothing returns nothing
 //call PrintHidden("Trig_Level_3_Part_2_Actions")
-// set udg_AAAA_GP=GetUnitLoc(udg_unit_h01G_0084)
-// call CreateNUnitsAtLocBonuses(1,'n060',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-// call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
-// call RemoveLocation(udg_AAAA_GP)
-// set udg_AAAA_GP2=GetUnitLoc(udg_unit_h01G_0215)
-// call CreateNUnitsAtLocBonuses(1,'n060',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-// call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
-// call RemoveLocation(udg_AAAA_GP2)
+set udg_AAAA_GP=GetUnitLoc(udg_unit_h01G_0084)
+call CreateNUnitsAtLocBonuses(1,'n060',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP)
+call RemoveLocation(udg_AAAA_GP)
+set udg_AAAA_GP2=GetUnitLoc(udg_unit_h01G_0215)
+call CreateNUnitsAtLocBonuses(1,'n060',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
+call RemoveLocation(udg_AAAA_GP2)
 endfunction
 function InitTrig_Level_3_Part_2 takes nothing returns nothing
 set udg_trg_Level_3_Part_2=CreateTrigger()
@@ -19356,10 +19356,10 @@ return true
 endfunction
 function Trig_Pigs_lvl_3_spawn_Actions takes nothing returns nothing
 if(Trig_Pigs_lvl_3_spawn_Func003C())then
-// call CreateNUnitsAtLocBonuses(1,'n060',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
-// call SetUnitCreepGuard(GetLastCreatedUnit(),false)
-// call RemoveGuardPosition(GetLastCreatedUnit())
-// call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
+call CreateNUnitsAtLocBonuses(1,'n060',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_SatyrBarracks_Point,bj_UNIT_FACING)
+call SetUnitCreepGuard(GetLastCreatedUnit(),false)
+call RemoveGuardPosition(GetLastCreatedUnit())
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
 else
 endif
 endfunction
@@ -19520,7 +19520,6 @@ call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Enti
 set udg_ABC_Creature=GetLastCreatedUnit()
 call CreateNUnitsAtLocBonuses(1,'h05O',Player(bj_PLAYER_NEUTRAL_VICTIM),GetUnitLoc(GetLastCreatedUnit()),bj_UNIT_FACING)
 call IssueTargetOrderBJ(GetLastCreatedUnit(),"bloodlust",udg_ABC_Creature)
-call UnitApplyTimedLife(udg_ABC_Creature,'BTLF',1.)
 else
 endif
 if(Trig_Creature_Event_Func004C())then
@@ -23483,11 +23482,11 @@ endif
 return true
 endfunction
 function Trig_Gate_destroyed_Func001A takes nothing returns nothing
-// call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_FB_Human_Side)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_FB_Human_Side)
 
 endfunction
 function Trig_Gate_destroyed_Func002A takes nothing returns nothing
-// call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_FB_Undead_Side)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_FB_Undead_Side)
 endfunction
 function Trig_Gate_destroyed_Actions takes nothing returns nothing
 call ForGroupBJ(udg_FB_Neutral_Group[1],function Trig_Gate_destroyed_Func001A)
@@ -23500,8 +23499,8 @@ call TriggerAddCondition(udg_trg_Gate_destroyed,Condition(function Trig_Gate_des
 call TriggerAddAction(udg_trg_Gate_destroyed,function Trig_Gate_destroyed_Actions)
 endfunction
 function Trig_Send_in_the_neutrals_2_Actions takes nothing returns nothing
-// call CreateNUnitsAtLocBonuses(1,'ngsp',Player(PLAYER_NEUTRAL_AGGRESSIVE),GetRandomLocInRect(udg_rct_FB_Whole_Area),bj_UNIT_FACING)
-// call CreateNUnitsAtLocBonuses(1,'ngrd',Player(PLAYER_NEUTRAL_AGGRESSIVE),GetRandomLocInRect(udg_rct_FB_Whole_Area),bj_UNIT_FACING)
+call CreateNUnitsAtLocBonuses(1,'ngsp',Player(PLAYER_NEUTRAL_AGGRESSIVE),GetRandomLocInRect(udg_rct_FB_Whole_Area),bj_UNIT_FACING)
+call CreateNUnitsAtLocBonuses(1,'ngrd',Player(PLAYER_NEUTRAL_AGGRESSIVE),GetRandomLocInRect(udg_rct_FB_Whole_Area),bj_UNIT_FACING)
 endfunction
 function InitTrig_Send_in_the_neutrals_2 takes nothing returns nothing
 set udg_trg_Send_in_the_neutrals_2=CreateTrigger()
@@ -25758,14 +25757,14 @@ endif
 set udg_General_Index=1
 loop
 exitwhen udg_General_Index>14
-// set udg_AAAA_GP=GetRectCenter(udg_rct_naga_creep_event_area)
-// set udg_AAAA_GP2=GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
-// call CreateNUnitsAtLocBonuses(1,'n079',Player(PLAYER_NEUTRAL_AGGRESSIVE),udg_AAAA_GP,bj_UNIT_FACING)
-// call SetUnitCreepGuard(GetLastCreatedUnit(),false)
-// call RemoveGuardPosition(GetLastCreatedUnit())
-// call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
-// call RemoveLocation(udg_AAAA_GP)
-// call RemoveLocation(udg_AAAA_GP2)
+set udg_AAAA_GP=GetRectCenter(udg_rct_naga_creep_event_area)
+set udg_AAAA_GP2=GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
+call CreateNUnitsAtLocBonuses(1,'n079',Player(PLAYER_NEUTRAL_AGGRESSIVE),udg_AAAA_GP,bj_UNIT_FACING)
+call SetUnitCreepGuard(GetLastCreatedUnit(),false)
+call RemoveGuardPosition(GetLastCreatedUnit())
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_GP2)
+call RemoveLocation(udg_AAAA_GP)
+call RemoveLocation(udg_AAAA_GP2)
 set udg_General_Index=udg_General_Index+1
 endloop
 endfunction
@@ -26120,22 +26119,22 @@ else
 endif
 if(Trig_New_random_events_Func006C())then
 call DisplayTimedTextToForce(GetPlayersAll(),10.00,"|cffff00ffA group of satyrs are invading!|r")
-// set udg_AAAA_GP=GetRectCenter(udg_rct_Region_161)
-// call CreateNUnitsAtLocBonuses(6,'nsty',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_AAAA_GP,bj_UNIT_FACING)
-// call CreateNUnitsAtLocBonuses(1,'nsth',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_AAAA_GP,bj_UNIT_FACING)
-// call ForGroupBJ(GetUnitsInRectAll(udg_rct_Region_161),function Trig_New_random_events_Func006Func005A)
-// call RemoveLocation(udg_AAAA_GP)
+set udg_AAAA_GP=GetRectCenter(udg_rct_Region_161)
+call CreateNUnitsAtLocBonuses(6,'nsty',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_AAAA_GP,bj_UNIT_FACING)
+call CreateNUnitsAtLocBonuses(1,'nsth',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_AAAA_GP,bj_UNIT_FACING)
+call ForGroupBJ(GetUnitsInRectAll(udg_rct_Region_161),function Trig_New_random_events_Func006Func005A)
+call RemoveLocation(udg_AAAA_GP)
 call PlaySoundBJ(udg_snd_GoodJob)
 call KillSoundWhenDoneBJ(GetLastPlayedSound())
 else
 endif
 if(Trig_New_random_events_Func007C())then
-// call DisplayTimedTextToForce(GetPlayersAll(),10.00,"|cffff00ffA Furious JungleStalker has spawned near the middle!!|r")
-// set udg_AAAA_GP=GetRectCenter(udg_rct_Region_162)
-// call CreateNUnitsAtLocBonuses(1,'n05O',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_AAAA_GP,bj_UNIT_FACING)
-// call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
-// call PlaySoundBJ(udg_snd_GoodJob)
-// call KillSoundWhenDoneBJ(GetLastPlayedSound())
+call DisplayTimedTextToForce(GetPlayersAll(),10.00,"|cffff00ffA Furious JungleStalker has spawned near the middle!!|r")
+set udg_AAAA_GP=GetRectCenter(udg_rct_Region_162)
+call CreateNUnitsAtLocBonuses(1,'n05O',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_AAAA_GP,bj_UNIT_FACING)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
+call PlaySoundBJ(udg_snd_GoodJob)
+call KillSoundWhenDoneBJ(GetLastPlayedSound())
 else
 endif
 endfunction
@@ -26175,13 +26174,13 @@ endfunction
 function Trig_Tortle_Spawn_Actions takes nothing returns nothing
 set udg_AAAA_GP=GetRandomLocInRect(udg_rct_Top_left_Lake)
 set udg_AAAA_TurtleEventCount=(udg_AAAA_TurtleEventCount+1)
-// call CreateNUnitsAtLocBonuses(1,'n05M',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_AAAA_GP,bj_UNIT_FACING)
-// call SetUnitCreepGuard(GetLastCreatedUnit(),false)
-// call RemoveGuardPosition(GetLastCreatedUnit())
-// call AddSpecialEffectLocBJ(udg_AAAA_GP,"Objects\\Spawnmodels\\Naga\\NagaDeath\\NagaDeath.mdl")
-// call DestroyEffectBJ(GetLastCreatedEffectBJ())
-// call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_TurtleRestPoint)
-// call RemoveLocation(udg_AAAA_GP)
+call CreateNUnitsAtLocBonuses(1,'n05M',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_AAAA_GP,bj_UNIT_FACING)
+call SetUnitCreepGuard(GetLastCreatedUnit(),false)
+call RemoveGuardPosition(GetLastCreatedUnit())
+call AddSpecialEffectLocBJ(udg_AAAA_GP,"Objects\\Spawnmodels\\Naga\\NagaDeath\\NagaDeath.mdl")
+call DestroyEffectBJ(GetLastCreatedEffectBJ())
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_TurtleRestPoint)
+call RemoveLocation(udg_AAAA_GP)
 if(Trig_Tortle_Spawn_Func008C())then
 call DisableTrigger(GetTriggeringTrigger())
 call DisableTrigger(udg_trg_reef_ele_Spawn)
@@ -26196,14 +26195,14 @@ call TriggerRegisterTimerEventPeriodic(udg_trg_Tortle_Spawn,4.00)
 call TriggerAddAction(udg_trg_Tortle_Spawn,function Trig_Tortle_Spawn_Actions)
 endfunction
 function Trig_reef_ele_Spawn_Actions takes nothing returns nothing
-// set udg_AAAA_GP=GetRandomLocInRect(udg_rct_Top_left_Lake)
-// call CreateNUnitsAtLocBonuses(1,'n05N',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_AAAA_GP,bj_UNIT_FACING)
-// call SetUnitCreepGuard(GetLastCreatedUnit(),false)
-// call RemoveGuardPosition(GetLastCreatedUnit())
-// call AddSpecialEffectLocBJ(udg_AAAA_GP,"Objects\\Spawnmodels\\Naga\\NagaDeath\\NagaDeath.mdl")
-// call DestroyEffectBJ(GetLastCreatedEffectBJ())
-// call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_TurtleRestPoint)
-// call RemoveLocation(udg_AAAA_GP)
+set udg_AAAA_GP=GetRandomLocInRect(udg_rct_Top_left_Lake)
+call CreateNUnitsAtLocBonuses(1,'n05N',Player(bj_PLAYER_NEUTRAL_VICTIM),udg_AAAA_GP,bj_UNIT_FACING)
+call SetUnitCreepGuard(GetLastCreatedUnit(),false)
+call RemoveGuardPosition(GetLastCreatedUnit())
+call AddSpecialEffectLocBJ(udg_AAAA_GP,"Objects\\Spawnmodels\\Naga\\NagaDeath\\NagaDeath.mdl")
+call DestroyEffectBJ(GetLastCreatedEffectBJ())
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_TurtleRestPoint)
+call RemoveLocation(udg_AAAA_GP)
 endfunction
 function InitTrig_reef_ele_Spawn takes nothing returns nothing
 set udg_trg_reef_ele_Spawn=CreateTrigger()
@@ -26340,25 +26339,25 @@ call ModifyGateBJ(bj_GATEOPERATION_OPEN,gg_dest_ATg1_0502)
 else
 call DoNothing()
 endif
-// set udg_General_Index=1
-// loop
-// exitwhen udg_General_Index>14
-// call CreateNUnitsAtLocBonuses(1,'n077',Player(bj_PLAYER_NEUTRAL_EXTRA),udg_AAAA_GP,bj_UNIT_FACING)
-// call SetUnitCreepGuard(GetLastCreatedUnit(),false)
-// call RemoveGuardPosition(GetLastCreatedUnit())
-// call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
-// set udg_General_Index=udg_General_Index+1
-// endloop
-// set udg_AAAA_GP=GetRectCenter(udg_rct_ice_creep_event)
-// call CreateNUnitsAtLocBonuses(1,'n078',Player(bj_PLAYER_NEUTRAL_EXTRA),udg_AAAA_GP,bj_UNIT_FACING)
-// call SetUnitCreepGuard(GetLastCreatedUnit(),false)
-// call RemoveGuardPosition(GetLastCreatedUnit())
-// call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
-// call RemoveLocation(udg_AAAA_GP)
-// set udg_AAAA_GP=GetRectCenter(udg_rct_ice_creep_event)
-// call CreateNUnitsAtLocBonuses(1,'nqb4',Player(bj_PLAYER_NEUTRAL_EXTRA),udg_AAAA_GP,bj_UNIT_FACING)
-// call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
-// call RemoveLocation(udg_AAAA_GP)
+set udg_General_Index=1
+loop
+exitwhen udg_General_Index>14
+call CreateNUnitsAtLocBonuses(1,'n077',Player(bj_PLAYER_NEUTRAL_EXTRA),udg_AAAA_GP,bj_UNIT_FACING)
+call SetUnitCreepGuard(GetLastCreatedUnit(),false)
+call RemoveGuardPosition(GetLastCreatedUnit())
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
+set udg_General_Index=udg_General_Index+1
+endloop
+set udg_AAAA_GP=GetRectCenter(udg_rct_ice_creep_event)
+call CreateNUnitsAtLocBonuses(1,'n078',Player(bj_PLAYER_NEUTRAL_EXTRA),udg_AAAA_GP,bj_UNIT_FACING)
+call SetUnitCreepGuard(GetLastCreatedUnit(),false)
+call RemoveGuardPosition(GetLastCreatedUnit())
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
+call RemoveLocation(udg_AAAA_GP)
+set udg_AAAA_GP=GetRectCenter(udg_rct_ice_creep_event)
+call CreateNUnitsAtLocBonuses(1,'nqb4',Player(bj_PLAYER_NEUTRAL_EXTRA),udg_AAAA_GP,bj_UNIT_FACING)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
+call RemoveLocation(udg_AAAA_GP)
 endfunction
 function InitTrig_Creep_attack_event takes nothing returns nothing
 set udg_trg_Creep_attack_event=CreateTrigger()
@@ -27487,8 +27486,8 @@ endif
 return true
 endfunction
 function Trig_Spawn_Boss_and_set_variable_Actions takes nothing returns nothing
-// set udg_BOSS_UNIT = CreateUnitBonuses(Player(13),udg_BossType[GetRandomInt(1,2)],4029,-533,0)
-// call NeutralIssueOrderRandomLocInRect(udg_BOSS_UNIT,"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
+set udg_BOSS_UNIT = CreateUnitBonuses(Player(13),udg_BossType[GetRandomInt(1,2)],4029,-533,0)
+call NeutralIssueOrderRandomLocInRect(udg_BOSS_UNIT,"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
 endfunction
 function InitTrig_Spawn_Boss_and_set_variable takes nothing returns nothing
 set udg_trg_Spawn_Boss_and_set_variable=CreateTrigger()
