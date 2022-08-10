@@ -26477,7 +26477,7 @@ function Trig_Team_1_Win_Actions takes nothing returns nothing
 set udg_FightEachotherBool=true
 call DisplayTimedTextToForce(GetPlayersAll(),10.00,"The Human Team Has won!")
 call DisplayTimedTextToForce(GetPlayersAll(),10.00,"HUMANS WILL FACE EACHOTHER IN 10 SECONDS!!")
-//call UnallyAll()
+call UnallyAll()
 call DisableTrigger(udg_trg_Final_Battle_Timer)
 call DisableTrigger(udg_trg_Final_Battle_Timer_Copy)
 call DisableTrigger(udg_trg_Duel)
@@ -26546,7 +26546,7 @@ function Trig_Team_2_Win_Actions takes nothing returns nothing
 set udg_FightEachotherBool=true
 call DisplayTimedTextToForce(GetPlayersAll(),10.00,"The Evil Team Has won!")
 call DisplayTimedTextToForce(GetPlayersAll(),10.00,"EVIL WILL FACE EACHOTHER IN 10 SECONDS!!")
-//call UnallyAll()
+call UnallyAll()
 call DisableTrigger(udg_trg_Final_Battle_Timer)
 call DisableTrigger(udg_trg_Final_Battle_Timer_Copy)
 call DisableTrigger(udg_trg_Duel)
@@ -28007,7 +28007,6 @@ function HyerKnock_Callback takes nothing returns nothing
     local unit u = LoadUnitHandle(timerdata,id,kOwner)
     local unit target = LoadUnitHandle(timerdata,id,kTarget)
     local real damage =  LoadReal(timerdata,id,kDamage)
-    call BJDebugMsg("omg!!!! "+I2S(GetHandleId(u))+" "+I2S(GetHandleId(target))+" "+R2S(damage))
     call UnitDamageTarget(u,target,damage,true,false,ATTACK_TYPE_CHAOS,DAMAGE_TYPE_MAGIC,WEAPON_TYPE_WHOKNOWS)
 endfunction
 function Trig_Hyper_Knock_Actions takes nothing returns nothing
@@ -28019,7 +28018,6 @@ function Trig_Hyper_Knock_Actions takes nothing returns nothing
     set udg_HK_Strength=GetHeroStatBJ(bj_HEROSTAT_STR,udg_HK_TC,true)
     set Timer = JumpUnitUnitEx(udg_HK_TC,udg_HK_Target_Unit,800,true,"walk","HyerKnock_Callback")
     set udg_HK_Strength = udg_HK_Strength*4+255
-    call BJDebugMsg(R2S(udg_HK_Strength))
     call SaveReal(timerdata,GetHandleId(Timer),kDamage,udg_HK_Strength)
     set Timer = null
 endfunction
