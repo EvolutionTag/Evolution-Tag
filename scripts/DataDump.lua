@@ -1,12 +1,4 @@
 function DumpData(name)
-	Log('Dumping data to file: ',name)
-	local function GetEngineDataPointers()
-	 local t =  thiscall1(AC.game+0x4c34d0,0xd)
-	 if(t>500) then
-		return ReadInt(t+0x10)
-	 end
-	end
-
 	
 	local function GetSynchronousDataHash(pData)
 		if(not pData or pData<500) then return end
@@ -39,6 +31,16 @@ function DumpData(name)
 		local pData = ReadInt(pMap)
 		if(pData<500) then return nil end
 		return Cstring2LuaString(pData+8)
+	end
+
+	function GetPlayerHashReal(preal)
+		local pfunc = AC.game+0x40feb0
+		return thiscall1(pfunc,preal)
+	end
+
+	function GetPlayerHash(p)
+		local preal = ConvertHandle(p)
+		return GetPlayerHashReal(preal)
 	end
 
 
@@ -191,6 +193,7 @@ function DumpData(name)
 		handle["controller"] = GetPlayerController(p)
 		handle["slotstate"] = GetPlayerSlotState(p)
 		handle["name"] = GetPlayerName(p)
+		handle["hash"] = GetPlayerHash(p)
 		--gprint(handleid)
 	end
 
