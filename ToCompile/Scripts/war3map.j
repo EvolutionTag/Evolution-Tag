@@ -22339,29 +22339,53 @@ return true
 endif
 return false
 endfunction
-function Trig_FinalBattle_Run_Func015Func001C takes nothing returns boolean
+function Trig_FinalBattle_Run_Filter_Humans takes nothing returns boolean
 if(not(IsPlayerInForce(GetOwningPlayer(GetEnumUnit()),udg_Humans)==true))then
 return false
 endif
 if(not Trig_FinalBattle_Run_Func015Func001Func005C())then
 return false
 endif
-if(not(IsUnitType(GetEnumUnit(),UNIT_TYPE_SUMMONED)==false))then
-return false
-endif
 return true
 endfunction
-function Trig_FinalBattle_Run_Func015Func002C takes nothing returns boolean
+function Trig_FinalBattle_Run_Fulter_Undeads takes nothing returns boolean
 if(not(IsPlayerInForce(GetOwningPlayer(GetEnumUnit()),udg_Evil)==true))then
 return false
 endif
 if(not(IsUnitType(GetEnumUnit(),UNIT_TYPE_STRUCTURE)==false))then
 return false
 endif
-if(not(IsUnitType(GetEnumUnit(),UNIT_TYPE_SUMMONED)==false))then
-return false
-endif
 return true
+endfunction
+function Trig_FinalBattle_Run_Fulter_Undead_Allies takes nothing returns boolean
+    if(not IsPlayerAlly(GetOwningPlayer(GetEnumUnit()),ForcePickRandomPlayer(udg_Evil)))then
+    return false
+    endif
+    if(IsPlayerInForce(GetOwningPlayer(GetEnumUnit()),udg_Evil)) then
+        return false
+    endif
+    if(GetPlayerId(GetOwningPlayer(GetEnumUnit()))==15) then
+        return false
+    endif
+    if(not(IsUnitType(GetEnumUnit(),UNIT_TYPE_STRUCTURE)==false))then
+    return false
+    endif
+    return true
+endfunction
+function Trig_FinalBattle_Run_Fulter_Human_Allies takes nothing returns boolean
+    if(not IsPlayerAlly(GetOwningPlayer(GetEnumUnit()),ForcePickRandomPlayer(udg_Humans)))then
+    return false
+    endif
+    if(IsPlayerInForce(GetOwningPlayer(GetEnumUnit()),udg_Humans)) then
+        return false
+    endif
+    if(GetPlayerId(GetOwningPlayer(GetEnumUnit()))==15) then
+        return false
+    endif
+    if(not(IsUnitType(GetEnumUnit(),UNIT_TYPE_STRUCTURE)==false))then
+    return false
+    endif
+    return true
 endfunction
 function Trig_FinalBattle_Run_Func015Func003C takes nothing returns boolean
 if(not(IsPlayerAlly(GetOwningPlayer(GetEnumUnit()),Player(bj_PLAYER_NEUTRAL_EXTRA))==true))then
@@ -22461,18 +22485,26 @@ endif
 else
 endif
 endfunction
-function Trig_FinalBattle_Run_Func015A takes nothing returns nothing
-if(Trig_FinalBattle_Run_Func015Func001C())then
-set udg_AAAA_GP=GetRandomLocInRect(udg_rct_FB_Human_Spawn)
-call SetUnitPositionLoc(GetEnumUnit(),udg_AAAA_GP)
-call RemoveLocation(udg_AAAA_GP)
-else
-endif
-if(Trig_FinalBattle_Run_Func015Func002C())then
-set udg_AAAA_GP=GetRandomLocInRect(udg_rct_FB_Undead_Spawn)
-call SetUnitPositionLoc(GetEnumUnit(),udg_AAAA_GP)
-call RemoveLocation(udg_AAAA_GP)
-else
+function Trig_FinalBattle_Run_MoveUnits takes nothing returns nothing
+local location loc = null
+if(Trig_FinalBattle_Run_Filter_Humans())then
+set loc=GetRandomLocInRect(udg_rct_FB_Human_Spawn)
+call SetUnitPositionLoc(GetEnumUnit(),loc)
+call RemoveLocation(loc)
+elseif(Trig_FinalBattle_Run_Fulter_Undeads())then
+set loc=GetRandomLocInRect(udg_rct_FB_Undead_Spawn)
+call SetUnitPositionLoc(GetEnumUnit(),loc)
+call RemoveLocation(loc)
+elseif(Trig_FinalBattle_Run_Fulter_Undead_Allies()) then
+    set loc=GetRandomLocInRect(udg_rct_FB_Neutral_Spawn_Undead_Side)
+    call SetUnitPositionLoc(GetEnumUnit(),loc)
+    call IssueTargetDestructableOrder(GetEnumUnit(),"attack",gg_dest_LTg3_4382)
+    call RemoveLocation(loc)
+elseif(Trig_FinalBattle_Run_Fulter_Human_Allies()) then
+    set loc=GetRandomLocInRect(udg_rct_FB_Neutral_Spawn_Human_Side)
+    call SetUnitPositionLoc(GetEnumUnit(),loc)
+    call IssueTargetDestructableOrder(GetEnumUnit(),"attack",gg_dest_LTg3_4382)
+    call RemoveLocation(loc)
 endif
 endfunction
 function Trig_FinalBattle_Run_Func016C takes nothing returns boolean
@@ -22496,7 +22528,7 @@ call FogMaskEnableOff()
 call ForForce(udg_Humans,function Trig_FinalBattle_Run_Func012A)
 call ForForce(udg_Evil,function Trig_FinalBattle_Run_Func013A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectMatchingFiltered(GetPlayableMapRect()),function Trig_FinalBattle_Run_Func015A)
+call ForGroupBJ(GetUnitsInRectMatchingFiltered(GetPlayableMapRect()),function Trig_FinalBattle_Run_MoveUnits)
 call ForGroupBJ(GetUnitsInRectAll(udg_rct_WHOLE_MAP_NOT_DUEL),function Final_Battle_Building_Interaction)
 call DestructableRestoreLife(gg_dest_LTg3_4382,GetDestructableMaxLife(gg_dest_LTg3_4382),true)
 call DisableTrigger(udg_trg_Dead_area_bot_left)
@@ -26445,7 +26477,7 @@ function Trig_Team_1_Win_Actions takes nothing returns nothing
 set udg_FightEachotherBool=true
 call DisplayTimedTextToForce(GetPlayersAll(),10.00,"The Human Team Has won!")
 call DisplayTimedTextToForce(GetPlayersAll(),10.00,"HUMANS WILL FACE EACHOTHER IN 10 SECONDS!!")
-call UnallyAll()
+//call UnallyAll()
 call DisableTrigger(udg_trg_Final_Battle_Timer)
 call DisableTrigger(udg_trg_Final_Battle_Timer_Copy)
 call DisableTrigger(udg_trg_Duel)
@@ -26514,7 +26546,7 @@ function Trig_Team_2_Win_Actions takes nothing returns nothing
 set udg_FightEachotherBool=true
 call DisplayTimedTextToForce(GetPlayersAll(),10.00,"The Evil Team Has won!")
 call DisplayTimedTextToForce(GetPlayersAll(),10.00,"EVIL WILL FACE EACHOTHER IN 10 SECONDS!!")
-call UnallyAll()
+//call UnallyAll()
 call DisableTrigger(udg_trg_Final_Battle_Timer)
 call DisableTrigger(udg_trg_Final_Battle_Timer_Copy)
 call DisableTrigger(udg_trg_Duel)
