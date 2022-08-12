@@ -3230,7 +3230,7 @@ native UnitAlive takes unit id returns boolean
 //! import vjass "..\ToCompile\Scripts\API\Init.j"
 //////////////////////////////////////////
 
-//! import zinc "..\ToCompile\Scripts\NeutralAI.j"
+////! import zinc "..\ToCompile\Scripts\NeutralAI.j"
 //! import zinc "..\ToCompile\Scripts\InfoQuests.j"
 //! import zinc "..\ToCompile\Scripts\timerdata.j"
 //! import zinc "..\ToCompile\Scripts\plan.j"
@@ -41451,7 +41451,6 @@ endfunction
 function InitCustomTriggers2 takes nothing returns nothing
 call TimerStart(CreateTimer(),6,false,function InitStunDispatchers)
 call LuaCall_Init()
-call NeutralAI___Init()
 call InitTrig_Dead_area_top_left()
 call InitTrig_Dead_area_bot_left()
 call InitTrig_Dead_area_bot_right()

@@ -128,7 +128,7 @@ library NeutralAI{
             OrderForNeutral(Player(14));
         }
 
-        public function NeutralAI___Init(){
+        public function onInit(){
             NeutralOrders = InitHashtable();
             TimerStart(CreateTimer(),NeutralOrderTimerout,true, function OrderForAllNeutrals);
             Death_Cleanup_trigger = CreateTrigger();
