@@ -35,7 +35,7 @@ library JumpSystem requires TimerData, Plan
             real jumpstep = LoadReal(timerdata,GetHandleId(t),kJumpStep);
             boolean pause = LoadBoolean(timerdata,GetHandleId(t),kPause);
             boolean TreesDestroy = LoadBoolean(timerdata,GetHandleId(t),kTreesDestroy);
-            string animation = LoadStr(timerdata,GetHandleId(t),kTarget);
+            string animation = LoadStr(timerdata,GetHandleId(t),kAnimation);
             real dx;
             real dy;
             real x;
@@ -79,8 +79,8 @@ library JumpSystem requires TimerData, Plan
                     RemoveLocation(temploc);
                     temploc = null;
                 }
-                SaveReal(timerdata,GetHandleId(t),5,heightplus);
-                SaveInteger(timerdata,GetHandleId(t),1,remained);
+                SaveReal(timerdata,GetHandleId(t),kHeightplus,heightplus);
+                SaveInteger(timerdata,GetHandleId(t),kRemained,remained);
             }
             if(remained>0)
             {
