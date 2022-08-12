@@ -23,42 +23,6 @@ unit udg_KBS__Tree_dummy=null
 item udg_KBS__Item=null
 timer udg_KBS__Timer=null
 boolexpr udg_KBS__Tree_filt=null
-timer array udg_KT__KeyTimer
-trigger array udg_KT__TimerTrigger
-integer array udg_KT__KeyTimerListPointer
-integer array udg_KT__KeyTimerListEndPointer
-triggercondition array udg_KT__TriggerCond
-boolexpr array udg_KT__Boolexpr
-integer array udg_KT__Data
-integer array udg_KT__Next
-integer array udg_KT__Prev
-integer udg_KT__TrigMax=0
-integer array udg_KT__NextMem
-integer udg_KT__NextMemMaxPlusOne=0
-integer array udg_KT__ToAddMem
-triggercondition array udg_KT__ToRemove
-boolexpr array udg_KT__ToDestroy
-boolean array udg_KT__IsAdd
-integer udg_KT__AddRemoveMax=0
-integer udg_KT__t_id=0
-integer udg_KT__t_mem=0
-integer udg_KT__t_lastmem=0
-integer udg_KT__a_id=0
-integer udg_KT__a_mem=0
-conditionfunc udg_KT__RemoveInstanceCond=null
-conditionfunc udg_KT__TAZO_LoadDataCond=null
-conditionfunc udg_KT__TAZO_RemoveInstanceCond=null
-integer array udg_KT__TAZO_Data
-boolexpr array udg_KT__TAZO_Boolexpr
-trigger array udg_KT__TAZO_AvailableTrig
-integer udg_KT__TAZO_Max=0
-trigger array udg_KT__TAZO_ReconstructTrig
-integer array udg_KT__TAZO_ReconstructCount
-integer udg_KT__TAZO_ReconKey=0
-trigger udg_KT__TAZO_DeadTrig=null
-integer udg_KT__TAZO_DeadCount=0
-integer udg_KT__TAZO_AddKey=0
-trigger udg_KT__TAZO_AddTrigger=null
 hashtable udg_PauseUtils__Hash=null
 integer udg_T32_Tick=0
 trigger udg_T32__Trig=null
@@ -103,12 +67,6 @@ unit udg_xedamage___dmger=null
 timer udg_xefx___recycler=null
 timer udg_xefx___NOW=null
 unit udg_xepreload___dum=null
-unit udg_MSX__Unit=null
-real udg_MSX__X=0
-real udg_MSX__Y=0
-real udg_MSX__Xinc=0
-real udg_MSX__Yinc=0
-real udg_MSX__Dist=0
 force udg_Humans=null
 force udg_Evil=null
 string array udg_JD_Animations
@@ -2087,7 +2045,6 @@ trigger udg_trg_Agility=null
 trigger udg_trg_Agility_Loop=null
 trigger udg_trg_AIDS=null
 trigger udg_trg_KT=null
-trigger udg_trg_MSX=null
 trigger udg_trg_TimerUtils=null
 trigger udg_trg_KBS=null
 trigger udg_trg_Importing_Instructions=null
@@ -2343,14 +2300,6 @@ integer array udg_s__xefx_g
 integer array udg_s__xefx_b
 integer array udg_s__xefx_a
 integer array udg_s__xefx_abil
-real array udg_s__MSX__SpeedData_pureBonus
-real array udg_s__MSX__SpeedData_factorBonus
-boolean array udg_s__MSX__SpeedData_remove
-boolean array udg_s__MSX__SpeedData_onTimer
-real array udg_s__MSX__SpeedData_x
-real array udg_s__MSX__SpeedData_y
-integer udg_s__MSX__SpeedData_AIDS_DELEGATE=0
-boolean array udg_s__MSX__SpeedData_AIDS_instanciated
 integer udg_si__HolyBirds___spelldata_F=0
 integer udg_si__HolyBirds___spelldata_I=0
 integer array udg_si__HolyBirds___spelldata_V
@@ -2582,46 +2531,6 @@ item KBS__Item=null
 timer KBS__Timer=null
 boolexpr KBS__Tree_filt=null
 constant boolean LIBRARY_KT=true
-constant real KT__PERIODTHRESHOLD=0.3
-constant integer KT__TAZO_INSTANCEMAX=64
-constant real KT__TAZO_RECONSTRUCT_PERIOD=0.03125
-timer array KT__KeyTimer
-trigger array KT__TimerTrigger
-integer array KT__KeyTimerListPointer
-integer array KT__KeyTimerListEndPointer
-triggercondition array KT__TriggerCond
-boolexpr array KT__Boolexpr
-integer array KT__Data
-integer array KT__Next
-integer array KT__Prev
-integer KT__TrigMax=0
-integer array KT__NextMem
-integer KT__NextMemMaxPlusOne=1
-integer array KT__ToAddMem
-triggercondition array KT__ToRemove
-boolexpr array KT__ToDestroy
-boolean array KT__IsAdd
-integer KT__AddRemoveMax=0
-integer KT__t_id=-1
-integer KT__t_mem
-integer KT__t_lastmem
-integer KT__a_id
-integer KT__a_mem
-conditionfunc KT__RemoveInstanceCond
-constant integer KT__TAZO_DATAMEM=8190
-conditionfunc KT__TAZO_LoadDataCond
-conditionfunc KT__TAZO_RemoveInstanceCond
-integer array KT__TAZO_Data
-boolexpr array KT__TAZO_Boolexpr
-trigger array KT__TAZO_AvailableTrig
-integer KT__TAZO_Max=0
-trigger array KT__TAZO_ReconstructTrig
-integer array KT__TAZO_ReconstructCount
-integer KT__TAZO_ReconKey
-trigger KT__TAZO_DeadTrig
-integer KT__TAZO_DeadCount
-integer KT__TAZO_AddKey
-trigger KT__TAZO_AddTrigger
 constant boolean LIBRARY_MoveSpeedXGUI=true
 constant real MoveSpeedXGUI__PERIOD=0.02900
 constant real MoveSpeedXGUI__MARGIN=0.01
@@ -2702,14 +2611,6 @@ timer xefx___NOW
 constant boolean LIBRARY_xepreload=true
 unit xepreload___dum=null
 constant boolean LIBRARY_AutoIndex=true
-constant boolean LIBRARY_MSX=true
-constant real MSX__PERIOD=0.00625
-unit MSX__Unit
-real MSX__X
-real MSX__Y
-real MSX__Xinc
-real MSX__Yinc
-real MSX__Dist
 constant boolean LIBRARY_PUI=true
 constant integer HolyBirds___SPELL_ID=0x41303950
 constant integer HolyBirds___BUFF_ID=0x42303056
@@ -2901,15 +2802,6 @@ integer array s__xefx_g
 integer array s__xefx_b
 integer array s__xefx_a
 integer array s__xefx_abil
-constant integer si__MSX__SpeedData=11
-real array s__MSX__SpeedData_pureBonus
-real array s__MSX__SpeedData_factorBonus
-boolean array s__MSX__SpeedData_remove
-boolean array s__MSX__SpeedData_onTimer
-real array s__MSX__SpeedData_x
-real array s__MSX__SpeedData_y
-integer s__MSX__SpeedData_AIDS_DELEGATE=0
-boolean array s__MSX__SpeedData_AIDS_instanciated
 constant integer si__HolyBirds___spelldata=12
 integer si__HolyBirds___spelldata_F=0
 integer si__HolyBirds___spelldata_I=0
@@ -3447,101 +3339,73 @@ set udg_KBS__Timer=CreateTimer()
 set i=0
 loop
 exitwhen(i>1)
-set udg_KT__KeyTimer[i]=CreateTimer()
 set i=i+1
 endloop
 set i=0
 loop
 exitwhen(i>1)
-set udg_KT__TimerTrigger[i]=CreateTrigger()
 set i=i+1
 endloop
 set i=0
 loop
 exitwhen(i>1)
-set udg_KT__KeyTimerListPointer[i]=0
 set i=i+1
 endloop
 set i=0
 loop
 exitwhen(i>1)
-set udg_KT__KeyTimerListEndPointer[i]=0
 set i=i+1
 endloop
 set i=0
 loop
 exitwhen(i>1)
-set udg_KT__Data[i]=0
 set i=i+1
 endloop
 set i=0
 loop
 exitwhen(i>1)
-set udg_KT__Next[i]=0
 set i=i+1
 endloop
 set i=0
 loop
 exitwhen(i>1)
-set udg_KT__Prev[i]=0
-set i=i+1
-endloop
-set udg_KT__TrigMax=0
-set i=0
-loop
-exitwhen(i>1)
-set udg_KT__NextMem[i]=0
-set i=i+1
-endloop
-set udg_KT__NextMemMaxPlusOne=1
-set i=0
-loop
-exitwhen(i>1)
-set udg_KT__ToAddMem[i]=0
 set i=i+1
 endloop
 set i=0
 loop
 exitwhen(i>1)
-set udg_KT__IsAdd[i]=false
-set i=i+1
-endloop
-set udg_KT__AddRemoveMax=0
-set udg_KT__t_id=-1
-set udg_KT__t_mem=0
-set udg_KT__t_lastmem=0
-set udg_KT__a_id=0
-set udg_KT__a_mem=0
-set i=0
-loop
-exitwhen(i>1)
-set udg_KT__TAZO_Data[i]=0
 set i=i+1
 endloop
 set i=0
 loop
 exitwhen(i>1)
-set udg_KT__TAZO_AvailableTrig[i]=CreateTrigger()
-set i=i+1
-endloop
-set udg_KT__TAZO_Max=0
-set i=0
-loop
-exitwhen(i>1)
-set udg_KT__TAZO_ReconstructTrig[i]=CreateTrigger()
 set i=i+1
 endloop
 set i=0
 loop
 exitwhen(i>1)
-set udg_KT__TAZO_ReconstructCount[i]=0
 set i=i+1
 endloop
-set udg_KT__TAZO_ReconKey=0
-set udg_KT__TAZO_DeadTrig=CreateTrigger()
-set udg_KT__TAZO_DeadCount=0
-set udg_KT__TAZO_AddKey=0
-set udg_KT__TAZO_AddTrigger=CreateTrigger()
+set i=0
+loop
+exitwhen(i>1)
+set i=i+1
+endloop
+set i=0
+loop
+exitwhen(i>1)
+set i=i+1
+endloop
+set i=0
+loop
+exitwhen(i>1)
+set i=i+1
+endloop
+set i=0
+loop
+exitwhen(i>1)
+set i=i+1
+endloop
 set udg_T32_Tick=0
 set udg_T32__Trig=CreateTrigger()
 set udg_TimerUtils__VOFFSET=TimerUtils__OFFSET
@@ -3611,11 +3475,6 @@ set udg_GroupUtils__Y=0.
 set udg_GroupUtils__R=0.
 set udg_xefx___recycler=CreateTimer()
 set udg_xefx___NOW=CreateTimer()
-set udg_MSX__X=0
-set udg_MSX__Y=0
-set udg_MSX__Xinc=0
-set udg_MSX__Yinc=0
-set udg_MSX__Dist=0
 set udg_Humans=CreateForce()
 set udg_Evil=CreateForce()
 set i=0
@@ -6843,7 +6702,6 @@ set udg_trg_Agility=CreateTrigger()
 set udg_trg_Agility_Loop=CreateTrigger()
 set udg_trg_AIDS=CreateTrigger()
 set udg_trg_KT=CreateTrigger()
-set udg_trg_MSX=CreateTrigger()
 set udg_trg_TimerUtils=CreateTrigger()
 set udg_trg_KBS=CreateTrigger()
 set udg_trg_Importing_Instructions=CreateTrigger()
@@ -7329,44 +7187,36 @@ endloop
 set i=0
 loop
 exitwhen(i>1)
-set udg_s__MSX__SpeedData_pureBonus[i]=0
 set i=i+1
 endloop
 set i=0
 loop
 exitwhen(i>1)
-set udg_s__MSX__SpeedData_factorBonus[i]=0
 set i=i+1
 endloop
 set i=0
 loop
 exitwhen(i>1)
-set udg_s__MSX__SpeedData_remove[i]=false
 set i=i+1
 endloop
 set i=0
 loop
 exitwhen(i>1)
-set udg_s__MSX__SpeedData_onTimer[i]=false
 set i=i+1
 endloop
 set i=0
 loop
 exitwhen(i>1)
-set udg_s__MSX__SpeedData_x[i]=0
 set i=i+1
 endloop
 set i=0
 loop
 exitwhen(i>1)
-set udg_s__MSX__SpeedData_y[i]=0
 set i=i+1
 endloop
-set udg_s__MSX__SpeedData_AIDS_DELEGATE=0
 set i=0
 loop
 exitwhen(i>1)
-set udg_s__MSX__SpeedData_AIDS_instanciated[i]=false
 set i=i+1
 endloop
 set udg_si__HolyBirds___spelldata_F=0
@@ -10396,154 +10246,6 @@ call UnitAddAbility(udg_KBS__Tree_dummy,KBS__LOCUST)
 set udg_KBS__Item=CreateItem('ciri',0.00,0.00)
 call SetItemVisible(udg_KBS__Item,false)
 endfunction
-function KT__KeyTimerLoop takes nothing returns nothing
-set udg_KT__t_id=R2I(TimerGetTimeout(GetExpiredTimer())*800)
-set udg_KT__t_mem=udg_KT__KeyTimerListEndPointer[udg_KT__t_id]
-call TriggerEvaluate(udg_KT__TimerTrigger[udg_KT__t_id])
-set udg_KT__t_mem=0
-loop
-exitwhen udg_KT__t_mem==udg_KT__AddRemoveMax
-set udg_KT__t_mem=udg_KT__t_mem+1
-if udg_KT__IsAdd[udg_KT__t_mem]then
-set udg_KT__TriggerCond[udg_KT__ToAddMem[udg_KT__t_mem]]=TriggerAddCondition(udg_KT__TimerTrigger[udg_KT__t_id],udg_KT__Boolexpr[udg_KT__ToAddMem[udg_KT__t_mem]])
-else
-call TriggerRemoveCondition(udg_KT__TimerTrigger[udg_KT__t_id],udg_KT__ToRemove[udg_KT__t_mem])
-call h__DestroyBoolExpr(udg_KT__ToDestroy[udg_KT__t_mem])
-endif
-endloop
-set udg_KT__AddRemoveMax=0
-set udg_KT__t_id=-1
-endfunction
-function KT__RemoveInstance takes nothing returns boolean
-set udg_KT__AddRemoveMax=udg_KT__AddRemoveMax+1
-set udg_KT__IsAdd[udg_KT__AddRemoveMax]=false
-set udg_KT__ToRemove[udg_KT__AddRemoveMax]=udg_KT__TriggerCond[udg_KT__t_lastmem]
-set udg_KT__ToDestroy[udg_KT__AddRemoveMax]=udg_KT__Boolexpr[udg_KT__t_lastmem]
-if udg_KT__Next[udg_KT__t_lastmem]==0 then
-set udg_KT__KeyTimerListEndPointer[udg_KT__t_id]=udg_KT__Prev[udg_KT__t_lastmem]
-endif
-set udg_KT__Prev[udg_KT__Next[udg_KT__t_lastmem]]=udg_KT__Prev[udg_KT__t_lastmem]
-if udg_KT__Prev[udg_KT__t_lastmem]==0 then
-set udg_KT__KeyTimerListPointer[udg_KT__t_id]=udg_KT__Next[udg_KT__t_lastmem]
-if udg_KT__KeyTimerListPointer[udg_KT__t_id]<1 then
-call PauseTimer(udg_KT__KeyTimer[udg_KT__t_id])
-endif
-else
-set udg_KT__Next[udg_KT__Prev[udg_KT__t_lastmem]]=udg_KT__Next[udg_KT__t_lastmem]
-endif
-set udg_KT__NextMem[udg_KT__NextMemMaxPlusOne]=udg_KT__t_lastmem
-set udg_KT__NextMemMaxPlusOne=udg_KT__NextMemMaxPlusOne+1
-return false
-endfunction
-function KT__KTadd takes code func,integer data,real period returns nothing
-set udg_KT__a_id=R2I(period*800)
-if udg_KT__KeyTimer[udg_KT__a_id]==null then
-set udg_KT__KeyTimer[udg_KT__a_id]=CreateTimer()
-set udg_KT__TimerTrigger[udg_KT__a_id]=CreateTrigger()
-endif
-if udg_KT__NextMemMaxPlusOne==1 then
-set udg_KT__TrigMax=udg_KT__TrigMax+1
-set udg_KT__a_mem=udg_KT__TrigMax
-else
-set udg_KT__NextMemMaxPlusOne=udg_KT__NextMemMaxPlusOne-1
-set udg_KT__a_mem=udg_KT__NextMem[udg_KT__NextMemMaxPlusOne]
-endif
-set udg_KT__Boolexpr[udg_KT__a_mem]=And(Condition(func),udg_KT__RemoveInstanceCond)
-if udg_KT__t_id==udg_KT__a_id then
-set udg_KT__AddRemoveMax=udg_KT__AddRemoveMax+1
-set udg_KT__IsAdd[udg_KT__AddRemoveMax]=true
-set udg_KT__ToAddMem[udg_KT__AddRemoveMax]=udg_KT__a_mem
-else
-if udg_KT__KeyTimerListPointer[udg_KT__a_id]<1 then
-call TimerStart(udg_KT__KeyTimer[udg_KT__a_id],udg_KT__a_id/ 800.0,true,function KT__KeyTimerLoop)
-set udg_KT__KeyTimerListEndPointer[udg_KT__a_id]=udg_KT__a_mem
-endif
-set udg_KT__TriggerCond[udg_KT__a_mem]=TriggerAddCondition(udg_KT__TimerTrigger[udg_KT__a_id],udg_KT__Boolexpr[udg_KT__a_mem])
-endif
-set udg_KT__Data[udg_KT__a_mem]=data
-set udg_KT__Prev[udg_KT__a_mem]=0
-set udg_KT__Next[udg_KT__a_mem]=udg_KT__KeyTimerListPointer[udg_KT__a_id]
-set udg_KT__Prev[udg_KT__KeyTimerListPointer[udg_KT__a_id]]=udg_KT__a_mem
-set udg_KT__KeyTimerListPointer[udg_KT__a_id]=udg_KT__a_mem
-endfunction
-function KT_GetData takes nothing returns integer
-set udg_KT__t_lastmem=udg_KT__t_mem
-set udg_KT__t_mem=udg_KT__Prev[udg_KT__t_mem]
-return udg_KT__Data[udg_KT__t_lastmem]
-endfunction
-function KT__KTinit takes nothing returns nothing
-set udg_KT__RemoveInstanceCond=Condition(function KT__RemoveInstance)
-endfunction
-function KT__TAZO_Reconstructer takes nothing returns boolean
-set udg_KT__TAZO_ReconKey=KT_GetData()
-call TriggerExecute(udg_KT__TAZO_ReconstructTrig[udg_KT__TAZO_ReconKey])
-set udg_KT__TAZO_ReconstructCount[udg_KT__TAZO_ReconKey]=udg_KT__TAZO_ReconstructCount[udg_KT__TAZO_ReconKey]-1
-if udg_KT__TAZO_ReconstructCount[udg_KT__TAZO_ReconKey]==0 then
-set udg_KT__TAZO_Max=udg_KT__TAZO_Max+1
-set udg_KT__TAZO_AvailableTrig[udg_KT__TAZO_Max]=udg_KT__TAZO_ReconstructTrig[udg_KT__TAZO_ReconKey]
-return true
-endif
-return false
-endfunction
-function KT__TAZO_Reconstruct takes nothing returns boolean
-set udg_KT__TAZO_DeadTrig=GetTriggeringTrigger()
-set udg_KT__TAZO_DeadCount=GetTriggerExecCount(udg_KT__TAZO_DeadTrig)
-call DestroyTrigger(udg_KT__TAZO_DeadTrig)
-call h__DestroyBoolExpr(udg_KT__TAZO_Boolexpr[udg_KT__TAZO_DeadCount])
-set udg_KT__TAZO_ReconstructTrig[udg_KT__TAZO_DeadCount]=CreateTrigger()
-set udg_KT__TAZO_ReconstructCount[udg_KT__TAZO_DeadCount]=udg_KT__TAZO_DeadCount
-call KT__KTadd(function KT__TAZO_Reconstructer,udg_KT__TAZO_DeadCount,KT__TAZO_RECONSTRUCT_PERIOD)
-return false
-endfunction
-function KT__TAZO_LoadData takes nothing returns boolean
-set udg_KT__t_mem=KT__TAZO_DATAMEM
-set udg_KT__Data[KT__TAZO_DATAMEM]=udg_KT__TAZO_Data[GetTriggerExecCount(GetTriggeringTrigger())]
-return false
-endfunction
-function KT_TAZOadd takes code func,integer data,real period returns nothing
-set udg_KT__TAZO_AddTrigger=udg_KT__TAZO_AvailableTrig[udg_KT__TAZO_Max]
-set udg_KT__TAZO_AddKey=GetTriggerExecCount(udg_KT__TAZO_AddTrigger)
-set udg_KT__TAZO_Max=udg_KT__TAZO_Max-1
-set udg_KT__TAZO_Data[udg_KT__TAZO_AddKey]=data
-set udg_KT__TAZO_Boolexpr[udg_KT__TAZO_AddKey]=And(Condition(func),udg_KT__TAZO_RemoveInstanceCond)
-call TriggerAddCondition(udg_KT__TAZO_AddTrigger,udg_KT__TAZO_LoadDataCond)
-call TriggerAddCondition(udg_KT__TAZO_AddTrigger,udg_KT__TAZO_Boolexpr[udg_KT__TAZO_AddKey])
-call TriggerRegisterTimerEvent(udg_KT__TAZO_AddTrigger,period,true)
-endfunction
-function KT__InitTrigExecCount takes trigger t,integer d returns nothing
-if d>64 then
-call sc___prototype11_execute(1,t,d-64)
-set d=64
-endif
-loop
-exitwhen d==0
-set d=d-1
-call TriggerExecute(t)
-endloop
-endfunction
-function KT__TAZOinit takes nothing returns nothing
-set udg_KT__TAZO_LoadDataCond=Condition(function KT__TAZO_LoadData)
-set udg_KT__TAZO_RemoveInstanceCond=Condition(function KT__TAZO_Reconstruct)
-set udg_KT__Next[KT__TAZO_DATAMEM]=KT__TAZO_DATAMEM
-set udg_KT__Prev[KT__TAZO_DATAMEM]=KT__TAZO_DATAMEM
-loop
-set udg_KT__TAZO_Max=udg_KT__TAZO_Max+1
-set udg_KT__TAZO_AvailableTrig[udg_KT__TAZO_Max]=CreateTrigger()
-call sc___prototype11_execute(1,udg_KT__TAZO_AvailableTrig[udg_KT__TAZO_Max],KT__TAZO_INSTANCEMAX+1-udg_KT__TAZO_Max)
-exitwhen udg_KT__TAZO_Max==KT__TAZO_INSTANCEMAX
-endloop
-endfunction
-function KT_Add takes code func,integer data,real period returns nothing
-if period<KT__PERIODTHRESHOLD then
-call KT__KTadd(func,data,period)
-else
-call KT_TAZOadd(func,data,period)
-endif
-endfunction
-function KT__Init takes nothing returns nothing
-set udg_KT__RemoveInstanceCond=Condition(function KT__RemoveInstance)
-call KT__TAZOinit()
-endfunction
 function MoveSpeedXGUI__ApproxEqual takes real A,real B returns boolean
 return(A>=(B-MoveSpeedXGUI__MARGIN))and(A<=(B+MoveSpeedXGUI__MARGIN))
 endfunction
@@ -11460,138 +11162,6 @@ endfunction
 function xepreload___init takes nothing returns nothing
 set udg_xepreload___dum=CreateUnit(Player(15),XE_DUMMY_UNITID,0,0,0)
 call TimerStart(CreateTimer(),0.0,false,function xepreload___kill)
-endfunction
-function MSX__VALID_UNITS_FILTER takes unit u returns boolean
-return GetUnitAbilityLevel(u,'Aloc')==0 and not IsUnitType(u,UNIT_TYPE_STRUCTURE)
-endfunction
-function s__MSX__SpeedData_AIDS_filter takes unit u returns boolean
-return MSX__VALID_UNITS_FILTER(u)
-endfunction
-function s__MSX__SpeedData_AIDS_onCreate takes integer this returns nothing
-set udg_s__MSX__SpeedData_pureBonus[this]=0.0
-set udg_s__MSX__SpeedData_factorBonus[this]=0.0
-endfunction
-function s__MSX__SpeedData_AIDS_onDestroy takes integer this returns nothing
-set udg_s__MSX__SpeedData_remove[this]=true
-endfunction
-function s__MSX__SpeedData__staticgetindex takes unit whichUnit returns integer
-return(GetUnitUserData((whichUnit)))
-endfunction
-function s__MSX__SpeedData__get_unit takes integer this returns unit
-return(udg_AIDS__IndexUnit[(this)])
-endfunction
-function s__MSX__SpeedData_AIDS_addLock takes integer this returns nothing
-call AIDS_AddLock(this)
-endfunction
-function s__MSX__SpeedData_AIDS_removeLock takes integer this returns nothing
-call AIDS_RemoveLock(this)
-endfunction
-function s__MSX__SpeedData_AIDS_onEnter takes nothing returns boolean
-if(MSX__VALID_UNITS_FILTER(((udg_AIDS__ARStackUnit[udg_AIDS__ARStackLevel]))))then
-set udg_s__MSX__SpeedData_AIDS_instanciated[(AIDS_GetIndexOfEnteringUnit())]=true
-call s__MSX__SpeedData_AIDS_onCreate(((udg_AIDS__ARStackIndex[udg_AIDS__ARStackLevel])))
-endif
-return false
-endfunction
-function s__MSX__SpeedData_AIDS_onEnterAllocated takes nothing returns boolean
-if(MSX__VALID_UNITS_FILTER(((udg_AIDS__ARStackUnit[udg_AIDS__ARStackLevel]))))then
-set udg_s__MSX__SpeedData_AIDS_instanciated[((udg_AIDS__ARStackIndex[udg_AIDS__ARStackLevel]))]=true
-call s__MSX__SpeedData_AIDS_onCreate(((udg_AIDS__ARStackIndex[udg_AIDS__ARStackLevel])))
-endif
-return false
-endfunction
-function s__MSX__SpeedData_AIDS_onDeallocate takes nothing returns boolean
-if udg_s__MSX__SpeedData_AIDS_instanciated[((udg_AIDS__UndefendExpiringIndex[udg_AIDS__UndefendExpiringIndexLevel]))]then
-set udg_s__MSX__SpeedData_remove[(((udg_AIDS__UndefendExpiringIndex[udg_AIDS__UndefendExpiringIndexLevel])))]=true
-set udg_s__MSX__SpeedData_AIDS_instanciated[((udg_AIDS__UndefendExpiringIndex[udg_AIDS__UndefendExpiringIndexLevel]))]=false
-endif
-return false
-endfunction
-function s__MSX__SpeedData_onInit takes nothing returns nothing
-call TriggerAddCondition(udg_AIDS__OnEnter,(Filter(function s__MSX__SpeedData_AIDS_onEnter)))
-call TriggerAddCondition(udg_AIDS__OnEnterAllocated,(Filter(function s__MSX__SpeedData_AIDS_onEnterAllocated)))
-call TriggerAddCondition(udg_AIDS__OnDeallocate,(Filter(function s__MSX__SpeedData_AIDS_onDeallocate)))
-call s__AIDS_DEFAULT_AIDS_onInit()
-endfunction
-function s__MSX__SpeedData_periodic takes nothing returns boolean
-local integer this=(KT_GetData())
-if udg_s__MSX__SpeedData_remove[this]then
-set udg_s__MSX__SpeedData_onTimer[this]=false
-return true
-endif
-set udg_MSX__Unit=(udg_AIDS__IndexUnit[((this))])
-set udg_MSX__X=GetUnitX(udg_MSX__Unit)
-set udg_MSX__Y=GetUnitY(udg_MSX__Unit)
-if(not IsUnitPaused(udg_MSX__Unit))and GetUnitAbilityLevel(udg_MSX__Unit,'BSTN')==0 and GetUnitAbilityLevel(udg_MSX__Unit,'BPSE')==0 then
-if udg_MSX__X!=udg_s__MSX__SpeedData_x[this]or udg_MSX__Y!=udg_s__MSX__SpeedData_y[this]then
-set udg_MSX__Xinc=udg_MSX__X-udg_s__MSX__SpeedData_x[this]
-set udg_MSX__Yinc=udg_MSX__Y-udg_s__MSX__SpeedData_y[this]
-if udg_s__MSX__SpeedData_factorBonus[this]!=0.0 then
-set udg_MSX__X=udg_MSX__X+udg_MSX__Xinc*udg_s__MSX__SpeedData_factorBonus[this]
-set udg_MSX__Y=udg_MSX__Y+udg_MSX__Yinc*udg_s__MSX__SpeedData_factorBonus[this]
-endif
-if udg_s__MSX__SpeedData_pureBonus[this]!=0.0 then
-set udg_MSX__Dist=SquareRoot(udg_MSX__Xinc*udg_MSX__Xinc+udg_MSX__Yinc*udg_MSX__Yinc)
-set udg_MSX__X=udg_MSX__X+udg_MSX__Xinc/ udg_MSX__Dist*udg_s__MSX__SpeedData_pureBonus[this]
-set udg_MSX__Y=udg_MSX__Y+udg_MSX__Yinc/ udg_MSX__Dist*udg_s__MSX__SpeedData_pureBonus[this]
-endif
-call SetUnitX(udg_MSX__Unit,udg_MSX__X)
-call SetUnitY(udg_MSX__Unit,udg_MSX__Y)
-endif
-endif
-set udg_s__MSX__SpeedData_x[this]=udg_MSX__X
-set udg_s__MSX__SpeedData_y[this]=udg_MSX__Y
-return false
-endfunction
-function s__MSX__SpeedData_checkTimer takes integer this returns nothing
-if not udg_s__MSX__SpeedData_onTimer[this]then
-call KT_Add(function s__MSX__SpeedData_periodic,this,MSX__PERIOD)
-set udg_s__MSX__SpeedData_onTimer[this]=true
-set udg_s__MSX__SpeedData_remove[this]=false
-set udg_s__MSX__SpeedData_x[this]=GetUnitX((udg_AIDS__IndexUnit[((this))]))
-set udg_s__MSX__SpeedData_y[this]=GetUnitY((udg_AIDS__IndexUnit[((this))]))
-endif
-if udg_s__MSX__SpeedData_pureBonus[this]==0.0 and udg_s__MSX__SpeedData_factorBonus[this]==0.0 then
-set udg_s__MSX__SpeedData_remove[this]=true
-endif
-endfunction
-function MSX_AddSpeedPure takes unit u,real speed returns nothing
-local integer d=(GetUnitUserData(((u))))
-set udg_s__MSX__SpeedData_pureBonus[d]=udg_s__MSX__SpeedData_pureBonus[d]+speed*MSX__PERIOD
-call s__MSX__SpeedData_checkTimer(d)
-endfunction
-function MSX_SetPureSpeed takes unit u,real speed returns nothing
-local integer d=(GetUnitUserData(((u))))
-set udg_s__MSX__SpeedData_pureBonus[d]=speed*MSX__PERIOD
-call s__MSX__SpeedData_checkTimer(d)
-endfunction
-function MSX_RemoveSpeedPure takes unit u,real speed returns nothing
-local integer d=(GetUnitUserData(((u))))
-set udg_s__MSX__SpeedData_pureBonus[d]=udg_s__MSX__SpeedData_pureBonus[d]-speed*MSX__PERIOD
-call s__MSX__SpeedData_checkTimer(d)
-endfunction
-function MSX_RemoveAllSpeed takes unit u returns nothing
-local integer d=(GetUnitUserData(((u))))
-set udg_s__MSX__SpeedData_pureBonus[d]=0.0
-call s__MSX__SpeedData_checkTimer(d)
-endfunction
-function MSX_AddSpeedFactor takes unit u,real factor returns nothing
-local integer d=(GetUnitUserData(((u))))
-set udg_s__MSX__SpeedData_factorBonus[d]=udg_s__MSX__SpeedData_factorBonus[d]+factor
-call s__MSX__SpeedData_checkTimer(d)
-endfunction
-function MSX_RemoveSpeedFactor takes unit u,real factor returns nothing
-local integer d=(GetUnitUserData(((u))))
-set udg_s__MSX__SpeedData_factorBonus[d]=udg_s__MSX__SpeedData_factorBonus[d]-factor
-call s__MSX__SpeedData_checkTimer(d)
-endfunction
-function MSX_GetMoveSpeed takes unit u returns real
-local integer d=(GetUnitUserData(((u))))
-return GetUnitMoveSpeed(u)*(1.0+udg_s__MSX__SpeedData_factorBonus[d])+udg_s__MSX__SpeedData_pureBonus[d]
-endfunction
-function MSX_GetMoveSpeed1 takes unit u returns real
-local integer d=(GetUnitUserData(((u))))
-return GetUnitMoveSpeed(u)+udg_s__MSX__SpeedData_pureBonus[d]/ MSX__PERIOD
 endfunction
 function EnableTrade_Actions takes nothing returns nothing
 call SetMapFlag(MAP_LOCK_RESOURCE_TRADING,false)
@@ -37766,7 +37336,6 @@ call DestroyEffect(udg_s__SurfS__Surf_attach[data])
 if SurfS__ALLOW_NO_COLLISION then
 call SetUnitPathing(udg_s__SurfS__Surf_cast[data],true)
 endif
-call MSX_RemoveAllSpeed(udg_s__SurfS__Surf_cast[data])
 call UnitRemoveAbility(udg_s__SurfS__Surf_cast[data],SurfS__MOVE_ID)
 call s__SurfS__Surf_deallocate(data)
 call ReleaseTimer(t)
@@ -37797,7 +37366,6 @@ set udg_s__SurfS__Surf_y[data]=GetUnitY(udg_s__SurfS__Surf_cast[data])
 set udg_s__SurfS__Surf_attach[data]=AddSpecialEffectTarget(SurfS__EFFECT,udg_s__SurfS__Surf_cast[data],SurfS__ATTACH)
 set udg_s__SurfS__Surf_dur[data]=50*(12+(GetUnitAbilityLevel(udg_s__SurfS__Surf_cast[data],SurfS__ABIL_ID))*2)
 call UnitAddAbility(udg_s__SurfS__Surf_cast[data],SurfS__MOVE_ID)
-call MSX_SetPureSpeed(udg_s__SurfS__Surf_cast[data],SurfS__BONUS_SPEED(GetUnitAbilityLevel(udg_s__SurfS__Surf_cast[data],SurfS__ABIL_ID)))
 if SurfS__ALLOW_NO_COLLISION then
 call SetUnitPathing(udg_s__SurfS__Surf_cast[data],false)
 endif
@@ -41995,7 +41563,6 @@ call CreateAllUnits2()
 call ExecuteFunc("jasshelper__initstructs300963337")
 call ExecuteFunc("DestructableLib___Initialization")
 call ExecuteFunc("KBS__Init")
-call ExecuteFunc("KT__Init")
 call ExecuteFunc("PauseUtils__Init")
 call ExecuteFunc("T32__OnInit")
 call ExecuteFunc("TimerUtils__init")
@@ -42187,10 +41754,6 @@ endif
 set udg_s__xefx_dummy[this]=null
 return true
 endfunction
-function sa___prototype11_KT__InitTrigExecCount takes nothing returns boolean
-call KT__InitTrigExecCount(udg_f__arg_trigger1,udg_f__arg_integer1)
-return true
-endfunction
 function sa___prototype13_SetUnitMoveSpeedX takes nothing returns boolean
 call s__MoveSpeedXGUI__MoveSpeedStruct_update((udg_f__arg_unit1),((udg_f__arg_real1)*1.0))
 return true
@@ -42245,9 +41808,6 @@ set udg_st__HolyBirds___spelldata_periodic=CreateTrigger()
 call TriggerAddCondition(udg_st__HolyBirds___spelldata_periodic,Condition(function sa__HolyBirds___spelldata_periodic))
 set udg_st__xefx_onDestroy=CreateTrigger()
 call TriggerAddCondition(udg_st__xefx_onDestroy,Condition(function sa__xefx_onDestroy))
-set udg_st___prototype11[1]=CreateTrigger()
-call TriggerAddAction(udg_st___prototype11[1],function sa___prototype11_KT__InitTrigExecCount)
-call TriggerAddCondition(udg_st___prototype11[1],Condition(function sa___prototype11_KT__InitTrigExecCount))
 set udg_st___prototype13[1]=CreateTrigger()
 call TriggerAddAction(udg_st___prototype13[1],function sa___prototype13_SetUnitMoveSpeedX)
 call TriggerAddCondition(udg_st___prototype13[1],Condition(function sa___prototype13_SetUnitMoveSpeedX))
@@ -42264,7 +41824,6 @@ call ExecuteFunc("s__MoveSpeedXGUI__MoveSpeedStruct_MoveSpeedXGUI__M__onInit")
 call ExecuteFunc("s__Haunt__HauntSReturn_T32x__onInit")
 call ExecuteFunc("s__Haunt__HauntSGmove_T32x__onInit")
 call ExecuteFunc("s__Haunt__HauntS_T32x__onInit")
-call ExecuteFunc("s__MSX__SpeedData_onInit")
 call ExecuteFunc("s__HolyBirds___spelldata_onInit")
 endfunction
 function InitTrig_init takes nothing returns nothing
