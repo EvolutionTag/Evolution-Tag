@@ -3230,7 +3230,7 @@ native UnitAlive takes unit id returns boolean
 //! import vjass "..\ToCompile\Scripts\API\Init.j"
 //////////////////////////////////////////
 
-////! import zinc "..\ToCompile\Scripts\NeutralAI.j"
+//! import zinc "..\ToCompile\Scripts\NeutralAI.j"
 //! import zinc "..\ToCompile\Scripts\InfoQuests.j"
 //! import zinc "..\ToCompile\Scripts\timerdata.j"
 //! import zinc "..\ToCompile\Scripts\plan.j"
