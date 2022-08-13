@@ -13880,7 +13880,7 @@ endfunction
 function init_rect_control takes nothing returns nothing
     call ControlArea(MainMap,CONTROL_ID_MAIN_MAP,function init_MainMap_control,function control_MainMap,Condition(function control_MainMap_condition))
     call ControlArea(rct_resurrect_area,CONTROL_ID_RESURRECT,function init_rct_resurrect_area_control,function control_rct_resurrect_area,Condition(function control_rct_resurrect_area_condition))
-    call ControlArea(rct_Duel1_Area,CONTROL_ID_BATTLE,function init_rct_Duel1_Area_control,function control_rct_Duel1_Area,Condition(function control_rct_Duel1_Area_condition))
+    call ControlArea(udg_rct_Top_right_forest_minigame,CONTROL_ID_BATTLE,function init_rct_Duel1_Area_control,function control_rct_Duel1_Area,Condition(function control_rct_Duel1_Area_condition))
     call ControlArea(rct_Duel2_Area,CONTROL_ID_BATTLE_FOREST,function init_rct_Duel2_Area_control,function control_rct_Duel2_Area,Condition(function control_rct_Duel2_Area_condition))
     call ControlArea(rct_Final_Battle_Area,CONTROL_ID_BATTLE_FINAL,function init_rct_Final_Battle_Area_control,function control_rct_Final_Battle_Area,Condition(function control_rct_Final_Battle_Area_condition))
 endfunction
@@ -13926,8 +13926,8 @@ endfunction
 function Event_RemoveDuyingHeroes_Action takes nothing returns nothing
 local unit u=GetDyingUnit()
 if((RectContainsUnit(rct_Duel1_Area,u))or(RectContainsUnit(rct_Duel2_Area,u)))then
-call PlanUnitRemoval(u,5.0)
-call RemoveUnit(u)
+call SetUnitOwner(u,Player(15),false)
+call PlanUnitRemoval(u,15)
 endif
 set u=null
 endfunction
@@ -14078,37 +14078,48 @@ call SetSoundParamsFromLabel(udg_snd_BristlebackWhat1,"BristlebackWhat")
 call SetSoundDuration(udg_snd_BristlebackWhat1,424)
 call SetSoundChannel(udg_snd_BristlebackWhat1,8)
 endfunction
+function CreateTeamForestBattleItems takes nothing returns nothing
+    call CreateItem('I023',7142.100000,6046.000000)
+    call CreateItem('I023',5738.800000,6061.900000)
+    call CreateItem('I023',6210.100000,9645.200000)
+    call CreateItem('I023',6840.700000,9650.600000)
+    call CreateItem('I023',7577.600000,9653.500000)
+    call CreateItem('I023',6771.700000,6063.100000)
+    call CreateItem('I023',7903.900000,6042.800000)
+    call CreateItem('I023',7519.300000,6041.500000)
+    call CreateItem('I023',6250.100000,6068.600000)
+    call CreateItem('I01Z',8050.800000,5951.800000)
+    call CreateItem('I01Z',7865.200000,9651.300000)
+    call CreateItem('I01Z',5981.300000,9652.300000)
+    call CreateItem('I01Z',5608.400000,5953.700000)
+    call CreateItem('dust',5872.900000,5963.400000)
+    call CreateItem('dust',6357.900000,5981.800000)
+    call CreateItem('dust',6873.200000,5961.600000)
+    call CreateItem('dust',7281.700000,5960.600000)
+    call CreateItem('dust',7668.200000,5947.700000)
+    call CreateItem('dust',5694.100000,9559.600000)
+    call CreateItem('dust',6431.800000,9550.200000)
+    call CreateItem('dust',7045.600000,9532.400000)
+    call CreateItem('dust',7794.500000,9542.200000)
+    call CreateItem('I020',6743.600000,8030.400000)
+    call CreateItem('I01N',7366.700000,6041.400000)
+    call CreateItem('I01N',6510.900000,6072.600000)
+    call CreateItem('I01N',7216.200000,9666.800000)
+    call CreateItem('I01N',6495.500000,9661.200000)
+    call CreateItem('I01N',7759.100000,6062.800000)
+    call CreateItem('I01N',6949.600000,6058.100000)
+endfunction
 function CreateAllItems2 takes nothing returns nothing
-local integer itemID
-call CreateItem('I01N',6766.7,6041.4)
+local integer bj_itemRandomConsidered
+call CreateTeamForestBattleItems()
 call CreateItem('I01N',-8082.6,8631.7)
-call CreateItem('I01N',5910.9,6072.6)
-call CreateItem('I01N',6616.2,9666.8)
-call CreateItem('I01N',5895.5,9661.2)
-call CreateItem('I01N',7159.1,6062.8)
 call CreateItem('I01N',-8078.2,9233.5)
-call CreateItem('I01N',6349.6,6058.1)
-call CreateItem('I01N',5415.1,6050.0)
-call CreateItem('I01Z',7450.8,5951.8)
 call CreateItem('I01Z',-8077.6,8908.6)
 call CreateItem('I01Z',-8077.2,9592.2)
 call CreateItem('I01Z',2240.6,8960.6)
 call CreateItem('I01Z',2240.7,9566.4)
 call CreateItem('I01Z',2243.2,8363.8)
-call CreateItem('I01Z',7265.2,9651.3)
-call CreateItem('I01Z',5381.3,9652.3)
-call CreateItem('I01Z',5008.4,5953.7)
 call CreateItem('I01Z',-8075.7,8368.1)
-call CreateItem('I020',6143.6,8030.4)
-call CreateItem('I023',6542.1,6046.0)
-call CreateItem('I023',5138.8,6061.9)
-call CreateItem('I023',5610.1,9645.2)
-call CreateItem('I023',6240.7,9650.6)
-call CreateItem('I023',6977.6,9653.5)
-call CreateItem('I023',6171.7,6063.1)
-call CreateItem('I023',7303.9,6042.8)
-call CreateItem('I023',6919.3,6041.5)
-call CreateItem('I023',5650.1,6068.6)
 call CreateItem('dust',7167.7,-2565.7)
 call CreateItem('dust',6147.2,-1912.6)
 call CreateItem('dust',7184.8,1404.6)
@@ -14116,16 +14127,10 @@ call CreateItem('dust',6135.7,-2517.0)
 call CreateItem('dust',7162.0,-1264.9)
 call CreateItem('dust',6151.3,1369.2)
 call CreateItem('dust',6148.4,2755.7)
-call CreateItem('dust',5272.9,5963.4)
 call CreateItem('dust',7165.0,2652.0)
-call CreateItem('dust',5757.9,5981.8)
 call CreateItem('dust',7167.3,-1967.5)
-call CreateItem('dust',6273.2,5961.6)
 call CreateItem('dust',6150.3,2249.4)
-call CreateItem('dust',6681.7,5960.6)
 call CreateItem('dust',2239.5,8859.8)
-call CreateItem('dust',7068.2,5947.7)
-call CreateItem('dust',5094.1,9559.6)
 call CreateItem('dust',2238.2,9074.9)
 call CreateItem('dust',5831.8,9550.2)
 call CreateItem('dust',6445.6,9532.4)
@@ -14760,12 +14765,12 @@ set we=AddWeatherEffect(udg_rct_Bottom_Left_Sun,'LRaa')
 call EnableWeatherEffect(we,true)
 set udg_rct_Tool_Shop_Spawn=Rect(2080.0,-64.0,2336.0,128.0)
 set udg_rct_bottom_right_dont_blink_here_area=Rect(5504.0,-6528.0,8160.0,-4512.0)
-set udg_rct_Top_right_forest_minigame=Rect(4352.0,5824.0,8192.0,9728.0)
+set udg_rct_Top_right_forest_minigame=Rect(4912.0,5824.0,8890.0,9728.0)
 set udg_rct_Random_tree_spawn_area=Rect(4192.0,6944.0,8192.0,8864.0)
-set udg_rct_human_spawn_area=Rect(4928.0,6208.0,7424.0,6688.0)
-set udg_rct_undead_spawn_area_foest=Rect(4992.0,9088.0,7424.0,9504.0)
-set udg_rct_Region_110=Rect(7680.0,7584.0,8160.0,8160.0)
-set udg_rct_Region_111=Rect(4256.0,7712.0,4672.0,8192.0)
+set udg_rct_human_spawn_area=Rect(5616.0,6208.0,8144.0,6688.0)
+set udg_rct_undead_spawn_area_foest=Rect(5616.0,9088.0,8144.0,9504.0)
+set udg_rct_Region_110=Rect(8590.0,7584.0,8790.0,8160.0)
+set udg_rct_Region_111=Rect(4930.0,7712.0,5230.0,8192.0)
 set udg_rct_light_count_2=Rect(4256.0,5888.0,8064.0,7104.0)
 set udg_rct_dark_count_2=Rect(4288.0,8672.0,8160.0,9600.0)
 set udg_rct_trees_left_left=Rect(-6400.0,-512.0,-4128.0,1120.0)
@@ -17999,12 +18004,14 @@ return true
 endfunction
 function Trig_simple_bounds_system_Func002Func002A takes nothing returns nothing
 if(Trig_simple_bounds_system_Func002Func002Func001C())then
-call RemoveUnit(GetEnumUnit())
+call KillUnit(GetEnumUnit())
+call SetUnitOwner(GetEnumUnit(),Player(15),false)
 else
 endif
 endfunction
 function Trig_simple_bounds_system_Func002Func004A takes nothing returns nothing
-call RemoveUnit(GetEnumUnit())
+call KillUnit(GetEnumUnit())
+call SetUnitOwner(GetEnumUnit(),Player(15),false)
 endfunction
 function Trig_simple_bounds_system_Func002C takes nothing returns boolean
 if(not(udg_Duel_Boolean==true))then
@@ -18013,10 +18020,12 @@ endif
 return true
 endfunction
 function Trig_simple_bounds_system_Func003Func002A takes nothing returns nothing
-call RemoveUnit(GetEnumUnit())
+call KillUnit(GetEnumUnit())
+call SetUnitOwner(GetEnumUnit(),Player(15),false)
 endfunction
 function Trig_simple_bounds_system_Func003Func004A takes nothing returns nothing
-call RemoveUnit(GetEnumUnit())
+call KillUnit(GetEnumUnit())
+call SetUnitOwner(GetEnumUnit(),Player(15),false)
 endfunction
 function Trig_simple_bounds_system_Func003C takes nothing returns boolean
 if(not(udg_Duel_Boolean==false))then
@@ -21623,7 +21632,7 @@ set udg_DUEL_NEUTRAL=true
 call DisableTrigger(udg_trg_Send_in_the_neutrals)
 call ForForce(udg_PG1,function Trig_Duel_condition_v2_Copy_Func002Func004Func004A)
 call ForForce(udg_PG2,function Trig_Duel_condition_v2_Copy_Func002Func004Func005A)
-call PlanFunctionExecution("ResumeGameDuel",5)
+call PlanFunctionExecution("ResumeGameDuel",2)
 call DisableTrigger(GetTriggeringTrigger())
 else
 call ForGroupBJ(udg_human_unit_group,function Trig_Duel_condition_v2_Copy_Func002Func004Func009A)
@@ -43303,7 +43312,7 @@ call SetStartLocPrio(11,1,9,MAP_LOC_PRIO_HIGH)
 call SetStartLocPrio(11,2,10,MAP_LOC_PRIO_HIGH)
 endfunction
 function main takes nothing returns nothing
-call SetCameraBounds(-8192.0+GetCameraMargin(CAMERA_MARGIN_LEFT),-6400.0+GetCameraMargin(CAMERA_MARGIN_BOTTOM),8192.0-GetCameraMargin(CAMERA_MARGIN_RIGHT),9728.0-GetCameraMargin(CAMERA_MARGIN_TOP),-8192.0+GetCameraMargin(CAMERA_MARGIN_LEFT),9728.0-GetCameraMargin(CAMERA_MARGIN_TOP),8192.0-GetCameraMargin(CAMERA_MARGIN_RIGHT),-6400.0+GetCameraMargin(CAMERA_MARGIN_BOTTOM))
+call SetCameraBounds(-8192.0+GetCameraMargin(CAMERA_MARGIN_LEFT),-6400.0+GetCameraMargin(CAMERA_MARGIN_BOTTOM),8192.0-GetCameraMargin(CAMERA_MARGIN_RIGHT),9728.0-GetCameraMargin(CAMERA_MARGIN_TOP),-8769.0+GetCameraMargin(CAMERA_MARGIN_LEFT),9728.0-GetCameraMargin(CAMERA_MARGIN_TOP),8769.0-GetCameraMargin(CAMERA_MARGIN_RIGHT),-6400.0+GetCameraMargin(CAMERA_MARGIN_BOTTOM))
 call SetDayNightModels("Environment\\DNC\\DNCLordaeron\\DNCLordaeronTerrain\\DNCLordaeronTerrain.mdl","Environment\\DNC\\DNCLordaeron\\DNCLordaeronUnit\\DNCLordaeronUnit.mdl")
 call NewSoundEnvironment("Default")
 call SetAmbientDaySound("LordaeronSummerDay")
