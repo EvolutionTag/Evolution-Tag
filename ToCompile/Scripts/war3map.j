@@ -21066,8 +21066,8 @@ call ForGroupBJ(GetUnitsInRectAll(udg_rct_Duel_area),function Trig_Game_resume_F
 set bj_wantDestroyGroup=true
 call ForGroupBJ(GetUnitsInRectAll(udg_rct_Top_right_forest_minigame),function Trig_Game_resume_Func008A)
 call DisplayTimedTextToForce(GetPlayersAll(),30,"Game resumed!")
-set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectAll(udg_rct_WHOLE_MAP_NOT_DUEL),function Trig_Game_resume_Func011A)
+// set bj_wantDestroyGroup=true
+// call ForGroupBJ(GetUnitsInRectAll(udg_rct_WHOLE_MAP_NOT_DUEL),function Trig_Game_resume_Func011A)
 if((true))then
 call DestroyMultiboardBJ(GetLastCreatedMultiboard())
 call MultiboardDisplayBJ(true,udg_LIVES_MULTIBOARD)
