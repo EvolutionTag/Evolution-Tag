@@ -8850,16 +8850,16 @@ exitwhen idx>11
 endloop
 endfunction
 function Trig_PlayerDies_Conditions takes nothing returns boolean
-if(not(RectContainsUnit(udg_rct_Top_right_forest_minigame,GetDyingUnit())==false))then
+if(not(GetUnitAbilityLevel(GetDyingUnit(),'ACC1')>0))then
+    return false
+endif
+if(RectContainsUnit(udg_rct_Top_right_forest_minigame,GetDyingUnit()) and IsTriggerEnabled(udg_trg_simple_bounds_system))then
 return false
 endif
-if(not(RectContainsUnit(udg_rct_Duel_area,GetDyingUnit())==false))then
+if((RectContainsUnit(udg_rct_Duel_area,GetDyingUnit())) and IsTriggerEnabled(udg_trg_simple_bounds_system))then
 return false
 endif
 if(not(IsUnitType(GetDyingUnit(),UNIT_TYPE_SUMMONED)==false))then
-return false
-endif
-if(not(GetUnitAbilityLevel(GetDyingUnit(),'ACC1')>0))then
 return false
 endif
 if(not(IsUnitIllusionBJ(GetDyingUnit())==false))then
@@ -18037,29 +18037,19 @@ endif
 return true
 endfunction
 function Trig_simple_bounds_system_Actions takes nothing returns nothing
-if(Trig_simple_bounds_system_Func001C())then
 set bj_wantDestroyGroup=true
 call ForGroupBJ(GetUnitsInRectAll(udg_rct_Duel_area),function Trig_simple_bounds_system_Func001Func002A)
-else
-endif
-if(Trig_simple_bounds_system_Func002C())then
 set bj_wantDestroyGroup=true
 call ForGroupBJ(GetUnitsInRectAll(udg_rct_bottom_right_dont_blink_here_area),function Trig_simple_bounds_system_Func002Func002A)
-set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectAll(udg_rct_Dead_teleport_area),function Trig_simple_bounds_system_Func002Func004A)
-else
-endif
-if(Trig_simple_bounds_system_Func003C())then
 set bj_wantDestroyGroup=true
 call ForGroupBJ(GetUnitsInRectAll(udg_rct_Duel_area),function Trig_simple_bounds_system_Func003Func002A)
 set bj_wantDestroyGroup=true
 call ForGroupBJ(GetUnitsInRectAll(udg_rct_Top_right_forest_minigame),function Trig_simple_bounds_system_Func003Func004A)
-else
-endif
 endfunction
 function InitTrig_simple_bounds_system takes nothing returns nothing
 set udg_trg_simple_bounds_system=CreateTrigger()
-call TriggerRegisterTimerEventPeriodic(udg_trg_simple_bounds_system,6.00)
+call DisableTrigger(udg_trg_simple_bounds_system)
+call TriggerRegisterTimerEventPeriodic(udg_trg_simple_bounds_system,2.00)
 call TriggerAddAction(udg_trg_simple_bounds_system,function Trig_simple_bounds_system_Actions)
 endfunction
 function Trig_snowman_dies_Conditions takes nothing returns boolean
@@ -20960,7 +20950,8 @@ set udg_DUEL_NEUTRAL=true
 call DisableTrigger(udg_trg_Send_in_the_neutrals)
 call ForForce(udg_PG1,function Trig_Duel_condition_v2_Func002Func004Func004A)
 call ForForce(udg_PG2,function Trig_Duel_condition_v2_Func002Func004Func005A)
-call PlanFunctionExecution("ResumeGameDuel",5)
+call EnableTrigger(udg_trg_simple_bounds_system)
+call PlanFunctionExecution("ResumeGameDuel",2)
 call DisableTrigger(GetTriggeringTrigger())
 else
 call ForGroupBJ(udg_human_unit_group,function Trig_Duel_condition_v2_Func002Func004Func009A)
@@ -20981,7 +20972,7 @@ set udg_DUEL_NEUTRAL=true
 call DisableTrigger(udg_trg_Send_in_the_neutrals)
 call ForForce(udg_PG1,function Trig_Duel_condition_v2_Func003Func004Func004A)
 call ForForce(udg_PG2,function Trig_Duel_condition_v2_Func003Func004Func005A)
-call PlanFunctionExecution("ResumeGameDuel",5)
+call PlanFunctionExecution("ResumeGameDuel",2)
 call DisableTrigger(GetTriggeringTrigger())
 else
 call ForGroupBJ(udg_undead_unit_group,function Trig_Duel_condition_v2_Func003Func004Func009A)
@@ -20997,8 +20988,13 @@ call TriggerRegisterTimerEventPeriodic(udg_trg_Duel_condition_v2,2.51)
 call TriggerAddCondition(udg_trg_Duel_condition_v2,Condition(function Trig_Duel_condition_v2_Conditions))
 call TriggerAddAction(udg_trg_Duel_condition_v2,function Trig_Duel_condition_v2_Actions)
 endfunction
+function DisableSimpleBorderSystemTimed takes nothing returns nothing
+    call DestroyTimer(GetExpiredTimer())
+    call DisableTrigger(udg_trg_simple_bounds_system)
+endfunction
 function ResumeGameDuel takes nothing returns nothing
 call TriggerExecute(udg_trg_Game_resume)
+call TimerStart(CreateTimer(),5,false,function DisableSimpleBorderSystemTimed)
 endfunction
 function Trig_Game_resume_Func003Func001A takes nothing returns nothing
 call SetPlayerAllianceStateBJ(GetEnumPlayer(),Player(PLAYER_NEUTRAL_AGGRESSIVE),bj_ALLIANCE_ALLIED)
@@ -21631,6 +21627,7 @@ set udg_DUEL_NEUTRAL=true
 call DisableTrigger(udg_trg_Send_in_the_neutrals)
 call ForForce(udg_PG1,function Trig_Duel_condition_v2_Copy_Func002Func004Func004A)
 call ForForce(udg_PG2,function Trig_Duel_condition_v2_Copy_Func002Func004Func005A)
+call EnableTrigger(udg_trg_simple_bounds_system)
 call PlanFunctionExecution("ResumeGameDuel",2)
 call DisableTrigger(GetTriggeringTrigger())
 else
@@ -21652,7 +21649,8 @@ set udg_DUEL_NEUTRAL=true
 call DisableTrigger(udg_trg_Send_in_the_neutrals)
 call ForForce(udg_PG1,function Trig_Duel_condition_v2_Copy_Func003Func004Func004A)
 call ForForce(udg_PG2,function Trig_Duel_condition_v2_Copy_Func003Func004Func005A)
-call PlanFunctionExecution("ResumeGameDuel",5)
+call EnableTrigger(udg_trg_simple_bounds_system)
+call PlanFunctionExecution("ResumeGameDuel",2)
 call DisableTrigger(GetTriggeringTrigger())
 else
 call ForGroupBJ(udg_undead_unit_group,function Trig_Duel_condition_v2_Copy_Func003Func004Func009A)
