@@ -5,7 +5,7 @@ library SyncData requires APIMemoryBitwise
     public integer previousgroups[];
     public integer prevpreviousgroups[];
     public integer no_data_marker=0;
-    public constant real SyncDataTimeout = 0.1;
+    public constant real SyncDataTimeout = 2;
 
     public constant integer si__Sync=1;
     public integer si__Sync_F=0;
