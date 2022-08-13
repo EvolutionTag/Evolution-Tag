@@ -42513,7 +42513,7 @@ endif
 return true
 endfunction
 function Trig_Dialogue_pt4_Actions takes nothing returns nothing
-call ForForce(GetPlayersAll(),function Trig_Dialogue_pt4_Func001A)
+call Trig_Dialogue_pt4_Func001A()
 if(Trig_Dialogue_pt4_Func002C())then
 call ForForce(udg_Humans,function Trig_Dialogue_pt4_Func002Func001A)
 call ForForce(udg_Evil,function Trig_Dialogue_pt4_Func002Func002A)
