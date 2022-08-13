@@ -8853,10 +8853,10 @@ function Trig_PlayerDies_Conditions takes nothing returns boolean
 if(not(GetUnitAbilityLevel(GetDyingUnit(),'ACC1')>0))then
     return false
 endif
-if(RectContainsUnit(udg_rct_Top_right_forest_minigame,GetDyingUnit()) and IsTriggerEnabled(udg_trg_simple_bounds_system))then
+if(RectContainsUnit(udg_rct_Top_right_forest_minigame,GetDyingUnit()) and (IsTriggerEnabled(udg_trg_simple_bounds_system) or udg_Duel_Boolean))then
 return false
 endif
-if((RectContainsUnit(udg_rct_Duel_area,GetDyingUnit())) and IsTriggerEnabled(udg_trg_simple_bounds_system))then
+if((RectContainsUnit(udg_rct_Duel_area,GetDyingUnit())) and (IsTriggerEnabled(udg_trg_simple_bounds_system) or udg_Duel_Boolean))then
 return false
 endif
 if(not(IsUnitType(GetDyingUnit(),UNIT_TYPE_SUMMONED)==false))then
