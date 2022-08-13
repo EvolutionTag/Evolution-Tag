@@ -13827,7 +13827,7 @@ function init_MainMap_control takes nothing returns nothing
 endfunction
 function control_MainMap takes nothing returns nothing
     call return2Bounds(ControlledAreas[CONTROL_ID_MAIN_MAP])
-    call BJDebugMsg("returning "+I2S(CONTROL_ID_MAIN_MAP))
+    //call BJDebugMsg("returning "+I2S(CONTROL_ID_MAIN_MAP))
 endfunction
 function control_MainMap_condition takes nothing returns boolean
     return IsUnitInGroup(GetTriggerUnit(),ControlledGroups[CONTROL_ID_MAIN_MAP])
@@ -13837,7 +13837,7 @@ function init_rct_Final_Battle_Area_control takes nothing returns nothing
 endfunction
 function control_rct_Final_Battle_Area takes nothing returns nothing
     call return2Bounds(ControlledAreas[CONTROL_ID_BATTLE_FINAL])
-    call BJDebugMsg("returning "+I2S(CONTROL_ID_BATTLE_FINAL))
+    //call BJDebugMsg("returning "+I2S(CONTROL_ID_BATTLE_FINAL))
 
 endfunction
 function control_rct_Final_Battle_Area_condition takes nothing returns boolean
@@ -13848,7 +13848,7 @@ function init_rct_Duel1_Area_control takes nothing returns nothing
 endfunction
 function control_rct_Duel1_Area takes nothing returns nothing
     call return2Bounds(ControlledAreas[CONTROL_ID_BATTLE])
-    call BJDebugMsg("returning "+I2S(CONTROL_ID_BATTLE))
+    //call BJDebugMsg("returning "+I2S(CONTROL_ID_BATTLE))
 
 endfunction
 function control_rct_Duel1_Area_condition takes nothing returns boolean
@@ -13859,7 +13859,7 @@ function init_rct_Duel2_Area_control takes nothing returns nothing
 endfunction
 function control_rct_Duel2_Area takes nothing returns nothing
     call return2Bounds(ControlledAreas[CONTROL_ID_BATTLE_FOREST])
-    call BJDebugMsg("returning "+I2S(CONTROL_ID_BATTLE_FOREST))
+    //call BJDebugMsg("returning "+I2S(CONTROL_ID_BATTLE_FOREST))
 
 endfunction
 function control_rct_Duel2_Area_condition takes nothing returns boolean
@@ -13870,7 +13870,7 @@ function init_rct_resurrect_area_control takes nothing returns nothing
 endfunction
 function control_rct_resurrect_area takes nothing returns nothing
     call return2Bounds(ControlledAreas[CONTROL_ID_RESURRECT])
-    call BJDebugMsg("returning "+I2S(CONTROL_ID_RESURRECT))
+    //call BJDebugMsg("returning "+I2S(CONTROL_ID_RESURRECT))
 
 endfunction
 function control_rct_resurrect_area_condition takes nothing returns boolean
