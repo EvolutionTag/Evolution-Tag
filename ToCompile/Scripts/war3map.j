@@ -1,6 +1,11 @@
 globals
 key kDamage
 trigger udg_trg_Finger_of_Death_2
+integer CONTROL_ID_MAIN_MAP = 1
+integer CONTROL_ID_RESURRECT = 2
+integer CONTROL_ID_BATTLE = 3
+integer CONTROL_ID_BATTLE_FOREST = 4
+integer CONTROL_ID_BATTLE_FINAL = 5
 location array ResurrectionLocations
 trigger gg_trg_GandalfTeleport= null
 trigger gg_trg_GandalfTeleport_Effect= null
@@ -2935,7 +2940,6 @@ boolexpr f__arg_boolexpr1
 integer f__arg_this
 integer BlackHoles=0
 rect MainMap
-trigger trg_UnitLeftsMainMap
 trigger trg_UnitLeftsFinal_Battle_Area
 trigger trg_UnitLeftsDuel1_Area
 trigger trg_UnitLeftsDuel2_Area
@@ -2950,8 +2954,11 @@ trigger trg_RemoveDuyingHeroes
 group UnexpectedEnterer
 group array LeaversFromAreas
 
-group GeneralLeaversFromAreas
+group GetneralControlledFroup
 rect array ControlledAreas
+group array ControlledGroups
+trigger array ControllTrigger
+trigger array InitTrigger
 integer LeaverGold
 integer LeaverLumber
 group InvulUnits
@@ -13759,18 +13766,125 @@ set rct_Duel1_Area=Rect(4352.,5856.,8096.,9728.)
 set rct_Duel2_Area=Rect(5088.,-4320.,8160.,4256.)
 set rct_resurrect_area=Rect(5248,4576,8064,5504)
 set Resurrecting_units=CreateGroup()
-set ControlledAreas[0]=MainMap
-set ControlledAreas[1]=rct_Final_Battle_Area
-set ControlledAreas[2]=rct_Duel1_Area
-set ControlledAreas[3]=rct_Duel2_Area
-set ControlledAreas[4]=rct_resurrect_area
-set LeaversFromAreas[0]=CreateGroup()
-set LeaversFromAreas[1]=CreateGroup()
-set LeaversFromAreas[2]=CreateGroup()
-set LeaversFromAreas[3]=CreateGroup()
-set GeneralLeaversFromAreas = CreateGroup()
-set LeaversFromAreas[4]=CreateGroup()
+set GetneralControlledFroup = CreateGroup()
 endfunction
+
+function UnitEnters_Condition takes nothing returns boolean
+    if(IsUnitInGroup(GetTriggerUnit(),GetneralControlledFroup)) then
+        return false
+    endif
+    return true
+endfunction
+
+function UnitEnters_STD_Action takes nothing returns nothing
+    call GroupAddUnit(GetneralControlledFroup,GetTriggerUnit())
+endfunction
+
+function ControlArea takes rect r, integer id, code initaction, code runaction, conditionfunc runcondition returns nothing
+    set ControlledAreas[id] = r
+    set ControlledGroups[id] = CreateGroup()
+    set ControllTrigger[id] = CreateTrigger()
+    call TriggerAddAction(ControllTrigger[id],runaction)
+    call TriggerAddCondition(ControllTrigger[id],runcondition)
+    call TriggerRegisterLeaveRectSimple(ControllTrigger[id],r)
+    set InitTrigger[id] = CreateTrigger()
+    call TriggerAddCondition(InitTrigger[id],function UnitEnters_Condition)
+    call TriggerAddAction(InitTrigger[id],function UnitEnters_STD_Action)
+    call TriggerAddAction(InitTrigger[id],initaction)
+    call TriggerRegisterEnterRectSimple(InitTrigger[id],r)
+endfunction
+
+function return2Bounds takes rect area returns nothing
+    local unit u = GetTriggerUnit()
+    local real x=GetUnitX(u)
+    local real y=GetUnitY(u)
+    local integer setted=0
+    local integer idx=0
+    set warpantibug=warpantibug+1
+    if(x>=GetRectMaxX(area))then
+    set x=GetRectMaxX(area)-32.
+    set setted=1
+    elseif(x<=GetRectMinX(area))then
+    set x=GetRectMinX(area)+32.
+    set setted=1
+    endif
+    if(y>=GetRectMaxY(area))then
+    set y=GetRectMaxY(area)-32.
+    set setted=1
+    elseif(y<=GetRectMinY(area))then
+    set y=GetRectMinY(area)+32.
+    set setted=1
+    endif
+    if(1==setted)then
+    call SetUnitX(u,x)
+    call SetUnitY(u,y)
+    endif
+    set u = null
+endfunction
+
+function init_MainMap_control takes nothing returns nothing
+    call GroupAddUnit(ControlledGroups[CONTROL_ID_MAIN_MAP],GetTriggerUnit())
+endfunction
+function control_MainMap takes nothing returns nothing
+    call return2Bounds(ControlledAreas[CONTROL_ID_MAIN_MAP])
+    call BJDebugMsg("returning "+I2S(CONTROL_ID_MAIN_MAP))
+endfunction
+function control_MainMap_condition takes nothing returns boolean
+    return IsUnitInGroup(GetTriggerUnit(),ControlledGroups[CONTROL_ID_MAIN_MAP])
+endfunction
+function init_rct_Final_Battle_Area_control takes nothing returns nothing
+    call GroupAddUnit(ControlledGroups[CONTROL_ID_BATTLE_FINAL],GetTriggerUnit())
+endfunction
+function control_rct_Final_Battle_Area takes nothing returns nothing
+    call return2Bounds(ControlledAreas[CONTROL_ID_BATTLE_FINAL])
+    call BJDebugMsg("returning "+I2S(CONTROL_ID_BATTLE_FINAL))
+
+endfunction
+function control_rct_Final_Battle_Area_condition takes nothing returns boolean
+    return IsUnitInGroup(GetTriggerUnit(),ControlledGroups[CONTROL_ID_BATTLE_FINAL])
+endfunction
+function init_rct_Duel1_Area_control takes nothing returns nothing
+    call GroupAddUnit(ControlledGroups[CONTROL_ID_BATTLE],GetTriggerUnit())
+endfunction
+function control_rct_Duel1_Area takes nothing returns nothing
+    call return2Bounds(ControlledAreas[CONTROL_ID_BATTLE])
+    call BJDebugMsg("returning "+I2S(CONTROL_ID_BATTLE))
+
+endfunction
+function control_rct_Duel1_Area_condition takes nothing returns boolean
+    return IsUnitInGroup(GetTriggerUnit(),ControlledGroups[CONTROL_ID_BATTLE])
+endfunction
+function init_rct_Duel2_Area_control takes nothing returns nothing
+    call GroupAddUnit(ControlledGroups[CONTROL_ID_BATTLE_FOREST],GetTriggerUnit())
+endfunction
+function control_rct_Duel2_Area takes nothing returns nothing
+    call return2Bounds(ControlledAreas[CONTROL_ID_BATTLE_FOREST])
+    call BJDebugMsg("returning "+I2S(CONTROL_ID_BATTLE_FOREST))
+
+endfunction
+function control_rct_Duel2_Area_condition takes nothing returns boolean
+    return IsUnitInGroup(GetTriggerUnit(),ControlledGroups[CONTROL_ID_BATTLE_FOREST])
+endfunction
+function init_rct_resurrect_area_control takes nothing returns nothing
+    call GroupAddUnit(ControlledGroups[CONTROL_ID_RESURRECT],GetTriggerUnit())
+endfunction
+function control_rct_resurrect_area takes nothing returns nothing
+    call return2Bounds(ControlledAreas[CONTROL_ID_RESURRECT])
+    call BJDebugMsg("returning "+I2S(CONTROL_ID_RESURRECT))
+
+endfunction
+function control_rct_resurrect_area_condition takes nothing returns boolean
+    return IsUnitInGroup(GetTriggerUnit(),ControlledGroups[CONTROL_ID_RESURRECT])
+endfunction
+
+function init_rect_control takes nothing returns nothing
+    call ControlArea(MainMap,CONTROL_ID_MAIN_MAP,function init_MainMap_control,function control_MainMap,Condition(function control_MainMap_condition))
+    call ControlArea(rct_resurrect_area,CONTROL_ID_RESURRECT,function init_rct_resurrect_area_control,function control_rct_resurrect_area,Condition(function control_rct_resurrect_area_condition))
+    call ControlArea(rct_Duel1_Area,CONTROL_ID_BATTLE,function init_rct_Duel1_Area_control,function control_rct_Duel1_Area,Condition(function control_rct_Duel1_Area_condition))
+    call ControlArea(rct_Duel2_Area,CONTROL_ID_BATTLE_FOREST,function init_rct_Duel2_Area_control,function control_rct_Duel2_Area,Condition(function control_rct_Duel2_Area_condition))
+    call ControlArea(rct_Final_Battle_Area,CONTROL_ID_BATTLE_FINAL,function init_rct_Final_Battle_Area_control,function control_rct_Final_Battle_Area,Condition(function control_rct_Final_Battle_Area_condition))
+endfunction
+
 function RaccoonDropItems takes nothing returns nothing
 local widget trigWidget=null
 local unit trigUnit=null
@@ -13807,83 +13921,6 @@ local trigger t=CreateTrigger()
 call TriggerRegisterTimerEvent(t,3.,true)
 call TriggerAddAction(t,function warpantibug_action)
 set t=null
-endfunction
-function return2Bounds takes integer area returns nothing
-local unit u = GetTriggerUnit()
-local real x=GetUnitX(u)
-local real y=GetUnitY(u)
-local integer setted=0
-local integer idx=0
-local rect rct=ControlledAreas[area]
-if(IsUnitInGroup(u,TeleportedUnits)) then
-set u = null
-set rct = null
-return
-endif
-call GroupAddUnit(TeleportedUnits,u)
-call PlanUnitRemovalFromGroup(u,TeleportedUnits,0.001)
-if(warpantibug<1000)then
-set warpantibug=warpantibug+1
-if(x>=GetRectMaxX(rct))then
-set x=GetRectMaxX(rct)-32.
-set setted=1
-elseif(x<=GetRectMinX(rct))then
-set x=GetRectMinX(rct)+32.
-set setted=1
-endif
-if(y>=GetRectMaxY(rct))then
-set y=GetRectMaxY(rct)-32.
-set setted=1
-elseif(y<=GetRectMinY(rct))then
-set y=GetRectMinY(rct)+32.
-set setted=1
-endif
-endif
-if(1==setted)then
-call SetUnitPosition(u,x,y)
-endif
-set u = null
-set rct=null
-endfunction
-function trg_UnitLeftsMainMap_Actions takes nothing returns nothing
-call return2Bounds(0)
-endfunction
-function InitTrig_trg_UnitLeftsMainMap takes nothing returns nothing
-set trg_UnitLeftsMainMap=CreateTrigger()
-call TriggerRegisterLeaveRectSimple(trg_UnitLeftsMainMap,MainMap)
-call TriggerAddAction(trg_UnitLeftsMainMap,function trg_UnitLeftsMainMap_Actions)
-endfunction
-function trg_UnitLeftsFinal_Battle_Area_Actions takes nothing returns nothing
-call return2Bounds(1)
-endfunction
-function InitTrig_trg_UnitLeftsFinal_Battle_Area takes nothing returns nothing
-set trg_UnitLeftsFinal_Battle_Area=CreateTrigger()
-call TriggerRegisterLeaveRectSimple(trg_UnitLeftsFinal_Battle_Area,rct_Final_Battle_Area)
-call TriggerAddAction(trg_UnitLeftsFinal_Battle_Area,function trg_UnitLeftsFinal_Battle_Area_Actions)
-endfunction
-function trg_UnitLeftsDuel1_Area_Actions takes nothing returns nothing
-call return2Bounds(2)
-endfunction
-function InitTrig_trg_UnitLeftsDuel1_Area takes nothing returns nothing
-set trg_UnitLeftsDuel1_Area=CreateTrigger()
-call TriggerRegisterLeaveRectSimple(trg_UnitLeftsDuel1_Area,rct_Duel1_Area)
-call TriggerAddAction(trg_UnitLeftsDuel1_Area,function trg_UnitLeftsDuel1_Area_Actions)
-endfunction
-function trg_UnitLeftsDuel2_Area_Actions takes nothing returns nothing
-call return2Bounds(3)
-endfunction
-function InitTrig_trg_UnitLeftsDuel2_Area takes nothing returns nothing
-set trg_UnitLeftsDuel2_Area=CreateTrigger()
-call TriggerRegisterLeaveRectSimple(trg_UnitLeftsDuel2_Area,rct_Duel2_Area)
-call TriggerAddAction(trg_UnitLeftsDuel2_Area,function trg_UnitLeftsDuel2_Area_Actions)
-endfunction
-function trg_UnitLeftsResurrecting_Area_Actions takes nothing returns nothing
-call return2Bounds(4)
-endfunction
-function InitTrig_trg_UnitLeftsResurrecting_Area takes nothing returns nothing
-set trg_UnitLeftsResurrecting_Area=CreateTrigger()
-call TriggerRegisterLeaveRectSimple(trg_UnitLeftsResurrecting_Area,rct_resurrect_area)
-call TriggerAddAction(trg_UnitLeftsResurrecting_Area,function trg_UnitLeftsResurrecting_Area_Actions)
 endfunction
 
 function Event_RemoveDuyingHeroes_Action takes nothing returns nothing
@@ -15656,7 +15693,6 @@ endfunction
 function EnableFinalBattle takes nothing returns nothing
 set udg_FinalBattle_On=true
 call ExecuteFunc("All_Morphs_return")
-call DisableTrigger(trg_UnitLeftsResurrecting_Area)
 endfunction
 function Trig_Skip_to_Final_Battle_Actions takes nothing returns nothing
 if(Trig_Skip_to_Final_Battle_Func003C())then
@@ -15672,7 +15708,6 @@ call PlaySoundBJ(udg_snd_ArrangedTeamInvitation)
 call KillSoundWhenDoneBJ(GetLastPlayedSound())
 call DisableTrigger(udg_trg_Final_Battle_Timer)
 call DisableTrigger(udg_trg_Final_Battle_Timer_Copy)
-call DisableTrigger(trg_UnitLeftsMainMap)
 call EnableFinalBattle()
 call ConditionalTriggerExecute(udg_trg_Lives_Cop)
 call ConditionalTriggerExecute(udg_trg_Lives_Cop_neut_alliance_1a)
@@ -21090,8 +21125,11 @@ else
 call SetUnitInvulnerable(GetEnumUnit(),true)
 endif
 endfunction
+function ReturnUnitsToMainArea takes nothing returns nothing
+    call ForGroupBJ(GetUnitsInRectAll(udg_rct_Dead_teleport_area),function Trig_Duel_in_forest_area_Func007A)
+endfunction
 function Trig_Duel_in_forest_area_Actions takes nothing returns nothing
-call ForGroupBJ(GetUnitsInRectAll(udg_rct_Dead_teleport_area),function Trig_Duel_in_forest_area_Func007A)
+call ReturnUnitsToMainArea()
 call ExecuteFunc("All_Morphs_return")
 call CheckTriggers()
 set udg_Duel_Boolean=true
@@ -22058,22 +22096,30 @@ function Trig_FinalBattle_Run_MoveUnits takes nothing returns nothing
 local location loc = null
 if(Trig_FinalBattle_Run_Filter_Humans())then
 set loc=GetRandomLocInRect(udg_rct_FB_Human_Spawn)
+call GroupRemoveUnit(ControlledGroups[CONTROL_ID_MAIN_MAP],GetEnumUnit())
+call GroupRemoveUnit(GetneralControlledFroup,GetEnumUnit())
 call SetUnitPositionLoc(GetEnumUnit(),loc)
 call RemoveLocation(loc)
 elseif(Trig_FinalBattle_Run_Fulter_Undeads())then
 set loc=GetRandomLocInRect(udg_rct_FB_Undead_Spawn)
+call GroupRemoveUnit(ControlledGroups[CONTROL_ID_MAIN_MAP],GetEnumUnit())
+call GroupRemoveUnit(GetneralControlledFroup,GetEnumUnit())
 call SetUnitPositionLoc(GetEnumUnit(),loc)
 call RemoveLocation(loc)
 elseif(Trig_FinalBattle_Run_Fulter_Undead_Allies()) then
     set loc=GetRandomLocInRect(udg_rct_FB_Neutral_Spawn_Undead_Side)
     call SetUnitPositionLoc(GetEnumUnit(),loc)
-    call IssueTargetDestructableOrder(GetEnumUnit(),"attack",gg_dest_LTg3_4382)
-    call RemoveLocation(loc)
+    call GroupRemoveUnit(ControlledGroups[CONTROL_ID_MAIN_MAP],GetEnumUnit())
+call GroupRemoveUnit(GetneralControlledFroup,GetEnumUnit())
+call IssueTargetDestructableOrder(GetEnumUnit(),"attack",gg_dest_LTg3_4382)
+call RemoveLocation(loc)
 elseif(Trig_FinalBattle_Run_Fulter_Human_Allies()) then
     set loc=GetRandomLocInRect(udg_rct_FB_Neutral_Spawn_Human_Side)
     call SetUnitPositionLoc(GetEnumUnit(),loc)
-    call IssueTargetDestructableOrder(GetEnumUnit(),"attack",gg_dest_LTg3_4382)
-    call RemoveLocation(loc)
+    call GroupRemoveUnit(ControlledGroups[CONTROL_ID_MAIN_MAP],GetEnumUnit())
+call GroupRemoveUnit(GetneralControlledFroup,GetEnumUnit())
+call IssueTargetDestructableOrder(GetEnumUnit(),"attack",gg_dest_LTg3_4382)
+call RemoveLocation(loc)
 endif
 endfunction
 function Trig_FinalBattle_Run_Func016C takes nothing returns boolean
@@ -22082,30 +22128,34 @@ return false
 endif
 return true
 endfunction
-
+function Final_Battke_Run_1 takes nothing returns nothing
+    call DestroyTimer(GetExpiredTimer())
+    call DisableTrigger(InitTrigger[CONTROL_ID_MAIN_MAP])
+    call EnableFinalBattle()
+    call PauseTimerBJ(true,udg_CountdownTimer_Copy)
+    call DestroyTimerDialogBJ(udg_CountdownTimerWindow_Copy)
+    call EndThematicMusicBJ()
+    call StopMusicBJ(false)
+    call PlayMusicBJ(udg_snd_PH1)
+    call FogEnableOff()
+    call FogMaskEnableOff()
+    call ForForce(udg_Humans,function Trig_FinalBattle_Run_Func012A)
+    call ForForce(udg_Evil,function Trig_FinalBattle_Run_Func013A)
+    set bj_wantDestroyGroup=true
+    call ForGroupBJ(GetUnitsInRectMatchingFiltered(GetPlayableMapRect()),function Trig_FinalBattle_Run_MoveUnits)
+    call ForGroupBJ(GetUnitsInRectAll(udg_rct_WHOLE_MAP_NOT_DUEL),function Final_Battle_Building_Interaction)
+    call DestructableRestoreLife(gg_dest_LTg3_4382,GetDestructableMaxLife(gg_dest_LTg3_4382),true)
+    //call DisableTrigger(udg_trg_Dead_area_bot_left)
+    //call DisableTrigger(udg_trg_Dead_area_bot_right)
+    //call DisableTrigger(udg_trg_Dead_area_top_left)
+    //call DisableTrigger(udg_trg_Dead_area_top_right_Copy)
+    //call EnableTrigger(udg_trg_stop_tele_FB)
+    call DisableTrigger(GetTriggeringTrigger())
+    call EnableTrigger(InitTrigger[CONTROL_ID_MAIN_MAP])
+endfunction
 function Final_Battle_Run takes nothing returns nothing
-    //call PrintHidden("Trig_FinalBattle_Run_Actions")
-call EnableFinalBattle()
-call DisableTrigger(trg_UnitLeftsMainMap)
-call PauseTimerBJ(true,udg_CountdownTimer_Copy)
-call DestroyTimerDialogBJ(udg_CountdownTimerWindow_Copy)
-call EndThematicMusicBJ()
-call StopMusicBJ(false)
-call PlayMusicBJ(udg_snd_PH1)
-call FogEnableOff()
-call FogMaskEnableOff()
-call ForForce(udg_Humans,function Trig_FinalBattle_Run_Func012A)
-call ForForce(udg_Evil,function Trig_FinalBattle_Run_Func013A)
-set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectMatchingFiltered(GetPlayableMapRect()),function Trig_FinalBattle_Run_MoveUnits)
-call ForGroupBJ(GetUnitsInRectAll(udg_rct_WHOLE_MAP_NOT_DUEL),function Final_Battle_Building_Interaction)
-call DestructableRestoreLife(gg_dest_LTg3_4382,GetDestructableMaxLife(gg_dest_LTg3_4382),true)
-call DisableTrigger(udg_trg_Dead_area_bot_left)
-call DisableTrigger(udg_trg_Dead_area_bot_right)
-call DisableTrigger(udg_trg_Dead_area_top_left)
-call DisableTrigger(udg_trg_Dead_area_top_right_Copy)
-call EnableTrigger(udg_trg_stop_tele_FB)
-call DisableTrigger(GetTriggeringTrigger())
+    call ReturnUnitsToMainArea()
+    call TimerStart(CreateTimer(),0.01,false,function Final_Battke_Run_1)
 endfunction
 function InitTrig_FinalBattle_Run takes nothing returns nothing
 set udg_trg_Lives_Cop=CreateTrigger()
@@ -22400,7 +22450,6 @@ function Final_Battle_Run_Neut_alliance takes nothing returns nothing
 endfunction
 function Trig_FinalBattle_Run_neut_alliance_1a_Actions takes nothing returns nothing
 call EnableFinalBattle()
-call DisableTrigger(trg_UnitLeftsMainMap)
 call PauseTimerBJ(true,udg_CountdownTimer_Copy)
 call DestroyTimerDialogBJ(udg_CountdownTimerWindow_Copy)
 call EndThematicMusicBJ()
@@ -22673,7 +22722,6 @@ endfunction
 function Trig_FinalBattle_Runy_Copy_Actions takes nothing returns nothing
     //call PrintHidden("Trig_FinalBattle_Runy_Copy_Actions")
 call EnableFinalBattle()
-call DisableTrigger(trg_UnitLeftsMainMap)
 call PauseTimerBJ(true,udg_CountdownTimer_Copy)
 call DestroyTimerDialogBJ(udg_CountdownTimerWindow_Copy)
 call EndThematicMusicBJ()
@@ -22964,7 +23012,6 @@ return true
 endfunction
 function Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Actions takes nothing returns nothing
 call EnableFinalBattle()
-call DisableTrigger(trg_UnitLeftsMainMap)
 call PauseTimerBJ(true,udg_CountdownTimer_Copy)
 call DestroyTimerDialogBJ(udg_CountdownTimerWindow_Copy)
 call EndThematicMusicBJ()
@@ -23228,9 +23275,13 @@ function BuffUnitThatEntersTpZone takes nothing returns nothing
 endfunction
 function Trig_Dead_area_top_left_Actions takes nothing returns nothing
     call BuffUnitThatEntersTpZone()
+call GroupRemoveUnit(GetneralControlledFroup,GetTriggerUnit())    
+call GroupRemoveUnit(ControlledGroups[CONTROL_ID_RESURRECT],GetTriggerUnit()) 
+call DisableTrigger(InitTrigger[CONTROL_ID_RESURRECT])   
 call SetUnitPositionLoc(GetEnteringUnit(),GetRandomLocInRect(udg_rct_Trees_top_left))
 call SmartCameraPanBJModified(GetOwningPlayer(GetEnteringUnit()),GetUnitLoc(GetEnteringUnit()),0)
 call AddSpecialEffectLocBJ(GetUnitLoc(GetEnteringUnit()),"Abilities\\Spells\\NightElf\\Blink\\BlinkCaster.mdl")
+call EnableTrigger(InitTrigger[CONTROL_ID_RESURRECT])
 endfunction
 function InitTrig_Dead_area_top_left takes nothing returns nothing
 set udg_trg_Dead_area_top_left=CreateTrigger()
@@ -23309,9 +23360,13 @@ return true
 endfunction
 function Trig_Dead_area_bot_left_Actions takes nothing returns nothing
 call BuffUnitThatEntersTpZone()
+call GroupRemoveUnit(GetneralControlledFroup,GetTriggerUnit())    
+call GroupRemoveUnit(ControlledGroups[CONTROL_ID_RESURRECT],GetTriggerUnit()) 
+call DisableTrigger(InitTrigger[CONTROL_ID_RESURRECT])   
 call SetUnitPositionLoc(GetEnteringUnit(),GetRandomLocInRect(udg_rct_bottom_left))
 call SmartCameraPanBJModified(GetOwningPlayer(GetEnteringUnit()),GetUnitLoc(GetEnteringUnit()),0)
 call AddSpecialEffectLocBJ(GetUnitLoc(GetEnteringUnit()),"Abilities\\Spells\\NightElf\\Blink\\BlinkCaster.mdl")
+call EnableTrigger(InitTrigger[CONTROL_ID_RESURRECT])
 endfunction
 function InitTrig_Dead_area_bot_left takes nothing returns nothing
 set udg_trg_Dead_area_bot_left=CreateTrigger()
@@ -23390,9 +23445,13 @@ return true
 endfunction
 function Trig_Dead_area_bot_right_Actions takes nothing returns nothing
     call BuffUnitThatEntersTpZone()
+    call GroupRemoveUnit(GetneralControlledFroup,GetTriggerUnit())    
+    call GroupRemoveUnit(ControlledGroups[CONTROL_ID_RESURRECT],GetTriggerUnit()) 
+    call DisableTrigger(InitTrigger[CONTROL_ID_RESURRECT])   
 call SetUnitPositionLoc(GetEnteringUnit(),GetRandomLocInRect(udg_rct_Bot_right))
 call SmartCameraPanBJModified(GetOwningPlayer(GetEnteringUnit()),GetUnitLoc(GetEnteringUnit()),0)
 call AddSpecialEffectLocBJ(GetUnitLoc(GetEnteringUnit()),"Abilities\\Spells\\NightElf\\Blink\\BlinkCaster.mdl")
+    call EnableTrigger(InitTrigger[CONTROL_ID_RESURRECT])
 endfunction
 function InitTrig_Dead_area_bot_right takes nothing returns nothing
 set udg_trg_Dead_area_bot_right=CreateTrigger()
@@ -23471,9 +23530,13 @@ return true
 endfunction
 function Trig_Dead_area_top_right_Copy_Actions takes nothing returns nothing
 call BuffUnitThatEntersTpZone()
+call GroupRemoveUnit(GetneralControlledFroup,GetTriggerUnit())    
+call GroupRemoveUnit(ControlledGroups[CONTROL_ID_RESURRECT],GetTriggerUnit()) 
+call DisableTrigger(InitTrigger[CONTROL_ID_RESURRECT])   
 call SetUnitPositionLoc(GetEnteringUnit(),GetRandomLocInRect(udg_rct_Trees_Right))
 call SmartCameraPanBJModified(GetOwningPlayer(GetEnteringUnit()),GetUnitLoc(GetEnteringUnit()),0)
 call AddSpecialEffectLocBJ(GetUnitLoc(GetEnteringUnit()),"Abilities\\Spells\\NightElf\\Blink\\BlinkCaster.mdl")
+call EnableTrigger(InitTrigger[CONTROL_ID_RESURRECT])
 endfunction
 function InitTrig_Dead_area_top_right_Copy takes nothing returns nothing
 set udg_trg_Dead_area_top_right_Copy=CreateTrigger()
@@ -41017,6 +41080,7 @@ function InitCustomTriggers2 takes nothing returns nothing
 call TimerStart(CreateTimer(),6,false,function InitStunDispatchers)
 call LuaCall_Init()
 call NeutralAI___Init()
+call init_rect_control()
 call InitTrig_Dead_area_top_left()
 call InitTrig_Dead_area_bot_left()
 call InitTrig_Dead_area_bot_right()
@@ -41035,11 +41099,6 @@ call InitTrig_EnableTrade()
 call InitTrig_SyncLeaderboard()
 call Event_RemoveDuyingHeroes_init()
 call warpantibug_init()
-call InitTrig_trg_UnitLeftsMainMap()
-call InitTrig_trg_UnitLeftsDuel2_Area()
-call InitTrig_trg_UnitLeftsDuel1_Area()
-call InitTrig_trg_UnitLeftsFinal_Battle_Area()
-call InitTrig_trg_UnitLeftsResurrecting_Area()
 call InitTrig_Flame_Breath()
 call InitTrig_Flame_Breath_Loop()
 call InitTrig_Flame_Breath_Stop()
@@ -41195,7 +41254,7 @@ call InitTrig_Gate_destroyed()
 call InitTrig_Send_in_the_neutrals_2()
 call InitTrig_Final_Battle_Timer()
 call InitTrig_Final_Battle_Timer_Copy()
-call InitTrig_stop_tele_FB()
+//call InitTrig_stop_tele_FB()
 call InitTrig_coins()
 call InitTrig_Spawn_Golden_Chickens()
 call InitTrig_Golden_Chicken()
