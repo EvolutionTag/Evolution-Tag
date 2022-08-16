@@ -18065,14 +18065,12 @@ return true
 endfunction
 function Trig_simple_bounds_system_Func002Func002A takes nothing returns nothing
 if(Trig_simple_bounds_system_Func002Func002Func001C())then
-call KillUnit(GetEnumUnit())
-call SetUnitOwner(GetEnumUnit(),Player(15),false)
+call RemoveUnit(GetEnumUnit())
 else
 endif
 endfunction
 function Trig_simple_bounds_system_Func002Func004A takes nothing returns nothing
-call KillUnit(GetEnumUnit())
-call SetUnitOwner(GetEnumUnit(),Player(15),false)
+    call RemoveUnit(GetEnumUnit())
 endfunction
 function Trig_simple_bounds_system_Func002C takes nothing returns boolean
 if(not(udg_Duel_Boolean==true))then
@@ -18081,8 +18079,7 @@ endif
 return true
 endfunction
 function Trig_simple_bounds_system_Func003Func002A takes nothing returns nothing
-call KillUnit(GetEnumUnit())
-call SetUnitOwner(GetEnumUnit(),Player(15),false)
+    call RemoveUnit(GetEnumUnit())
 endfunction
 function Trig_simple_bounds_system_Func003Func004A takes nothing returns nothing
 call KillUnit(GetEnumUnit())
