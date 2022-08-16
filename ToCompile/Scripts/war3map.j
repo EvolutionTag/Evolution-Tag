@@ -8853,10 +8853,10 @@ function Trig_PlayerDies_Conditions takes nothing returns boolean
 if(not(GetUnitAbilityLevel(GetDyingUnit(),'ACC1')>0))then
     return false
 endif
-if(RectContainsUnit(udg_rct_Top_right_forest_minigame,GetDyingUnit()) and (IsTriggerEnabled(udg_trg_simple_bounds_system) or udg_Duel_Boolean))then
+if(RectContainsUnit(udg_rct_Top_right_forest_minigame,GetDyingUnit()))then
 return false
 endif
-if((RectContainsUnit(udg_rct_Duel_area,GetDyingUnit())) and (IsTriggerEnabled(udg_trg_simple_bounds_system) or udg_Duel_Boolean))then
+if((RectContainsUnit(udg_rct_Duel_area,GetDyingUnit())))then
 return false
 endif
 if(not(IsUnitType(GetDyingUnit(),UNIT_TYPE_SUMMONED)==false))then
@@ -18048,7 +18048,6 @@ call ForGroupBJ(GetUnitsInRectAll(udg_rct_Top_right_forest_minigame),function Tr
 endfunction
 function InitTrig_simple_bounds_system takes nothing returns nothing
 set udg_trg_simple_bounds_system=CreateTrigger()
-call DisableTrigger(udg_trg_simple_bounds_system)
 call TriggerRegisterTimerEventPeriodic(udg_trg_simple_bounds_system,2.00)
 call TriggerAddAction(udg_trg_simple_bounds_system,function Trig_simple_bounds_system_Actions)
 endfunction
@@ -20951,7 +20950,6 @@ set udg_DUEL_NEUTRAL=true
 call DisableTrigger(udg_trg_Send_in_the_neutrals)
 call ForForce(udg_PG1,function Trig_Duel_condition_v2_Func002Func004Func004A)
 call ForForce(udg_PG2,function Trig_Duel_condition_v2_Func002Func004Func005A)
-call EnableTrigger(udg_trg_simple_bounds_system)
 call PlanFunctionExecution("ResumeGameDuel",2)
 call DisableTrigger(GetTriggeringTrigger())
 else
@@ -20995,7 +20993,7 @@ function DisableSimpleBorderSystemTimed takes nothing returns nothing
 endfunction
 function ResumeGameDuel takes nothing returns nothing
 call TriggerExecute(udg_trg_Game_resume)
-call TimerStart(CreateTimer(),5,false,function DisableSimpleBorderSystemTimed)
+//call TimerStart(CreateTimer(),5,false,function DisableSimpleBorderSystemTimed)
 endfunction
 function Trig_Game_resume_Func003Func001A takes nothing returns nothing
 call SetPlayerAllianceStateBJ(GetEnumPlayer(),Player(PLAYER_NEUTRAL_AGGRESSIVE),bj_ALLIANCE_ALLIED)
@@ -21628,7 +21626,6 @@ set udg_DUEL_NEUTRAL=true
 call DisableTrigger(udg_trg_Send_in_the_neutrals)
 call ForForce(udg_PG1,function Trig_Duel_condition_v2_Copy_Func002Func004Func004A)
 call ForForce(udg_PG2,function Trig_Duel_condition_v2_Copy_Func002Func004Func005A)
-call EnableTrigger(udg_trg_simple_bounds_system)
 call PlanFunctionExecution("ResumeGameDuel",2)
 call DisableTrigger(GetTriggeringTrigger())
 else
@@ -21650,7 +21647,6 @@ set udg_DUEL_NEUTRAL=true
 call DisableTrigger(udg_trg_Send_in_the_neutrals)
 call ForForce(udg_PG1,function Trig_Duel_condition_v2_Copy_Func003Func004Func004A)
 call ForForce(udg_PG2,function Trig_Duel_condition_v2_Copy_Func003Func004Func005A)
-call EnableTrigger(udg_trg_simple_bounds_system)
 call PlanFunctionExecution("ResumeGameDuel",2)
 call DisableTrigger(GetTriggeringTrigger())
 else
