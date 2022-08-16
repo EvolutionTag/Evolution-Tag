@@ -13780,17 +13780,14 @@ function UnitEnters_STD_Action takes nothing returns nothing
     call GroupAddUnit(GetneralControlledFroup,GetTriggerUnit())
 endfunction
 
-function ControlArea takes rect r, integer id, code initaction, code runaction, conditionfunc runcondition returns nothing
+function ControlArea takes rect r, integer id, conditionfunc initaction, conditionfunc runcondition returns nothing
     set ControlledAreas[id] = r
     set ControlledGroups[id] = CreateGroup()
     set ControllTrigger[id] = CreateTrigger()
-    call TriggerAddAction(ControllTrigger[id],runaction)
     call TriggerAddCondition(ControllTrigger[id],runcondition)
     call TriggerRegisterLeaveRectSimple(ControllTrigger[id],r)
     set InitTrigger[id] = CreateTrigger()
-    call TriggerAddCondition(InitTrigger[id],function UnitEnters_Condition)
-    call TriggerAddAction(InitTrigger[id],function UnitEnters_STD_Action)
-    call TriggerAddAction(InitTrigger[id],initaction)
+    call TriggerAddCondition(InitTrigger[id],initaction)
     call TriggerRegisterEnterRectSimple(InitTrigger[id],r)
 endfunction
 
@@ -13801,6 +13798,9 @@ function return2Bounds takes rect area returns nothing
     local integer setted=0
     local integer idx=0
     set warpantibug=warpantibug+1
+    if(warpantibug>1000) then
+        return
+    endif
     if(x>=GetRectMaxX(area))then
     set x=GetRectMaxX(area)-32.
     set setted=1
@@ -13822,67 +13822,128 @@ function return2Bounds takes rect area returns nothing
     set u = null
 endfunction
 
-function init_MainMap_control takes nothing returns nothing
+function init_MainMap_control takes nothing returns boolean
+    if(not UnitEnters_Condition()) then
+        return false
+
+    endif
+    call UnitEnters_STD_Action()
     call GroupAddUnit(ControlledGroups[CONTROL_ID_MAIN_MAP],GetTriggerUnit())
+    //call BJDebugMsg("1 init")
+    return false
 endfunction
-function control_MainMap takes nothing returns nothing
-    call return2Bounds(ControlledAreas[CONTROL_ID_MAIN_MAP])
-    //call BJDebugMsg("returning "+I2S(CONTROL_ID_MAIN_MAP))
-endfunction
+
 function control_MainMap_condition takes nothing returns boolean
     return IsUnitInGroup(GetTriggerUnit(),ControlledGroups[CONTROL_ID_MAIN_MAP])
 endfunction
-function init_rct_Final_Battle_Area_control takes nothing returns nothing
-    call GroupAddUnit(ControlledGroups[CONTROL_ID_BATTLE_FINAL],GetTriggerUnit())
-endfunction
-function control_rct_Final_Battle_Area takes nothing returns nothing
-    call return2Bounds(ControlledAreas[CONTROL_ID_BATTLE_FINAL])
-    //call BJDebugMsg("returning "+I2S(CONTROL_ID_BATTLE_FINAL))
+function control_MainMap takes nothing returns boolean
+    if(not control_MainMap_condition()) then
+        return false
 
+    endif
+    call return2Bounds(ControlledAreas[CONTROL_ID_MAIN_MAP])
+    //call BJDebugMsg("returning "+I2S(CONTROL_ID_MAIN_MAP))
+    return false
+endfunction
+function init_rct_Final_Battle_Area_control takes nothing returns boolean
+    if(not UnitEnters_Condition()) then
+        return false
+    endif
+    call UnitEnters_STD_Action()
+    call GroupAddUnit(ControlledGroups[CONTROL_ID_BATTLE_FINAL],GetTriggerUnit())
+    // call BJDebugMsg("2 init")
+
+    return false
 endfunction
 function control_rct_Final_Battle_Area_condition takes nothing returns boolean
     return IsUnitInGroup(GetTriggerUnit(),ControlledGroups[CONTROL_ID_BATTLE_FINAL])
 endfunction
-function init_rct_Duel1_Area_control takes nothing returns nothing
-    call GroupAddUnit(ControlledGroups[CONTROL_ID_BATTLE],GetTriggerUnit())
+function control_rct_Final_Battle_Area takes nothing returns boolean
+    if(not control_rct_Final_Battle_Area_condition()) then
+        return false
+    endif
+    call return2Bounds(ControlledAreas[CONTROL_ID_BATTLE_FINAL])
+    // call BJDebugMsg("returning "+I2S(CONTROL_ID_BATTLE_FINAL))
+    return false
 endfunction
-function control_rct_Duel1_Area takes nothing returns nothing
-    call return2Bounds(ControlledAreas[CONTROL_ID_BATTLE])
-    //call BJDebugMsg("returning "+I2S(CONTROL_ID_BATTLE))
+function init_rct_Duel1_Area_control takes nothing returns boolean
+    if(not UnitEnters_Condition()) then
+        return false
 
+    endif
+    call UnitEnters_STD_Action()
+    call GroupAddUnit(ControlledGroups[CONTROL_ID_BATTLE],GetTriggerUnit())
+    // call BJDebugMsg("3 init")
+
+    return false
 endfunction
 function control_rct_Duel1_Area_condition takes nothing returns boolean
     return IsUnitInGroup(GetTriggerUnit(),ControlledGroups[CONTROL_ID_BATTLE])
 endfunction
-function init_rct_Duel2_Area_control takes nothing returns nothing
-    call GroupAddUnit(ControlledGroups[CONTROL_ID_BATTLE_FOREST],GetTriggerUnit())
-endfunction
-function control_rct_Duel2_Area takes nothing returns nothing
-    call return2Bounds(ControlledAreas[CONTROL_ID_BATTLE_FOREST])
-    //call BJDebugMsg("returning "+I2S(CONTROL_ID_BATTLE_FOREST))
+function control_rct_Duel1_Area takes nothing returns boolean
+    if(not control_rct_Duel1_Area_condition()) then
+    return false
+        
+    endif
+    call return2Bounds(ControlledAreas[CONTROL_ID_BATTLE])
+    // call BJDebugMsg("returning "+I2S(CONTROL_ID_BATTLE))
 
+    return false
+endfunction
+function init_rct_Duel2_Area_control takes nothing returns boolean
+    if(not UnitEnters_Condition()) then
+        return false
+
+    endif
+    call UnitEnters_STD_Action()
+    call GroupAddUnit(ControlledGroups[CONTROL_ID_BATTLE_FOREST],GetTriggerUnit())
+    // call BJDebugMsg("4 init")
+
+    return false
 endfunction
 function control_rct_Duel2_Area_condition takes nothing returns boolean
     return IsUnitInGroup(GetTriggerUnit(),ControlledGroups[CONTROL_ID_BATTLE_FOREST])
 endfunction
-function init_rct_resurrect_area_control takes nothing returns nothing
-    call GroupAddUnit(ControlledGroups[CONTROL_ID_RESURRECT],GetTriggerUnit())
-endfunction
-function control_rct_resurrect_area takes nothing returns nothing
-    call return2Bounds(ControlledAreas[CONTROL_ID_RESURRECT])
-    //call BJDebugMsg("returning "+I2S(CONTROL_ID_RESURRECT))
+function control_rct_Duel2_Area takes nothing returns boolean
+    if(not control_rct_Duel2_Area_condition()) then
+        return false
 
+    endif
+    call return2Bounds(ControlledAreas[CONTROL_ID_BATTLE_FOREST])
+    // call BJDebugMsg("returning "+I2S(CONTROL_ID_BATTLE_FOREST))
+
+    return false
+endfunction
+function init_rct_resurrect_area_control takes nothing returns boolean
+    if(not UnitEnters_Condition()) then
+        return false
+
+    endif
+    call UnitEnters_STD_Action()
+    call GroupAddUnit(ControlledGroups[CONTROL_ID_RESURRECT],GetTriggerUnit())
+    // call BJDebugMsg("5 init")
+
+    return false
 endfunction
 function control_rct_resurrect_area_condition takes nothing returns boolean
     return IsUnitInGroup(GetTriggerUnit(),ControlledGroups[CONTROL_ID_RESURRECT])
 endfunction
+function control_rct_resurrect_area takes nothing returns boolean
+    if(not control_rct_resurrect_area_condition()) then
+        return false
+
+    endif
+    call return2Bounds(ControlledAreas[CONTROL_ID_RESURRECT])
+    // call BJDebugMsg("returning "+I2S(CONTROL_ID_RESURRECT))
+    return false
+endfunction
 
 function init_rect_control takes nothing returns nothing
-    call ControlArea(MainMap,CONTROL_ID_MAIN_MAP,function init_MainMap_control,function control_MainMap,Condition(function control_MainMap_condition))
-    call ControlArea(rct_resurrect_area,CONTROL_ID_RESURRECT,function init_rct_resurrect_area_control,function control_rct_resurrect_area,Condition(function control_rct_resurrect_area_condition))
-    call ControlArea(udg_rct_Top_right_forest_minigame,CONTROL_ID_BATTLE,function init_rct_Duel1_Area_control,function control_rct_Duel1_Area,Condition(function control_rct_Duel1_Area_condition))
-    call ControlArea(rct_Duel2_Area,CONTROL_ID_BATTLE_FOREST,function init_rct_Duel2_Area_control,function control_rct_Duel2_Area,Condition(function control_rct_Duel2_Area_condition))
-    call ControlArea(rct_Final_Battle_Area,CONTROL_ID_BATTLE_FINAL,function init_rct_Final_Battle_Area_control,function control_rct_Final_Battle_Area,Condition(function control_rct_Final_Battle_Area_condition))
+    call ControlArea(MainMap,CONTROL_ID_MAIN_MAP,Condition(function init_MainMap_control),Condition(function control_MainMap))
+    call ControlArea(rct_resurrect_area,CONTROL_ID_RESURRECT,Condition(function init_rct_resurrect_area_control),Condition(function control_rct_resurrect_area))
+    call ControlArea(udg_rct_Top_right_forest_minigame,CONTROL_ID_BATTLE,Condition(function init_rct_Duel1_Area_control),Condition(function control_rct_Duel1_Area))
+    call ControlArea(rct_Duel2_Area,CONTROL_ID_BATTLE_FOREST,Condition(function init_rct_Duel2_Area_control),Condition(function control_rct_Duel2_Area))
+    call ControlArea(rct_Final_Battle_Area,CONTROL_ID_BATTLE_FINAL,Condition(function init_rct_Final_Battle_Area_control),Condition(function control_rct_Final_Battle_Area))
 endfunction
 
 function RaccoonDropItems takes nothing returns nothing
