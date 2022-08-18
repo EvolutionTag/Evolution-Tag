@@ -18082,8 +18082,7 @@ function Trig_simple_bounds_system_Func003Func002A takes nothing returns nothing
     call RemoveUnit(GetEnumUnit())
 endfunction
 function Trig_simple_bounds_system_Func003Func004A takes nothing returns nothing
-call KillUnit(GetEnumUnit())
-call SetUnitOwner(GetEnumUnit(),Player(15),false)
+    call RemoveUnit(GetEnumUnit())
 endfunction
 function Trig_simple_bounds_system_Func003C takes nothing returns boolean
 if(not(udg_Duel_Boolean==false))then
@@ -20742,6 +20741,7 @@ call MultiboardSetItemColorBJ(GetLastCreatedMultiboard(),2,2,100.00,0.00,0.00,0)
 call MultiboardSetItemStyleBJ(GetLastCreatedMultiboard(),2,2,true,false)
 call MultiboardSetItemStyleBJ(GetLastCreatedMultiboard(),2,1,true,false)
 call MultiboardMinimizeBJ(false,GetLastCreatedMultiboard())
+call DisableTrigger(udg_trg_simple_bounds_system)
 else
 endif
 call EnableTrigger(udg_trg_Duel_condition_v2)
@@ -21051,7 +21051,7 @@ function DisableSimpleBorderSystemTimed takes nothing returns nothing
 endfunction
 function ResumeGameDuel takes nothing returns nothing
 call TriggerExecute(udg_trg_Game_resume)
-//call TimerStart(CreateTimer(),5,false,function DisableSimpleBorderSystemTimed)
+call EnableTrigger(udg_trg_simple_bounds_system)
 endfunction
 function Trig_Game_resume_Func003Func001A takes nothing returns nothing
 call SetPlayerAllianceStateBJ(GetEnumPlayer(),Player(PLAYER_NEUTRAL_AGGRESSIVE),bj_ALLIANCE_ALLIED)
@@ -21520,6 +21520,7 @@ call MultiboardSetItemColorBJ(GetLastCreatedMultiboard(),2,2,100.00,0.00,0.00,0)
 call MultiboardSetItemStyleBJ(GetLastCreatedMultiboard(),2,2,true,false)
 call MultiboardSetItemStyleBJ(GetLastCreatedMultiboard(),2,1,true,false)
 call MultiboardMinimizeBJ(false,GetLastCreatedMultiboard())
+call DisableTrigger(udg_trg_simple_bounds_system)
 else
 endif
 call EnableTrigger(udg_trg_Duel_condition_v2_Copy)
