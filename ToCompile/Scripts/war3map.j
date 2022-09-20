@@ -3155,7 +3155,7 @@ native UnitAlive takes unit id returns boolean
 
 //////////////////////////////////////////////////
 // //! import zinc "..\ToCompile\Scripts\Fixes\TerrainDeformFix.j"
-//! import zinc "..\ToCompile\Scripts\Fixes\NeutralFix.j"
+// //! import zinc "..\ToCompile\Scripts\Fixes\NeutralFix.j"
 
 
 
@@ -3264,6 +3264,7 @@ endloop
 call SaveInteger(SyncHashTable, GetHandleId(t), 0, this)
 //call BJDebugMsg("this: "+I2S(this)+" timer: "+I2S(GetHandleId(t))+" ht: "+I2S(GetHandleId(SyncHashTable)))
 call TimerStart(t, SyncDataTimeout, true, function s__Sync_SyncPlayersInfoCallback)
+set t = null
 endfunction
 
 function Trig_PlayerLeaveHack_Actions takes nothing returns nothing
