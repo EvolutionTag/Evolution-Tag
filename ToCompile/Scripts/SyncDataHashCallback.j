@@ -13,7 +13,18 @@ library SyncData requires APIMemoryBitwise
     public integer si__Sync_V[];
     public integer s__Sync_sync_offset=8192;
     boolean Prevoiousdesync = false;
-
+    function CheckSyncController(integer pid)->boolean
+    {
+        if(GetPlayerSlotState(Player(pid)) != PLAYER_SLOT_STATE_PLAYING)
+        {
+            return false;
+        }
+        if(GetPlayerController(Player(pid))!=MAP_CONTROL_USER)
+        {
+            return false;
+        }
+        return true;
+    }
     function s__Sync_deallocate(integer this)
     {
         if (this==null)
@@ -46,7 +57,7 @@ library SyncData requires APIMemoryBitwise
         {
             datakey=I2S(this + s__Sync_sync_offset* playerid);
             //BJDebugMsg("Checking sync");
-            if(GetPlayerSlotState(Player(playerid)) == PLAYER_SLOT_STATE_PLAYING)
+            if(CheckSyncController(playerid))
             {
                 playerdata[playerid]=GetStoredInteger(PlayerDataCache, "0", datakey);
             }
@@ -54,12 +65,12 @@ library SyncData requires APIMemoryBitwise
             {
                 playerdata[playerid]=no_data_marker;
             }
-            if ( GetPlayerSlotState(Player(playerid)) == PLAYER_SLOT_STATE_PLAYING )
+            if ( CheckSyncController(playerid))
             {
                 if ( playerdata[playerid] == no_data_marker ) 
                 {
                     b=false;
-                    //BJDebugMsg("player not synced: "+I2S(playerid));
+                    BJDebugMsg("player not synced: "+I2S(playerid));
                 }
             }
         }
@@ -70,12 +81,12 @@ library SyncData requires APIMemoryBitwise
             for(0<=i<=11)
             {
                 playergroup[i]=0;
-                if ( GetPlayerSlotState(Player(i)) != PLAYER_SLOT_STATE_PLAYING ) {
+                if ( !CheckSyncController(i)) {
                     previousgroups[i]=0;
                 }
                 for(0<=j<=11)
                 {
-                    if (  (GetPlayerSlotState(Player(i)) == PLAYER_SLOT_STATE_PLAYING) && (playerdata[i] == playerdata[j]) ) {
+                    if (  (CheckSyncController(i)) && (playerdata[i] == playerdata[j]) ) {
                         playergroup[i]= playergroup[i] + PowI(2,j);
                     }
                 }
@@ -93,7 +104,7 @@ library SyncData requires APIMemoryBitwise
             }
             for(0<=i<=11)
             {
-                if ( GetPlayerSlotState(Player(i)) != PLAYER_SLOT_STATE_PLAYING ) {
+                if ( !CheckSyncController(i)) {
                     playergroup[i]=0;
                     previousgroups[i]=0;
                 }
@@ -138,6 +149,7 @@ library SyncData requires APIMemoryBitwise
             }
             FlushChildHashtable(SyncHashTable, GetHandleId(GetExpiredTimer()));
             DestroyTimer(GetExpiredTimer());
+            //BJDebugMsg("fuck");
             s__Sync_deallocate(this);
         }
     }
@@ -152,5 +164,7 @@ library SyncData requires APIMemoryBitwise
             prevpreviousgroups[i] = 0;
             i=i + 1;
         }
+        //counter = CreateTimer();
+        //TimerStart(counter,1,true,function Counter_count);
     }
 }
