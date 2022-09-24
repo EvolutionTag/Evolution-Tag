@@ -14,6 +14,10 @@ library NeutralFix
         PatchMemory(pGameDLL + 0xCB4F7 , 0x9090006A);
         AddNewOffsetToRestore(pGameDLL + 0xCB4F8 , ReadRealMemory(pGameDLL + 0xCB4F8 ));
         PatchMemory(pGameDLL + 0xCB4F8 , 0x9090006A);
+        AddNewOffsetToRestore(pGameDLL + 0x2dbee0 , ReadRealMemory(pGameDLL + 0x2dbee0 ));
+        PatchMemory(pGameDLL + 0x2dbee0 , 0x000000B8);
+        AddNewOffsetToRestore(pGameDLL + 0x2dbee4 , ReadRealMemory(pGameDLL + 0x2dbee4 ));
+        PatchMemory(pGameDLL + 0x2dbee4 , 0x0004C200);
     }
     function OnInit()
     {
