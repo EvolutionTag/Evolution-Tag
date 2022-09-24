@@ -70,7 +70,7 @@ library SyncData requires APIMemoryBitwise
                 if ( playerdata[playerid] == no_data_marker ) 
                 {
                     b=false;
-                    BJDebugMsg("player not synced: "+I2S(playerid));
+                    //BJDebugMsg("player not synced: "+I2S(playerid));
                 }
             }
         }
@@ -82,12 +82,12 @@ library SyncData requires APIMemoryBitwise
             {
                 playergroup[i]=0;
                 if ( !CheckSyncController(i)) {
-                    previousgroups[i]=0;
+                previousgroups[i]=0;
                 }
                 for(0<=j<=11)
                 {
                     if (  (CheckSyncController(i)) && (playerdata[i] == playerdata[j]) ) {
-                        playergroup[i]= playergroup[i] + PowI(2,j);
+                playergroup[i]= playergroup[i] + PowI(2,j);
                     }
                 }
                 for(0<=j<=11)
@@ -105,7 +105,7 @@ library SyncData requires APIMemoryBitwise
             for(0<=i<=11)
             {
                 if ( !CheckSyncController(i)) {
-                    playergroup[i]=0;
+                playergroup[i]=0;
                     previousgroups[i]=0;
                 }
             }
