@@ -31,7 +31,7 @@
         {
             "label": "inibuild",
             "type": "shell",
-            "command": "./inibuild.ps1",
+            "command": "./lnibuild.ps1",
             "problemMatcher": [],
             "group": {
                 "kind": "build",
