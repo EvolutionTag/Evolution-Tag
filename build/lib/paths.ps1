@@ -9,4 +9,5 @@ $wc3folder = "D:\Games\Warcraft 3.3\"
 $suffix = ".w3x"
 $version = "ET34_29"
 $prefix = ((Get-Item (Get-Location).Path).Parent).FullName.ToString()+"\"
-$name = '"'+$prefix+$version+$suffix+'"'
+$namesimple = $prefix+$version+$suffix
+$name = '"'+$namesimple+'"'
