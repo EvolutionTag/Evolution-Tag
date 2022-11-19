@@ -153,10 +153,6 @@ library SyncData requires APIMemoryBitwise
             s__Sync_deallocate(this);
         }
     }
-    function Counter_count()
-    {
-        count = 0;
-    }
     function onInit()
     {
         integer i;
