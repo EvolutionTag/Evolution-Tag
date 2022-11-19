@@ -4,6 +4,6 @@ $prefix = "../"
 $suffix = ".w3x"
 
 Write-Output $name
-del $name
-copy "../Evolution Tag.w3x" $name
+del $namesimple
+copy "../Evolution Tag.w3x" $namesimple
 del "../Evolution Tag.w3x"
