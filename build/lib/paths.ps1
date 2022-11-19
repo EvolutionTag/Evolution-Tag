@@ -6,3 +6,5 @@ $blizzardj = "..\\Scripts\\blizzard.j"
 $war3MapToCompile = "..\\ToCompile\\Scripts\\war3map.j"
 $CompiledScriptPath = "..\\Map\\war3map.j"
 $wc3folder = "D:\Games\Warcraft 3.3\"
+$version = "ET34_29"
+$name = $prefix+$version+$suffix
