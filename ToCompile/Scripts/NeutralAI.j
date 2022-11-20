@@ -1,5 +1,5 @@
 
-library NeutralAI{
+library NeutralAI requires InGameNeutrals{
 
         player TempPlayerNeutral = null;
         integer NeutralReactionRange = 800;
@@ -123,18 +123,15 @@ library NeutralAI{
         }
 
         function OrderForAllNeutrals(){
-            OrderForNeutral(Player(12));
-            OrderForNeutral(Player(13));
-            OrderForNeutral(Player(14));
+        ForForce(Neutral_Players,function() {OrderForNeutral(GetEnumPlayer());});
         }
 
         public function onInit(){
             NeutralOrders = InitHashtable();
             TimerStart(CreateTimer(),NeutralOrderTimerout,true, function OrderForAllNeutrals);
             Death_Cleanup_trigger = CreateTrigger();
-            TriggerRegisterPlayerUnitEvent(Death_Cleanup_trigger,Player(12),EVENT_PLAYER_UNIT_DEATH,null);
-            TriggerRegisterPlayerUnitEvent(Death_Cleanup_trigger,Player(13),EVENT_PLAYER_UNIT_DEATH,null);
-            TriggerRegisterPlayerUnitEvent(Death_Cleanup_trigger,Player(14),EVENT_PLAYER_UNIT_DEATH,null);
+            ForForce(bj_FORCE_ALL_PLAYERS,function(){TriggerRegisterPlayerUnitEvent(Death_Cleanup_trigger,GetEnumPlayer(),EVENT_PLAYER_UNIT_DEATH,function()->boolean {return IsPlayerInForce(GetTriggerPlayer(),Neutral_Players);});} );
+            Neutral_Players = CreateForce();
             TriggerAddAction(Death_Cleanup_trigger, function() {ClearOrder(GetDyingUnit());});
         }
 }
