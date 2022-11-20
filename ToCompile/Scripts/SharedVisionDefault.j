@@ -4,9 +4,11 @@ library SharedVisionDefault requires SharedVisionWithAllies
 
     function InitSharedVisionDefault()
     {
-        ForceAddPlayer(ShareVision,Player(12));
-        ForceAddPlayer(ShareVision,Player(13));
-        ForceAddPlayer(ShareVision,Player(14));
+
+
+        ForForce(bj_FORCE_ALL_PLAYERS,function(){
+            ForceAddPlayer(ShareVision,GetEnumPlayer());
+        });
         DestroyTimer(GetExpiredTimer());
     }
     function onInit()
