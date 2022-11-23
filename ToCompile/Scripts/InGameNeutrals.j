@@ -41,11 +41,11 @@ library InGameNeutrals{
             Neutral_Satyrs = Neutral_Pirates;
         }
         
-        if(Neutral_Pirates==null) {
+        if(Neutral_Nagas==null) {
             Neutral_Nagas = Player(12);
         }
         
-        if(Neutral_Pirates==null) {
+        if(Neutral_Bottom==null) {
             Neutral_Bottom = Player(13);
         }
         
