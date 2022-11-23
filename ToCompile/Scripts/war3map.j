@@ -23186,7 +23186,7 @@ loop
 exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
 if(GetPlayerSlotState(Player(bj_forLoopAIndex))!=PLAYER_SLOT_STATE_EMPTY) then
     call MultiboardSetItemValueBJ(udg_LIVES_MULTIBOARD,2,playercnt_t+2,udg_AAA_Player_Colors[bj_forLoopAIndex+1])
-    if(not (GetPlayerSlotState(Player(playercnt_t))==PLAYER_SLOT_STATE_PLAYING))then
+    if(not (GetPlayerSlotState(Player(bj_forLoopAIndex))==PLAYER_SLOT_STATE_PLAYING))then
         call MultiboardSetItemIconBJ(udg_LIVES_MULTIBOARD,1,playercnt_t+2,"ReplaceableTextures\\CommandButtons\\BTNAcorn.blp")
     else
         if(IsPlayerInForce(Player(bj_forLoopAIndex),udg_Humans)) then
