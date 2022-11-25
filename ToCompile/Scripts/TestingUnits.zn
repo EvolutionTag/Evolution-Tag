@@ -1,0 +1,30 @@
+library testingUnits {
+    public function StandartTestUnits() {
+
+        CreateUnit(Player(0),'Hblm',0,0,0);
+        CreateUnit(Player(0),'h02G',0,0,0);
+        CreateUnit(Player(0),'N07F',0,0,0);
+        CreateUnit(Player(0),'N022',0,0,0);
+        CreateUnit(Player(0),'DDW1',0,0,0);
+        CreateUnit(Player(0),'H03D',0,0,0);
+        CreateUnit(Player(0),'H079',0,0,0);
+        CreateUnit(Player(0),'A0K5',0,0,0);
+        CreateUnit(Player(0),'Hblm',0,0,0);
+        CreateUnit(Player(0),'H01Y',0,0,0);
+        CreateUnit(Player(0),'H06W',0,0,0);
+        CreateUnit(Player(0),'H06O',0,0,0);
+        CreateUnit(Player(0),'N06S',0,0,0);
+        CreateUnit(Player(0),'H06J',0,0,0);
+        CreateUnit(Player(0),'H031',0,0,0);
+        CreateUnit(Player(0),'E007',0,0,0);
+        CreateUnit(Player(0),'E014',0,0,0);
+        CreateUnit(Player(0),'Emns',0,0,0);
+        CreateUnit(Player(0),'Edem',0,0,0);
+        CreateUnit(Player(0),'Hpal',0,0,0);
+        CreateUnit(Player(0),'H06L',0,0,0);
+        CreateUnit(Player(0),'Z00E',0,0,0);
+        CreateUnit(Player(0),'Hlgr',0,0,0);
+        CreateUnit(Player(0),'H081',0,0,0);
+        CreateUnit(Player(0),'E00T',0,0,0);
+    }
+}

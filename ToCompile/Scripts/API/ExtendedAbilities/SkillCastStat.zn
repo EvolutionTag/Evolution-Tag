@@ -1,0 +1,158 @@
+
+
+library SkillCastStat requires SkillStat {
+    public trigger gg_trg_SkillCastStat = null;
+
+    public hashtable abils = null;
+    public integer dist_between_values = 10000;
+    
+    public unit global_Spell_Unit = null;
+    public integer global_Spell_Ability = 0;
+    
+    
+    public integer kcallback  = 1;
+    public integer kfield_offset     = 1;
+    public integer kscale_str         = 2;
+    public integer kscale_agi         = 3;
+    public integer kscale_int         = 4;
+    public integer kscale_hero_lvl    = 5;
+    public integer kscale_unit_lvl    = 6;
+    public integer kbase = 7;
+    public integer kabil_lvl = 8;
+    public integer kabil_min = 9;
+    public integer kabil_max = 10;
+
+public function AddAbility ( integer abil, integer field_offset, real base, real lvl_scale, real scale_str, real scale_agi, real scale_int, real scale_hlvl, real scale_ulvl ){
+    integer field_count = 0;
+    integer pos = 0;
+    if(HaveSavedInteger(abils,0,abil)) {
+        field_count = LoadInteger(abils,0,abil);
+    }
+    SaveStr(abils,abil,kcallback,"standart_Callback");
+    field_count = field_count + 1;
+    SaveInteger(abils,0,abil,field_count);
+    pos = field_count*dist_between_values;
+    SaveInteger(abils,abil,dist_between_values*field_count+kfield_offset,field_offset);
+    SaveReal(abils,abil,dist_between_values*field_count+kbase,base);
+    SaveReal(abils,abil,dist_between_values*field_count+kscale_str,scale_str);
+    SaveReal(abils,abil,dist_between_values*field_count+kscale_agi,scale_agi);
+    SaveReal(abils,abil,dist_between_values*field_count+kscale_int,scale_int);
+    SaveReal(abils,abil,dist_between_values*field_count+kscale_hero_lvl,scale_hlvl);
+    SaveReal(abils,abil,dist_between_values*field_count+kscale_unit_lvl,scale_ulvl);
+    SaveReal(abils,abil,dist_between_values*field_count+kabil_lvl,lvl_scale);
+}
+public function AbilityAddMax ( integer abil, integer field_offset, real max ){
+    integer field_count = 0;
+    integer pos = 1;
+    if(HaveSavedInteger(abils,0,abil)) {
+        field_count = LoadInteger(abils,0,abil);
+    }
+    else
+    {
+        return;
+    }
+    for(1<=pos<=field_count) {
+        if(LoadInteger(abils,abil,dist_between_values*pos+kfield_offset)==field_offset) {
+            SaveReal(abils,abil,dist_between_values*pos+kabil_max,max);
+            return;
+        }
+    }
+}
+    public function AbilityAddMin ( integer abil, integer field_offset, real min ){
+    integer field_count = 0;
+    integer pos = 1;
+    if(HaveSavedInteger(abils,0,abil)) {
+        field_count = LoadInteger(abils,0,abil);
+    }
+    else
+    {
+        return;
+    }
+    for(1<=pos<=field_count) {
+        if(LoadInteger(abils,abil,dist_between_values*pos+kfield_offset)==field_offset) {
+            SaveReal(abils,abil,dist_between_values*pos+kabil_min,min);
+            return;
+        }
+    }
+}
+public function ApplyUnitAbility ( unit u, integer aid ){
+    integer UnitLevel = 0;
+    integer HeroLevel = 0;
+    integer hStr = GetHeroStr(u,true);
+    integer hAgi = GetHeroAgi(u,true);
+    integer hInt = GetHeroInt(u,true);
+    integer AbiLvl = GetUnitAbilityLevel(u,aid);
+    real limfield = 0;
+    real result = 0;
+    integer foff = 0;
+    integer loop_index = 1;
+    integer loop_max = 0;
+
+    if(GetUnitAbilityLevel(u,'AHer')>0) {
+        UnitLevel = GetUnitLevel(u);
+    }
+    else
+    {
+        HeroLevel = GetUnitLevel(u);
+    }
+    if(AbiLvl==0) {
+        return;
+    }
+    loop_max = LoadInteger(abils,0,aid);
+    for(1<=loop_index<=loop_max) {
+        foff = LoadInteger(abils,aid,dist_between_values*loop_index+kfield_offset);
+        result = LoadReal(abils,aid,dist_between_values*loop_index+kbase);
+        result = result + LoadReal(abils,aid,dist_between_values*loop_index+kscale_str)*hStr;
+        result = result + LoadReal(abils,aid,dist_between_values*loop_index+kscale_agi)*hAgi;
+        result = result + LoadReal(abils,aid,dist_between_values*loop_index+kscale_int)*hInt;
+        result = result + LoadReal(abils,aid,dist_between_values*loop_index+kscale_hero_lvl)*HeroLevel;
+        result = result + LoadReal(abils,aid,dist_between_values*loop_index+kscale_unit_lvl)*UnitLevel;
+        result = result + LoadReal(abils,aid,dist_between_values*loop_index+kabil_lvl)*GetUnitAbilityLevel(u,aid);
+        if(HaveSavedReal(abils,aid,dist_between_values*loop_index+kabil_max)) {
+            limfield = LoadReal(abils,aid,dist_between_values*loop_index+kabil_max);
+            if(limfield<result) {
+                result = limfield;
+            }
+        }
+        if(HaveSavedReal(abils,aid,dist_between_values*loop_index+kabil_min)) {
+            limfield = LoadReal(abils,aid,dist_between_values*loop_index+kabil_min);
+            if(limfield>result) {
+                result = limfield;
+            }
+        }
+        SetUnitAbilityFloatField(u,aid,foff,result);
+    }
+
+}
+    
+
+    public function standart_Callback (){
+        ApplyUnitAbility(global_Spell_Unit,global_Spell_Ability);
+    }
+    public function SkillCastStatAPI_Condition ( ) -> boolean {
+        return HaveSavedString(abils,GetSpellAbilityId(),kcallback);
+    }
+    public function SkillCastStatAPI_Action (){
+    string func = LoadStr(abils,GetSpellAbilityId(),kcallback);
+    global_Spell_Unit = GetTriggerUnit();
+    global_Spell_Ability = GetSpellAbilityId();
+    ExecuteFunc(func);
+    }
+public function AddSimpleCallback ( integer aid, string funcname ){
+    SaveStr(abils,aid,kcallback,funcname);
+}
+public function InitCustomAbils (){
+    
+    gg_trg_SkillCastStat = CreateTrigger(  );
+    TriggerRegisterAnyUnitEventBJ( gg_trg_SkillCastStat, EVENT_PLAYER_UNIT_SPELL_EFFECT );
+    TriggerAddCondition( gg_trg_SkillCastStat, Condition( function SkillCastStatAPI_Condition ) );
+    TriggerAddAction( gg_trg_SkillCastStat,function SkillCastStatAPI_Action);
+
+}
+ function onInit (){
+    abils = InitHashtable();
+    InitCustomAbils();
+}
+
+}
+
