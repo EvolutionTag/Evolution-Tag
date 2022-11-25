@@ -18287,7 +18287,7 @@ return true
 endfunction
 function Trig_Naga_Spawns_Actions takes nothing returns nothing
 set udg_AAAA_GP=GetRectCenter(udg_rct_Naga_spawn_area)
-call CreateNUnitsAtLocBonuses(1,'n07B',Neutral_Satyrs,udg_AAAA_GP,bj_UNIT_FACING)
+call CreateNUnitsAtLocBonuses(1,'n07B',Neutral_Nagas,udg_AAAA_GP,bj_UNIT_FACING)
 call RemoveLocation(udg_AAAA_GP)
 set udg_Topleft_Integer_Chance=GetRandomInt(1,20)
 if(Trig_Naga_Spawns_Func008C())then
