@@ -1,0 +1,98 @@
+
+
+library SkillStat {
+    public integer SKILL_FIELD_OFFSET_CAST =  0x4;
+    public integer SKILL_FIELD_OFFSET_DUR =  0x8;
+    public integer SKILL_FIELD_OFFSET_HERODUR =  0xC;
+    public integer SKILL_FIELD_OFFSET_COST =  0x10;
+    public integer SKILL_FIELD_OFFSET_COOL =  0x14;
+    public integer SKILL_FIELD_OFFSET_AREA =  0x18;
+    public integer SKILL_FIELD_OFFSET_RNG =  0x1C;
+    public integer SKILL_FIELD_OFFSET_DATAA =  0x20;
+    public integer SKILL_FIELD_OFFSET_DATAB =  0x24;
+    public integer SKILL_FIELD_OFFSET_DATAC =  0x28;
+    public integer SKILL_FIELD_OFFSET_DATAD =  0x2C;
+    public integer SKILL_FIELD_OFFSET_DATAE =  0x30;
+    public integer SKILL_FIELD_OFFSET_DATAF =  0x34;
+    // public integer SKILL_FIELD_OFFSET_ =  0x38;
+    // public integer SKILL_FIELD_OFFSET_ =  0x3C;
+    // public integer SKILL_FIELD_OFFSET_ =  0x40;
+    // public integer SKILL_FIELD_OFFSET_ =  0x44;
+    // public integer SKILL_FIELD_OFFSET_ =  0x48;
+    // public integer SKILL_FIELD_OFFSET_ =  0x4C;
+    // public integer SKILL_FIELD_OFFSET_ =  0x50;
+    // public integer SKILL_FIELD_OFFSET_ =  0x54;
+    // public integer SKILL_FIELD_OFFSET_ =  0x58;
+    // public integer SKILL_FIELD_OFFSET_ =  0x5C;
+    public integer SKILL_FIELD_OFFSET_BUFFID =  0x60;
+    // public integer SKILL_FIELD_OFFSET_ =  0x64;
+    // public integer SKILL_FIELD_OFFSET_ =  0x68;
+    // public integer SKILL_FIELD_OFFSET_ =  0x6C;
+    public integer SKILL_FIELD_OFFSET_EFFECTID =  0x70;
+
+    public function GetAbilityData(integer pAbil)->integer {
+
+        
+        if(pAbil==0) {return 0;}
+        return ReadRealMemory(pAbil+0x54);
+    }
+    
+    public function GetAbilityFirstLevelData(integer pAbil)->integer {
+         if(pAbil==0) {return 0;}
+         return ReadRealMemory(GetAbilityData(pAbil)+0x54)-0x4;
+         
+    }
+    
+    public function GetAbilityLevelData(integer pAbil,integer level)->integer {
+        integer pDat = GetAbilityFirstLevelData(pAbil);
+        integer nlevel = 1;
+        if(pDat==0){return 0;}
+        for(1<nlevel<=level) {
+            pDat = ReadRealMemory(pDat+0x64);
+            
+            
+        }
+        return pDat+0x4;
+    }
+
+
+    public function SetAbilityFloatLevelField(integer pAbil, integer level,integer field,real value) {
+        integer pDat = GetAbilityLevelData(pAbil,level);
+
+        if(pDat==0) return;
+
+        WriteRealMemory(pDat+field,SetRealIntoMemory(value));
+    }
+
+    public function SetAbilityIntegerLevelField(integer pAbil, integer level,integer field,integer value) {
+        integer pDat = GetAbilityLevelData(pAbil,level);
+
+        if(pDat==0) return;
+
+        WriteRealMemory(pDat+field,value);
+    }
+
+    public function SetUnitAbilityIntegerField(unit u,integer abil,integer field,integer value) {
+        integer pAbil = GetUnitAbility(u,abil);
+        integer level  = 0;
+
+        if(pAbil==0) return;
+
+        level = GetUnitAbilityLevel(u,abil);
+
+        SetAbilityIntegerLevelField(pAbil,level,field,value);
+    }
+
+    public function SetUnitAbilityFloatField(unit u,integer abil,integer field,real value) {
+        integer pAbil = GetUnitAbility(u,abil);
+        integer level  = 0;
+
+        if(pAbil==0) return;
+
+        level = GetUnitAbilityLevel(u,abil);
+
+        SetAbilityFloatLevelField(pAbil,level,field,value);
+    }
+
+}
+

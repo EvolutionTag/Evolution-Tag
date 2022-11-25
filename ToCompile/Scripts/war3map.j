@@ -3127,6 +3127,8 @@ native UnitAlive takes unit id returns boolean
 //! import vjass "..\ToCompile\Scripts\API\UI\UI.j"
 //! import vjass "..\ToCompile\Scripts\API\AH.j"
 //! import vjass "..\ToCompile\Scripts\API\Init.j"
+//! import zinc "..\ToCompile\Scripts\API\ExtendedAbilities\SkillStats.zn"
+//! import zinc "..\ToCompile\Scripts\API\ExtendedAbilities\SkillCastStat.zn"
 //////////////////////////////////////////
 
 //! import zinc "..\ToCompile\Scripts\InGameNeutrals.j"
@@ -3153,6 +3155,7 @@ native UnitAlive takes unit id returns boolean
 //! import zinc "..\ToCompile\Scripts\BombBlast.j"
 //! import zinc "..\ToCompile\Scripts\TreeDetection.j"
 //! import zinc "..\ToCompile\Scripts\FlyingUnits.j"
+//! import zinc "..\ToCompile\Scripts\ImprovedSkills.zn"
 
 //////////////////////////////////////////////////
 // //! import zinc "..\ToCompile\Scripts\Fixes\TerrainDeformFix.j"
@@ -17407,7 +17410,7 @@ call SetPlayerAllianceStateBJ(Neutral_Satyrs,GetEnumPlayer(),bj_ALLIANCE_ALLIED)
 call SetPlayerAllianceStateBJ(GetEnumPlayer(),Neutral_Satyrs,bj_ALLIANCE_ALLIED)
 endfunction
 function ally_with_nagas takes nothing returns nothing
-call SetPlayerAllianceStateBJ(GetEnumPlayer(),Neutral_Satyrs,bj_ALLIANCE_ALLIED)
+call SetPlayerAllianceStateBJ(GetEnumPlayer(),Neutral_Nagas,bj_ALLIANCE_ALLIED)
 call SetPlayerAllianceStateBJ(Neutral_Nagas,GetEnumPlayer(),bj_ALLIANCE_ALLIED)
 endfunction
 function Trig_Neutral_alliance_Func003Func001Func001C takes nothing returns boolean
@@ -41125,8 +41128,8 @@ call InitTrig_Flame_Breath_Stop()
 
 call InitTrig_Generic_Slam()
 call InitTrig_Generic_Slam_Copy()
-call InitTrig_Plated_Footman_Warstomp()
-call InitTrig_Paladin_uu_warstomp()
+//call InitTrig_Plated_Footman_Warstomp()
+//call InitTrig_Paladin_uu_warstomp()
 call InitTrig_Icey_Explosion()
 call InitTrig_Generic_War_Stomp()
 call InitTrig_Display_stats()

@@ -1,0 +1,101 @@
+library ImprovedSkills requires SkillCastStat {
+
+    function onInit() {
+    
+        AddAbility('A0AQ', SKILL_FIELD_OFFSET_DATAB, 50,25,1,0,0,2,2); //firestorm
+        AddAbility('A0AQ', SKILL_FIELD_OFFSET_DATAE, 0,1,0.03,0,0,0,0);
+
+        AddAbility('A0C4', SKILL_FIELD_OFFSET_DATAE, 170,30,1,0,0,0,0); //thunderbolt
+
+        AddAbility('A0M3', SKILL_FIELD_OFFSET_DATAA, 0,50,0,2,0,7,7); //Fire!
+        
+        AddAbility('A0M4', SKILL_FIELD_OFFSET_DATAB, 0,500,25,0,0,0,0); //Avatar
+        AddAbility('A0M4', SKILL_FIELD_OFFSET_DATAC, 20,10,1,0,0,0,0);
+
+
+        AddAbility('A05I', SKILL_FIELD_OFFSET_DUR, 1.5,0.5,0,0,0.01,0,0); //phase shift
+        AddAbility('A05I', SKILL_FIELD_OFFSET_HERODUR, 1.5,0.5,0,0,0.01,0,0); 
+        AddAbility('A05I', SKILL_FIELD_OFFSET_COOL, 11,-1,0,0,-0.01,0,0); 
+        AbilityAddMax('A05I',SKILL_FIELD_OFFSET_COOL,10);
+        AbilityAddMin('A05I',SKILL_FIELD_OFFSET_COOL,5);
+        AbilityAddMax('A05I',SKILL_FIELD_OFFSET_DUR,4);
+        AbilityAddMin('A05I',SKILL_FIELD_OFFSET_DUR,0);
+        AbilityAddMax('A05I',SKILL_FIELD_OFFSET_HERODUR,4);
+        AbilityAddMin('A05I',SKILL_FIELD_OFFSET_HERODUR,0);
+
+
+        AddAbility('A0I7', SKILL_FIELD_OFFSET_DATAA, 0,10,0,1,0,0,0);  //flamings cloack
+
+
+        AddAbility('A0JT', SKILL_FIELD_OFFSET_DATAA, 0,25,0,0,0.02,0,0);  //roots
+        AddAbility('A0JT', SKILL_FIELD_OFFSET_HERODUR, 2.5,0,0,0,0.005,0,0);  
+        AddAbility('A0JT', SKILL_FIELD_OFFSET_DUR, 0,2.5,0,0,0.005,0,0);  
+
+
+        AddAbility('A0JS', SKILL_FIELD_OFFSET_DATAA, 300,100,0,0,1,0,0);  //rejuvelation
+
+
+        //AddAbility('A0K7', SKILL_FIELD_OFFSET_DATAA, 100,0,0,1,0,0,0);  //Deciever slam
+
+
+        AddAbility('AEfk', SKILL_FIELD_OFFSET_DATAA, 0,10,0,0.5,0,0,0);  //fan of knives
+
+        AddAbility('AEsh', SKILL_FIELD_OFFSET_DATAE, 0,75,0,2,0,0,0);  //Shadow Strike
+        AddAbility('AEsh', SKILL_FIELD_OFFSET_DATAA, 0,10,0,0.5,0,0,0);  //Shadow Strike
+
+
+        AddAbility('A0KK', SKILL_FIELD_OFFSET_DATAA, 150,50,0,2,0,0,0);  //Fire!
+
+        AddAbility('ACmf', SKILL_FIELD_OFFSET_DATAA, 0,1,0,0.06,0,0,0);  //magic shield marine
+        
+        
+        AddAbility('AE0E', SKILL_FIELD_OFFSET_DATAA, 50,20,0,2,0,0,0);  //Sheep guy ability
+        AddAbility('A06Y', SKILL_FIELD_OFFSET_DATAA, 1,0.5,0,0,0.01,0,0);  //кабан
+        AddAbility('A07M', SKILL_FIELD_OFFSET_DATAA, 1,0.5,0,0,0.01,0,0);  //кабан
+        AddAbility('A07A', SKILL_FIELD_OFFSET_DATAA, 1,0.5,0,0,0.01,0,0);  //кабан
+        AddAbility('A09N', SKILL_FIELD_OFFSET_DATAA, 0,25,0,0,0.5,0,0);  //holy domination
+        AddAbility('A014', SKILL_FIELD_OFFSET_DATAA, 40,15,0,0,0.3,0,0);  //starfall
+        
+        AddAbility('A011', SKILL_FIELD_OFFSET_DATAA, 200,0,0,0,0.3,0,0);  //chain lightning
+        AddAbility('A00P', SKILL_FIELD_OFFSET_DATAA, 100,0,0,0,0.5,0,0);  //firebolt 3
+        AddAbility('A00U', SKILL_FIELD_OFFSET_DATAA, 150,0,0,0,0.5,0,0);  //firebolt 4
+        AddAbility('A00T', SKILL_FIELD_OFFSET_DATAA, 200,0,0,0,0.5,0,0);  //firebolt 5
+
+        AddAbility('A00Q', SKILL_FIELD_OFFSET_DATAA, 75,0,0,0,1,0,0);  //Flame strike 2
+        AddAbility('A00Q', SKILL_FIELD_OFFSET_DATAC, 3,2,0,0,0.4,0,0);
+        AddAbility('A00V', SKILL_FIELD_OFFSET_DATAA, 100,0,0,0,1,0,0);  //Flame strike 3
+        AddAbility('A00V', SKILL_FIELD_OFFSET_DATAC, 3,2,0,0,0.4,0,0);
+        AddAbility('A00W', SKILL_FIELD_OFFSET_DATAA, 200,0,0,0,1,0,0);  //Flame strike 4
+        AddAbility('A00W', SKILL_FIELD_OFFSET_DATAC, 3,2,0,0,0.4,0,0);
+
+
+        AddAbility('A013', SKILL_FIELD_OFFSET_DATAA, 150,0,0,0,0.5,0,0);  //frostnova 2
+
+
+        AddAbility('ANcf', SKILL_FIELD_OFFSET_DATAA, 100,50,1.5,0,0,0,0);  //fire breath
+
+
+        AddAbility('A003', SKILL_FIELD_OFFSET_COOL, 75,0,0,0,-0.1,0,0);  //blink
+        AbilityAddMax('A003',SKILL_FIELD_OFFSET_COOL,75);
+        AbilityAddMin('A003',SKILL_FIELD_OFFSET_COOL,45);
+
+
+        AddAbility('dDHS', SKILL_FIELD_OFFSET_DATAA, 50,25,1,0,0,0,0);  //Thunder Clap
+
+
+        AddAbility('AE0M', SKILL_FIELD_OFFSET_DATAA, 0,75,2,0,0,0,0);  //Shockwave
+
+        AddAbility('A0IK', SKILL_FIELD_OFFSET_DATAA, 75,75,2,0,0,0,0);  //healing wave
+        AddAbility('A0IK', SKILL_FIELD_OFFSET_DATAB, 2,1,0.03,0,0,0,0);  //healing wave
+
+        AddAbility('A02B', SKILL_FIELD_OFFSET_DATAA, 10,2,0,0,0.05,0,0);  //Entangling Roots
+        AddAbility('A0BM', SKILL_FIELD_OFFSET_DATAA, 60,40,0,0,0.3,0,0);  //Entangling Roots
+
+        AddAbility('A0BW', SKILL_FIELD_OFFSET_DATAA, 30,30,0,0,0.5,0,0);  //rockets
+
+
+
+
+    
+    }
+    }
