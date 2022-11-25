@@ -46,7 +46,7 @@ library InGameNeutrals{
         }
         
         if(Neutral_Bottom==null) {
-            Neutral_Bottom = Player(13);
+            Neutral_Bottom = Player(14);
         }
         
         
