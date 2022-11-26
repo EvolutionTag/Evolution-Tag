@@ -21066,14 +21066,14 @@ endfunction
 function Trig_Game_resume_Actions takes nothing returns nothing
 set udg_Duel_Boolean=false
 call PauseUnitsAllEx(false)
-if(Trig_Game_resume_Func003C())then
-call ForForce(udg_Evil,function Trig_Game_resume_Func003Func001A)
-else
-endif
-if(Trig_Game_resume_Func004C())then
-call ForForce(udg_Humans,function Trig_Game_resume_Func004Func001A)
-else
-endif
+// if(Trig_Game_resume_Func003C())then
+// call ForForce(udg_Evil,function Trig_Game_resume_Func003Func001A)
+// else
+// endif
+// if(Trig_Game_resume_Func004C())then
+// call ForForce(udg_Humans,function Trig_Game_resume_Func004Func001A)
+// else
+// endif
 set bj_wantDestroyGroup=true
 call ForGroupBJ(GetUnitsInRectAll(udg_rct_Duel_area),function Trig_Game_resume_Func006A)
 set bj_wantDestroyGroup=true
