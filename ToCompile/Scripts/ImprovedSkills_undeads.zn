@@ -1,0 +1,10 @@
+library ImprovedSkills requires SkillCastStat {
+
+    function onInit() {
+
+
+
+
+    
+    }
+    }

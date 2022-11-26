@@ -3155,7 +3155,8 @@ native UnitAlive takes unit id returns boolean
 //! import zinc "..\ToCompile\Scripts\BombBlast.j"
 //! import zinc "..\ToCompile\Scripts\TreeDetection.j"
 //! import zinc "..\ToCompile\Scripts\FlyingUnits.j"
-//! import zinc "..\ToCompile\Scripts\ImprovedSkills.zn"
+//! import zinc "..\ToCompile\Scripts\ImprovedSkills_humans.zn"
+//! import zinc "..\ToCompile\Scripts\ImprovedSkills_undeads.zn"
 
 //////////////////////////////////////////////////
 // //! import zinc "..\ToCompile\Scripts\Fixes\TerrainDeformFix.j"
