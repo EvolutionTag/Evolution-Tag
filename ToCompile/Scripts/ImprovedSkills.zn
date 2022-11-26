@@ -82,6 +82,7 @@ library ImprovedSkills requires SkillCastStat {
 
 
         AddAbility('dDHS', SKILL_FIELD_OFFSET_DATAA, 50,25,1,0,0,0,0);  //Thunder Clap
+        AddAbility('A0K6', SKILL_FIELD_OFFSET_DATAA, 50,25,1,0,0,0,0);  //Thunder Clap
 
 
         AddAbility('AE0M', SKILL_FIELD_OFFSET_DATAA, 0,75,2,0,0,0,0);  //Shockwave
