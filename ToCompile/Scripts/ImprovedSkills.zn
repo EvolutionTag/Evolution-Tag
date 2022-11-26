@@ -41,7 +41,7 @@ library ImprovedSkills requires SkillCastStat {
         AddAbility('AEfk', SKILL_FIELD_OFFSET_DATAA, 0,10,0,0.5,0,0,0);  //fan of knives
 
         AddAbility('AEsh', SKILL_FIELD_OFFSET_DATAE, 0,75,0,2,0,0,0);  //Shadow Strike
-        AddAbility('AEsh', SKILL_FIELD_OFFSET_DATAA, 0,10,0,0.5,0,0,0);  //Shadow Strike
+        AddAbility('AEsh', SKILL_FIELD_OFFSET_DATAA, 0,10,0,0.5,0,0,0);  
 
 
         AddAbility('A0KK', SKILL_FIELD_OFFSET_DATAA, 150,50,0,2,0,0,0);  //Fire!
@@ -70,6 +70,7 @@ library ImprovedSkills requires SkillCastStat {
 
 
         AddAbility('A013', SKILL_FIELD_OFFSET_DATAA, 150,0,0,0,0.5,0,0);  //frostnova 2
+        AddAbility('A013', SKILL_FIELD_OFFSET_DATAB, 100,0,0,0,0.5,0,0);  //frostnova 2
 
 
         AddAbility('ANcf', SKILL_FIELD_OFFSET_DATAA, 100,50,1.5,0,0,0,0);  //fire breath
