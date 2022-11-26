@@ -26,5 +26,8 @@ library testingUnits {
         CreateUnit(Player(0),'Hlgr',0,0,0);
         CreateUnit(Player(0),'H081',0,0,0);
         CreateUnit(Player(0),'E00T',0,0,0);
+        CreateUnit(Player(0),'Usyl',0,0,0);
+        CreateUnit(Player(0),'U02B',0,0,0);
+        CreateUnit(Player(0),'O00E',0,0,0);
     }
 }

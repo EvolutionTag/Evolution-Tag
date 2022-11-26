@@ -1,8 +1,14 @@
-library ImprovedSkills requires SkillCastStat {
+library ImprovedSkillsUndeads requires SkillCastStat {
 
     function onInit() {
+        
+        AddAbility('A0BW', SKILL_FIELD_OFFSET_DATAA, 30,30,0,0.7,0,0,0);  //barrage
 
+        AddAbility('ANfd', SKILL_FIELD_OFFSET_DATAC, 75,75,0,0,0.4,0,0);  //finger of death
 
+        //AddAbility('AUan', SKILL_FIELD_OFFSET_DATAA, 1,1,0,0,0.05,0,0);  //finger of death
+
+        AddAbility('ANdr', SKILL_FIELD_OFFSET_DATAA, 35,15,0.25,0.25,0.25,0,0);  //suck this hp (mannoroth)
 
 
     
