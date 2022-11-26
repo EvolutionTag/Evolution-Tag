@@ -32,7 +32,7 @@ library ImprovedSkills requires SkillCastStat {
         AddAbility('A0JT', SKILL_FIELD_OFFSET_DUR, 0,2.5,0,0,0.005,0,0);  
 
 
-        AddAbility('A0JS', SKILL_FIELD_OFFSET_DATAA, 300,100,0,0,1,0,0);  //rejuvelation
+        AddAbility('A0JS', SKILL_FIELD_OFFSET_DATAA, 300,100,0,0,3,0,0);  //rejuvelation
 
 
         //AddAbility('A0K7', SKILL_FIELD_OFFSET_DATAA, 100,0,0,1,0,0,0);  //Deciever slam
@@ -90,7 +90,7 @@ library ImprovedSkills requires SkillCastStat {
         AddAbility('A0IK', SKILL_FIELD_OFFSET_DATAA, 75,75,2,0,0,0,0);  //healing wave
         AddAbility('A0IK', SKILL_FIELD_OFFSET_DATAB, 2,1,0.03,0,0,0,0);  //healing wave
 
-        AddAbility('A02B', SKILL_FIELD_OFFSET_DATAA, 10,2,0,0,0.05,0,0);  //Entangling Roots
+        AddAbility('A02B', SKILL_FIELD_OFFSET_DATAA, 25,25,0,0,0.2,0,0);  //Entangling Roots
         AddAbility('A0BM', SKILL_FIELD_OFFSET_DATAA, 60,40,0,0,0.3,0,0);  //Entangling Roots
 
         AddAbility('A0BW', SKILL_FIELD_OFFSET_DATAA, 30,30,0,0,0.5,0,0);  //rockets
