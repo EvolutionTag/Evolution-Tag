@@ -3157,6 +3157,7 @@ native UnitAlive takes unit id returns boolean
 //! import zinc "..\ToCompile\Scripts\FlyingUnits.j"
 //! import zinc "..\ToCompile\Scripts\ImprovedSkills_humans.zn"
 //! import zinc "..\ToCompile\Scripts\ImprovedSkills_undeads.zn"
+//! import zinc "..\ToCompile\Scripts\Improved_windwalk.zn"
 
 //////////////////////////////////////////////////
 // //! import zinc "..\ToCompile\Scripts\Fixes\TerrainDeformFix.j"
@@ -41438,7 +41439,7 @@ call InitTrig_Beetle_unselectable()
 call InitTrig_turn_on_grave_tele()
 call InitTrig_Grave_teleport()
 call InitTrig_turn_off_grave_tlee()
-call InitTrig_Finger_of_Death()
+//call InitTrig_Finger_of_Death()
 call InitTrig_Finger_of_Death_2()
 call InitTrig_Thunder_Pika()
 call InitTrig_Settings()

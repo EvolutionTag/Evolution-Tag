@@ -1,4 +1,4 @@
-library ImprovedSkills requires SkillCastStat {
+library ImprovedSkillsHumans requires SkillCastStat {
 
     function onInit() {
     

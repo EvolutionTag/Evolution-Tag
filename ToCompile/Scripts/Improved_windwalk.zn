@@ -1,0 +1,37 @@
+library ImprovedSkillWindwalk requires SkillCastStat {
+
+    public integer kWWDmgScale = 100;
+    public function WindWalkCallback () {
+        unit u = global_Spell_Unit;
+        integer aid = global_Spell_Ability;
+        integer level = GetUnitLevel(u);
+        integer hStr = GetHeroStr(u,true);
+        integer hAgi = GetHeroAgi(u,true);
+        integer hInt = GetHeroInt(u,true);
+        integer AbiLvl = GetUnitAbilityLevel(u,aid);
+        real limfield = 0;
+        real result = 0;
+        integer foff = 0;
+        integer loop_index = 1;
+        integer loop_max = 0;
+        real scale = 0;
+
+        if(HaveSavedReal(abils,aid,kWWDmgScale)) {
+            scale = LoadReal(abils,aid,kWWDmgScale);
+            SetUnitAbilityFloatField(u,aid,SKILL_FIELD_OFFSET_DATAC,scale*GetUnitAttackDamage(u));
+        }
+    } 
+    
+    public function AddWindWalkScale(integer id, real scale) {
+        AddSimpleCallback(id,"WindWalkCallback");
+        SaveReal(abils,id,kWWDmgScale,scale);
+    } 
+    function onInit() {
+        AddWindWalkScale('A0IE',1.5);//Windwalk
+        AddWindWalkScale('AOwk',1);//Windwalk
+        AddWindWalkScale('A002',3);//Windwalk
+        AddWindWalkScale('A01E',3);//Windwalk
+        AddWindWalkScale('A08Y',2);//Windwalk
+    
+    }
+    }
