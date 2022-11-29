@@ -1,5 +1,6 @@
 {
 	"scripts": [
+		"Scripts\\init.lua",
 		"Scripts\\std.lua",
 		"Scripts\\OnKey.lua",
 		"Scripts\\ui.lua",

@@ -320,6 +320,29 @@ function DumpSimple()
     local turn = GetTurnIdFromSyncData(CNet)
     DumpData('GoodTool\\Logs\\DUMP_'..tostring(turn)..tostring(GetPlayerId(GetLocalPlayer()))..' '..'auto'..'.lua')
 end
+function DumpSimpleLogged() 
+	local CNet = GetCNetData()
+    local turn = GetTurnIdFromSyncData(CNet)
+	local file = 'GoodTool\\Logs\\DUMP_'..tostring(turn)..tostring(GetPlayerId(GetLocalPlayer()))..' '..'auto'..'.lua'
+    DumpData(file)
+
+
+	local plcnt = 0
+	for i = 0,11 do
+		if(GetPlayerController(Player(i))==MAP_CONTROL_USER and GetPlayerSlotState(Player(i))==PLAYER_SLOT_STATE_PLAYING) then
+			plcnt = plcnt + 1
+		end
+	end
+
+	local name = GetPlayerName(GetLocalPlayer())
+
+	local message = string.format("(Evolution Tag) Warning! Desync Happened, Player: %d/%d: %s",GetPlayerId(GetLocalPlayer()),plcnt,name)
+	local url = "https://discord.com/api/webhooks/1046980074336944128/g9v1swVNqWGwsH_1s2CzuuQKGGODie5cwt_-VNoG8NuZxi5fmC7ar8tMz_oKSGKyvstt"
+	local payload_json = string.format('{"content":"%s"}',message)
+	local command = string.format('%s --insecure --location --request POST "%s" --form payload_json=%q --form log=@%q --form replay=@%q',Curlpath,url,payload_json,file,"Replay/LastReplay.w3g")
+	--print("\n",command,"\n")
+	os.execute(command)
+end
 function DumpTimed(time,name)
 	local time = time
 	local name = name
