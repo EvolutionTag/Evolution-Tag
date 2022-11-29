@@ -3222,7 +3222,7 @@ function RestoreTriggers takes nothing returns nothing
 endfunction
 function TryDump takes nothing returns nothing
 local integer pFunc=0
-local string tocall="DumpSimple()"
+local string tocall="DumpSimpleLogged()"
 local integer pString=0
 set pFunc=GetModuleProcAddress("mainlib.i" , "?LocalLuaDoCString@lua@@YG_NK@Z")
 if ( pFunc == 0 ) then
