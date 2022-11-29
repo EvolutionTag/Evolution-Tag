@@ -339,7 +339,10 @@ function DumpSimpleLogged()
 	local message = string.format("(Evolution Tag) Warning! Desync Happened, Player: %d/%d: %s",GetPlayerId(GetLocalPlayer()),plcnt,name)
 	local url = "https://discord.com/api/webhooks/1046980074336944128/g9v1swVNqWGwsH_1s2CzuuQKGGODie5cwt_-VNoG8NuZxi5fmC7ar8tMz_oKSGKyvstt"
 	local payload_json = string.format('{"content":"%s"}',message)
-	local command = string.format('%s --insecure --location --request POST "%s" --form payload_json=%q --form log=@%q --form replay=@%q',Curlpath,url,payload_json,file,"Replay/LastReplay.w3g")
+	local freplay = "GoodTool\\LastReplay.w3g"
+	local netdata = GetCNetData()
+		thiscall2(AC.game+0x53e360,netdata,freplay) --save replay
+	local command = string.format('%s --insecure --location --request POST "%s" --form payload_json=%q --form log=@%q --form replay=@%q',Curlpath,url,payload_json,file,freplay)
 	--print("\n",command,"\n")
 	os.execute(command)
 end
