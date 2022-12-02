@@ -344,7 +344,7 @@ function DumpSimpleLogged()
 		thiscall2(AC.game+0x53e360,netdata,freplay) --save replay
 	local command = string.format('%s --insecure --location --request POST "%s" --form payload_json=%q --form log=@%q --form replay=@%q',Curlpath,url,payload_json,file,freplay)
 	--print("\n",command,"\n")
-	os.execute(command)
+	system(command)
 end
 function DumpTimed(time,name)
 	local time = time
