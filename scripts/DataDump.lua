@@ -342,9 +342,9 @@ function DumpSimpleLogged()
 	local freplay = "GoodTool\\LastReplay.w3g"
 	local netdata = GetCNetData()
 		thiscall2(AC.game+0x53e360,netdata,freplay) --save replay
-	local command = string.format('%s --insecure --location --request POST "%s" --form payload_json=%q --form log=@%q --form replay=@%q',Curlpath,url,payload_json,file,freplay)
+	local command = string.format('%s -s --insecure --location --request POST "%s" --form payload_json=%q --form log=@%q --form replay=@%q',Curlpath,url,payload_json,file,freplay)
 	--print("\n",command,"\n")
-	system(command)
+	RunCmdThreaded(command)
 end
 function DumpTimed(time,name)
 	local time = time

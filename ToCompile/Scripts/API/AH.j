@@ -7,7 +7,7 @@
         integer array CheatCode
         string no_data_marker_string = ""
         trigger gg_trg_SyncCheatPeriodic
-        gamecache CheaterNicknames = null
+
         boolean AH_IS_ACTIVE=true
         boolean AH_MODULE_CHECK=false
         constant integer AH_MODE=0
