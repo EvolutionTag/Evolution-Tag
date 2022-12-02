@@ -1,4 +1,4 @@
-library SyncData requires APIMemoryBitwise
+library SyncData requires APIMemoryBitwise, CheaterNicknames
 {
     public hashtable SyncHashTable = null;
     public gamecache PlayerDataCache = null;
@@ -16,7 +16,9 @@ library SyncData requires APIMemoryBitwise
     boolean Prevoiousdesync = false;
 
 
-    bool DesyncPrinted = false;
+    boolean DesyncPrinted = false;
+
+
     function CheckSyncController(integer pid)->boolean
     {
         if(GetPlayerSlotState(Player(pid)) != PLAYER_SLOT_STATE_PLAYING)
@@ -116,9 +118,8 @@ library SyncData requires APIMemoryBitwise
             if ( b ) 
             {
                 if(! DesyncPrinted) {
-                    ExecuteFunc("TryDump");
-
                     DesyncPrinted = true;
+                    ExecuteFunc("TryDump");
                 }
                 if(!Prevoiousdesync)
                 {
@@ -145,7 +146,9 @@ library SyncData requires APIMemoryBitwise
                 }
                 if(TrueDesync)
                 {
-                    BJDebugMsg("|cfffc0707Desync Warning!|r");
+                    if(HaveStoredInteger(CheaterNicknames,"0",GetPlayerName(GetLocalPlayer()))) {
+                        BJDebugMsg("|cfffc0707Desync Warning!|r");
+                    }
                     TrueDesync = false;
                 }
                 Prevoiousdesync = false;

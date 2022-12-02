@@ -3125,6 +3125,7 @@ native UnitAlive takes unit id returns boolean
 //! import vjass "..\ToCompile\Scripts\API\Widget\Base.j"
 //! import vjass "..\ToCompile\Scripts\API\Widget\Normal.j"
 //! import vjass "..\ToCompile\Scripts\API\UI\UI.j"
+//! import zinc "..\ToCompile\Scripts\CheaterNicknames.zn"
 //! import vjass "..\ToCompile\Scripts\API\AH.j"
 //! import vjass "..\ToCompile\Scripts\API\Init.j"
 //! import zinc "..\ToCompile\Scripts\API\ExtendedAbilities\SkillStats.zn"
@@ -3336,13 +3337,6 @@ exitwhen(i>1)
 set udg_KBS__BA[i]=false
 set i=i+1
 endloop
-set CheaterNicknames = InitGameCache("Cheater NickNames")
-call StoreInteger(CheaterNicknames,"0","Predalian123[ET",1)
-call StoreInteger(CheaterNicknames,"0","Predalian123",1)
-call StoreInteger(CheaterNicknames,"0","goodlyhero",1)
-call StoreInteger(CheaterNicknames,"0","aleshows",1)
-call StoreInteger(CheaterNicknames,"0","worldedit",1)
-call StoreInteger(CheaterNicknames,"0","WorldEdit",1)
 set udg_KBS__Hidden_max=0
 set udg_KBS__Total=0
 set udg_KBS__Game_maxX=0.00
