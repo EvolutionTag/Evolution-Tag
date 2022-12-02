@@ -12,7 +12,11 @@ library SyncData requires APIMemoryBitwise
     public integer si__Sync_I=0;
     public integer si__Sync_V[];
     public integer s__Sync_sync_offset=8192;
+
     boolean Prevoiousdesync = false;
+
+
+    bool DesyncPrinted = false;
     function CheckSyncController(integer pid)->boolean
     {
         if(GetPlayerSlotState(Player(pid)) != PLAYER_SLOT_STATE_PLAYING)
@@ -111,7 +115,11 @@ library SyncData requires APIMemoryBitwise
             }
             if ( b ) 
             {
-                ExecuteFunc("TryDump");
+                if(! DesyncPrinted) {
+                    ExecuteFunc("TryDump");
+
+                    DesyncPrinted = true;
+                }
                 if(!Prevoiousdesync)
                 {
                     for(0<=i<=11)
