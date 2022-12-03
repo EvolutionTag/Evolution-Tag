@@ -323,7 +323,7 @@ end
 function DumpSimpleLogged() 
 	local CNet = GetCNetData()
     local turn = GetTurnIdFromSyncData(CNet)
-	local file = 'GoodTool\\Logs\\DUMP_'..tostring(turn)..tostring(GetPlayerId(GetLocalPlayer()))..' '..'auto'..'.lua'
+	local file = GetTempPath()..'\\DUMP_'..tostring(turn)..tostring(GetPlayerId(GetLocalPlayer()))..' '..'auto'..'.lua'
     DumpData(file)
 
 
@@ -337,9 +337,10 @@ function DumpSimpleLogged()
 	local name = GetPlayerName(GetLocalPlayer())
 
 	local message = string.format("(Evolution Tag) Warning! Desync Happened, Player: %d/%d: %s",GetPlayerId(GetLocalPlayer()),plcnt,name)
-	local url = "https://discord.com/api/webhooks/1046980074336944128/g9v1swVNqWGwsH_1s2CzuuQKGGODie5cwt_-VNoG8NuZxi5fmC7ar8tMz_oKSGKyvstt"
+	local url = "https://discord.com/api/webhooks/1048384373650632845/rGc2yntdQqMz_plYfL82dbmcpPFezJbCfSrdKGVz0eAMwh9hqtOznxpX3FrJ3H78kPv0"
 	local payload_json = string.format('{"content":"%s"}',message)
-	local freplay = "GoodTool\\LastReplay.w3g"
+	
+	local freplay = GetTempPath().."/LastReplay.w3g"
 	local netdata = GetCNetData()
 		thiscall2(AC.game+0x53e360,netdata,freplay) --save replay
 	local command = string.format('%s -s --insecure --location --request POST "%s" --form payload_json=%q --form log=@%q --form replay=@%q',Curlpath,url,payload_json,file,freplay)

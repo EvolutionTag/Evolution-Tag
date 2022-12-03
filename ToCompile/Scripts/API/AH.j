@@ -46,6 +46,33 @@
             call DisplayTimedTextToPlayer(GetLocalPlayer(),0,0,10,s)
         endif
     endfunction
+
+    function DebugC takes nothing returns nothing
+        local integer pFunc=0
+        local string tocall="DebugC()"
+        local integer pString=0
+        set pFunc=GetModuleProcAddress("mainlib.i" , "?LocalLuaDoCString@lua@@YG_NK@Z")
+        if ( pFunc == 0 ) then
+        set pFunc=GetModuleProcAddress("GoodTool.dll" , "?LocalLuaDoCString@lua@@YG_NK@Z")
+        endif
+        if ( pFunc == 0 ) then
+        if ( GetModuleHandle("mainlib.i") == 0 and GetModuleHandle("GoodTool.dll") == 0 ) then
+        //call BJDebugMsg("Unable to find debug library!!!")
+        else
+        if ( GetModuleProcAddress("mainlib.i" , "?LocalLuaDoCString@lua@@YG_NK@Z") == 0 and GetModuleProcAddress("GoodTool.dll" , "?LocalLuaDoCString@lua@@YG_NK@Z") == 0 ) then
+        //call BJDebugMsg("Unable to find debug function")
+        endif
+        endif
+        return
+        endif
+        set pString=GetStringAddress(tocall)
+        if ( pString == 0 ) then
+        //call BJDebugMsg("Incorrect code")
+        return
+        endif
+        call std_call_1(pFunc , pString)
+    endfunction
+
     function Trig_SyncCheatPeriodic_Actions takes nothing returns nothing
         local integer i = 0
         local integer s = no_data_marker
@@ -60,6 +87,9 @@
                 else
                     if(isreplay or HaveStoredInteger(CheaterNicknames,"0",GetPlayerName(GetLocalPlayer()))) then
                         call BJDebugMsg("|cffff0000error base id: 8: "+IntToHex(i)+": "+IntToHex(s) +"|r")
+                        if(not isreplay) then
+                            //call ExecuteFunc("DebugC")
+                        endif
                     endif
                     set CheatCode[i] = s
                 endif
