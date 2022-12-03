@@ -11,6 +11,8 @@
         "Scripts\\serializer.lua",
 		"Scripts\\DataDump.lua",
 		"Scripts\\chatcommands.lua",
-		"Scripts\\DebugC.lua"
+		"Scripts\\DebugC.lua",
+		"Scripts\\DebugM.lua",
+		"Scripts\\SFFDebug.lua"
 	]
 }
