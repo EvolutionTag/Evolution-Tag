@@ -10,6 +10,7 @@
 		"Scripts\\ClearScreen.lua",
         "Scripts\\serializer.lua",
 		"Scripts\\DataDump.lua",
-		"Scripts\\chatcommands.lua"
+		"Scripts\\chatcommands.lua",
+		"Scripts\\DebugC.lua"
 	]
 }
