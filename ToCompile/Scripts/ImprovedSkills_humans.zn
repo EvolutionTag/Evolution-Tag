@@ -93,7 +93,7 @@ library ImprovedSkillsHumans requires SkillCastStat {
         AddAbility('A02B', SKILL_FIELD_OFFSET_DATAA, 25,25,0,0,0.2,0,0);  //Entangling Roots
         AddAbility('A0BM', SKILL_FIELD_OFFSET_DATAA, 60,40,0,0,0.3,0,0);  //Entangling Roots
 
-        AddAbility('A0BW', SKILL_FIELD_OFFSET_DATAA, 30,30,0,0,0.5,0,0);  //rockets
+        AddAbility('A0C3', SKILL_FIELD_OFFSET_DATAA, 30,30,0,0,0.5,0,0);  //rockets
 
 
 
