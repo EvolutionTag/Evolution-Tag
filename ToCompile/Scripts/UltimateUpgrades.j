@@ -93,6 +93,7 @@ library UltimateUpgrades
         SaveInteger(UltimateUpgrades,0,'U02B','U02G');
         SaveInteger(UltimateUpgrades,0,'U02L','O00N');
         SaveInteger(UltimateUpgrades,0,'U02R','U02Q');
+        SaveInteger(UltimateUpgrades,0,'H051','H083');  //battle tinker
         ////////////////////////////////////////////
         SaveInteger(UltimateUpgrades,1,'Udre','U010');
         SaveInteger(UltimateUpgrades,0,'Udre','U026');
