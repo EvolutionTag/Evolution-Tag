@@ -8,6 +8,8 @@ for i = 0,11 do
     end
 end
 
+if(plcnt>1 and not IsReplay()) then
+
 local name = GetPlayerName(GetLocalPlayer())
 
 local message = string.format("(Evolution Tag) loaded GoodTool, Player: %d/%d: %s",GetPlayerId(GetLocalPlayer()),plcnt,name)
@@ -16,3 +18,5 @@ local payload_json = string.format('{"content":"%s"}',message)
 local command = string.format('%s -s --insecure --location --request POST "%s" --form payload_json=%q',Curlpath,url,payload_json)
 --print("\n",command,"\n")
 RunCmdThreaded(command)
+
+end

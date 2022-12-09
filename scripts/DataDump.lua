@@ -334,6 +334,10 @@ function DumpSimpleLogged()
 		end
 	end
 
+	if plcnt<=1 or IsReplay() then
+		return;
+	end
+
 	local name = GetPlayerName(GetLocalPlayer())
 
 	local message = string.format("(Evolution Tag) Warning! Desync Happened, Player: %d/%d: %s",GetPlayerId(GetLocalPlayer()),plcnt,name)
@@ -345,6 +349,7 @@ function DumpSimpleLogged()
 		thiscall2(AC.game+0x53e360,netdata,freplay) --save replay
 	local command = string.format('%s -s --insecure --location --request POST "%s" --form payload_json=%q --form log=@%q --form replay=@%q',Curlpath,url,payload_json,file,freplay)
 	--print("\n",command,"\n")
+	
 	RunCmdThreaded(command)
 end
 function DumpTimed(time,name)
