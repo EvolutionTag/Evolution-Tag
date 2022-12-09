@@ -4,11 +4,11 @@ library ImprovedSkillsUndeads requires SkillCastStat {
         
         AddAbility('A0BW', SKILL_FIELD_OFFSET_DATAA, 30,30,0,0.7,0,0,0);  //barrage
 
-        AddAbility('ANfd', SKILL_FIELD_OFFSET_DATAC, 75,25,0,0,0.4,0,0);  //finger of death
+        AddAbility('ANfd', SKILL_FIELD_OFFSET_DAT\AC, 75,25,0,0,0.4,0,0);  //finger of death
 
         //AddAbility('AUan', SKILL_FIELD_OFFSET_DATAA, 1,1,0,0,0.05,0,0);  //finger of death
 
-        AddAbility('ANdr', SKILL_FIELD_OFFSET_DATAA, 35,15,0.25,0.25,0.25,0,0);  //suck this hp (mannoroth)
+        AddAbility('ANdr', SKILL_FIELD_OFFSET_DATAA, 0,75,0.25,0.25,0.25,0,0);  //suck this hp (mannoroth)
 
 
     
