@@ -20525,7 +20525,7 @@ endif
 if(not(GetOwningPlayer(GetEnumUnit())!=Player(PLAYER_NEUTRAL_PASSIVE)))then
 return false
 endif
-if(not(GetOwningPlayer(GetEnumUnit())!=Neutral_Satyrs))then
+if(not(GetOwningPlayer(GetEnumUnit())!=Neutral_Nagas))then
 return false
 endif
 if(not(GetOwningPlayer(GetEnumUnit())!=Neutral_Satyrs))then
@@ -21249,7 +21249,7 @@ endif
 if(not(GetOwningPlayer(GetEnumUnit())!=Player(PLAYER_NEUTRAL_PASSIVE)))then
 return false
 endif
-if(not(GetOwningPlayer(GetEnumUnit())!=Neutral_Satyrs))then
+if(not(GetOwningPlayer(GetEnumUnit())!=Neutral_Nagas))then
 return false
 endif
 if(not(GetOwningPlayer(GetEnumUnit())!=Neutral_Satyrs))then
@@ -21307,7 +21307,7 @@ endif
 if(not(GetOwningPlayer(GetEnumUnit())!=Player(PLAYER_NEUTRAL_PASSIVE)))then
 return false
 endif
-if(not(GetOwningPlayer(GetEnumUnit())!=Neutral_Satyrs))then
+if(not(GetOwningPlayer(GetEnumUnit())!=Neutral_Nagas))then
 return false
 endif
 if(not(GetOwningPlayer(GetEnumUnit())!=Neutral_Satyrs))then
