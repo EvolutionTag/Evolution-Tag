@@ -53,7 +53,7 @@ library ImprovedSkillsHumans requires SkillCastStat {
         AddAbility('A06Y', SKILL_FIELD_OFFSET_DATAA, 1,0.5,0,0,0.01,0,0);  //кабан
         AddAbility('A07M', SKILL_FIELD_OFFSET_DATAA, 1,0.5,0,0,0.01,0,0);  //кабан
         AddAbility('A07A', SKILL_FIELD_OFFSET_DATAA, 1,0.5,0,0,0.01,0,0);  //кабан
-        AddAbility('A09N', SKILL_FIELD_OFFSET_DATAA, 0,25,0,0,0.5,0,0);  //holy domination
+        AddAbility('A09N', SKILL_FIELD_OFFSET_DATAA, 0,75,0,0,0.5,0,0);  //holy domination
         AddAbility('A014', SKILL_FIELD_OFFSET_DATAA, 40,15,0,0,0.3,0,0);  //starfall
         
         AddAbility('A011', SKILL_FIELD_OFFSET_DATAA, 200,0,0,0,0.3,0,0);  //chain lightning
