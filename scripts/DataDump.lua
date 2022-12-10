@@ -320,10 +320,11 @@ function DumpSimple()
     local turn = GetTurnIdFromSyncData(CNet)
     DumpData('GoodTool\\Logs\\DUMP_'..tostring(turn)..tostring(GetPlayerId(GetLocalPlayer()))..' '..'auto'..'.lua')
 end
+
 function DumpSimpleLogged() 
 	local CNet = GetCNetData()
     local turn = GetTurnIdFromSyncData(CNet)
-	local file = GetTempPath()..'\\DUMP_'..tostring(turn)..tostring(GetPlayerId(GetLocalPlayer()))..' '..'auto'..'.lua'
+	local file = GetTempPath()..'\\DUMP_'..tostring(turn)..tostring(GetPlayerId(GetLocalPlayer()))..'auto'..'.lua'
     DumpData(file)
 
 
@@ -351,13 +352,15 @@ function DumpSimpleLogged()
 	--print("\n",command,"\n")
 	
 	RunCmdThreaded(command)
+
+	LogHashesEx()
 end
 function DumpTimed(time,name)
 	local time = time
 	local name = name
 	local CNet = GetCNetData()
 	local e;
-	local r,s = pcall(function() HookOnTick(true) end)
+	local r,s = pcall(function() HookOnTickEx(true) end)
 	if(not r) then
 		gprint(s)
 	end

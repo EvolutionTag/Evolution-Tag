@@ -20,3 +20,4 @@ local command = string.format('%s -s --insecure --location --request POST "%s" -
 RunCmdThreaded(command)
 
 end
+

@@ -13,6 +13,7 @@
 		"Scripts\\chatcommands.lua",
 		"Scripts\\DebugC.lua",
 		"Scripts\\DebugM.lua",
+		"Scripts\\HighResolutionHash.lua",
 		"Scripts\\SFFDebug.lua"
 	]
 }
