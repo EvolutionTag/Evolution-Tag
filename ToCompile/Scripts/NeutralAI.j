@@ -126,7 +126,7 @@ library NeutralAI requires InGameNeutrals{
         ForForce(Neutral_Players,function() {OrderForNeutral(GetEnumPlayer());});
         }
 
-        public function NeutralAI___Init(){
+        public function onInit(){
             NeutralOrders = InitHashtable();
             TimerStart(CreateTimer(),NeutralOrderTimerout,true, function OrderForAllNeutrals);
             Death_Cleanup_trigger = CreateTrigger();

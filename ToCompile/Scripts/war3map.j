@@ -41093,7 +41093,6 @@ endfunction
 function InitCustomTriggers2 takes nothing returns nothing
 call TimerStart(CreateTimer(),6,false,function InitStunDispatchers)
 call LuaCall_Init()
-call NeutralAI___Init()
 call init_rect_control()
 call InitTrig_Dead_area_top_left()
 call InitTrig_Dead_area_bot_left()
