@@ -26329,6 +26329,9 @@ endif
 return true
 endfunction
 function UltimateUpgrade takes unit u,integer uid returns unit
+if(IsUnitInGroup(Morphs)) then
+    return null
+endif
 set u=ChangeUnit2(u,uid)
 if(GetLocalPlayer()==GetOwningPlayer(u))then
 call SelectUnitSingle(u)
