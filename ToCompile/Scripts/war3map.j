@@ -26329,7 +26329,7 @@ endif
 return true
 endfunction
 function UltimateUpgrade takes unit u,integer uid returns unit
-if(IsUnitInGroup(Morphs)) then
+if(IsUnitInGroup(u,morphs)) then
     return null
 endif
 set u=ChangeUnit2(u,uid)
@@ -26369,6 +26369,9 @@ function UltimateUpgrade_Actions takes unit u returns unit
     set id = GetUltimateUpgradeId(GetUnitTypeId(u),not udg_NO_FLYING_UNITS)
     if(id!=0) then
         set u = UltimateUpgrade(u,id)
+        if(u==null) then
+            return null
+        endif
         set func = GetUltimateUpgradeSideEffectFromId(GetUnitTypeId(u),not udg_NO_FLYING_UNITS)
         set UltimateUpgradingUnit = u
         //call BJDebugMsg(func)
