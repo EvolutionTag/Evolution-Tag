@@ -18760,6 +18760,8 @@ endfunction
 function Trig_Satyr_Spawn_Actions takes nothing returns nothing
 if(Trig_Satyr_Spawn_Func003C())then
 call CreateNUnitsAtLocBonuses(1,'n05X',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
+call UnitAddAbility(GetLastCreatedUnit(),'A0M6')
+call IssueImmediateOrder(GetLastCreatedUnit(),"windwalk")
 call SetUnitCreepGuard(GetLastCreatedUnit(),false)
 call RemoveGuardPosition(GetLastCreatedUnit())
 call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
@@ -35211,10 +35213,10 @@ call TriggerAddAction(udg_trg_Mount_hippogryph,function Trig_Mount_hippogryph_Ac
 endfunction
 function Trig_Random_hippo_move_Actions takes nothing returns nothing
     set udg_General_Point2=GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
-    call NeutralIssueOrderRandomLocInRect(udg_unit_ehip_0093,"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
+    call IssuePointOrderLoc(udg_unit_ehip_0093,"patrol",udg_General_Point2)
     call RemoveLocation(udg_General_Point2)
     set udg_General_Point2=GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
-    call NeutralIssueOrderRandomLocInRect(udg_unit_ehip_0092,"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
+    call IssuePointOrderLoc(udg_unit_ehip_0092,"patrol",udg_General_Point2)
     call RemoveLocation(udg_General_Point2)
 endfunction
 function InitTrig_Random_hippo_move takes nothing returns nothing
