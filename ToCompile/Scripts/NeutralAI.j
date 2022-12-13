@@ -4,28 +4,11 @@ library NeutralAI requires InGameNeutrals{
         player TempPlayerNeutral = null;
         integer NeutralReactionRange = 800;
         real NeutralOrderTimerout = 10;
+        real order_restore_timeout = 5.5;
         hashtable NeutralOrders = null;
         integer Order_point_type = 0;
         integer Order_random_point_in_rect = 1;
         trigger Death_Cleanup_trigger = null;
-
-        public function NeutralIssuePointOrderSaved(unit u, string order, real x, real y)
-        {
-            SaveInteger(NeutralOrders,GetHandleId(u),0,Order_point_type);
-            SaveStr(NeutralOrders,GetHandleId(u),1,order);
-            SaveReal(NeutralOrders,GetHandleId(u),2,x);
-            SaveReal(NeutralOrders,GetHandleId(u),3,y);
-            IssuePointOrder(u,order,x,y);
-        }
-
-        public function NeutralIssuePointOrderSavedLoc(unit u, string order, location loc)
-        {
-            SaveInteger(NeutralOrders,GetHandleId(u),0,Order_point_type);
-            SaveStr(NeutralOrders,GetHandleId(u),1,order);
-            SaveReal(NeutralOrders,GetHandleId(u),2,GetLocationX(loc));
-            SaveReal(NeutralOrders,GetHandleId(u),3,GetLocationY(loc));
-            IssuePointOrder(u,order,GetLocationX(loc),GetLocationY(loc));
-        }
 
         function GetRandomXInRect(rect r)->real
         {
@@ -36,13 +19,6 @@ library NeutralAI requires InGameNeutrals{
             return GetRandomReal(GetRectMinY(r),GetRectMaxY(r));
         }
 
-        public function NeutralIssueOrderRandomLocInRect(unit u, string order, rect r)
-        {
-            SaveInteger(NeutralOrders,GetHandleId(u),0,Order_random_point_in_rect);
-            SaveStr(NeutralOrders,GetHandleId(u),1,order);
-            SaveRectHandle(NeutralOrders,GetHandleId(u),2,r);
-            IssuePointOrder(u,order,GetRandomXInRect(r),GetRandomYInRect(r));
-        }
 
         function RestoreOrder(unit u) -> boolean
         {
@@ -81,6 +57,52 @@ library NeutralAI requires InGameNeutrals{
                 FlushChildHashtable(NeutralOrders,GetHandleId(u));
             }
         }  
+
+
+        function PeriodicRestoreOrder() {
+            timer t = GetExpiredTimer();
+            unit u = LoadUnitHandle(NeutralOrders,GetHandleId(t),0);
+            if(GetWidgetLife(u)<0.4) {
+                FlushChildHashtable(NeutralOrders,GetHandleId(t));
+                FlushChildHashtable(NeutralOrders,GetHandleId(u));
+                DestroyTimer(t);
+            }
+            else {
+                RestoreOrder(u);
+            }
+        }
+        public function NeutralIssuePointOrderSaved(unit u, string order, real x, real y)
+        {
+            timer t = CreateTimer();
+            SaveInteger(NeutralOrders,GetHandleId(u),0,Order_point_type);
+            SaveStr(NeutralOrders,GetHandleId(u),1,order);
+            SaveReal(NeutralOrders,GetHandleId(u),2,x);
+            SaveReal(NeutralOrders,GetHandleId(u),3,y);
+            IssuePointOrder(u,order,x,y);
+            SaveUnitHandle(NeutralOrders,GetHandleId(t),0,u);
+            TimerStart(CreateTimer(),order_restore_timeout,true,function PeriodicRestoreOrder);
+        }
+
+        public function NeutralIssuePointOrderSavedLoc(unit u, string order, location loc)
+        {
+            timer t = CreateTimer();
+            SaveInteger(NeutralOrders,GetHandleId(u),0,Order_point_type);
+            SaveStr(NeutralOrders,GetHandleId(u),1,order);
+            SaveReal(NeutralOrders,GetHandleId(u),2,GetLocationX(loc));
+            SaveReal(NeutralOrders,GetHandleId(u),3,GetLocationY(loc));
+            IssuePointOrder(u,order,GetLocationX(loc),GetLocationY(loc));
+            SaveUnitHandle(NeutralOrders,GetHandleId(t),0,u);
+            TimerStart(CreateTimer(),order_restore_timeout,true,function PeriodicRestoreOrder);
+        }
+
+        
+        public function NeutralIssueOrderRandomLocInRect(unit u, string order, rect r)
+        {
+            SaveInteger(NeutralOrders,GetHandleId(u),0,Order_random_point_in_rect);
+            SaveStr(NeutralOrders,GetHandleId(u),1,order);
+            SaveRectHandle(NeutralOrders,GetHandleId(u),2,r);
+            IssuePointOrder(u,order,GetRandomXInRect(r),GetRandomYInRect(r));
+        }
 
         function CheckUnitForAllyFilter() -> boolean
         {
@@ -123,12 +145,12 @@ library NeutralAI requires InGameNeutrals{
         }
 
         function OrderForAllNeutrals(){
-        ForForce(Neutral_Players,function() {OrderForNeutral(GetEnumPlayer());});
+            ForForce(Neutral_Players,function() {OrderForNeutral(GetEnumPlayer());});
         }
 
         public function onInit(){
             NeutralOrders = InitHashtable();
-            TimerStart(CreateTimer(),NeutralOrderTimerout,true, function OrderForAllNeutrals);
+            //TimerStart(CreateTimer(),NeutralOrderTimerout,true, function OrderForAllNeutrals);
             Death_Cleanup_trigger = CreateTrigger();
             ForForce(bj_FORCE_ALL_PLAYERS,function(){TriggerRegisterPlayerUnitEvent(Death_Cleanup_trigger,GetEnumPlayer(),EVENT_PLAYER_UNIT_DEATH,function()->boolean {return IsPlayerInForce(GetTriggerPlayer(),Neutral_Players);});} );
             Neutral_Players = CreateForce();
