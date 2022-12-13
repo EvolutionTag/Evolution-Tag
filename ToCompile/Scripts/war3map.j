@@ -23657,6 +23657,8 @@ endfunction
 function Trig_Spawn_Bunnies_Actions takes nothing returns nothing
 set udg_Rabbit_Point=GetRandomLocInRect(udg_rct_The_ring_of_trees)
 call CreateNUnitsAtLoc(1,'necr',Player(PLAYER_NEUTRAL_PASSIVE),udg_Rabbit_Point,bj_UNIT_FACING)
+call UnitAddAbility(GetLastCreatedUnit(),'A0M6')
+call IssueImmediateOrder(GetLastCreatedUnit(),"windwalk")
 call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
 call RemoveLocation(udg_Rabbit_Point)
 endfunction
@@ -23688,11 +23690,15 @@ set udg_Topleft_integer_chance2=GetRandomInt(1,18)
 if(Trig_Spawn_Special_Bunny_Func002C())then
 set udg_Rabbit_Point=GetRandomLocInRect(udg_rct_Entire_map_excluding_outa_bounds_2)
 call CreateNUnitsAtLocBonuses(1,'necr',Player(PLAYER_NEUTRAL_PASSIVE),udg_Rabbit_Point,bj_UNIT_FACING)
+call UnitAddAbility(GetLastCreatedUnit(),'A0M6')
+call IssueImmediateOrder(GetLastCreatedUnit(),"windwalk")
 call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
 call SetUnitVertexColorBJ(GetLastCreatedUnit(),66.00,25.00,100,0)
 else
 set udg_Rabbit_Point=GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
 call CreateNUnitsAtLocBonuses(1,'necr',Player(PLAYER_NEUTRAL_PASSIVE),udg_Rabbit_Point,bj_UNIT_FACING)
+call UnitAddAbility(GetLastCreatedUnit(),'A0M6')
+call IssueImmediateOrder(GetLastCreatedUnit(),"windwalk")
 call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
 call SetUnitVertexColorBJ(GetLastCreatedUnit(),66.00,25.00,100,0)
 endif
@@ -25448,6 +25454,8 @@ loop
 exitwhen udg_General_Index>20
 set udg_AAAA_GP=GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
 call CreateNUnitsAtLoc(1,'necr',Player(PLAYER_NEUTRAL_PASSIVE),udg_AAAA_GP,bj_UNIT_FACING)
+call UnitAddAbility(GetLastCreatedUnit(),'A0M6')
+call IssueImmediateOrder(GetLastCreatedUnit(),"windwalk")
 call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
 call RemoveLocation(udg_AAAA_GP)
 set udg_General_Index=udg_General_Index+1
