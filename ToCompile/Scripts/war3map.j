@@ -23619,6 +23619,7 @@ call TriggerAddAction(udg_trg_coins,function Trig_coins_Actions)
 endfunction
 function Trig_Spawn_Golden_Chickens_Actions takes nothing returns nothing
 call CreateNUnitsAtLoc(1,'n010',Player(PLAYER_NEUTRAL_PASSIVE),GetRandomLocInRect(udg_rct_The_ring_of_trees),bj_UNIT_FACING)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
 endfunction
 function InitTrig_Spawn_Golden_Chickens takes nothing returns nothing
 set udg_trg_Spawn_Golden_Chickens=CreateTrigger()
@@ -23654,6 +23655,7 @@ endfunction
 function Trig_Spawn_Bunnies_Actions takes nothing returns nothing
 set udg_Rabbit_Point=GetRandomLocInRect(udg_rct_The_ring_of_trees)
 call CreateNUnitsAtLoc(1,'necr',Player(PLAYER_NEUTRAL_PASSIVE),udg_Rabbit_Point,bj_UNIT_FACING)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
 call RemoveLocation(udg_Rabbit_Point)
 endfunction
 function InitTrig_Spawn_Bunnies takes nothing returns nothing
@@ -23684,10 +23686,12 @@ set udg_Topleft_integer_chance2=GetRandomInt(1,18)
 if(Trig_Spawn_Special_Bunny_Func002C())then
 set udg_Rabbit_Point=GetRandomLocInRect(udg_rct_Entire_map_excluding_outa_bounds_2)
 call CreateNUnitsAtLocBonuses(1,'necr',Player(PLAYER_NEUTRAL_PASSIVE),udg_Rabbit_Point,bj_UNIT_FACING)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
 call SetUnitVertexColorBJ(GetLastCreatedUnit(),66.00,25.00,100,0)
 else
 set udg_Rabbit_Point=GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
 call CreateNUnitsAtLocBonuses(1,'necr',Player(PLAYER_NEUTRAL_PASSIVE),udg_Rabbit_Point,bj_UNIT_FACING)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
 call SetUnitVertexColorBJ(GetLastCreatedUnit(),66.00,25.00,100,0)
 endif
 call RemoveLocation(udg_Rabbit_Point)
@@ -25442,6 +25446,7 @@ loop
 exitwhen udg_General_Index>20
 set udg_AAAA_GP=GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
 call CreateNUnitsAtLoc(1,'necr',Player(PLAYER_NEUTRAL_PASSIVE),udg_AAAA_GP,bj_UNIT_FACING)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
 call RemoveLocation(udg_AAAA_GP)
 set udg_General_Index=udg_General_Index+1
 endloop
@@ -25471,6 +25476,7 @@ function Trig_Massive_Rabbit_Event_Copy_Actions takes nothing returns nothing
 call DisplayTimedTextToForce(GetPlayersAll(),10.00,"|cffff0000A golden chicken has just spawned somewhere!!|r")
 set udg_AAAA_GP=GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
 call CreateNUnitsAtLoc(1,'n010',Player(PLAYER_NEUTRAL_PASSIVE),udg_AAAA_GP,bj_UNIT_FACING)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
 call RemoveLocation(udg_AAAA_GP)
 endfunction
 function InitTrig_Massive_Rabbit_Event_Copy takes nothing returns nothing
