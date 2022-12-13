@@ -35210,13 +35210,17 @@ call TriggerAddCondition(udg_trg_Mount_hippogryph,Condition(function Trig_Mount_
 call TriggerAddAction(udg_trg_Mount_hippogryph,function Trig_Mount_hippogryph_Actions)
 endfunction
 function Trig_Random_hippo_move_Actions takes nothing returns nothing
-call NeutralIssueOrderRandomLocInRect(udg_unit_ehip_0092,"patrol",udg_rct_Entire_map_AI_TARGEt)
-call NeutralIssueOrderRandomLocInRect(udg_unit_ehip_0093,"patrol",udg_rct_Entire_map_AI_TARGEt)
+    set udg_General_Point2=GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
+    call NeutralIssueOrderRandomLocInRect(udg_unit_ehip_0093,"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
+    call RemoveLocation(udg_General_Point2)
+    set udg_General_Point2=GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
+    call NeutralIssueOrderRandomLocInRect(udg_unit_ehip_0092,"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
+    call RemoveLocation(udg_General_Point2)
 endfunction
 function InitTrig_Random_hippo_move takes nothing returns nothing
-set udg_trg_Random_hippo_move=CreateTrigger()
-call TriggerRegisterTimerEventSingle(udg_trg_Random_hippo_move,4.65)
-call TriggerAddAction(udg_trg_Random_hippo_move,function Trig_Random_hippo_move_Actions)
+    set udg_trg_Random_hippo_move=CreateTrigger()
+    call TriggerRegisterTimerEventPeriodic(udg_trg_Random_hippo_move,4.65)
+    call TriggerAddAction(udg_trg_Random_hippo_move,function Trig_Random_hippo_move_Actions)
 endfunction
 function SaveMorphBonuses_Condition takes nothing returns boolean
     return IsMorphAbilityId(GetSpellAbilityId())
