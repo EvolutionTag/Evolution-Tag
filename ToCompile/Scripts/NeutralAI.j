@@ -4,7 +4,7 @@ library NeutralAI requires InGameNeutrals{
         player TempPlayerNeutral = null;
         integer NeutralReactionRange = 800;
         real NeutralOrderTimerout = 10;
-        real order_restore_timeout = 5.5;
+        real order_restore_timeout = 100.5;
         hashtable NeutralOrders = null;
         integer Order_point_type = 0;
         integer Order_random_point_in_rect = 1;

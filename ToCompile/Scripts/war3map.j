@@ -35201,10 +35201,10 @@ call TriggerAddAction(udg_trg_Mount_hippogryph,function Trig_Mount_hippogryph_Ac
 endfunction
 function Trig_Random_hippo_move_Actions takes nothing returns nothing
 set udg_General_Point2=GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
-call IssuePointOrderLocBJ(udg_unit_ehip_0093,"move",udg_General_Point2)
+call NeutralIssueOrderRandomLocInRect(udg_unit_ehip_0093,"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
 call RemoveLocation(udg_General_Point2)
 set udg_General_Point2=GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
-call IssuePointOrderLocBJ(udg_unit_ehip_0092,"move",udg_General_Point2)
+call NeutralIssueOrderRandomLocInRect(udg_unit_ehip_0092,"patrol",udg_rct_Entire_map_excluding_out_of_bounds)
 call RemoveLocation(udg_General_Point2)
 endfunction
 function InitTrig_Random_hippo_move takes nothing returns nothing
