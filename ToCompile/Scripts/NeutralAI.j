@@ -4,7 +4,7 @@ library NeutralAI requires InGameNeutrals{
         player TempPlayerNeutral = null;
         integer NeutralReactionRange = 800;
         real NeutralOrderTimerout = 10;
-        real order_restore_timeout = 100.5;
+        real order_restore_timeout = 20.5;
         hashtable NeutralOrders = null;
         integer Order_point_type = 0;
         integer Order_random_point_in_rect = 1;
@@ -62,7 +62,7 @@ library NeutralAI requires InGameNeutrals{
         function PeriodicRestoreOrder() {
             timer t = GetExpiredTimer();
             unit u = LoadUnitHandle(NeutralOrders,GetHandleId(t),0);
-            if(GetWidgetLife(u)<0.4) {
+            if(u==null || GetWidgetLife(u)<0.4) {
                 FlushChildHashtable(NeutralOrders,GetHandleId(t));
                 FlushChildHashtable(NeutralOrders,GetHandleId(u));
                 DestroyTimer(t);
@@ -71,6 +71,52 @@ library NeutralAI requires InGameNeutrals{
                 RestoreOrder(u);
             }
         }
+
+
+        function PeriodicRestoreRectOrder() {
+            timer t = GetExpiredTimer();
+            unit u = LoadUnitHandle(NeutralOrders,GetHandleId(t),0);
+            string order;
+            real x;
+            real y;
+            // BJDebugMsg("PeriodicRestoreRectOrder");
+            if(u==null || GetWidgetLife(u)<0.4) {
+                // BJDebugMsg("rect order Unit is dead or does not exists: "+I2S(GetHandleId(u))+" "+R2S(GetWidgetLife(u)));
+                FlushChildHashtable(NeutralOrders,GetHandleId(t));
+                FlushChildHashtable(NeutralOrders,GetHandleId(u));
+                DestroyTimer(t);
+            }
+            else {
+                order = LoadStr(NeutralOrders,GetHandleId(u),1);
+                x = GetRandomXInRect(LoadRectHandle(NeutralOrders,GetHandleId(u),2));
+                y = GetRandomYInRect(LoadRectHandle(NeutralOrders,GetHandleId(u),2));
+                IssuePointOrder(u,order,x,y);
+                // BJDebugMsg("rect order: "+order+" "+R2S(x)+" "+R2S(y)+" "+I2S(GetHandleId(u)));
+            }
+        }
+
+        function PeriodicRestorePointOrder() {
+            timer t = GetExpiredTimer();
+            unit u = LoadUnitHandle(NeutralOrders,GetHandleId(t),0);
+            string order;
+            real x;
+            real y;
+            // BJDebugMsg("PeriodicRestorePointOrder");
+            if(u==null || GetWidgetLife(u)<0.4) {
+                // BJDebugMsg("point order Unit is dead or does not exists: "+I2S(GetHandleId(u))+" "+R2S(GetWidgetLife(u)));
+                FlushChildHashtable(NeutralOrders,GetHandleId(t));
+                FlushChildHashtable(NeutralOrders,GetHandleId(u));
+                DestroyTimer(t);
+            }
+            else {
+                order = LoadStr(NeutralOrders,GetHandleId(u),1);
+                x = LoadReal(NeutralOrders,GetHandleId(u),2);
+                y = LoadReal(NeutralOrders,GetHandleId(u),3);
+                IssuePointOrder(u,order,x,y);
+                // BJDebugMsg("point order: "+order+" "+R2S(x)+" "+R2S(y)+" "+I2S(GetHandleId(u)));
+            }
+        }
+
         public function NeutralIssuePointOrderSaved(unit u, string order, real x, real y)
         {
             timer t = CreateTimer();
@@ -80,7 +126,7 @@ library NeutralAI requires InGameNeutrals{
             SaveReal(NeutralOrders,GetHandleId(u),3,y);
             IssuePointOrder(u,order,x,y);
             SaveUnitHandle(NeutralOrders,GetHandleId(t),0,u);
-            TimerStart(CreateTimer(),order_restore_timeout,true,function PeriodicRestoreOrder);
+            TimerStart(t,order_restore_timeout,true,function PeriodicRestorePointOrder);
         }
 
         public function NeutralIssuePointOrderSavedLoc(unit u, string order, location loc)
@@ -92,16 +138,20 @@ library NeutralAI requires InGameNeutrals{
             SaveReal(NeutralOrders,GetHandleId(u),3,GetLocationY(loc));
             IssuePointOrder(u,order,GetLocationX(loc),GetLocationY(loc));
             SaveUnitHandle(NeutralOrders,GetHandleId(t),0,u);
-            TimerStart(CreateTimer(),order_restore_timeout,true,function PeriodicRestoreOrder);
+            TimerStart(t,order_restore_timeout,true,function PeriodicRestorePointOrder);
         }
 
         
         public function NeutralIssueOrderRandomLocInRect(unit u, string order, rect r)
         {
+            timer t = CreateTimer();
             SaveInteger(NeutralOrders,GetHandleId(u),0,Order_random_point_in_rect);
             SaveStr(NeutralOrders,GetHandleId(u),1,order);
             SaveRectHandle(NeutralOrders,GetHandleId(u),2,r);
             IssuePointOrder(u,order,GetRandomXInRect(r),GetRandomYInRect(r));
+            SaveUnitHandle(NeutralOrders,GetHandleId(t),0,u);
+            TimerStart(t,order_restore_timeout,true,function PeriodicRestoreRectOrder);
+
         }
 
         function CheckUnitForAllyFilter() -> boolean
