@@ -2147,14 +2147,14 @@ unit udg_unit_h07J_0134=null
 unit udg_unit_h07N_0343=null
 unit udg_unit_ncop_0348=null
 unit udg_unit_h01G_0328=null
-destructable udg_dest_LTlt_0001=null
-destructable udg_dest_LTlt_0002=null
-destructable udg_dest_LTlt_0008=null
-destructable udg_dest_LTlt_0009=null
-destructable udg_dest_LTlt_0017=null
+destructable udg_dest_WTst_0001=null
+destructable udg_dest_WTst_0002=null
+destructable udg_dest_WTst_0008=null
+destructable udg_dest_WTst_0009=null
+destructable udg_dest_WTst_0017=null
 destructable udg_dest_YT18_0310=null
-destructable udg_dest_LTlt_0085=null
-destructable udg_dest_LTlt_0086=null
+destructable udg_dest_WTst_0085=null
+destructable udg_dest_WTst_0086=null
 destructable udg_dest_YT16_0650=null
 destructable udg_dest_OTsp_1007=null
 destructable udg_dest_ATg1_0502=null
@@ -2483,14 +2483,14 @@ trigger gg_trg_Game_settings_3_pt_2_Actions=null
 trigger gg_trg_Game_settings_3_give_gold=null
 trigger gg_trg_Game_settings_6_NEW_Actions=null
 trigger gg_trg_First_Dialogue_Out_of_Time=null
-destructable gg_dest_LTlt_0001=null
-destructable gg_dest_LTlt_0002=null
-destructable gg_dest_LTlt_0008=null
-destructable gg_dest_LTlt_0009=null
-destructable gg_dest_LTlt_0017=null
+destructable gg_dest_WTst_0001=null
+destructable gg_dest_WTst_0002=null
+destructable gg_dest_WTst_0008=null
+destructable gg_dest_WTst_0009=null
+destructable gg_dest_WTst_0017=null
 destructable gg_dest_YT18_0310=null
-destructable gg_dest_LTlt_0085=null
-destructable gg_dest_LTlt_0086=null
+destructable gg_dest_WTst_0085=null
+destructable gg_dest_WTst_0086=null
 destructable gg_dest_YT16_0650=null
 destructable gg_dest_OTsp_1007=null
 destructable gg_dest_OTsp_0549=null
@@ -7713,13 +7713,13 @@ call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function Doodad001054_DropItems)
 set gg_dest_LTg1_0913=CreateDestructable('LTg1',-3712.0,-4736.0,270.000,0.900,0)
 set gg_dest_LTg3_4382=CreateDestructable('LTg3',-3264.0,8960.0,0.000,0.900,0)
-set gg_dest_LTlt_0017=CreateDestructable('LTlt',-960.0,-640.0,270.000,1.055,1)
-set gg_dest_LTlt_0009=CreateDestructable('LTlt',64.0,-1600.0,270.000,1.135,8)
-set gg_dest_LTlt_0001=CreateDestructable('LTlt',1024.0,-576.0,270.000,0.894,1)
-set gg_dest_LTlt_0008=CreateDestructable('LTlt',192.0,-1600.0,270.000,1.130,8)
-set gg_dest_LTlt_0002=CreateDestructable('LTlt',1024.0,-704.0,270.000,0.920,0)
-set gg_dest_LTlt_0086=CreateDestructable('LTlt',64.0,448.0,270.000,1.086,7)
-set gg_dest_LTlt_0085=CreateDestructable('LTlt',128.0,320.0,270.000,1.126,3)
+set gg_dest_WTst_0017=CreateDestructable('WTst',-960.0,-640.0,270.000,1.055,1)
+set gg_dest_WTst_0009=CreateDestructable('WTst',64.0,-1600.0,270.000,1.135,8)
+set gg_dest_WTst_0001=CreateDestructable('WTst',1024.0,-576.0,270.000,0.894,1)
+set gg_dest_WTst_0008=CreateDestructable('WTst',192.0,-1600.0,270.000,1.130,8)
+set gg_dest_WTst_0002=CreateDestructable('WTst',1024.0,-704.0,270.000,0.920,0)
+set gg_dest_WTst_0086=CreateDestructable('WTst',64.0,448.0,270.000,1.086,7)
+set gg_dest_WTst_0085=CreateDestructable('WTst',128.0,320.0,270.000,1.126,3)
 set gg_dest_OTsp_0549=CreateDestructable('OTsp',3264.0,-5568.0,90.000,1.000,0)
 set gg_dest_OTsp_0914=CreateDestructable('OTsp',-2176.0,-5760.0,90.000,1.000,0)
 set gg_dest_OTsp_1007=CreateDestructable('OTsp',4160.0,5376.0,52.000,1.000,0)
@@ -16126,7 +16126,7 @@ endif
 return true
 endfunction
 function Trig_Spawn_Tree_Actions takes nothing returns nothing
-call CreateDestructableLoc('LTlt',GetRandomLocInRect(udg_rct_The_ring_of_trees),GetRandomDirectionDeg(),1,0)
+call CreateDestructableLoc('WTst',GetRandomLocInRect(udg_rct_The_ring_of_trees),GetRandomDirectionDeg(),1,0)
 call AddSpecialEffectLocBJ(GetDestructableLoc(GetLastCreatedDestructable()),"Abilities\\Spells\\Human\\DispelMagic\\DispelMagicTarget.mdl")
 call DestroyEffectBJ(GetLastCreatedEffectBJ())
 endfunction
@@ -19373,28 +19373,28 @@ if(Trig_AAA_Fire_Guy_Teleport_Copy_Func003C())then
 if(Trig_AAA_Fire_Guy_Teleport_Copy_Func003Func001C())then
 call SetUnitPositionLocFacingLocBJ(udg_AAA_FireGuy,GetRectCenter(udg_rct_Region_101),GetRectCenter(udg_rct_Zombie_Spawn))
 call IssueImmediateOrderBJ(udg_AAA_FireGuy,"stomp")
-call KillDestructable(gg_dest_LTlt_0002)
-call KillDestructable(gg_dest_LTlt_0001)
+call KillDestructable(gg_dest_WTst_0002)
+call KillDestructable(gg_dest_WTst_0001)
 else
 endif
 if(Trig_AAA_Fire_Guy_Teleport_Copy_Func003Func002C())then
 call SetUnitPositionLocFacingLocBJ(udg_AAA_FireGuy,GetRectCenter(udg_rct_Final_Battle_undead_spawn),GetRectCenter(udg_rct_Zombie_Spawn))
 call IssueImmediateOrderBJ(udg_AAA_FireGuy,"stomp")
-call KillDestructable(gg_dest_LTlt_0085)
-call KillDestructable(gg_dest_LTlt_0086)
+call KillDestructable(gg_dest_WTst_0085)
+call KillDestructable(gg_dest_WTst_0086)
 else
 endif
 if(Trig_AAA_Fire_Guy_Teleport_Copy_Func003Func003C())then
 call SetUnitPositionLocFacingLocBJ(udg_AAA_FireGuy,GetRectCenter(udg_rct_Region_100),GetRectCenter(udg_rct_Zombie_Spawn))
 call IssueImmediateOrderBJ(udg_AAA_FireGuy,"stomp")
-call KillDestructable(gg_dest_LTlt_0017)
+call KillDestructable(gg_dest_WTst_0017)
 else
 endif
 if(Trig_AAA_Fire_Guy_Teleport_Copy_Func003Func004C())then
 call SetUnitPositionLocFacingLocBJ(udg_AAA_FireGuy,GetRectCenter(udg_rct_Final_Battle_human_spawn),GetRectCenter(udg_rct_Zombie_Spawn))
 call IssueImmediateOrderBJ(udg_AAA_FireGuy,"stomp")
-call KillDestructable(gg_dest_LTlt_0009)
-call KillDestructable(gg_dest_LTlt_0008)
+call KillDestructable(gg_dest_WTst_0009)
+call KillDestructable(gg_dest_WTst_0008)
 else
 endif
 else
@@ -21162,7 +21162,7 @@ set udg_General_Index=1
 loop
 exitwhen udg_General_Index>41
 set udg_AAAA_GP=GetRandomLocInRect(udg_rct_Random_tree_spawn_area)
-call CreateDestructableLoc('LTlt',udg_AAAA_GP,GetRandomDirectionDeg(),1,0)
+call CreateDestructableLoc('WTst',udg_AAAA_GP,GetRandomDirectionDeg(),1,0)
 call RemoveLocation(udg_AAAA_GP)
 set udg_General_Index=udg_General_Index+1
 endloop
@@ -36103,7 +36103,7 @@ call RemoveLocation(udg_TempPoint2)
 call RemoveLocation(udg_TempPoint3)
 endfunction
 function Trig_SandStormMovement_Func001Func002Func020Func001C takes nothing returns boolean
-if(not(GetDestructableTypeId(GetEnumDestructable())=='LTlt'))then
+if(not(GetDestructableTypeId(GetEnumDestructable())=='WTst'))then
 return false
 endif
 if(not(IsDestructableAliveBJ(GetEnumDestructable())==true))then
