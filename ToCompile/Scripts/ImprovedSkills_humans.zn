@@ -58,20 +58,20 @@ library ImprovedSkillsHumans requires SkillCastStat {
         AddAbility('A0M5', SKILL_FIELD_OFFSET_DATAA, 40,15,0,0,0.2,0,0);  //starfall
         
         AddAbility('A011', SKILL_FIELD_OFFSET_DATAA, 200,0,0,0,0.3,0,0);  //chain lightning
-        AddAbility('A00P', SKILL_FIELD_OFFSET_DATAA, 100,0,0,0,0.5,0,0);  //firebolt 3
-        AddAbility('A00U', SKILL_FIELD_OFFSET_DATAA, 150,0,0,0,0.5,0,0);  //firebolt 4
-        AddAbility('A00T', SKILL_FIELD_OFFSET_DATAA, 200,0,0,0,0.5,0,0);  //firebolt 5
+        AddAbility('A00P', SKILL_FIELD_OFFSET_DATAA, 100,0,0,0,0,0,0);  //firebolt 3
+        AddAbility('A00U', SKILL_FIELD_OFFSET_DATAA, 150,0,0,0,0,0,0);  //firebolt 4
+        AddAbility('A00T', SKILL_FIELD_OFFSET_DATAA, 200,0,0,0,0,0,0);  //firebolt 5
 
-        AddAbility('A00Q', SKILL_FIELD_OFFSET_DATAA, 75,0,0,0,1,0,0);  //Flame strike 2
-        AddAbility('A00Q', SKILL_FIELD_OFFSET_DATAC, 3,2,0,0,0.4,0,0);
-        AddAbility('A00V', SKILL_FIELD_OFFSET_DATAA, 100,0,0,0,1,0,0);  //Flame strike 3
-        AddAbility('A00V', SKILL_FIELD_OFFSET_DATAC, 3,2,0,0,0.4,0,0);
-        AddAbility('A00W', SKILL_FIELD_OFFSET_DATAA, 200,0,0,0,1,0,0);  //Flame strike 4
-        AddAbility('A00W', SKILL_FIELD_OFFSET_DATAC, 3,2,0,0,0.4,0,0);
+        AddAbility('A00Q', SKILL_FIELD_OFFSET_DATAA, 75,0,0,0,0,0,0);  //Flame strike 2
+        AddAbility('A00Q', SKILL_FIELD_OFFSET_DATAC, 3,2,0,0,0,0,0);
+        AddAbility('A00V', SKILL_FIELD_OFFSET_DATAA, 100,0,0,0,0,0,0);  //Flame strike 3
+        AddAbility('A00V', SKILL_FIELD_OFFSET_DATAC, 3,2,0,0,0,0,0);
+        AddAbility('A00W', SKILL_FIELD_OFFSET_DATAA, 200,0,0,0,0,0,0);  //Flame strike 4
+        AddAbility('A00W', SKILL_FIELD_OFFSET_DATAC, 3,2,0,0,0,0,0);
 
 
-        AddAbility('A013', SKILL_FIELD_OFFSET_DATAA, 150,0,0,0,0.5,0,0);  //frostnova 2
-        AddAbility('A013', SKILL_FIELD_OFFSET_DATAB, 100,0,0,0,0.5,0,0);  //frostnova 2
+        AddAbility('A013', SKILL_FIELD_OFFSET_DATAA, 150,0,0,0,0,0,0);  //frostnova 2
+        AddAbility('A013', SKILL_FIELD_OFFSET_DATAB, 100,0,0,0,0,0,0);  //frostnova 2
 
 
         AddAbility('ANcf', SKILL_FIELD_OFFSET_DATAA, 100,50,0,0,0,0,0);  //fire breath
