@@ -17,6 +17,8 @@ library ImprovedSkillsUndeads requires SkillCastStat {
         AddAbility('A0E7', SKILL_FIELD_OFFSET_DATAA, 0,400,0,0,3,0,0);  //Breath of Frost boo
 
         AddAbility('A097', SKILL_FIELD_OFFSET_DATAA, 0,100,0,0,1,0,0);  //Coil
+        AddAbility('A01V', SKILL_FIELD_OFFSET_DATAA, 0,300,0,0,1,0,0);  //Coil
+        AddAbility('A0B3', SKILL_FIELD_OFFSET_DATAA, 0,150,0,0,1,0,0);  //life leach (sceleton mage)
 
 
     
