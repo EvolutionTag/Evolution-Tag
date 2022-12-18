@@ -41121,6 +41121,22 @@ call DisableTrigger(udg_trg_Passive_Death_Coil)
 call TriggerRegisterTimerEventPeriodic(udg_trg_Passive_Death_Coil,10.00)
 call TriggerAddAction(udg_trg_Passive_Death_Coil,function Trig_Passive_Death_Coil_Actions)
 endfunction
+function UnallyNeutralsTimed takes nothing returns nothing
+    call DestroyTimer(GetExpiredTimer())
+    call SetPlayerAllianceStateAllyBJ(Neutral_Satyrs,Neutral_Nagas,false)
+    call SetPlayerAllianceStateAllyBJ(Neutral_Nagas,Neutral_Satyrs,false)
+    
+    call SetPlayerAllianceStateAllyBJ(Neutral_Satyrs,Neutral_Bottom,false)
+    call SetPlayerAllianceStateAllyBJ(Neutral_Bottom,Neutral_Satyrs,false)
+    
+    call SetPlayerAllianceStateAllyBJ(Neutral_Bottom,Neutral_Nagas,false)
+    call SetPlayerAllianceStateAllyBJ(Neutral_Nagas,Neutral_Bottom,false)
+endfunction
+function InitNeutralUnallies takes nothing returns nothing
+    local timer t = CreateTimer()
+    call TimerStart(t,5,false,function UnallyNeutralsTimed)
+    set t = null
+endfunction
 function InitCustomTriggers2 takes nothing returns nothing
 call TimerStart(CreateTimer(),6,false,function InitStunDispatchers)
 call LuaCall_Init()
@@ -41146,7 +41162,7 @@ call warpantibug_init()
 call InitTrig_Flame_Breath()
 call InitTrig_Flame_Breath_Loop()
 call InitTrig_Flame_Breath_Stop()
-
+call InitNeutralUnallies()
 call InitTrig_Generic_Slam()
 call InitTrig_Generic_Slam_Copy()
 //call InitTrig_Plated_Footman_Warstomp()
