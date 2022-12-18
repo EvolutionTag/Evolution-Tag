@@ -52,9 +52,9 @@ library UltimateUpgrades
         SaveInteger(UltimateUpgrades,0,'N02I','N03K');
         SaveInteger(UltimateUpgrades,0,'Udea','U00M');
         SaveInteger(UltimateUpgrades,0,'U00U','U01W');
-        SaveInteger(UltimateUpgrades,0,'z000','Z009');
+        SaveInteger(UltimateUpgrades,0,'Z000','Z009');
         SaveInteger(UltimateUpgrades,0,'O006','O003');
-        SaveInteger(UltimateUpgrades,0,'uabo','U00O');
+        SaveInteger(UltimateUpgrades,0,'Uab2','U00O');
         SaveInteger(UltimateUpgrades,0,'n01D','N04D');
         SaveInteger(UltimateUpgrades,0,'nndr','N04D');
         SaveInteger(UltimateUpgrades,0,'n01B','N01U');
