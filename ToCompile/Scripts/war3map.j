@@ -25431,7 +25431,7 @@ loop
 exitwhen udg_General_Index>14
 set udg_AAAA_GP=GetRectCenter(udg_rct_naga_creep_event_area)
 set udg_AAAA_GP2=GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
-call CreateNUnitsAtLocBonuses(1,'n079',Neutral_Satyrs,udg_AAAA_GP,bj_UNIT_FACING)
+call CreateNUnitsAtLocBonuses(1,'n079',Neutral_Nagas,udg_AAAA_GP,bj_UNIT_FACING)
 call SetUnitCreepGuard(GetLastCreatedUnit(),false)
 call RemoveGuardPosition(GetLastCreatedUnit())
 call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
