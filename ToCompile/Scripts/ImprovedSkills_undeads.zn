@@ -21,6 +21,11 @@ library ImprovedSkillsUndeads requires SkillCastStat {
         AddAbility('A0B3', SKILL_FIELD_OFFSET_DATAA, 0,150,0,0,1,0,0);  //life leach (sceleton mage)
 
 
+        AddAbility('A0JA', SKILL_FIELD_OFFSET_DATAA, 100,25,0,0,1,0,0);  //magic bolts
+        AddAbility('A0JR', SKILL_FIELD_OFFSET_DATAA, 100,25,0,0,1,0,0);  //hurl bolder
+        AddAbility('A0K4', SKILL_FIELD_OFFSET_DATAA, 0,100,0,0,2,0,0);  //thunder clap (lich)
+
+
     
     }
     }
