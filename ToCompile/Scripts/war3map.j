@@ -15960,12 +15960,13 @@ call TriggerRegisterTimerEventSingle(udg_trg_MAP_INIT_and_QUESTS,0.01)
 call TriggerAddAction(udg_trg_MAP_INIT_and_QUESTS,function Trig_MAP_INIT_and_QUESTS_Actions)
 endfunction
 function Trig_uu_merchants_Actions takes nothing returns nothing
-call CreateNUnitsAtLocBonuses(1,'n01Z',Player(PLAYER_NEUTRAL_PASSIVE),GetRandomLocInRect(udg_rct_Entire_map_AI_TARGEt),bj_UNIT_FACING)
-call CreateNUnitsAtLocBonuses(1,'n01Z',Player(PLAYER_NEUTRAL_PASSIVE),GetRandomLocInRect(udg_rct_Entire_map_AI_TARGEt),bj_UNIT_FACING)
-call CreateNUnitsAtLocBonuses(1,'n01Z',Player(PLAYER_NEUTRAL_PASSIVE),GetRandomLocInRect(udg_rct_Entire_map_AI_TARGEt),bj_UNIT_FACING)
-call CreateNUnitsAtLocBonuses(1,'n01Z',Player(PLAYER_NEUTRAL_PASSIVE),GetRandomLocInRect(udg_rct_Entire_map_AI_TARGEt),bj_UNIT_FACING)
-call CreateNUnitsAtLocBonuses(1,'n01Z',Player(PLAYER_NEUTRAL_PASSIVE),GetRandomLocInRect(udg_rct_Entire_map_AI_TARGEt),bj_UNIT_FACING)
-call CreateNUnitsAtLocBonuses(1,'n01Z',Player(PLAYER_NEUTRAL_PASSIVE),GetRandomLocInRect(udg_rct_Entire_map_AI_TARGEt),bj_UNIT_FACING)
+local integer idx = 0
+loop 
+    exitwhen idx==8
+    call CreateNUnitsAtLocBonuses(1,'n01Z',Player(PLAYER_NEUTRAL_PASSIVE),GetRandomLocInRect(udg_rct_Entire_map_AI_TARGEt),bj_UNIT_FACING)
+    call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+    set idx = idx + 1
+endloop
 endfunction
 function InitTrig_uu_merchants takes nothing returns nothing
 set udg_trg_uu_merchants=CreateTrigger()
