@@ -13,8 +13,10 @@ library ImprovedSkillsUndeads requires SkillCastStat {
         AddAbility('A0GB', SKILL_FIELD_OFFSET_DATAB, 0,75,0,0,0.7,0,0);  //frost blizzard
 
         AddAbility('A0GC', SKILL_FIELD_OFFSET_DATAA, 0,75,0,0,1,0,0);  //Breath of Frost
-        
+
         AddAbility('A0E7', SKILL_FIELD_OFFSET_DATAA, 0,400,0,0,3,0,0);  //Breath of Frost boo
+
+        AddAbility('A097', SKILL_FIELD_OFFSET_DATAA, 0,100,0,0,1,0,0);  //Coil
 
 
     
