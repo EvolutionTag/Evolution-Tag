@@ -17353,35 +17353,11 @@ return false
 endif
 return true
 endfunction
-function Trig_Neutral_alliance_Func002Func001Func001Func004A takes nothing returns nothing
-call SetPlayerAllianceStateBJ(Neutral_Satyrs,GetEnumPlayer(),bj_ALLIANCE_ALLIED)
-call SetPlayerAllianceStateBJ(GetEnumPlayer(),Neutral_Satyrs,bj_ALLIANCE_ALLIED)
-endfunction
-function Trig_Neutral_alliance_Func002Func001Func001Func005A takes nothing returns nothing
-call SetPlayerAllianceStateBJ(GetEnumPlayer(),Neutral_Bottom,bj_ALLIANCE_ALLIED)
-call SetPlayerAllianceStateBJ(Neutral_Bottom,GetEnumPlayer(),bj_ALLIANCE_ALLIED)
-endfunction
-function Trig_Neutral_alliance_Func002Func001Func001Func009A takes nothing returns nothing
-call SetPlayerAllianceStateBJ(GetEnumPlayer(),Neutral_Bottom,bj_ALLIANCE_ALLIED)
-call SetPlayerAllianceStateBJ(Neutral_Bottom,GetEnumPlayer(),bj_ALLIANCE_ALLIED)
-endfunction
-function Trig_Neutral_alliance_Func002Func001Func001Func010A takes nothing returns nothing
-call SetPlayerAllianceStateBJ(GetEnumPlayer(),Neutral_Satyrs,bj_ALLIANCE_ALLIED)
-call SetPlayerAllianceStateBJ(Neutral_Satyrs,GetEnumPlayer(),bj_ALLIANCE_ALLIED)
-endfunction
 function Trig_Neutral_alliance_Func002Func001Func001C takes nothing returns boolean
 if(not(udg_PirateChance>=7))then
 return false
 endif
 return true
-endfunction
-function Trig_Neutral_alliance_Func002Func001Func005A takes nothing returns nothing
-call SetPlayerAllianceStateBJ(Neutral_Satyrs,GetEnumPlayer(),bj_ALLIANCE_ALLIED)
-call SetPlayerAllianceStateBJ(GetEnumPlayer(),Neutral_Satyrs,bj_ALLIANCE_ALLIED)
-endfunction
-function Trig_Neutral_alliance_Func002Func001Func006A takes nothing returns nothing
-call SetPlayerAllianceStateBJ(GetEnumPlayer(),Neutral_Satyrs,bj_ALLIANCE_ALLIED)
-call SetPlayerAllianceStateBJ(Neutral_Satyrs,GetEnumPlayer(),bj_ALLIANCE_ALLIED)
 endfunction
 function Trig_Neutral_alliance_Func002Func001C takes nothing returns boolean
 if(not(udg_PirateChance>=9))then
@@ -17399,10 +17375,6 @@ function ally_with_bottom takes nothing returns nothing
 call SetPlayerAllianceStateBJ(Neutral_Bottom,GetEnumPlayer(),bj_ALLIANCE_ALLIED)
 call SetPlayerAllianceStateBJ(GetEnumPlayer(),Neutral_Bottom,bj_ALLIANCE_ALLIED)
 endfunction
-function Trig_Neutral_alliance_Func003Func001Func001Func005A takes nothing returns nothing
-call SetPlayerAllianceStateBJ(GetEnumPlayer(),Neutral_Satyrs,bj_ALLIANCE_ALLIED)
-call SetPlayerAllianceStateBJ(Neutral_Satyrs,GetEnumPlayer(),bj_ALLIANCE_ALLIED)
-endfunction
 function ally_with_satyrs takes nothing returns nothing
 call SetPlayerAllianceStateBJ(Neutral_Satyrs,GetEnumPlayer(),bj_ALLIANCE_ALLIED)
 call SetPlayerAllianceStateBJ(GetEnumPlayer(),Neutral_Satyrs,bj_ALLIANCE_ALLIED)
@@ -17416,14 +17388,6 @@ if(not(udg_PirateChance>=7))then
 return false
 endif
 return true
-endfunction
-function Trig_Neutral_alliance_Func003Func001Func005A takes nothing returns nothing
-call SetPlayerAllianceStateBJ(Neutral_Bottom,GetEnumPlayer(),bj_ALLIANCE_ALLIED)
-call SetPlayerAllianceStateBJ(GetEnumPlayer(),Neutral_Bottom,bj_ALLIANCE_ALLIED)
-endfunction
-function Trig_Neutral_alliance_Func003Func001Func006A takes nothing returns nothing
-call SetPlayerAllianceStateBJ(GetEnumPlayer(),Neutral_Satyrs,bj_ALLIANCE_ALLIED)
-call SetPlayerAllianceStateBJ(Neutral_Satyrs,GetEnumPlayer(),bj_ALLIANCE_ALLIED)
 endfunction
 function Trig_Neutral_alliance_Func003Func001C takes nothing returns boolean
 if(not(udg_PirateChance>=9))then
