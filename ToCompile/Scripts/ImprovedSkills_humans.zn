@@ -74,7 +74,7 @@ library ImprovedSkillsHumans requires SkillCastStat {
         AddAbility('A013', SKILL_FIELD_OFFSET_DATAB, 100,0,0,0,0.5,0,0);  //frostnova 2
 
 
-        AddAbility('ANcf', SKILL_FIELD_OFFSET_DATAA, 100,50,1.5,0,0,0,0);  //fire breath
+        //AddAbility('ANcf', SKILL_FIELD_OFFSET_DATAA, 100,50,1.5,0,0,0,0);  //fire breath
 
 
         AddAbility('A003', SKILL_FIELD_OFFSET_COOL, 75,0,0,0,-0.1,0,0);  //blink
