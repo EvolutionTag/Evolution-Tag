@@ -23,7 +23,9 @@ library ImprovedSkillsUndeads requires SkillCastStat {
 
         AddAbility('A0JA', SKILL_FIELD_OFFSET_DATAA, 100,25,0,0,1,0,0);  //magic bolts
         AddAbility('A0JR', SKILL_FIELD_OFFSET_DATAA, 100,25,0,0,1,0,0);  //hurl bolder
-        AddAbility('A0K4', SKILL_FIELD_OFFSET_DATAA, 0,100,0,0,2,0,0);  //thunder clap (lich)
+
+        AddAbility('ANB1', SKILL_FIELD_OFFSET_DATAD, 0,100,0,0,1,0,0);  //alchemical bomb
+        AddAbility('ANB1', SKILL_FIELD_OFFSET_DATAE, 0,10,0,0,0.1,0,0);  //alchemical bomb
 
 
     
