@@ -20587,7 +20587,7 @@ endif
 if((GetUnitTypeId(GetEnumUnit())=='e00N'))then
 return true
 endif
-if((GetUnitTypeId(GetEnumUnit())=='E00U'))then
+if((GetUnitTypeId(GetEnumUnit())=='e00U'))then
 return true
 endif
 if((GetUnitTypeId(GetEnumUnit())=='e00P'))then
@@ -21369,7 +21369,7 @@ endif
 if((GetUnitTypeId(GetEnumUnit())=='e00N'))then
 return true
 endif
-if((GetUnitTypeId(GetEnumUnit())=='E00U'))then
+if((GetUnitTypeId(GetEnumUnit())=='e00U'))then
 return true
 endif
 if((GetUnitTypeId(GetEnumUnit())=='e00P'))then
@@ -21910,7 +21910,7 @@ endif
 if((GetUnitTypeId(GetEnumUnit())=='e00N'))then
 return true
 endif
-if((GetUnitTypeId(GetEnumUnit())=='E00U'))then
+if((GetUnitTypeId(GetEnumUnit())=='e00U'))then
 return true
 endif
 if((GetUnitTypeId(GetEnumUnit())=='e00P'))then
@@ -22048,7 +22048,7 @@ endif
 if((GetUnitTypeId(GetEnumUnit())=='e00N'))then
 return false
 endif
-if((GetUnitTypeId(GetEnumUnit())=='E00U'))then
+if((GetUnitTypeId(GetEnumUnit())=='e00U'))then
 return false
 endif
 if((GetUnitTypeId(GetEnumUnit())=='e00P'))then
@@ -22202,7 +22202,7 @@ endif
 if((GetUnitTypeId(GetEnumUnit())=='e00N'))then
 return true
 endif
-if((GetUnitTypeId(GetEnumUnit())=='E00U'))then
+if((GetUnitTypeId(GetEnumUnit())=='e00U'))then
 return true
 endif
 if((GetUnitTypeId(GetEnumUnit())=='e00P'))then
@@ -22384,7 +22384,7 @@ endif
 if((GetUnitTypeId(GetEnumUnit())=='e00N'))then
 return false
 endif
-if((GetUnitTypeId(GetEnumUnit())=='E00U'))then
+if((GetUnitTypeId(GetEnumUnit())=='e00U'))then
 return false
 endif
 if((GetUnitTypeId(GetEnumUnit())=='e00P'))then
@@ -22543,7 +22543,7 @@ endif
 if((GetUnitTypeId(GetEnumUnit())=='e00N'))then
 return true
 endif
-if((GetUnitTypeId(GetEnumUnit())=='E00U'))then
+if((GetUnitTypeId(GetEnumUnit())=='e00U'))then
 return true
 endif
 if((GetUnitTypeId(GetEnumUnit())=='e00P'))then
@@ -22651,7 +22651,7 @@ endif
 if((GetUnitTypeId(GetEnumUnit())=='e00N'))then
 return false
 endif
-if((GetUnitTypeId(GetEnumUnit())=='E00U'))then
+if((GetUnitTypeId(GetEnumUnit())=='e00U'))then
 return false
 endif
 if((GetUnitTypeId(GetEnumUnit())=='e00P'))then
@@ -22780,7 +22780,7 @@ endif
 if((GetUnitTypeId(GetEnumUnit())=='e00N'))then
 return true
 endif
-if((GetUnitTypeId(GetEnumUnit())=='E00U'))then
+if((GetUnitTypeId(GetEnumUnit())=='e00U'))then
 return true
 endif
 if((GetUnitTypeId(GetEnumUnit())=='e00P'))then
@@ -22962,7 +22962,7 @@ endif
 if((GetUnitTypeId(GetEnumUnit())=='e00N'))then
 return false
 endif
-if((GetUnitTypeId(GetEnumUnit())=='E00U'))then
+if((GetUnitTypeId(GetEnumUnit())=='e00U'))then
 return false
 endif
 if((GetUnitTypeId(GetEnumUnit())=='e00P'))then
