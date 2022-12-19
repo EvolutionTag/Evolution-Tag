@@ -19426,13 +19426,14 @@ endif
 return true
 endfunction
 function Trig_AAA_Fire_Guy_Bloodlust_Copy_Actions takes nothing returns nothing
-if((true))then
+local location loc = GetUnitLoc(udg_AAA_FireGuy)
 call IssueImmediateOrderBJ(udg_AAA_FireGuy,"stomp")
-else
-endif
-call CreateNUnitsAtLocBonuses(1,'h00Z',GetOwningPlayer(udg_AAA_FireGuy),GetUnitLoc(udg_AAA_FireGuy),bj_UNIT_FACING)
+call CreateNUnitsAtLocBonuses(1,'dDUM',GetOwningPlayer(udg_AAA_FireGuy),loc,bj_UNIT_FACING)
+call UnitAddAbility(GetLastCreatedUnit(),'Ablo')
 call IssueTargetOrderBJ(GetLastCreatedUnit(),"bloodlust",udg_AAA_FireGuy)
 call RemoveUnit(GetLastCreatedUnit())
+call RemoveLocation(loc)
+set loc = null
 set udg_AAA_FireGuy_ManaPotChance=GetRandomInt(1,2)
 if(Trig_AAA_Fire_Guy_Bloodlust_Copy_Func006C())then
 call UnitUseItem(udg_AAA_FireGuy,GetItemOfTypeFromUnitBJ(udg_AAA_FireGuy,'pman'))
@@ -25662,7 +25663,8 @@ endfunction
 function Trig_Evil_Vision_Event_Actions takes nothing returns nothing
 set udg_AAAA_GP=GetRectCenter(udg_rct_Zombie_Spawn)
 call DisplayTimedTextToForce(GetPlayersAll(),10.00,"|cffff0000The evil team has gained full vision of the entire map for 30 seconds!!|r")
-call CreateNUnitsAtLocBonuses(1,'h00Z',ForcePickRandomPlayer(udg_Evil),udg_AAAA_GP,bj_UNIT_FACING)
+call CreateNUnitsAtLocBonuses(1,'dDUM',ForcePickRandomPlayer(udg_Evil),udg_AAAA_GP,bj_UNIT_FACING)
+call UnitAddAbility(GetLastCreatedUnit(),'AOfs')
 call IssuePointOrderLocBJ(GetLastCreatedUnit(),"farsight",udg_AAAA_GP)
 call RemoveUnit(GetLastCreatedUnit())
 call RemoveLocation(udg_AAAA_GP)
@@ -34975,7 +34977,7 @@ set udg_General_attacking_unit_pos=GetUnitLoc(GetAttacker())
 call CreateNUnitsAtLoc(1,'dDUM',GetOwningPlayer(GetAttacker()),udg_General_attacking_unit_pos,bj_UNIT_FACING)
 call UnitAddAbility(GetLastCreatedUnit(),'AE03')
 call IssueTargetOrderBJ(GetLastCreatedUnit(),"entanglingroots",GetAttackedUnitBJ())
-call RemoveUnit(GetLastCreatedUnit())
+call UnitApplyTimedLife(GetLastCreatedUnit(),'BTLF',2)
 call RemoveLocation(udg_General_attacking_unit_pos)
 endfunction
 function InitTrig_Entangling_roots takes nothing returns nothing
@@ -35061,12 +35063,14 @@ set udg_Firelord_Pos=GetUnitLoc(GetAttacker())
 set udg_Firelord_Temp_Region=RectFromCenterSizeBJ(udg_Firelord_Pos,600.00,600.00)
 set udg_Firelord_Rand_Point=GetRandomLocInRect(udg_Firelord_Temp_Region)
 set udg_Firelord_Attacked_Pos=GetUnitLoc(GetAttackedUnitBJ())
-call CreateNUnitsAtLocBonuses(1,'h00J',GetOwningPlayer(GetAttacker()),udg_Firelord_Attacked_Pos,bj_UNIT_FACING)
+call CreateNUnitsAtLocBonuses(1,'dDUM',GetOwningPlayer(GetAttacker()),udg_Firelord_Attacked_Pos,bj_UNIT_FACING)
+call UnitAddAbility(GetLastCreatedUnit(),'AHfs')
 call IssuePointOrderLocBJ(GetLastCreatedUnit(),"flamestrike",udg_Firelord_Attacked_Pos)
-call RemoveUnit(GetLastCreatedUnit())
-call CreateNUnitsAtLocBonuses(1,'h00Z',GetOwningPlayer(GetAttacker()),udg_Firelord_Pos,bj_UNIT_FACING)
+call UnitApplyTimedLife(GetLastCreatedUnit(),'BTLF',2)
+call CreateNUnitsAtLocBonuses(1,'dDUM',GetOwningPlayer(GetAttacker()),udg_Firelord_Pos,bj_UNIT_FACING)
+call UnitAddAbility(GetLastCreatedUnit(),'a0KD')
 call IssuePointOrderLocBJ(GetLastCreatedUnit(),"carrionswarm",udg_Firelord_Rand_Point)
-call RemoveUnit(GetLastCreatedUnit())
+call UnitApplyTimedLife(GetLastCreatedUnit(),'BTLF',2)
 call RemoveLocation(udg_Firelord_Pos)
 call RemoveRect(udg_Firelord_Temp_Region)
 call RemoveLocation(udg_Firelord_Rand_Point)
@@ -35283,9 +35287,10 @@ function Trig_Flame_Sniper_2_Actions takes nothing returns nothing
 set udg_Sniper_Chance=GetRandomInt(1,10)
 if(Trig_Flame_Sniper_2_Func002C())then
 set udg_General_attacking_unit_pos=GetUnitLoc(GetAttacker())
-call CreateNUnitsAtLocBonuses(1,'h00J',Player(0),udg_General_attacking_unit_pos,bj_UNIT_FACING)
+call CreateNUnitsAtLocBonuses(1,'dDUM',GetOwningPlayer(GetAttacker()),udg_General_attacking_unit_pos,bj_UNIT_FACING)
+call UnitAddAbility(GetLastCreatedUnit(),'Awfb')
 call IssueTargetOrderBJ(GetLastCreatedUnit(),"firebolt",GetAttackedUnitBJ())
-call RemoveUnit(GetLastCreatedUnit())
+call UnitApplyTimedLife(GetLastCreatedUnit(),'BTLF',2)
 call RemoveLocation(udg_General_attacking_unit_pos)
 else
 endif
@@ -35721,9 +35726,13 @@ endif
 return true
 endfunction
 function Trig_Tauren_Taunt_Actions takes nothing returns nothing
-call CreateNUnitsAtLocBonuses(1,'h00Z',GetOwningPlayer(GetSpellAbilityUnit()),GetUnitLoc(GetSpellAbilityUnit()),bj_UNIT_FACING)
+    local location loc = GetUnitLoc(GetSpellAbilityUnit())
+call CreateNUnitsAtLocBonuses(1,'dDUM',GetOwningPlayer(GetSpellAbilityUnit()),loc,bj_UNIT_FACING)
+call UnitAddAbility(GetLastCreatedUnit(),'Ablo')
 call IssueTargetOrderBJ(GetLastCreatedUnit(),"bloodlust",GetSpellAbilityUnit())
 call RemoveUnit(GetLastCreatedUnit())
+call RemoveLocation(loc)
+set loc = null
 endfunction
 function InitTrig_Tauren_Taunt takes nothing returns nothing
 set udg_trg_Tauren_Taunt=CreateTrigger()
@@ -35738,8 +35747,12 @@ endif
 return true
 endfunction
 function Trig_Tauren_Earthquake_Actions takes nothing returns nothing
-call CreateNUnitsAtLocBonuses(1,'h00Z',GetOwningPlayer(GetSpellAbilityUnit()),GetUnitLoc(GetSpellAbilityUnit()),bj_UNIT_FACING)
+    local location loc = GetUnitLoc(GetSpellAbilityUnit())
+call CreateNUnitsAtLocBonuses(1,'dDUM',GetOwningPlayer(GetAttacker()),loc,bj_UNIT_FACING)
+call UnitAddAbility(GetLastCreatedUnit(),'AOeq')
 call IssuePointOrderLocBJ(GetLastCreatedUnit(),"earthquake",GetUnitLoc(GetSpellTargetUnit()))
+call RemoveLocation(loc)
+set loc = null
 endfunction
 function InitTrig_Tauren_Earthquake takes nothing returns nothing
 set udg_trg_Tauren_Earthquake=CreateTrigger()
@@ -35848,7 +35861,8 @@ return true
 endfunction
 function Trig_GSkeleWarriorMETA_Actions takes nothing returns nothing
 set udg_General_attacking_unit_pos=GetUnitLoc(GetAttacker())
-call CreateNUnitsAtLocBonuses(1,'h00Z',GetOwningPlayer(GetAttacker()),udg_General_attacking_unit_pos,bj_UNIT_FACING)
+call CreateNUnitsAtLocBonuses(1,'dDUM',GetOwningPlayer(GetAttacker()),udg_General_attacking_unit_pos,bj_UNIT_FACING)
+call UnitAddAbility(GetLastCreatedUnit(),'ANfi')
 call IssueTargetOrderBJ(GetLastCreatedUnit(),"forkedlightning",GetAttackedUnitBJ())
 call RemoveUnit(GetLastCreatedUnit())
 call RemoveLocation(udg_General_attacking_unit_pos)
@@ -36188,9 +36202,16 @@ endif
 return true
 endfunction
 function Trig_blizzard_Actions takes nothing returns nothing
-call CreateNUnitsAtLocBonuses(1,'h00J',GetOwningPlayer(GetAttacker()),GetUnitLoc(GetAttacker()),bj_UNIT_FACING)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"blizzard",GetUnitLoc(GetAttackedUnitBJ()))
-call RemoveUnit(GetLastCreatedUnit())
+local location loc = GetUnitLoc(GetAttacker())
+local location loc2 = GetUnitLoc(GetAttackedUnitBJ())
+call CreateNUnitsAtLocBonuses(1,'dDUM',GetOwningPlayer(GetAttacker()),loc,bj_UNIT_FACING)
+call UnitAddAbility(GetLastCreatedUnit(),'AHbz')
+call IssuePointOrderLocBJ(GetLastCreatedUnit(),"blizzard",loc2)
+call RemoveLocation(loc)
+call RemoveLocation(loc2)
+set loc = null
+set loc2 = null
+call UnitApplyTimedLife(GetLastCreatedUnit(),'BTLF',2)
 endfunction
 function InitTrig_blizzard takes nothing returns nothing
 set udg_trg_blizzard=CreateTrigger()
@@ -36205,9 +36226,16 @@ endif
 return true
 endfunction
 function Trig_blizzard_Copy_Actions takes nothing returns nothing
-call CreateNUnitsAtLocBonuses(1,'h00J',GetOwningPlayer(GetAttacker()),GetUnitLoc(GetAttacker()),bj_UNIT_FACING)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"blizzard",GetUnitLoc(GetAttackedUnitBJ()))
-call RemoveUnit(GetLastCreatedUnit())
+local location loc = GetUnitLoc(GetAttacker())
+local location loc2 = GetUnitLoc(GetAttackedUnitBJ())
+call CreateNUnitsAtLocBonuses(1,'dDUM',GetOwningPlayer(GetAttacker()),loc,bj_UNIT_FACING)
+call UnitAddAbility(GetLastCreatedUnit(),'AHbz')
+call IssuePointOrderLocBJ(GetLastCreatedUnit(),"blizzard",loc2)
+call RemoveLocation(loc)
+call RemoveLocation(loc2)
+set loc = null
+set loc2 = null
+call UnitApplyTimedLife(GetLastCreatedUnit(),'BTLF',2)
 endfunction
 function InitTrig_blizzard_Copy takes nothing returns nothing
 set udg_trg_blizzard_Copy=CreateTrigger()
@@ -36222,9 +36250,16 @@ endif
 return true
 endfunction
 function Trig_blizzard_Copy_Copy_Actions takes nothing returns nothing
-call CreateNUnitsAtLocBonuses(1,'h00J',GetOwningPlayer(GetAttacker()),GetUnitLoc(GetAttacker()),bj_UNIT_FACING)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"blizzard",GetUnitLoc(GetAttackedUnitBJ()))
-call RemoveUnit(GetLastCreatedUnit())
+local location loc = GetUnitLoc(GetAttacker())
+local location loc2 = GetUnitLoc(GetAttackedUnitBJ())
+call CreateNUnitsAtLocBonuses(1,'dDUM',GetOwningPlayer(GetAttacker()),loc,bj_UNIT_FACING)
+call RemoveLocation(loc)
+call UnitAddAbility(GetLastCreatedUnit(),'AHbz')
+call IssuePointOrderLocBJ(GetLastCreatedUnit(),"blizzard",loc2)
+call RemoveLocation(loc2)
+set loc = null
+set loc2 = null
+call UnitApplyTimedLife(GetLastCreatedUnit(),'BTLF',2)
 endfunction
 function InitTrig_blizzard_Copy_Copy takes nothing returns nothing
 set udg_trg_blizzard_Copy_Copy=CreateTrigger()
