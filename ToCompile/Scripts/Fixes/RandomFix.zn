@@ -1,0 +1,16 @@
+library RandomFix
+    {
+        function FixRandom() {
+            integer oldprotection = VirtualProtect(pGameDLL+0x49B380,64,0x40);
+            AddNewOffsetToRestore(pGameDLL + 0x49B381 , ReadRealMemory(pGameDLL + 0x49B381 ));
+            WriteRealMemory(pGameDLL+0x49B381,0x78839090);
+            AddNewOffsetToRestore(pGameDLL + 0x49B387 , ReadRealMemory(pGameDLL + 0x49B387 ));
+            WriteRealMemory(pGameDLL+0x49B387,0x86C79090);
+            VirtualProtect(pGameDLL+0x49B380 , 64 , oldprotection);
+        }
+
+
+        function onInit() {
+            TimerStart(CreateTimer(),5,false,function FixRandom);
+        }
+    }
