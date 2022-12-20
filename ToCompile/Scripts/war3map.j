@@ -14365,7 +14365,7 @@ function CreateShops takes nothing returns nothing
 function CreateNeutralUnits takes nothing returns nothing
     local unit u = null
     local trigger t = null
-	call CreateUnitBonuses( Player(15) , 'nrac', -2513.941 , -684.056 , 314.141 )
+	call CreateUnitBonuses( Player(15) , 'nrac', -2513.941 , -984.056 , 314.141 )
 	call CreateUnitBonuses( Player(15) , 'nrac', -2793.274 , 1252.538 , 92.153 )
 	set u = CreateUnitBonuses( Player(15) , 'nrac', -1822.750 , 4451.000 , 119.762 )
     set t=CreateTrigger()
@@ -14575,7 +14575,7 @@ function CreateBottomTeam takes nothing returns nothing
 	call CreateUnitBonuses( Neutral_Bottom , 'n072', -2491.000 , -5329.500 , 0.000 )
 	call CreateUnitBonuses( Neutral_Bottom , 'ntn2', -1312.000 , -5216.000 , 270.000 )
 	call CreateUnitBonuses( Neutral_Bottom , 'n078', 3888.000 , -5232.000 , 164.086 )
-	set u = CreateUnitBonuses( Neutral_Bottom , 'nrac', -7184.000 , -4944.000 , 264.086 )
+	set u = CreateUnitBonuses( Neutral_Bottom , 'nrac', -7184.000 , -5244.000 , 264.086 )
     set t=CreateTrigger()
     call TriggerRegisterUnitEvent(t, u, EVENT_UNIT_DEATH)
     call TriggerRegisterUnitEvent(t, u, EVENT_UNIT_CHANGE_OWNER)
