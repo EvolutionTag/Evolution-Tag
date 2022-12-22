@@ -149,6 +149,17 @@ function DumpData(name)
 		--gprint(handleid)
 	end
 
+	FuncTable[GetIdFromName('CDestructable')] = function(i,handle)
+		--Log("unit has id: ",handleid)
+		--gprint(i2id(GetUnitTypeId(handleid)))
+		handle["type"] = "destructable"
+		handle["id"] = GetDestructableTypeId(i)
+		handle["life"] = GetWidgetLife(i)
+		handle["x"] = GetDestructableX(i)
+		handle["y"] = GetDestructabley(i)
+		--gprint(handleid)
+	end
+
 
 	FuncTable[GetIdFromName('CTimerWar3')] = function(t,handle)
 		--Log("unit has id: ",handleid)
