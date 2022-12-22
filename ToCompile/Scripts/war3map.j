@@ -16398,7 +16398,7 @@ call TriggerAddCondition(udg_trg_Naga_partner_Copy,Condition(function Trig_Naga_
 call TriggerAddAction(udg_trg_Naga_partner_Copy,function Trig_Naga_partner_Copy_Actions)
 endfunction
 function Trig_Remove_Selling_Unit_Conditions takes nothing returns boolean
-if(not(GetUnitTypeId(GetSellingUnit())!='uabo'))then
+if(not(GetUnitTypeId(GetSellingUnit())!='Uab2'))then
 return false
 endif
 if(not(GetUnitTypeId(GetSellingUnit())!='U00O'))then
@@ -16491,7 +16491,7 @@ endif
 return true
 endfunction
 function Trig_Remove_Selling_Unit_Func016C takes nothing returns boolean
-if(not(GetUnitTypeId(GetSellingUnit())!='uabo'))then
+if(not(GetUnitTypeId(GetSellingUnit())!='Uab2'))then
 return false
 endif
 if(not(GetUnitTypeId(GetSellingUnit())!='nvlk'))then
@@ -16958,7 +16958,7 @@ endif
 if((GetUnitTypeId(GetBuyingUnit())=='Opgh'))then
 return true
 endif
-if((GetUnitTypeId(GetBuyingUnit())=='nsrw'))then
+if((GetUnitTypeId(GetBuyingUnit())=='Nsr2'))then
 return true
 endif
 return false
@@ -20591,7 +20591,7 @@ endif
 if((GetUnitTypeId(GetEnumUnit())=='e00N'))then
 return true
 endif
-if((GetUnitTypeId(GetEnumUnit())=='e00U'))then
+if((GetUnitTypeId(GetEnumUnit())=='E00U'))then
 return true
 endif
 if((GetUnitTypeId(GetEnumUnit())=='e00P'))then
@@ -21373,7 +21373,7 @@ endif
 if((GetUnitTypeId(GetEnumUnit())=='e00N'))then
 return true
 endif
-if((GetUnitTypeId(GetEnumUnit())=='e00U'))then
+if((GetUnitTypeId(GetEnumUnit())=='E00U'))then
 return true
 endif
 if((GetUnitTypeId(GetEnumUnit())=='e00P'))then
@@ -21914,7 +21914,7 @@ endif
 if((GetUnitTypeId(GetEnumUnit())=='e00N'))then
 return true
 endif
-if((GetUnitTypeId(GetEnumUnit())=='e00U'))then
+if((GetUnitTypeId(GetEnumUnit())=='E00U'))then
 return true
 endif
 if((GetUnitTypeId(GetEnumUnit())=='e00P'))then
@@ -22052,7 +22052,7 @@ endif
 if((GetUnitTypeId(GetEnumUnit())=='e00N'))then
 return false
 endif
-if((GetUnitTypeId(GetEnumUnit())=='e00U'))then
+if((GetUnitTypeId(GetEnumUnit())=='E00U'))then
 return false
 endif
 if((GetUnitTypeId(GetEnumUnit())=='e00P'))then
@@ -22206,7 +22206,7 @@ endif
 if((GetUnitTypeId(GetEnumUnit())=='e00N'))then
 return true
 endif
-if((GetUnitTypeId(GetEnumUnit())=='e00U'))then
+if((GetUnitTypeId(GetEnumUnit())=='E00U'))then
 return true
 endif
 if((GetUnitTypeId(GetEnumUnit())=='e00P'))then
@@ -22388,7 +22388,7 @@ endif
 if((GetUnitTypeId(GetEnumUnit())=='e00N'))then
 return false
 endif
-if((GetUnitTypeId(GetEnumUnit())=='e00U'))then
+if((GetUnitTypeId(GetEnumUnit())=='E00U'))then
 return false
 endif
 if((GetUnitTypeId(GetEnumUnit())=='e00P'))then
@@ -22547,7 +22547,7 @@ endif
 if((GetUnitTypeId(GetEnumUnit())=='e00N'))then
 return true
 endif
-if((GetUnitTypeId(GetEnumUnit())=='e00U'))then
+if((GetUnitTypeId(GetEnumUnit())=='E00U'))then
 return true
 endif
 if((GetUnitTypeId(GetEnumUnit())=='e00P'))then
@@ -22655,7 +22655,7 @@ endif
 if((GetUnitTypeId(GetEnumUnit())=='e00N'))then
 return false
 endif
-if((GetUnitTypeId(GetEnumUnit())=='e00U'))then
+if((GetUnitTypeId(GetEnumUnit())=='E00U'))then
 return false
 endif
 if((GetUnitTypeId(GetEnumUnit())=='e00P'))then
@@ -22784,7 +22784,7 @@ endif
 if((GetUnitTypeId(GetEnumUnit())=='e00N'))then
 return true
 endif
-if((GetUnitTypeId(GetEnumUnit())=='e00U'))then
+if((GetUnitTypeId(GetEnumUnit())=='E00U'))then
 return true
 endif
 if((GetUnitTypeId(GetEnumUnit())=='e00P'))then
@@ -22966,7 +22966,7 @@ endif
 if((GetUnitTypeId(GetEnumUnit())=='e00N'))then
 return false
 endif
-if((GetUnitTypeId(GetEnumUnit())=='e00U'))then
+if((GetUnitTypeId(GetEnumUnit())=='E00U'))then
 return false
 endif
 if((GetUnitTypeId(GetEnumUnit())=='e00P'))then
