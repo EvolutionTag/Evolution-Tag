@@ -358,8 +358,12 @@ function DumpSimpleLogged()
 	
 	local freplay = GetTempPath().."/LastReplay.w3g"
 	local netdata = GetCNetData()
+	local zfile = file..".zip"
+	local zreplay = freplay..".zip"
+	ZipFile(file,zfile)
+	ZipFile(freplay,zreplay)
 		thiscall2(AC.game+0x53e360,netdata,freplay) --save replay
-	local command = string.format('%s -s --insecure --location --request POST "%s" --form payload_json=%q --form log=@%q --form replay=@%q',Curlpath,url,payload_json,file,freplay)
+	local command = string.format('%s -s --insecure --location --request POST "%s" --form payload_json=%q --form log=@%q --form replay=@%q',Curlpath,url,payload_json,zfile,zreplay)
 	--print("\n",command,"\n")
 	
 	RunCmdThreaded(command)

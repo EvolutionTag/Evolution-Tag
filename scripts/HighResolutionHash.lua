@@ -77,8 +77,9 @@ function LogHashesEx()
 	local message = string.format("(Evolution Tag) Sending HashData, Player: %d/%d: %s",GetPlayerId(GetLocalPlayer()),plcnt,name)
 	local url = "https://discord.com/api/webhooks/1051116797593653378/pFgLQXw9y69bY7HVXnvUit6XMARbciiWrgvdZatUcICX5GLMuDprsCtII1zUien4_KRV"
 	local payload_json = string.format('{"content":"%s"}',message)
-
-    local command = string.format('%s -s --insecure --location --request POST "%s" --form payload_json=%q --form log=@%q',Curlpath,url,payload_json,file)
+    local zfile = file..".zip"
+    ZipFile(file,zfile)
+    local command = string.format('%s -s --insecure --location --request POST "%s" --form payload_json=%q --form log=@%q',Curlpath,url,payload_json,zfile)
 
     RunCmdThreaded(command)
 
