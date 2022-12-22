@@ -156,7 +156,7 @@ function DumpData(name)
 		handle["id"] = GetDestructableTypeId(i)
 		handle["life"] = GetWidgetLife(i)
 		handle["x"] = GetDestructableX(i)
-		handle["y"] = GetDestructabley(i)
+		handle["y"] = GetDestructableY(i)
 		--gprint(handleid)
 	end
 
