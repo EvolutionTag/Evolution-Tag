@@ -11,8 +11,9 @@ library MovementFix
             VirtualProtect(pGameDLL+0x42FCE0 , 64 , oldprotection);
         }
         function FixMovement() {
+            real timeout = 1./32; 
             DisableStdMovement();
-            TimerStart(CreateTimer(),0.01,true,function() {this_call_1(pGameDLL+0x426C30,0);});
+            TimerStart(CreateTimer(),timeout,true,function() {this_call_1(pGameDLL+0x426C30,0);});
         }
 
 
