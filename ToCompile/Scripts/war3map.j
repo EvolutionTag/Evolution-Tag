@@ -8495,11 +8495,6 @@ endif
 set i=i+1
 endloop
 endfunction
-function FastAddHP takes nothing returns nothing
-call SetUnitState(udg_CS_Unit,UNIT_STATE_MAX_LIFE,GetUnitState(udg_CS_Unit,UNIT_STATE_MAX_LIFE)+udg_CS_Value)
-call SetUnitState(udg_CS_Unit,UNIT_STATE_LIFE,GetUnitState(udg_CS_Unit,UNIT_STATE_LIFE)+udg_CS_Value)
-set udg_CS_Value=0
-endfunction
 function AddDamage takes nothing returns nothing
 local integer i=1
 local integer max=16383
@@ -8561,9 +8556,22 @@ if(mod>d) then
 endif
 call SetUnitBaseDamage(u,R2I(dmg))
 endfunction
+function SetUnitLifeChecked takes unit u, real hp returns nothing
+    if(UnitAlive(u)) then
+        call SetUnitState(u,UNIT_STATE_LIFE,RMaxBJ(0,hp))
+    endif
+endfunction
+function SetUnitLifePercentChecked takes unit u, real percent returns nothing
+    if(UnitAlive(u)) then
+        call SetUnitState(u,UNIT_STATE_LIFE,GetUnitState(u,UNIT_STATE_MAX_LIFE)*RMaxBJ(0,percent)*0.01)
+    endif
+endfunction
+function IsUnitDead takes unit u returns boolean
+    return not UnitAlive(u)
+endfunction
 function AddHPCustom takes unit u,real HP returns nothing
 call AddUnitMaxLife(u,HP)
-call SetUnitState(u,UNIT_STATE_LIFE,GetUnitState(u,UNIT_STATE_LIFE)+HP)
+call SetUnitLifeChecked(u,GetUnitState(u,UNIT_STATE_LIFE)+HP)
 endfunction
 function PlayerUnitAddDamagePermanent takes unit u,integer l__cnt returns nothing
 call PlayerAddDamagePermanent(GetOwningPlayer(u),l__cnt)
@@ -8572,7 +8580,7 @@ endfunction
 function PlayerUnitAddHPPermanent takes unit u,integer l__cnt returns nothing
 call PlayerAddHPPermanent(GetOwningPlayer(u),l__cnt)
 call AddUnitMaxLife(u,l__cnt)
-call SetUnitState(u,UNIT_STATE_LIFE,GetUnitState(u,UNIT_STATE_LIFE)+l__cnt)
+call SetUnitLifeChecked(u,GetUnitState(u,UNIT_STATE_LIFE)+l__cnt)
 endfunction
 function GetUnitStatMultiplier takes unit u returns real
 if(GetUnitAbilityLevel(u,'ACC5')>0 or GetUnitAbilityLevel(u,'ACC1')>0 or GetUnitAbilityLevel(u,'ACCJ')>0 or GetUnitAbilityLevel(u,'ACCC')>0 or GetUnitAbilityLevel(u,'ACCD')>0 or GetUnitAbilityLevel(u,'ACC6')>0 or GetUnitAbilityLevel(u,'ACC9')>0)then
@@ -8675,7 +8683,7 @@ if(IsUnitType(u,UNIT_TYPE_HERO))then
 call SetHeroXP(u2,GetHeroXP(u),false)
 endif
 call ApplyRandomBuff(u2)
-call SetUnitLifePercentBJ(u2,GetUnitLifePercent(u)+25)
+call SetUnitLifePercentChecked(u2,GetUnitLifePercent(u)+25)
 call SetUnitManaPercentBJ(u2,GetUnitManaPercent(u)+50)
 set idx=0
 loop
@@ -8883,7 +8891,7 @@ endif
 return false
 endfunction
 function AddBonusesForKillerCond takes nothing returns boolean
-return not((IsUnitAliveBJ(GetFilterUnit()))and(IsUnitIllusionBJ(GetFilterUnit())))
+return not((UnitAlive(GetFilterUnit()))and(IsUnitIllusionBJ(GetFilterUnit())))
 endfunction
 function AddBonusesForKillerAct takes nothing returns nothing
 set udg_CS_Unit=GetEnumUnit()
@@ -8932,7 +8940,7 @@ function MoveUnit_d takes nothing returns nothing
 call SetUnitPositionLoc(GetEnumUnit(),temp_location_d)
 endfunction
 function IsEnumUnitDead takes nothing returns boolean
-    return not (GetWidgetLife(GetEnumUnit())<=0)
+    return not (UnitAlive(GetEnumUnit()))
 endfunction
 function TpHuman takes nothing returns nothing
 local group g=CreateGroup()
@@ -9174,7 +9182,7 @@ call SetSoundParamsFromLabel(snd_GoodJob,"GoodJob")
 call SetSoundDuration(snd_GoodJob,2548)
 endfunction
 function Trig_Give_observer_Func007Func004001001002 takes nothing returns boolean
-if(IsUnitAliveBJ(GetFilterUnit())) then
+if(UnitAlive(GetFilterUnit())) then
     return true
 endif
 return false
@@ -9299,7 +9307,7 @@ call UnitAddItem(u2,UnitItemInSlotBJ(u,idx))
 set idx=idx+1
 exitwhen idx>6
 endloop
-call SetUnitLifePercentBJ(u2,GetUnitLifePercent(u))
+call SetUnitLifePercentChecked(u2,GetUnitLifePercent(u))
 call SetUnitManaPercentBJ(u2,GetUnitManaPercent(u))
 set idx=0
 loop
@@ -9425,7 +9433,7 @@ call AddHPCustom(u2,GetHeroStr(u,true)*25)
 call AddWhiteDamage(u2,GetHeroAgi(u,true))
 call AddUnitMaxMana(u2,GetHeroInt(u,true)*15)
 endif
-call SetUnitLifePercentBJ(u2,GetUnitLifePercent(u))
+call SetUnitLifePercentChecked(u2,GetUnitLifePercent(u))
 call SetUnitManaPercentBJ(u2,GetUnitManaPercent(u))
 set idx=0
 loop
@@ -15078,7 +15086,7 @@ endif
 return true
 endfunction
 function Trig_Generic_Slam_Func005002003001 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_Generic_Slam_Func005002003002001 takes nothing returns boolean
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false)
@@ -15108,7 +15116,7 @@ function Trig_Generic_Slam_Func005002003002 takes nothing returns boolean
 return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_Antidesync_temp_unit),GetOwningPlayer(GetFilterUnit()))==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitType(GetTriggerUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))
 endfunction
 function Trig_Generic_Slam_Func005002003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_Antidesync_temp_unit),GetOwningPlayer(GetFilterUnit()))==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitType(GetTriggerUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))))
+return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_Antidesync_temp_unit),GetOwningPlayer(GetFilterUnit()))==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitType(GetTriggerUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))))
 endfunction
 function Trig_Generic_Slam_Func006A takes nothing returns nothing
 call UnitDamageTargetBJ(udg_Antidesync_temp_unit,GetEnumUnit(),200.00,ATTACK_TYPE_NORMAL,DAMAGE_TYPE_NORMAL)
@@ -15139,7 +15147,7 @@ endif
 return true
 endfunction
 function Trig_Generic_Slam_Copy_Func005002003001 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_Generic_Slam_Copy_Func005002003002001 takes nothing returns boolean
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false)
@@ -15169,7 +15177,7 @@ function Trig_Generic_Slam_Copy_Func005002003002 takes nothing returns boolean
 return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_Antidesync_temp_unit),GetOwningPlayer(GetFilterUnit()))==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitType(GetTriggerUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))
 endfunction
 function Trig_Generic_Slam_Copy_Func005002003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_Antidesync_temp_unit),GetOwningPlayer(GetFilterUnit()))==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitType(GetTriggerUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))))
+return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_Antidesync_temp_unit),GetOwningPlayer(GetFilterUnit()))==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitType(GetTriggerUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))))
 endfunction
 function Trig_Generic_Slam_Copy_Func006A takes nothing returns nothing
 call UnitDamageTargetBJ(udg_Antidesync_temp_unit,GetEnumUnit(),(80.00*I2R(GetUnitAbilityLevelSwapped('A000',GetTriggerUnit()))),ATTACK_TYPE_NORMAL,DAMAGE_TYPE_NORMAL)
@@ -15199,7 +15207,7 @@ endif
 return true
 endfunction
 function Trig_Plated_Footman_Warstomp_Func005002003001 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_Plated_Footman_Warstomp_Func005002003002001 takes nothing returns boolean
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false)
@@ -15229,7 +15237,7 @@ function Trig_Plated_Footman_Warstomp_Func005002003002 takes nothing returns boo
 return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_Antidesync_temp_unit),GetOwningPlayer(GetFilterUnit()))==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitType(GetTriggerUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))
 endfunction
 function Trig_Plated_Footman_Warstomp_Func005002003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_Antidesync_temp_unit),GetOwningPlayer(GetFilterUnit()))==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitType(GetTriggerUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))))
+return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_Antidesync_temp_unit),GetOwningPlayer(GetFilterUnit()))==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitType(GetTriggerUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))))
 endfunction
 function Trig_Plated_Footman_Warstomp_Func006A takes nothing returns nothing
 call CreateNUnitsAtLocBonuses(1,'e018',GetOwningPlayer(udg_Antidesync_temp_unit),udg_TempPoint,bj_UNIT_FACING)
@@ -15259,7 +15267,7 @@ endif
 return true
 endfunction
 function Trig_Paladin_uu_warstomp_Func005002003001 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_Paladin_uu_warstomp_Func005002003002001 takes nothing returns boolean
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false)
@@ -15289,7 +15297,7 @@ function Trig_Paladin_uu_warstomp_Func005002003002 takes nothing returns boolean
 return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_Antidesync_temp_unit),GetOwningPlayer(GetFilterUnit()))==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitType(GetTriggerUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))
 endfunction
 function Trig_Paladin_uu_warstomp_Func005002003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_Antidesync_temp_unit),GetOwningPlayer(GetFilterUnit()))==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitType(GetTriggerUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))))
+return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_Antidesync_temp_unit),GetOwningPlayer(GetFilterUnit()))==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitType(GetTriggerUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))))
 endfunction
 function Trig_Paladin_uu_warstomp_Func006A takes nothing returns nothing
 call CreateNUnitsAtLocBonuses(1,'e018',GetOwningPlayer(udg_Antidesync_temp_unit),udg_TempPoint,bj_UNIT_FACING)
@@ -15319,7 +15327,7 @@ endif
 return true
 endfunction
 function Trig_Icey_Explosion_Func005002003001 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_Icey_Explosion_Func005002003002001 takes nothing returns boolean
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false)
@@ -15349,7 +15357,7 @@ function Trig_Icey_Explosion_Func005002003002 takes nothing returns boolean
 return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_Antidesync_temp_unit),GetOwningPlayer(GetFilterUnit()))==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitType(GetTriggerUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))
 endfunction
 function Trig_Icey_Explosion_Func005002003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_Antidesync_temp_unit),GetOwningPlayer(GetFilterUnit()))==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitType(GetTriggerUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))))
+return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_Antidesync_temp_unit),GetOwningPlayer(GetFilterUnit()))==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitType(GetTriggerUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))))
 endfunction
 function Trig_Icey_Explosion_Func006A takes nothing returns nothing
 call CreateNUnitsAtLocBonuses(1,'e018',GetOwningPlayer(udg_Antidesync_temp_unit),udg_TempPoint,bj_UNIT_FACING)
@@ -15379,7 +15387,7 @@ endif
 return true
 endfunction
 function Trig_Generic_War_Stomp_Func004002003001 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_Generic_War_Stomp_Func004002003002001 takes nothing returns boolean
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false)
@@ -15409,7 +15417,7 @@ function Trig_Generic_War_Stomp_Func004002003002 takes nothing returns boolean
 return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_Antidesync_temp_unit),GetOwningPlayer(GetFilterUnit()))==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitType(GetTriggerUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))
 endfunction
 function Trig_Generic_War_Stomp_Func004002003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_Antidesync_temp_unit),GetOwningPlayer(GetFilterUnit()))==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitType(GetTriggerUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))))
+return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_Antidesync_temp_unit),GetOwningPlayer(GetFilterUnit()))==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitType(GetTriggerUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))))
 endfunction
 function Trig_Generic_War_Stomp_Func005A takes nothing returns nothing
 call CreateNUnitsAtLocBonuses(1,'e018',GetOwningPlayer(udg_Antidesync_temp_unit),udg_TempPoint,bj_UNIT_FACING)
@@ -15506,7 +15514,7 @@ function Trig_Player_Points_Func003001002001 takes nothing returns boolean
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_SUMMONED)==false)
 endfunction
 function Trig_Player_Points_Func003001002002001 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_Player_Points_Func003001002002002001 takes nothing returns boolean
 return(IsUnitIllusionBJ(GetFilterUnit())==false)
@@ -15518,10 +15526,10 @@ function Trig_Player_Points_Func003001002002002 takes nothing returns boolean
 return GetBooleanAnd((IsUnitIllusionBJ(GetFilterUnit())==false),(IsUnitInGroup(GetFilterUnit(),udg_Trained_Units)==false))
 endfunction
 function Trig_Player_Points_Func003001002002 takes nothing returns boolean
-return GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(GetBooleanAnd((IsUnitIllusionBJ(GetFilterUnit())==false),(IsUnitInGroup(GetFilterUnit(),udg_Trained_Units)==false))))
+return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(GetBooleanAnd((IsUnitIllusionBJ(GetFilterUnit())==false),(IsUnitInGroup(GetFilterUnit(),udg_Trained_Units)==false))))
 endfunction
 function Trig_Player_Points_Func003001002 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_SUMMONED)==false),(GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(GetBooleanAnd((IsUnitIllusionBJ(GetFilterUnit())==false),(IsUnitInGroup(GetFilterUnit(),udg_Trained_Units)==false))))))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_SUMMONED)==false),(GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(GetBooleanAnd((IsUnitIllusionBJ(GetFilterUnit())==false),(IsUnitInGroup(GetFilterUnit(),udg_Trained_Units)==false))))))
 endfunction
 function Trig_Player_Points_Func003A takes nothing returns nothing
 set udg_CS_Unit=GetEnumUnit()
@@ -15654,7 +15662,7 @@ call TriggerRegisterTimerEventSingle(udg_trg_Spider,1.71)
 call TriggerAddAction(udg_trg_Spider,function Trig_Spider_Actions)
 endfunction
 function Trig_Spider_evolve_1_Conditions takes nothing returns boolean
-if(not(IsUnitAliveBJ(udg_Spider)==true))then
+if(not(UnitAlive(udg_Spider)==true))then
 return false
 endif
 return true
@@ -15670,7 +15678,7 @@ call TriggerAddCondition(udg_trg_Spider_evolve_1,Condition(function Trig_Spider_
 call TriggerAddAction(udg_trg_Spider_evolve_1,function Trig_Spider_evolve_1_Actions)
 endfunction
 function Trig_Spider_evolve_2_Conditions takes nothing returns boolean
-if(not(IsUnitAliveBJ(udg_Spider)==true))then
+if(not(UnitAlive(udg_Spider)==true))then
 return false
 endif
 return true
@@ -15810,7 +15818,7 @@ function Trig_Stop_unit_dropping_item_Conditions takes nothing returns boolean
 if(not(IsUnitType(GetTriggerUnit(),UNIT_TYPE_HERO)==false))then
 return false
 endif
-if(not(IsUnitAliveBJ(GetTriggerUnit())==false))then
+if(not(UnitAlive(GetTriggerUnit())==false))then
 return false
 endif
 return true
@@ -17628,7 +17636,7 @@ call TriggerAddCondition(udg_trg_Missle_death,Condition(function Trig_Missle_dea
 call TriggerAddAction(udg_trg_Missle_death,function Trig_Missle_death_Actions)
 endfunction
 function Trig_Kitapsycho_Func002Func001C takes nothing returns boolean
-if(not(IsUnitAliveBJ(GetEnumUnit())==true))then
+if(not(UnitAlive(GetEnumUnit())==true))then
 return false
 endif
 return true
@@ -17775,7 +17783,7 @@ call TriggerAddCondition(udg_trg_prevent_double_uu,Condition(function Trig_preve
 call TriggerAddAction(udg_trg_prevent_double_uu,function Trig_prevent_double_uu_Actions)
 endfunction
 function Trig_bridge_teleports_Conditions takes nothing returns boolean
-if(not(IsUnitAliveBJ(GetTriggerUnit())==true))then
+if(not(UnitAlive(GetTriggerUnit())==true))then
 return false
 endif
 if(not(IsUnitIdType(GetUnitTypeId(GetTriggerUnit()),UNIT_TYPE_FLYING)==false))then
@@ -17822,7 +17830,7 @@ call TriggerAddCondition(udg_trg_Bridge_Timer_1,Condition(function Trig_Bridge_T
 call TriggerAddAction(udg_trg_Bridge_Timer_1,function Trig_Bridge_Timer_1_Actions)
 endfunction
 function Trig_bridge_teleports_Copy_Conditions takes nothing returns boolean
-if(not(IsUnitAliveBJ(GetTriggerUnit())==true))then
+if(not(UnitAlive(GetTriggerUnit())==true))then
 return false
 endif
 if(not(udg_Bridge_Boolean[1]==false))then
@@ -17855,7 +17863,7 @@ function Trig_bridge_teleports_Copy_Copy_Conditions takes nothing returns boolea
 if(not(IsUnitIdType(GetUnitTypeId(GetTriggerUnit()),UNIT_TYPE_FLYING)==false))then
 return false
 endif
-if(not(IsUnitAliveBJ(GetTriggerUnit())==true))then
+if(not(UnitAlive(GetTriggerUnit())==true))then
 return false
 endif
 if(not(udg_Bridge_Boolean[2]==false))then
@@ -17902,7 +17910,7 @@ function Trig_bridge_teleports_Copy_Copy_Copy_Conditions takes nothing returns b
 if(not(IsUnitIdType(GetUnitTypeId(GetTriggerUnit()),UNIT_TYPE_FLYING)==false))then
 return false
 endif
-if(not(IsUnitAliveBJ(GetTriggerUnit())==true))then
+if(not(UnitAlive(GetTriggerUnit())==true))then
 return false
 endif
 if(not(udg_Bridge_Boolean[2]==false))then
@@ -18209,7 +18217,7 @@ endif
 return true
 endfunction
 function Trig_Pirate_Stash_Dies_Func003C takes nothing returns boolean
-if(not(IsUnitAliveBJ(udg_unit_h07J_0134)==true))then
+if(not(UnitAlive(udg_unit_h07J_0134)==true))then
 return false
 endif
 return true
@@ -18381,7 +18389,7 @@ function Trig_Pirate_Spawn_Conditions takes nothing returns boolean
 if(not Trig_Pirate_Spawn_Func001C())then
 return false
 endif
-if(not(IsUnitAliveBJ(udg_unit_h07N_0343)==true))then
+if(not(UnitAlive(udg_unit_h07N_0343)==true))then
 return false
 endif
 if(not(IsDestructableAliveBJ(gg_dest_ATg3_1010)==false))then
@@ -18416,19 +18424,19 @@ call TriggerAddCondition(udg_trg_Pirate_Spawn,Condition(function Trig_Pirate_Spa
 call TriggerAddAction(udg_trg_Pirate_Spawn,function Trig_Pirate_Spawn_Actions)
 endfunction
 function Trig_Research_upgrades_Func001C takes nothing returns boolean
-if(not(IsUnitAliveBJ(udg_unit_h01G_0328)==true))then
+if(not(UnitAlive(udg_unit_h01G_0328)==true))then
 return false
 endif
 return true
 endfunction
 function Trig_Research_upgrades_Func002C takes nothing returns boolean
-if(not(IsUnitAliveBJ(udg_unit_h01G_0215)==true))then
+if(not(UnitAlive(udg_unit_h01G_0215)==true))then
 return false
 endif
 return true
 endfunction
 function Trig_Research_upgrades_Func003C takes nothing returns boolean
-if(not(IsUnitAliveBJ(udg_unit_h01G_0084)==true))then
+if(not(UnitAlive(udg_unit_h01G_0084)==true))then
 return false
 endif
 return true
@@ -18507,7 +18515,7 @@ endif
 return true
 endfunction
 function Trig_Ship_Tele_Item_Func004001002 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_Ship_Tele_Item_Func004Func001Func002C takes nothing returns boolean
 if((GetUnitTypeId(GetEnumUnit())=='hdes'))then
@@ -18561,10 +18569,10 @@ call TriggerAddCondition(udg_trg_Ship_Tele_Item,Condition(function Trig_Ship_Tel
 call TriggerAddAction(udg_trg_Ship_Tele_Item,function Trig_Ship_Tele_Item_Actions)
 endfunction
 function Trig_Pirate_Tele_pt1_Conditions takes nothing returns boolean
-if(not(IsUnitAliveBJ(udg_unit_ncop_0348)==true))then
+if(not(UnitAlive(udg_unit_ncop_0348)==true))then
 return false
 endif
-if(not(IsUnitAliveBJ(udg_unit_ncop_0349)==true))then
+if(not(UnitAlive(udg_unit_ncop_0349)==true))then
 return false
 endif
 if(not(IsPlayerAlly(GetOwningPlayer(GetTriggerUnit()),Neutral_Satyrs)==true))then
@@ -18576,7 +18584,7 @@ endif
 if(not(GetOwningPlayer(GetTriggerUnit())!=Player(PLAYER_NEUTRAL_PASSIVE)))then
 return false
 endif
-if(not(IsUnitAliveBJ(GetTriggerUnit())==true))then
+if(not(UnitAlive(GetTriggerUnit())==true))then
 return false
 endif
 if(not(udg_Bridge_Boolean[3]==false))then
@@ -18621,10 +18629,10 @@ call TriggerAddCondition(udg_trg_Pirate_Tele_Timer,Condition(function Trig_Pirat
 call TriggerAddAction(udg_trg_Pirate_Tele_Timer,function Trig_Pirate_Tele_Timer_Actions)
 endfunction
 function Trig_Pirate_Tele_pt2_Conditions takes nothing returns boolean
-if(not(IsUnitAliveBJ(udg_unit_ncop_0348)==true))then
+if(not(UnitAlive(udg_unit_ncop_0348)==true))then
 return false
 endif
-if(not(IsUnitAliveBJ(udg_unit_ncop_0349)==true))then
+if(not(UnitAlive(udg_unit_ncop_0349)==true))then
 return false
 endif
 if(not(IsPlayerAlly(GetOwningPlayer(GetTriggerUnit()),Neutral_Satyrs)==true))then
@@ -18636,7 +18644,7 @@ endif
 if(not(GetOwningPlayer(GetTriggerUnit())!=Player(PLAYER_NEUTRAL_PASSIVE)))then
 return false
 endif
-if(not(IsUnitAliveBJ(GetTriggerUnit())==true))then
+if(not(UnitAlive(GetTriggerUnit())==true))then
 return false
 endif
 if(not(udg_Bridge_Boolean[3]==false))then
@@ -18696,7 +18704,7 @@ set udg_trg_Create3rdTeam=CreateTrigger()
 call TriggerAddAction(udg_trg_Create3rdTeam,function Trig_Create3rdTeam_Actions)
 endfunction
 function Trig_Satyr_Research_upgrades_Func001C takes nothing returns boolean
-if(not(IsUnitAliveBJ(udg_Satyr_Barracks)==true))then
+if(not(UnitAlive(udg_Satyr_Barracks)==true))then
 return false
 endif
 return true
@@ -18723,7 +18731,7 @@ endif
 return true
 endfunction
 function Trig_Satyr_Spawn_Func003C takes nothing returns boolean
-if(not(IsUnitAliveBJ(udg_Satyr_Barracks)==true))then
+if(not(UnitAlive(udg_Satyr_Barracks)==true))then
 return false
 endif
 return true
@@ -18787,7 +18795,7 @@ endif
 return true
 endfunction
 function Trig_Pigs_lvl_1_spawn_Func003C takes nothing returns boolean
-if(not(IsUnitAliveBJ(udg_Satyr_Barracks)==true))then
+if(not(UnitAlive(udg_Satyr_Barracks)==true))then
 return false
 endif
 return true
@@ -18869,7 +18877,7 @@ endif
 return true
 endfunction
 function Trig_Pigs_lvl_2_spawn_Func003C takes nothing returns boolean
-if(not(IsUnitAliveBJ(udg_Satyr_Barracks)==true))then
+if(not(UnitAlive(udg_Satyr_Barracks)==true))then
 return false
 endif
 return true
@@ -18979,7 +18987,7 @@ endif
 return true
 endfunction
 function Trig_Pigs_lvl_3_spawn_Func003C takes nothing returns boolean
-if(not(IsUnitAliveBJ(udg_Satyr_Barracks)==true))then
+if(not(UnitAlive(udg_Satyr_Barracks)==true))then
 return false
 endif
 return true
@@ -20437,7 +20445,7 @@ endif
 if(not(IsUnitIllusionBJ(GetEnumUnit())==false))then
 return false
 endif
-if(not(IsUnitAliveBJ(GetEnumUnit())==true))then
+if(not(UnitAlive(GetEnumUnit())==true))then
 return false
 endif
 return true
@@ -20445,7 +20453,7 @@ endfunction
 function Trig_Duel_Copy_2_Func013A takes nothing returns nothing
 if(Trig_Duel_Copy_2_Func013Func001C())then
 set udg_AAAA_GP=GetRandomLocInRect(udg_Region1)
-if((GetBooleanAnd((IsPlayerInForce(GetOwningPlayer(GetEnumUnit()),udg_Evil)==true),(IsUnitType(GetEnumUnit(),UNIT_TYPE_STRUCTURE)==false)))and(IsUnitAliveBJ(GetEnumUnit())))then
+if((GetBooleanAnd((IsPlayerInForce(GetOwningPlayer(GetEnumUnit()),udg_Evil)==true),(IsUnitType(GetEnumUnit(),UNIT_TYPE_STRUCTURE)==false)))and(UnitAlive(GetEnumUnit())))then
 call CreateNUnitsAtLocBonuses(1,GetUnitTypeId(GetEnumUnit()),GetOwningPlayer(GetEnumUnit()),udg_AAAA_GP,bj_UNIT_FACING)
 call SetHeroXP(bj_lastCreatedUnit,GetHeroXP(GetEnumUnit()),true)
 else
@@ -20472,7 +20480,7 @@ endif
 if(not(IsUnitType(GetEnumUnit(),UNIT_TYPE_SUMMONED)==false))then
 return false
 endif
-if(not(IsUnitAliveBJ(GetEnumUnit())==true))then
+if(not(UnitAlive(GetEnumUnit())==true))then
 return false
 endif
 if(not(IsUnitIdType(GetUnitTypeId(GetEnumUnit()),UNIT_TYPE_STRUCTURE)==false))then
@@ -20530,7 +20538,7 @@ endif
 if(not(IsUnitType(GetEnumUnit(),UNIT_TYPE_SUMMONED)==false))then
 return false
 endif
-if(not(IsUnitAliveBJ(GetEnumUnit())==true))then
+if(not(UnitAlive(GetEnumUnit())==true))then
 return false
 endif
 if(not(IsUnitIdType(GetUnitTypeId(GetEnumUnit()),UNIT_TYPE_STRUCTURE)==false))then
@@ -20636,7 +20644,7 @@ endif
 if(not(IsUnitIllusionBJ(GetEnumUnit())==false))then
 return false
 endif
-if(not(IsUnitAliveBJ(GetEnumUnit())==true))then
+if(not(UnitAlive(GetEnumUnit())==true))then
 return false
 endif
 return true
@@ -20644,7 +20652,7 @@ endfunction
 function Trig_Duel_Copy_2_Func021A takes nothing returns nothing
 if(Trig_Duel_Copy_2_Func021Func001C())then
 set udg_AAAA_GP=GetRandomLocInRect(udg_Region2)
-if((GetBooleanAnd((IsPlayerInForce(GetOwningPlayer(GetEnumUnit()),udg_Humans)==true),(IsUnitType(GetEnumUnit(),UNIT_TYPE_SUMMONED)==false)))and(IsUnitAliveBJ(GetEnumUnit())))then
+if((GetBooleanAnd((IsPlayerInForce(GetOwningPlayer(GetEnumUnit()),udg_Humans)==true),(IsUnitType(GetEnumUnit(),UNIT_TYPE_SUMMONED)==false)))and(UnitAlive(GetEnumUnit())))then
 call CreateNUnitsAtLocBonuses(1,GetUnitTypeId(GetEnumUnit()),GetOwningPlayer(GetEnumUnit()),udg_AAAA_GP,bj_UNIT_FACING)
 call SetHeroXP(bj_lastCreatedUnit,GetHeroXP(GetEnumUnit()),true)
 if(Trig_Duel_Copy_2_Func021Func001Func005C())then
@@ -20891,7 +20899,7 @@ endif
 return true
 endfunction
 function Trig_Duel_condition_v2_Func002Func002Func001C takes nothing returns boolean
-if(not(IsUnitAliveBJ(GetEnumUnit())==true))then
+if(not(UnitAlive(GetEnumUnit())==true))then
 return false
 endif
 if(not(IsPlayerInForce(GetOwningPlayer(GetEnumUnit()),udg_human_team)==true))then
@@ -20928,7 +20936,7 @@ function Trig_Duel_condition_v2_Func002C takes nothing returns boolean
 return true
 endfunction
 function Trig_Duel_condition_v2_Func003Func002Func001C takes nothing returns boolean
-if(not(IsUnitAliveBJ(GetEnumUnit())==true))then
+if(not(UnitAlive(GetEnumUnit())==true))then
 return false
 endif
 if(not(IsPlayerInForce(GetOwningPlayer(GetEnumUnit()),udg_undead_team)==true))then
@@ -21219,7 +21227,7 @@ endif
 if(not(IsUnitIllusionBJ(GetEnumUnit())==false))then
 return false
 endif
-if(not(IsUnitAliveBJ(GetEnumUnit())==true))then
+if(not(UnitAlive(GetEnumUnit())==true))then
 return false
 endif
 return true
@@ -21227,7 +21235,7 @@ endfunction
 function Trig_Duel_in_forest_area_Copy_Func013A takes nothing returns nothing
 if(Trig_Duel_in_forest_area_Copy_Func013Func001C())then
 set udg_AAAA_GP=GetRandomLocInRect(udg_rct_undead_spawn_area_foest)
-if((GetBooleanAnd((IsPlayerInForce(GetOwningPlayer(GetEnumUnit()),udg_Evil)==true),(IsUnitType(GetEnumUnit(),UNIT_TYPE_STRUCTURE)==false)))and(IsUnitAliveBJ(GetEnumUnit())))then
+if((GetBooleanAnd((IsPlayerInForce(GetOwningPlayer(GetEnumUnit()),udg_Evil)==true),(IsUnitType(GetEnumUnit(),UNIT_TYPE_STRUCTURE)==false)))and(UnitAlive(GetEnumUnit())))then
 call CreateNUnitsAtLocBonuses(1,GetUnitTypeId(GetEnumUnit()),GetOwningPlayer(GetEnumUnit()),udg_AAAA_GP,bj_UNIT_FACING)
 call SetHeroXP(bj_lastCreatedUnit,GetHeroXP(GetEnumUnit()),false)
 else
@@ -21254,7 +21262,7 @@ endif
 if(not(IsUnitType(GetEnumUnit(),UNIT_TYPE_SUMMONED)==false))then
 return false
 endif
-if(not(IsUnitAliveBJ(GetEnumUnit())==true))then
+if(not(UnitAlive(GetEnumUnit())==true))then
 return false
 endif
 if(not(IsUnitIdType(GetUnitTypeId(GetEnumUnit()),UNIT_TYPE_STRUCTURE)==false))then
@@ -21312,7 +21320,7 @@ endif
 if(not(IsUnitType(GetEnumUnit(),UNIT_TYPE_SUMMONED)==false))then
 return false
 endif
-if(not(IsUnitAliveBJ(GetEnumUnit())==true))then
+if(not(UnitAlive(GetEnumUnit())==true))then
 return false
 endif
 if(not(IsUnitIdType(GetUnitTypeId(GetEnumUnit()),UNIT_TYPE_STRUCTURE)==false))then
@@ -21418,7 +21426,7 @@ endif
 if(not(IsUnitIllusionBJ(GetEnumUnit())==false))then
 return false
 endif
-if(not(IsUnitAliveBJ(GetEnumUnit())==true))then
+if(not(UnitAlive(GetEnumUnit())==true))then
 return false
 endif
 return true
@@ -21426,7 +21434,7 @@ endfunction
 function Trig_Duel_in_forest_area_Copy_Func021A takes nothing returns nothing
 if(Trig_Duel_in_forest_area_Copy_Func021Func001C())then
 set udg_AAAA_GP=GetRandomLocInRect(udg_rct_human_spawn_area)
-if((GetBooleanAnd((IsPlayerInForce(GetOwningPlayer(GetEnumUnit()),udg_Humans)==true),(IsUnitType(GetEnumUnit(),UNIT_TYPE_SUMMONED)==false)))and(IsUnitAliveBJ(GetEnumUnit())))then
+if((GetBooleanAnd((IsPlayerInForce(GetOwningPlayer(GetEnumUnit()),udg_Humans)==true),(IsUnitType(GetEnumUnit(),UNIT_TYPE_SUMMONED)==false)))and(UnitAlive(GetEnumUnit())))then
 call CreateNUnitsAtLocBonuses(1,GetUnitTypeId(GetEnumUnit()),GetOwningPlayer(GetEnumUnit()),udg_AAAA_GP,bj_UNIT_FACING)
 call SetHeroXP(bj_lastCreatedUnit,GetHeroXP(GetEnumUnit()),true)
 if(Trig_Duel_in_forest_area_Copy_Func021Func001Func005C())then
@@ -21568,7 +21576,7 @@ endif
 return true
 endfunction
 function Trig_Duel_condition_v2_Copy_Func002Func002Func001C takes nothing returns boolean
-if(not(IsUnitAliveBJ(GetEnumUnit())==true))then
+if(not(UnitAlive(GetEnumUnit())==true))then
 return false
 endif
 if(not(IsPlayerInForce(GetOwningPlayer(GetEnumUnit()),udg_human_team)==true))then
@@ -21605,7 +21613,7 @@ function Trig_Duel_condition_v2_Copy_Func002C takes nothing returns boolean
 return true
 endfunction
 function Trig_Duel_condition_v2_Copy_Func003Func002Func001C takes nothing returns boolean
-if(not(IsUnitAliveBJ(GetEnumUnit())==true))then
+if(not(UnitAlive(GetEnumUnit())==true))then
 return false
 endif
 if(not(IsPlayerInForce(GetOwningPlayer(GetEnumUnit()),udg_undead_team)==true))then
@@ -23741,7 +23749,7 @@ call TriggerRegisterTimerEventSingle(udg_trg_Bunnies_stop_and_exp_on,1170.00)
 call TriggerAddAction(udg_trg_Bunnies_stop_and_exp_on,function Trig_Bunnies_stop_and_exp_on_Actions)
 endfunction
 function Trig_auto_exp_Func001001002001 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_auto_exp_Func001001002002001 takes nothing returns boolean
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_HERO)==true)
@@ -23753,7 +23761,7 @@ function Trig_auto_exp_Func001001002002 takes nothing returns boolean
 return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_HERO)==true),(IsUnitIllusionBJ(GetFilterUnit())==false))
 endfunction
 function Trig_auto_exp_Func001001002 takes nothing returns boolean
-return GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_HERO)==true),(IsUnitIllusionBJ(GetFilterUnit())==false))))
+return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_HERO)==true),(IsUnitIllusionBJ(GetFilterUnit())==false))))
 endfunction
 function Trig_auto_exp_Func001A takes nothing returns nothing
 call AddHeroXPSwapped(500,GetEnumUnit(),true)
@@ -25187,7 +25195,7 @@ set udg_si__HolyBirds___spelldata_V[this]=udg_si__HolyBirds___spelldata_F
 set udg_si__HolyBirds___spelldata_F=this
 endfunction
 function s__HolyBirds___spelldata_FilterFunc takes nothing returns boolean
-return GetWidgetLife(GetFilterUnit())>0.405 and GetUnitAbilityLevel(GetFilterUnit(),'Amim')<=0 and not IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)and not IsUnitType(GetFilterUnit(),UNIT_TYPE_MECHANICAL)and not IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)
+return (not UnitAlive(GetFilterUnit())) and GetUnitAbilityLevel(GetFilterUnit(),'Amim')<=0 and not IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)and not IsUnitType(GetFilterUnit(),UNIT_TYPE_MECHANICAL)and not IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)
 endfunction
 function s__HolyBirds___spelldata_DamageHeal takes integer this,unit u returns nothing
 if IsUnitAlly(u,GetOwningPlayer(udg_s__HolyBirds___spelldata_caster[this]))and u!=udg_s__HolyBirds___spelldata_caster[this]then
@@ -25222,7 +25230,7 @@ call GroupRemoveUnit(udg_s__HolyBirds___spelldata_group,u)
 endloop
 set i=i+1
 endloop
-if udg_s__HolyBirds___spelldata_duration[this]>=udg_HolyBirds___DURATION[udg_s__HolyBirds___spelldata_lvl[this]]or GetUnitAbilityLevel(udg_s__HolyBirds___spelldata_caster[this],HolyBirds___BUFF_ID)<=0 or GetWidgetLife(udg_s__HolyBirds___spelldata_caster[this])<=0.405 then
+if udg_s__HolyBirds___spelldata_duration[this]>=udg_HolyBirds___DURATION[udg_s__HolyBirds___spelldata_lvl[this]]or GetUnitAbilityLevel(udg_s__HolyBirds___spelldata_caster[this],HolyBirds___BUFF_ID)<=0 or (not UnitAlive(udg_s__HolyBirds___spelldata_caster[this])) then
 call s__HolyBirds___spelldata_deallocate(this)
 call ReleaseTimer(GetExpiredTimer())
 endif
@@ -25719,7 +25727,7 @@ endif
 return true
 endfunction
 function Trig_New_random_events_Func003Func001C takes nothing returns boolean
-if(not(IsUnitAliveBJ(udg_unit_npng_0034)==true))then
+if(not(UnitAlive(udg_unit_npng_0034)==true))then
 return false
 endif
 return true
@@ -25830,7 +25838,7 @@ call TriggerAddCondition(udg_trg_New_random_events,Condition(function Trig_New_r
 call TriggerAddAction(udg_trg_New_random_events,function Trig_New_random_events_Actions)
 endfunction
 function Trig_Penguin_Movement_Func001C takes nothing returns boolean
-if(not(IsUnitAliveBJ(udg_AAAA_ANGRY_PENGU)==true))then
+if(not(UnitAlive(udg_AAAA_ANGRY_PENGU)==true))then
 return false
 endif
 return true
@@ -26284,7 +26292,7 @@ endif
 return true
 endfunction
 function Trig_neutral_revive_Func007Func004001001002 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_neutral_revive_Func007C takes nothing returns boolean
 local group g=GetUnitsOfPlayerMatching(GetOwningPlayer(GetDyingUnit()),Condition(function Trig_neutral_revive_Func007Func004001001002))
@@ -26650,7 +26658,7 @@ endif
 if(not(IsUnitType(GetEnumUnit(),UNIT_TYPE_SUMMONED)==false))then
 return false
 endif
-if(not(IsUnitAliveBJ(GetEnumUnit())==true))then
+if(not(UnitAlive(GetEnumUnit())==true))then
 return false
 endif
 return true
@@ -26688,7 +26696,7 @@ call TriggerRegisterTimerEventSingle(udg_trg_turn_on,750.00)
 call TriggerAddAction(udg_trg_turn_on,function Trig_turn_on_Actions)
 endfunction
 function Trig_building_summons_Func002Func001C takes nothing returns boolean
-if(not(IsUnitAliveBJ(GetEnumUnit())==true))then
+if(not(UnitAlive(GetEnumUnit())==true))then
 return false
 endif
 if(not(GetUnitTypeId(GetEnumUnit())=='nctl'))then
@@ -27219,7 +27227,7 @@ endif
 return true
 endfunction
 function Trig_Sand_Slam_Func003002003001 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_Sand_Slam_Func003002003002001 takes nothing returns boolean
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false)
@@ -27249,7 +27257,7 @@ function Trig_Sand_Slam_Func003002003002 takes nothing returns boolean
 return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_Antidesync_temp_unit),GetOwningPlayer(GetFilterUnit()))==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitType(GetTriggerUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))
 endfunction
 function Trig_Sand_Slam_Func003002003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_Antidesync_temp_unit),GetOwningPlayer(GetFilterUnit()))==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitType(GetTriggerUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))))
+return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_Antidesync_temp_unit),GetOwningPlayer(GetFilterUnit()))==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitType(GetTriggerUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))))
 endfunction
 function Trig_Sand_Slam_Func004A takes nothing returns nothing
 call UnitDamageTargetBJ(udg_Antidesync_temp_unit,GetEnumUnit(),100.00,ATTACK_TYPE_NORMAL,DAMAGE_TYPE_NORMAL)
@@ -27263,7 +27271,7 @@ function Trig_Sand_Slam_Func007001003 takes nothing returns boolean
 return(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(GetTriggerUnit()))==true)
 endfunction
 function Trig_Sand_Slam_Func007Func001C takes nothing returns boolean
-if(not(IsUnitAliveBJ(GetEnumUnit())==true))then
+if(not(UnitAlive(GetEnumUnit())==true))then
 return false
 endif
 return true
@@ -27342,7 +27350,7 @@ call TriggerAddCondition(udg_trg_Desert_Ant_Cast,Condition(function Trig_Desert_
 call TriggerAddAction(udg_trg_Desert_Ant_Cast,function Trig_Desert_Ant_Cast_Actions)
 endfunction
 function Trig_Desert_Ant_Core_Func001Func001Func003Func003Func004002003001 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_Desert_Ant_Core_Func001Func001Func003Func003Func004002003002001 takes nothing returns boolean
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false)
@@ -27354,7 +27362,7 @@ function Trig_Desert_Ant_Core_Func001Func001Func003Func003Func004002003002 takes
 return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_TDA_Caster[udg_TDA_Integer[3]]))==true))
 endfunction
 function Trig_Desert_Ant_Core_Func001Func001Func003Func003Func004002003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_TDA_Caster[udg_TDA_Integer[3]]))==true))))
+return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_TDA_Caster[udg_TDA_Integer[3]]))==true))))
 endfunction
 function Trig_Desert_Ant_Core_Func001Func001Func003Func003Func005A takes nothing returns nothing
 call UnitDamageTargetBJ(udg_TDA_Caster[udg_TDA_Integer[3]],GetEnumUnit(),udg_TDA_DamagePerSpike[udg_TDA_Integer[3]],ATTACK_TYPE_NORMAL,DAMAGE_TYPE_NORMAL)
@@ -27539,7 +27547,7 @@ endif
 return true
 endfunction
 function Trig_GUI_DOT_System_Func001Func001Func002C takes nothing returns boolean
-if(not(IsUnitDeadBJ(udg_DOT2_Target[udg_DOT1_Integer[3]])==true))then
+if(not(IsUnitDead(udg_DOT2_Target[udg_DOT1_Integer[3]])==true))then
 return false
 endif
 return true
@@ -27836,13 +27844,13 @@ function Trig_Shield_Loop_Func001Func001Func006002003002001 takes nothing return
 return(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_AAACAS_unit[udg_AAACAS_Integer]))==true)
 endfunction
 function Trig_Shield_Loop_Func001Func001Func006002003002002 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_Shield_Loop_Func001Func001Func006002003002 takes nothing returns boolean
-return GetBooleanAnd((IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_AAACAS_unit[udg_AAACAS_Integer]))==true),(IsUnitAliveBJ(GetFilterUnit())==true))
+return GetBooleanAnd((IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_AAACAS_unit[udg_AAACAS_Integer]))==true),(UnitAlive(GetFilterUnit())==true))
 endfunction
 function Trig_Shield_Loop_Func001Func001Func006002003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_AAACAS_unit[udg_AAACAS_Integer]))==true),(IsUnitAliveBJ(GetFilterUnit())==true))))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_AAACAS_unit[udg_AAACAS_Integer]))==true),(UnitAlive(GetFilterUnit())==true))))
 endfunction
 function Trig_Shield_Loop_Func001Func001Func007Func001C takes nothing returns boolean
 if(not(IsUnitInGroup(GetEnumUnit(),udg_AAACAS_HitUnitsGroup[udg_AAACAS_Integer])==false))then
@@ -27867,7 +27875,7 @@ endif
 return true
 endfunction
 function Trig_Shield_Loop_Func001Func001C takes nothing returns boolean
-if(not(IsUnitAliveBJ(udg_AAACAS_unit[udg_AAACAS_Integer])==true))then
+if(not(UnitAlive(udg_AAACAS_unit[udg_AAACAS_Integer])==true))then
 return false
 endif
 return true
@@ -27954,16 +27962,16 @@ function Trig_Loop_Copy_Func001Func003002003001 takes nothing returns boolean
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)!=true)
 endfunction
 function Trig_Loop_Copy_Func001Func003002003002001 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_Loop_Copy_Func001Func003002003002002 takes nothing returns boolean
 return(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_AAS1_Dummy[udg_AAS1_Integer]))==true)
 endfunction
 function Trig_Loop_Copy_Func001Func003002003002 takes nothing returns boolean
-return GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_AAS1_Dummy[udg_AAS1_Integer]))==true))
+return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_AAS1_Dummy[udg_AAS1_Integer]))==true))
 endfunction
 function Trig_Loop_Copy_Func001Func003002003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)!=true),(GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_AAS1_Dummy[udg_AAS1_Integer]))==true))))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)!=true),(GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_AAS1_Dummy[udg_AAS1_Integer]))==true))))
 endfunction
 function Trig_Loop_Copy_Func001Func006A takes nothing returns nothing
 call UnitDamageTargetBJ(udg_AAS1_Dummy[udg_AAS1_CastCount],GetEnumUnit(),10.00,ATTACK_TYPE_NORMAL,DAMAGE_TYPE_NORMAL)
@@ -28079,13 +28087,13 @@ call TriggerAddCondition(udg_trg_snowball_Init,Condition(function Trig_snowball_
 call TriggerAddAction(udg_trg_snowball_Init,function Trig_snowball_Init_Actions)
 endfunction
 function Trig_snowball_Loop_Func001Func004Func015002003001001 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_snowball_Loop_Func001Func004Func015002003001002 takes nothing returns boolean
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false)
 endfunction
 function Trig_snowball_Loop_Func001Func004Func015002003001 takes nothing returns boolean
-return GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))
+return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))
 endfunction
 function Trig_snowball_Loop_Func001Func004Func015002003002001 takes nothing returns boolean
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false)
@@ -28097,7 +28105,7 @@ function Trig_snowball_Loop_Func001Func004Func015002003002 takes nothing returns
 return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_AB_Orb[udg_AB_Temp]))==true))
 endfunction
 function Trig_snowball_Loop_Func001Func004Func015002003 takes nothing returns boolean
-return GetBooleanAnd((GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_AB_Orb[udg_AB_Temp]))==true))))
+return GetBooleanAnd((GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_AB_Orb[udg_AB_Temp]))==true))))
 endfunction
 function Trig_snowball_Loop_Func001Func004Func016Func002Func003C takes nothing returns boolean
 if(not(CountUnitsInGroup(udg_AB_UG[udg_AB_Temp])>1))then
@@ -28211,7 +28219,7 @@ call TriggerAddCondition(udg_trg_Protector_turn_on,Condition(function Trig_Prote
 call TriggerAddAction(udg_trg_Protector_turn_on,function Trig_Protector_turn_on_Actions)
 endfunction
 function Trig_Guardian_aura_Func001Func003Func001Func001C takes nothing returns boolean
-if(not(IsUnitAliveBJ(GetEnumUnit())==true))then
+if(not(UnitAlive(GetEnumUnit())==true))then
 return false
 endif
 return true
@@ -28233,10 +28241,10 @@ function Trig_Guardian_aura_Func001Func003Func002Func001001002001001 takes nothi
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_SUMMONED)==false)
 endfunction
 function Trig_Guardian_aura_Func001Func003Func002Func001001002001002 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_Guardian_aura_Func001Func003Func002Func001001002001 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_SUMMONED)==false),(IsUnitAliveBJ(GetFilterUnit())==true))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_SUMMONED)==false),(UnitAlive(GetFilterUnit())==true))
 endfunction
 function Trig_Guardian_aura_Func001Func003Func002Func001001002002001001 takes nothing returns boolean
 return(IsUnitIllusionBJ(GetFilterUnit())==false)
@@ -28254,7 +28262,7 @@ function Trig_Guardian_aura_Func001Func003Func002Func001001002002 takes nothing 
 return GetBooleanAnd((GetBooleanAnd((IsUnitIllusionBJ(GetFilterUnit())==false),(IsUnitInGroup(GetFilterUnit(),udg_Trained_Units)==false))),(UnitHasBuffBJ(GetFilterUnit(),'B028')==true))
 endfunction
 function Trig_Guardian_aura_Func001Func003Func002Func001001002 takes nothing returns boolean
-return GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_SUMMONED)==false),(IsUnitAliveBJ(GetFilterUnit())==true))),(GetBooleanAnd((GetBooleanAnd((IsUnitIllusionBJ(GetFilterUnit())==false),(IsUnitInGroup(GetFilterUnit(),udg_Trained_Units)==false))),(UnitHasBuffBJ(GetFilterUnit(),'B028')==true))))
+return GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_SUMMONED)==false),(UnitAlive(GetFilterUnit())==true))),(GetBooleanAnd((GetBooleanAnd((IsUnitIllusionBJ(GetFilterUnit())==false),(IsUnitInGroup(GetFilterUnit(),udg_Trained_Units)==false))),(UnitHasBuffBJ(GetFilterUnit(),'B028')==true))))
 endfunction
 function Trig_Guardian_aura_Func001Func003Func002Func001A takes nothing returns nothing
 set udg_CS_Unit=GetEnumUnit()
@@ -28770,7 +28778,7 @@ endif
 return true
 endfunction
 function Trig_Walk_of_Shadows_Loop_Func001Func001Func026Func004Func001C takes nothing returns boolean
-if(not(IsUnitAliveBJ(GetEnumUnit())==true))then
+if(not(UnitAlive(GetEnumUnit())==true))then
 return false
 endif
 return true
@@ -28814,7 +28822,7 @@ endif
 return true
 endfunction
 function Trig_Walk_of_Shadows_Loop_Func001Func001Func034C takes nothing returns boolean
-if(not(IsUnitAliveBJ(udg_WoS_TargetedUnit[udg_WoS_Index[3]])==false))then
+if(not(UnitAlive(udg_WoS_TargetedUnit[udg_WoS_Index[3]])==false))then
 return false
 endif
 return true
@@ -28948,10 +28956,10 @@ function Trig_Shadow_Drain_Loop_Func001Func001Func004Func027Func005C takes nothi
 if((DistanceBetweenPoints(udg_SystemPoint[0],udg_SystemPoint[1])>=udg_SD_MaxDistance[udg_SD_Index[3]]))then
 return true
 endif
-if((IsUnitAliveBJ(udg_SD_Caster[udg_SD_Index[3]])==false))then
+if((UnitAlive(udg_SD_Caster[udg_SD_Index[3]])==false))then
 return true
 endif
-if((IsUnitAliveBJ(udg_SD_TargetedUnit[udg_SD_Index[3]])==false))then
+if((UnitAlive(udg_SD_TargetedUnit[udg_SD_Index[3]])==false))then
 return true
 endif
 return false
@@ -29226,10 +29234,10 @@ function Trig_BS_Loop_Func001Func001Func001Func008Func021Func005002003002001001 
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false)
 endfunction
 function Trig_BS_Loop_Func001Func001Func001Func008Func021Func005002003002001002 takes nothing returns boolean
-return(IsUnitDeadBJ(GetFilterUnit())==false)
+return(IsUnitDead(GetFilterUnit())==false)
 endfunction
 function Trig_BS_Loop_Func001Func001Func001Func008Func021Func005002003002001 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(IsUnitDeadBJ(GetFilterUnit())==false))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(IsUnitDead(GetFilterUnit())==false))
 endfunction
 function Trig_BS_Loop_Func001Func001Func001Func008Func021Func005002003002002001 takes nothing returns boolean
 return(IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_BS_Hero[udg_BS]))==false)
@@ -29241,10 +29249,10 @@ function Trig_BS_Loop_Func001Func001Func001Func008Func021Func005002003002002 tak
 return GetBooleanAnd((IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_BS_Hero[udg_BS]))==false),(IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false))
 endfunction
 function Trig_BS_Loop_Func001Func001Func001Func008Func021Func005002003002 takes nothing returns boolean
-return GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(IsUnitDeadBJ(GetFilterUnit())==false))),(GetBooleanAnd((IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_BS_Hero[udg_BS]))==false),(IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false))))
+return GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(IsUnitDead(GetFilterUnit())==false))),(GetBooleanAnd((IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_BS_Hero[udg_BS]))==false),(IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false))))
 endfunction
 function Trig_BS_Loop_Func001Func001Func001Func008Func021Func005002003 takes nothing returns boolean
-return GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(IsUnitType(GetFilterUnit(),UNIT_TYPE_MECHANICAL)==false))),(GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(IsUnitDeadBJ(GetFilterUnit())==false))),(GetBooleanAnd((IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_BS_Hero[udg_BS]))==false),(IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false))))))
+return GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(IsUnitType(GetFilterUnit(),UNIT_TYPE_MECHANICAL)==false))),(GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(IsUnitDead(GetFilterUnit())==false))),(GetBooleanAnd((IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_BS_Hero[udg_BS]))==false),(IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false))))))
 endfunction
 function Trig_BS_Loop_Func001Func001Func001Func008Func021Func009Func001Func004Func005Func011C takes nothing returns boolean
 if(not(udg_BS_Debug[udg_BS]>=75.00))then
@@ -29412,7 +29420,7 @@ endif
 return false
 endfunction
 function Trig_Night_Func001Func001C takes nothing returns boolean
-if(not(IsUnitAliveBJ(GetEnumUnit())==true))then
+if(not(UnitAlive(GetEnumUnit())==true))then
 return false
 endif
 if(not(IsUnitIllusionBJ(GetEnumUnit())==false))then
@@ -29425,7 +29433,7 @@ return true
 endfunction
 function Trig_Night_Func001A takes nothing returns nothing
 if(Trig_Night_Func001Func001C())then
-if(GetWidgetLife(GetEnumUnit())>0.1) then
+if(UnitAlive(GetEnumUnit())) then
 if(GetUnitAbilityLevel(GetEnumUnit(),'S003')==0)then
 call UnitAddAbility(GetEnumUnit(),'S003')
 endif
@@ -29455,7 +29463,7 @@ endif
 return false
 endfunction
 function Trig_Day_Func001Func001C takes nothing returns boolean
-if(not(IsUnitAliveBJ(GetEnumUnit())==true))then
+if(not(UnitAlive(GetEnumUnit())==true))then
 return false
 endif
 if(not(IsUnitIllusionBJ(GetEnumUnit())==false))then
@@ -29468,7 +29476,7 @@ return true
 endfunction
 function Trig_Day_Func001A takes nothing returns nothing
 if(Trig_Day_Func001Func001C())then
-if(GetWidgetLife(GetEnumUnit())>0.1) then
+if(UnitAlive(GetEnumUnit())) then
 if(GetUnitAbilityLevel(GetEnumUnit(),'S003')==0)then
 call UnitAddAbility(GetEnumUnit(),'S003')
 endif
@@ -29497,7 +29505,7 @@ endif
 return false
 endfunction
 function Trig_Add_Vampire_Conditions takes nothing returns boolean
-if(not(IsUnitAliveBJ(GetTriggerUnit())==true))then
+if(not(UnitAlive(GetTriggerUnit())==true))then
 return false
 endif
 if(not(IsUnitIllusionBJ(GetTriggerUnit())==false))then
@@ -30017,13 +30025,13 @@ function Trig_Shadow_Burst_Loop_Func001Func001Func004Func001Func005Func001002003
 return(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_SB_Unit[udg_SB_Integer]))==true)
 endfunction
 function Trig_Shadow_Burst_Loop_Func001Func001Func004Func001Func005Func001002003002002 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_Shadow_Burst_Loop_Func001Func001Func004Func001Func005Func001002003002 takes nothing returns boolean
-return GetBooleanAnd((IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_SB_Unit[udg_SB_Integer]))==true),(IsUnitAliveBJ(GetFilterUnit())==true))
+return GetBooleanAnd((IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_SB_Unit[udg_SB_Integer]))==true),(UnitAlive(GetFilterUnit())==true))
 endfunction
 function Trig_Shadow_Burst_Loop_Func001Func001Func004Func001Func005Func001002003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_SB_Unit[udg_SB_Integer]))==true),(IsUnitAliveBJ(GetFilterUnit())==true))))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_SB_Unit[udg_SB_Integer]))==true),(UnitAlive(GetFilterUnit())==true))))
 endfunction
 function Trig_Shadow_Burst_Loop_Func001Func001Func004Func001Func005C takes nothing returns boolean
 if(not(udg_SB_CountdownToCast[udg_SB_Integer]==25))then
@@ -30044,13 +30052,13 @@ function Trig_Shadow_Burst_Loop_Func001Func001Func004Func003Func009Func005002003
 return(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_SB_Unit[udg_SB_Integer]))==true)
 endfunction
 function Trig_Shadow_Burst_Loop_Func001Func001Func004Func003Func009Func005002003002002 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_Shadow_Burst_Loop_Func001Func001Func004Func003Func009Func005002003002 takes nothing returns boolean
-return GetBooleanAnd((IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_SB_Unit[udg_SB_Integer]))==true),(IsUnitAliveBJ(GetFilterUnit())==true))
+return GetBooleanAnd((IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_SB_Unit[udg_SB_Integer]))==true),(UnitAlive(GetFilterUnit())==true))
 endfunction
 function Trig_Shadow_Burst_Loop_Func001Func001Func004Func003Func009Func005002003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_SB_Unit[udg_SB_Integer]))==true),(IsUnitAliveBJ(GetFilterUnit())==true))))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_SB_Unit[udg_SB_Integer]))==true),(UnitAlive(GetFilterUnit())==true))))
 endfunction
 function Trig_Shadow_Burst_Loop_Func001Func001Func004Func003Func009Func006C takes nothing returns boolean
 if(not(CountUnitsInGroup(udg_SB_UnitGroup[udg_SB_Integer])>=1))then
@@ -30110,7 +30118,7 @@ endif
 return true
 endfunction
 function Trig_Shadow_Burst_Loop_Func001Func001C takes nothing returns boolean
-if(not(IsUnitAliveBJ(udg_SB_Unit[udg_SB_Integer])==true))then
+if(not(UnitAlive(udg_SB_Unit[udg_SB_Integer])==true))then
 return false
 endif
 if(not(udg_OrbTravelDistance[udg_SB_Integer]<=udg_SB_Orb_Max_Distance))then
@@ -30310,7 +30318,7 @@ function Trig_Sfx_Func005001003 takes nothing returns boolean
 return(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(GetTriggerUnit()))==true)
 endfunction
 function Trig_Sfx_Func005Func001C takes nothing returns boolean
-if(not(IsUnitAliveBJ(GetEnumUnit())==true))then
+if(not(UnitAlive(GetEnumUnit())==true))then
 return false
 endif
 return true
@@ -30476,7 +30484,7 @@ endif
 if(not(IsUnitType(GetEnumUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))then
 return false
 endif
-if(not(IsUnitAliveBJ(GetEnumUnit())==true))then
+if(not(UnitAlive(GetEnumUnit())==true))then
 return false
 endif
 if(not(GetUnitTypeId(GetEnumUnit())!='u02D'))then
@@ -30498,7 +30506,7 @@ else
 endif
 endfunction
 function Trig_BlackHoleMoveTarget_Func003Func004C takes nothing returns boolean
-if(not(IsUnitAliveBJ(GetEnumUnit())==true))then
+if(not(UnitAlive(GetEnumUnit())==true))then
 return false
 endif
 return true
@@ -30623,22 +30631,22 @@ function Trig_FL_loop_Func003Func001Func004Func003002001003002002001 takes nothi
 return(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_FL_DamageDealer[udg_FL_LoopIndex[3]]))==true)
 endfunction
 function Trig_FL_loop_Func003Func001Func004Func003002001003002002002 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_FL_loop_Func003Func001Func004Func003002001003002002 takes nothing returns boolean
-return GetBooleanAnd((IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_FL_DamageDealer[udg_FL_LoopIndex[3]]))==true),(IsUnitAliveBJ(GetFilterUnit())==true))
+return GetBooleanAnd((IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_FL_DamageDealer[udg_FL_LoopIndex[3]]))==true),(UnitAlive(GetFilterUnit())==true))
 endfunction
 function Trig_FL_loop_Func003Func001Func004Func003002001003002 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_FL_DamageDealer[udg_FL_LoopIndex[3]]))==true),(IsUnitAliveBJ(GetFilterUnit())==true))))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_FL_DamageDealer[udg_FL_LoopIndex[3]]))==true),(UnitAlive(GetFilterUnit())==true))))
 endfunction
 function Trig_FL_loop_Func003Func001Func004Func003002001003 takes nothing returns boolean
-return GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false))),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_FL_DamageDealer[udg_FL_LoopIndex[3]]))==true),(IsUnitAliveBJ(GetFilterUnit())==true))))))
+return GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false))),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_FL_DamageDealer[udg_FL_LoopIndex[3]]))==true),(UnitAlive(GetFilterUnit())==true))))))
 endfunction
 function Trig_FL_loop_Func003Func001Func004Func005C takes nothing returns boolean
 if(not(udg_FL_TargetUnit[udg_FL_LoopIndex[3]]!=null))then
 return false
 endif
-if(not(IsUnitAliveBJ(udg_FL_TargetUnit[udg_FL_LoopIndex[3]])==true))then
+if(not(UnitAlive(udg_FL_TargetUnit[udg_FL_LoopIndex[3]])==true))then
 return false
 endif
 return true
@@ -30659,25 +30667,25 @@ function Trig_FL_loop_Func003Func001Func006Func007002003002001 takes nothing ret
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false)
 endfunction
 function Trig_FL_loop_Func003Func001Func006Func007002003002002001001 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_FL_loop_Func003Func001Func006Func007002003002002001002 takes nothing returns boolean
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false)
 endfunction
 function Trig_FL_loop_Func003Func001Func006Func007002003002002001 takes nothing returns boolean
-return GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false))
+return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false))
 endfunction
 function Trig_FL_loop_Func003Func001Func006Func007002003002002002 takes nothing returns boolean
 return(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_FL_Flame[udg_FL_LoopIndex[3]]))==true)
 endfunction
 function Trig_FL_loop_Func003Func001Func006Func007002003002002 takes nothing returns boolean
-return GetBooleanAnd((GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false))),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_FL_Flame[udg_FL_LoopIndex[3]]))==true))
+return GetBooleanAnd((GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false))),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_FL_Flame[udg_FL_LoopIndex[3]]))==true))
 endfunction
 function Trig_FL_loop_Func003Func001Func006Func007002003002 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false))),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_FL_Flame[udg_FL_LoopIndex[3]]))==true))))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false))),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_FL_Flame[udg_FL_LoopIndex[3]]))==true))))
 endfunction
 function Trig_FL_loop_Func003Func001Func006Func007002003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false))),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_FL_Flame[udg_FL_LoopIndex[3]]))==true))))))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false))),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_FL_Flame[udg_FL_LoopIndex[3]]))==true))))))
 endfunction
 function Trig_FL_loop_Func003Func001Func006Func008A takes nothing returns nothing
 call UnitDamageTargetBJ(udg_FL_DamageDealer[udg_FL_LoopIndex[3]],GetEnumUnit(),udg_FL_Damage[udg_FL_LoopIndex[3]],ATTACK_TYPE_NORMAL,DAMAGE_TYPE_FIRE)
@@ -30780,7 +30788,7 @@ function Trig_Cast_Charge_Func021002003002002001 takes nothing returns boolean
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_SUMMONED)==false)
 endfunction
 function Trig_Cast_Charge_Func021002003002002002001 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_Cast_Charge_Func021002003002002002002001 takes nothing returns boolean
 return(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(GetTriggerUnit()))==true)
@@ -30792,16 +30800,16 @@ function Trig_Cast_Charge_Func021002003002002002002 takes nothing returns boolea
 return GetBooleanAnd((IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(GetTriggerUnit()))==true),(IsUnitInGroup(GetFilterUnit(),udg_UC_Groups[1])==false))
 endfunction
 function Trig_Cast_Charge_Func021002003002002002 takes nothing returns boolean
-return GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(GetBooleanAnd((IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(GetTriggerUnit()))==true),(IsUnitInGroup(GetFilterUnit(),udg_UC_Groups[1])==false))))
+return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(GetBooleanAnd((IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(GetTriggerUnit()))==true),(IsUnitInGroup(GetFilterUnit(),udg_UC_Groups[1])==false))))
 endfunction
 function Trig_Cast_Charge_Func021002003002002 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_SUMMONED)==false),(GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(GetBooleanAnd((IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(GetTriggerUnit()))==true),(IsUnitInGroup(GetFilterUnit(),udg_UC_Groups[1])==false))))))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_SUMMONED)==false),(GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(GetBooleanAnd((IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(GetTriggerUnit()))==true),(IsUnitInGroup(GetFilterUnit(),udg_UC_Groups[1])==false))))))
 endfunction
 function Trig_Cast_Charge_Func021002003002 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_SUMMONED)==false),(GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(GetBooleanAnd((IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(GetTriggerUnit()))==true),(IsUnitInGroup(GetFilterUnit(),udg_UC_Groups[1])==false))))))))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_SUMMONED)==false),(GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(GetBooleanAnd((IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(GetTriggerUnit()))==true),(IsUnitInGroup(GetFilterUnit(),udg_UC_Groups[1])==false))))))))
 endfunction
 function Trig_Cast_Charge_Func021002003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_SUMMONED)==false),(GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(GetBooleanAnd((IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(GetTriggerUnit()))==true),(IsUnitInGroup(GetFilterUnit(),udg_UC_Groups[1])==false))))))))))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_SUMMONED)==false),(GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(GetBooleanAnd((IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(GetTriggerUnit()))==true),(IsUnitInGroup(GetFilterUnit(),udg_UC_Groups[1])==false))))))))))
 endfunction
 function Trig_Cast_Charge_Func023Func007C takes nothing returns boolean
 if(not(udg_PD_Integers[1]==0))then
@@ -31237,7 +31245,7 @@ endif
 return true
 endfunction
 function Trig_Arrow_Move_Func002Func026Func004Func001Func007Func008002003001 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_Arrow_Move_Func002Func026Func004Func001Func007Func008002003002001 takes nothing returns boolean
 return(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_QJ_Caster))==true)
@@ -31249,7 +31257,7 @@ function Trig_Arrow_Move_Func002Func026Func004Func001Func007Func008002003002 tak
 return GetBooleanAnd((IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_QJ_Caster))==true),(IsUnitInGroup(GetFilterUnit(),udg_QJS_DamagedGroup)==false))
 endfunction
 function Trig_Arrow_Move_Func002Func026Func004Func001Func007Func008002003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(GetBooleanAnd((IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_QJ_Caster))==true),(IsUnitInGroup(GetFilterUnit(),udg_QJS_DamagedGroup)==false))))
+return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(GetBooleanAnd((IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_QJ_Caster))==true),(IsUnitInGroup(GetFilterUnit(),udg_QJS_DamagedGroup)==false))))
 endfunction
 function Trig_Arrow_Move_Func002Func026Func004Func001Func007Func009Func002C takes nothing returns boolean
 if(not(udg_QJ_AoE==true))then
@@ -31280,13 +31288,13 @@ endif
 return true
 endfunction
 function Trig_Arrow_Move_Func002Func026Func004Func001Func016Func005Func014002003001 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_Arrow_Move_Func002Func026Func004Func001Func016Func005Func014002003002 takes nothing returns boolean
 return(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_QJ_Caster))==true)
 endfunction
 function Trig_Arrow_Move_Func002Func026Func004Func001Func016Func005Func014002003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_QJ_Caster))==true))
+return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_QJ_Caster))==true))
 endfunction
 function Trig_Arrow_Move_Func002Func026Func004Func001Func016Func005Func016A takes nothing returns nothing
 call UnitDamageTargetBJ(udg_QJ_Caster,GetEnumUnit(),udg_QJ_Damage,udg_QJS_AttackType,udg_QJS_DamageType)
@@ -31328,7 +31336,7 @@ endif
 return true
 endfunction
 function Trig_Arrow_Move_Func002Func026Func004Func008Func008002003001 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_Arrow_Move_Func002Func026Func004Func008Func008002003002001 takes nothing returns boolean
 return(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_QJ_Caster))==true)
@@ -31340,7 +31348,7 @@ function Trig_Arrow_Move_Func002Func026Func004Func008Func008002003002 takes noth
 return GetBooleanAnd((IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_QJ_Caster))==true),(IsUnitInGroup(GetFilterUnit(),udg_QJS_DamagedGroup)==false))
 endfunction
 function Trig_Arrow_Move_Func002Func026Func004Func008Func008002003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(GetBooleanAnd((IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_QJ_Caster))==true),(IsUnitInGroup(GetFilterUnit(),udg_QJS_DamagedGroup)==false))))
+return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(GetBooleanAnd((IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_QJ_Caster))==true),(IsUnitInGroup(GetFilterUnit(),udg_QJS_DamagedGroup)==false))))
 endfunction
 function Trig_Arrow_Move_Func002Func026Func004Func008Func009Func002C takes nothing returns boolean
 if(not(udg_QJ_AoE==true))then
@@ -31377,25 +31385,25 @@ endif
 return true
 endfunction
 function Trig_Arrow_Move_Func002Func026Func010Func012Func003Func011002003001 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_Arrow_Move_Func002Func026Func010Func012Func003Func011002003002 takes nothing returns boolean
 return(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_QJ_Caster))==true)
 endfunction
 function Trig_Arrow_Move_Func002Func026Func010Func012Func003Func011002003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_QJ_Caster))==true))
+return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_QJ_Caster))==true))
 endfunction
 function Trig_Arrow_Move_Func002Func026Func010Func012Func003Func013A takes nothing returns nothing
 call UnitDamageTargetBJ(udg_QJ_Caster,GetEnumUnit(),udg_QJ_Damage,udg_QJS_AttackType,udg_QJS_DamageType)
 endfunction
 function Trig_Arrow_Move_Func002Func026Func010Func012Func003Func017002003001 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_Arrow_Move_Func002Func026Func010Func012Func003Func017002003002 takes nothing returns boolean
 return(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_QJ_Caster))==true)
 endfunction
 function Trig_Arrow_Move_Func002Func026Func010Func012Func003Func017002003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_QJ_Caster))==true))
+return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_QJ_Caster))==true))
 endfunction
 function Trig_Arrow_Move_Func002Func026Func010Func012Func003Func018C takes nothing returns boolean
 if(not(CountUnitsInGroup(udg_QJS_victimGroup)>0))then
@@ -31410,13 +31418,13 @@ endif
 return true
 endfunction
 function Trig_Arrow_Move_Func002Func026Func010Func012Func005Func010002003001 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_Arrow_Move_Func002Func026Func010Func012Func005Func010002003002 takes nothing returns boolean
 return(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_QJ_Caster))==true)
 endfunction
 function Trig_Arrow_Move_Func002Func026Func010Func012Func005Func010002003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_QJ_Caster))==true))
+return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_QJ_Caster))==true))
 endfunction
 function Trig_Arrow_Move_Func002Func026Func010Func012Func005Func012A takes nothing returns nothing
 call UnitDamageTargetBJ(udg_QJ_Caster,GetEnumUnit(),udg_QJ_Damage,udg_QJS_AttackType,udg_QJS_DamageType)
@@ -31425,7 +31433,7 @@ function Trig_Arrow_Move_Func002Func026Func010Func012Func005Func017002003 takes 
 return(GetFilterUnit()==udg_QJ_TargetUnit)
 endfunction
 function Trig_Arrow_Move_Func002Func026Func010Func012Func005Func018C takes nothing returns boolean
-if(not(IsUnitAliveBJ(udg_QJ_TargetUnit)==true))then
+if(not(UnitAlive(udg_QJ_TargetUnit)==true))then
 return false
 endif
 if(not(CountUnitsInGroup(udg_QJS_victimGroup)>0))then
@@ -31690,7 +31698,7 @@ function Trig_Shadow_Side_Func002C takes nothing returns boolean
 if(not(udg_SSChance[GetConvertedPlayerId(GetOwningPlayer(GetAttacker()))]>=GetRandomInt(1,100)))then
 return false
 endif
-if(not(IsUnitAliveBJ(GetAttackedUnitBJ())==true))then
+if(not(UnitAlive(GetAttackedUnitBJ())==true))then
 return false
 endif
 if(not(GetUnitStateSwap(UNIT_STATE_LIFE,GetAttackedUnitBJ())>100.00))then
@@ -31764,13 +31772,13 @@ endif
 return true
 endfunction
 function Trig_PH_Loop_Func001Func001Func006Func012002003001 takes nothing returns boolean
-return(IsUnitDeadBJ(GetFilterUnit())==false)
+return(IsUnitDead(GetFilterUnit())==false)
 endfunction
 function Trig_PH_Loop_Func001Func001Func006Func012002003002 takes nothing returns boolean
 return(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_PH_Hook[udg_PH_Index[3]]))==true)
 endfunction
 function Trig_PH_Loop_Func001Func001Func006Func012002003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitDeadBJ(GetFilterUnit())==false),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_PH_Hook[udg_PH_Index[3]]))==true))
+return GetBooleanAnd((IsUnitDead(GetFilterUnit())==false),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_PH_Hook[udg_PH_Index[3]]))==true))
 endfunction
 function Trig_PH_Loop_Func001Func001Func006Func013Func016C takes nothing returns boolean
 if(not(udg_PH_Index[1]==0))then
@@ -31805,7 +31813,7 @@ endif
 return true
 endfunction
 function Trig_PH_Loop_Func001Func001C takes nothing returns boolean
-if(not(IsUnitAliveBJ(udg_PH_Hook[udg_PH_Index[3]])==true))then
+if(not(UnitAlive(udg_PH_Hook[udg_PH_Index[3]])==true))then
 return false
 endif
 return true
@@ -32236,7 +32244,7 @@ call TriggerAddCondition(udg_trg_Omnislash,Condition(function Trig_Omnislash_Con
 call TriggerAddAction(udg_trg_Omnislash,function Trig_Omnislash_Actions)
 endfunction
 function Trig_Omnislash_Condition takes nothing returns boolean
-return (GetWidgetLife(GetFilterUnit())>0.5) and(IsUnitEnemy(GetFilterUnit(),udg_CL_Player[udg_CL_Index[3]])==true)
+return (UnitAlive(GetFilterUnit())) and(IsUnitEnemy(GetFilterUnit(),udg_CL_Player[udg_CL_Index[3]])==true)
 endfunction
 function Trig_Omnislash_Loop_Func002Func002Func021Func018C takes nothing returns boolean
 if(not(udg_CL_Index[1]==0))then
@@ -32362,7 +32370,7 @@ function Trig_Loop_v101_Func003Func002Func001Func002Func001Func00300300100300200
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false)
 endfunction
 function Trig_Loop_v101_Func003Func002Func001Func002Func001Func003003001003002002001 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_Loop_v101_Func003Func002Func001Func002Func001Func003003001003002002002001 takes nothing returns boolean
 return(IsPlayerEnemy(GetOwningPlayer(udg_OWL_Dummy[udg_OWL_CastCountInt]),GetOwningPlayer(GetFilterUnit()))==true)
@@ -32374,13 +32382,13 @@ function Trig_Loop_v101_Func003Func002Func001Func002Func001Func00300300100300200
 return GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_OWL_Dummy[udg_OWL_CastCountInt]),GetOwningPlayer(GetFilterUnit()))==true),(R2I(GetUnitStateSwap(UNIT_STATE_MANA,GetFilterUnit()))>0))
 endfunction
 function Trig_Loop_v101_Func003Func002Func001Func002Func001Func003003001003002002 takes nothing returns boolean
-return GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_OWL_Dummy[udg_OWL_CastCountInt]),GetOwningPlayer(GetFilterUnit()))==true),(R2I(GetUnitStateSwap(UNIT_STATE_MANA,GetFilterUnit()))>0))))
+return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_OWL_Dummy[udg_OWL_CastCountInt]),GetOwningPlayer(GetFilterUnit()))==true),(R2I(GetUnitStateSwap(UNIT_STATE_MANA,GetFilterUnit()))>0))))
 endfunction
 function Trig_Loop_v101_Func003Func002Func001Func002Func001Func003003001003002 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_OWL_Dummy[udg_OWL_CastCountInt]),GetOwningPlayer(GetFilterUnit()))==true),(R2I(GetUnitStateSwap(UNIT_STATE_MANA,GetFilterUnit()))>0))))))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_OWL_Dummy[udg_OWL_CastCountInt]),GetOwningPlayer(GetFilterUnit()))==true),(R2I(GetUnitStateSwap(UNIT_STATE_MANA,GetFilterUnit()))>0))))))
 endfunction
 function Trig_Loop_v101_Func003Func002Func001Func002Func001Func003003001003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_OWL_Dummy[udg_OWL_CastCountInt]),GetOwningPlayer(GetFilterUnit()))==true),(R2I(GetUnitStateSwap(UNIT_STATE_MANA,GetFilterUnit()))>0))))))))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_OWL_Dummy[udg_OWL_CastCountInt]),GetOwningPlayer(GetFilterUnit()))==true),(R2I(GetUnitStateSwap(UNIT_STATE_MANA,GetFilterUnit()))>0))))))))
 endfunction
 function Trig_Loop_v101_Func003Func002Func001Func002Func001Func008003001003001 takes nothing returns boolean
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false)
@@ -32389,7 +32397,7 @@ function Trig_Loop_v101_Func003Func002Func001Func002Func001Func00800300100300200
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false)
 endfunction
 function Trig_Loop_v101_Func003Func002Func001Func002Func001Func008003001003002002001 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_Loop_v101_Func003Func002Func001Func002Func001Func008003001003002002002001 takes nothing returns boolean
 return(IsPlayerEnemy(GetOwningPlayer(udg_OWL_Dummy[udg_OWL_LoopInt2]),GetOwningPlayer(GetFilterUnit()))==true)
@@ -32401,13 +32409,13 @@ function Trig_Loop_v101_Func003Func002Func001Func002Func001Func00800300100300200
 return GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_OWL_Dummy[udg_OWL_LoopInt2]),GetOwningPlayer(GetFilterUnit()))==true),(R2I(GetUnitStateSwap(UNIT_STATE_MANA,GetFilterUnit()))>0))
 endfunction
 function Trig_Loop_v101_Func003Func002Func001Func002Func001Func008003001003002002 takes nothing returns boolean
-return GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_OWL_Dummy[udg_OWL_LoopInt2]),GetOwningPlayer(GetFilterUnit()))==true),(R2I(GetUnitStateSwap(UNIT_STATE_MANA,GetFilterUnit()))>0))))
+return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_OWL_Dummy[udg_OWL_LoopInt2]),GetOwningPlayer(GetFilterUnit()))==true),(R2I(GetUnitStateSwap(UNIT_STATE_MANA,GetFilterUnit()))>0))))
 endfunction
 function Trig_Loop_v101_Func003Func002Func001Func002Func001Func008003001003002 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_OWL_Dummy[udg_OWL_LoopInt2]),GetOwningPlayer(GetFilterUnit()))==true),(R2I(GetUnitStateSwap(UNIT_STATE_MANA,GetFilterUnit()))>0))))))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_OWL_Dummy[udg_OWL_LoopInt2]),GetOwningPlayer(GetFilterUnit()))==true),(R2I(GetUnitStateSwap(UNIT_STATE_MANA,GetFilterUnit()))>0))))))
 endfunction
 function Trig_Loop_v101_Func003Func002Func001Func002Func001Func008003001003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_OWL_Dummy[udg_OWL_LoopInt2]),GetOwningPlayer(GetFilterUnit()))==true),(R2I(GetUnitStateSwap(UNIT_STATE_MANA,GetFilterUnit()))>0))))))))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_OWL_Dummy[udg_OWL_LoopInt2]),GetOwningPlayer(GetFilterUnit()))==true),(R2I(GetUnitStateSwap(UNIT_STATE_MANA,GetFilterUnit()))>0))))))))
 endfunction
 function Trig_Loop_v101_Func003Func002Func001Func002Func001C takes nothing returns boolean
 if(not(IsUnitInGroup(udg_OWL_Dummy[udg_OWL_LoopInt2],udg_OWL_UnitGroup3)==true))then
@@ -32428,7 +32436,7 @@ function Trig_Loop_v101_Func003Func002Func001Func002Func008003001003002001 takes
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false)
 endfunction
 function Trig_Loop_v101_Func003Func002Func001Func002Func008003001003002002001 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_Loop_v101_Func003Func002Func001Func002Func008003001003002002002001 takes nothing returns boolean
 return(IsPlayerEnemy(GetOwningPlayer(udg_OWL_Dummy[udg_OWL_LoopInt2]),GetOwningPlayer(GetFilterUnit()))==true)
@@ -32440,13 +32448,13 @@ function Trig_Loop_v101_Func003Func002Func001Func002Func008003001003002002002 ta
 return GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_OWL_Dummy[udg_OWL_LoopInt2]),GetOwningPlayer(GetFilterUnit()))==true),(R2I(GetUnitStateSwap(UNIT_STATE_MANA,GetFilterUnit()))>0))
 endfunction
 function Trig_Loop_v101_Func003Func002Func001Func002Func008003001003002002 takes nothing returns boolean
-return GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_OWL_Dummy[udg_OWL_LoopInt2]),GetOwningPlayer(GetFilterUnit()))==true),(R2I(GetUnitStateSwap(UNIT_STATE_MANA,GetFilterUnit()))>0))))
+return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_OWL_Dummy[udg_OWL_LoopInt2]),GetOwningPlayer(GetFilterUnit()))==true),(R2I(GetUnitStateSwap(UNIT_STATE_MANA,GetFilterUnit()))>0))))
 endfunction
 function Trig_Loop_v101_Func003Func002Func001Func002Func008003001003002 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_OWL_Dummy[udg_OWL_LoopInt2]),GetOwningPlayer(GetFilterUnit()))==true),(R2I(GetUnitStateSwap(UNIT_STATE_MANA,GetFilterUnit()))>0))))))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_OWL_Dummy[udg_OWL_LoopInt2]),GetOwningPlayer(GetFilterUnit()))==true),(R2I(GetUnitStateSwap(UNIT_STATE_MANA,GetFilterUnit()))>0))))))
 endfunction
 function Trig_Loop_v101_Func003Func002Func001Func002Func008003001003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_OWL_Dummy[udg_OWL_LoopInt2]),GetOwningPlayer(GetFilterUnit()))==true),(R2I(GetUnitStateSwap(UNIT_STATE_MANA,GetFilterUnit()))>0))))))))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_OWL_Dummy[udg_OWL_LoopInt2]),GetOwningPlayer(GetFilterUnit()))==true),(R2I(GetUnitStateSwap(UNIT_STATE_MANA,GetFilterUnit()))>0))))))))
 endfunction
 function Trig_Loop_v101_Func003Func002Func001Func002Func016003001003001 takes nothing returns boolean
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false)
@@ -32455,7 +32463,7 @@ function Trig_Loop_v101_Func003Func002Func001Func002Func016003001003002001 takes
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false)
 endfunction
 function Trig_Loop_v101_Func003Func002Func001Func002Func016003001003002002001 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_Loop_v101_Func003Func002Func001Func002Func016003001003002002002001 takes nothing returns boolean
 return(IsPlayerEnemy(GetOwningPlayer(udg_OWL_Dummy[udg_OWL_LoopInt2]),GetOwningPlayer(GetFilterUnit()))==true)
@@ -32467,13 +32475,13 @@ function Trig_Loop_v101_Func003Func002Func001Func002Func016003001003002002002 ta
 return GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_OWL_Dummy[udg_OWL_LoopInt2]),GetOwningPlayer(GetFilterUnit()))==true),(R2I(GetUnitStateSwap(UNIT_STATE_MANA,GetFilterUnit()))>0))
 endfunction
 function Trig_Loop_v101_Func003Func002Func001Func002Func016003001003002002 takes nothing returns boolean
-return GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_OWL_Dummy[udg_OWL_LoopInt2]),GetOwningPlayer(GetFilterUnit()))==true),(R2I(GetUnitStateSwap(UNIT_STATE_MANA,GetFilterUnit()))>0))))
+return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_OWL_Dummy[udg_OWL_LoopInt2]),GetOwningPlayer(GetFilterUnit()))==true),(R2I(GetUnitStateSwap(UNIT_STATE_MANA,GetFilterUnit()))>0))))
 endfunction
 function Trig_Loop_v101_Func003Func002Func001Func002Func016003001003002 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_OWL_Dummy[udg_OWL_LoopInt2]),GetOwningPlayer(GetFilterUnit()))==true),(R2I(GetUnitStateSwap(UNIT_STATE_MANA,GetFilterUnit()))>0))))))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_OWL_Dummy[udg_OWL_LoopInt2]),GetOwningPlayer(GetFilterUnit()))==true),(R2I(GetUnitStateSwap(UNIT_STATE_MANA,GetFilterUnit()))>0))))))
 endfunction
 function Trig_Loop_v101_Func003Func002Func001Func002Func016003001003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_OWL_Dummy[udg_OWL_LoopInt2]),GetOwningPlayer(GetFilterUnit()))==true),(R2I(GetUnitStateSwap(UNIT_STATE_MANA,GetFilterUnit()))>0))))))))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_OWL_Dummy[udg_OWL_LoopInt2]),GetOwningPlayer(GetFilterUnit()))==true),(R2I(GetUnitStateSwap(UNIT_STATE_MANA,GetFilterUnit()))>0))))))))
 endfunction
 function Trig_Loop_v101_Func003Func002Func001Func002C takes nothing returns boolean
 if(not(IsUnitInGroup(udg_OWL_Dummy[udg_OWL_LoopInt2],udg_OWL_UnitGroup2)==true))then
@@ -32692,7 +32700,7 @@ function Trig_TOT_Loop_Func002Func001Func001C takes nothing returns boolean
 if(not(UnitHasBuffBJ(udg_TOT_Caster[udg_TOT_Integer],'B016')==true))then
 return false
 endif
-if(not(IsUnitAliveBJ(udg_TOT_Caster[udg_TOT_Integer])==true))then
+if(not(UnitAlive(udg_TOT_Caster[udg_TOT_Integer])==true))then
 return false
 endif
 return true
@@ -32994,16 +33002,16 @@ function Trig_Cutting_Edge_Knock_Func004Func007Func011002003001 takes nothing re
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false)
 endfunction
 function Trig_Cutting_Edge_Knock_Func004Func007Func011002003002001 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_Cutting_Edge_Knock_Func004Func007Func011002003002002 takes nothing returns boolean
 return(IsPlayerEnemy(GetOwningPlayer(GetFilterUnit()),GetOwningPlayer(GetEnumUnit()))==true)
 endfunction
 function Trig_Cutting_Edge_Knock_Func004Func007Func011002003002 takes nothing returns boolean
-return GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsPlayerEnemy(GetOwningPlayer(GetFilterUnit()),GetOwningPlayer(GetEnumUnit()))==true))
+return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(IsPlayerEnemy(GetOwningPlayer(GetFilterUnit()),GetOwningPlayer(GetEnumUnit()))==true))
 endfunction
 function Trig_Cutting_Edge_Knock_Func004Func007Func011002003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsPlayerEnemy(GetOwningPlayer(GetFilterUnit()),GetOwningPlayer(GetEnumUnit()))==true))))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(IsPlayerEnemy(GetOwningPlayer(GetFilterUnit()),GetOwningPlayer(GetEnumUnit()))==true))))
 endfunction
 function Trig_Cutting_Edge_Knock_Func004Func007Func012Func001Func001Func005C takes nothing returns boolean
 if(not(GetUnitCurrentOrder(GetLastCreatedUnit())==String2OrderIdBJ("harvest")))then
@@ -33087,7 +33095,7 @@ else
 endif
 endfunction
 function Trig_Cutting_Edge_Knock_Func004Func007Func013Func014Func001C takes nothing returns boolean
-if(not(IsUnitDeadBJ(GetEnumUnit())==true))then
+if(not(IsUnitDead(GetEnumUnit())==true))then
 return false
 endif
 return true
@@ -33286,16 +33294,16 @@ function Trig_Telekinetic_Seizure_Loop_Func001Func001Func001Func016Func009002003
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false)
 endfunction
 function Trig_Telekinetic_Seizure_Loop_Func001Func001Func001Func016Func009002003001002 takes nothing returns boolean
-return(IsUnitDeadBJ(GetFilterUnit())==false)
+return(IsUnitDead(GetFilterUnit())==false)
 endfunction
 function Trig_Telekinetic_Seizure_Loop_Func001Func001Func001Func016Func009002003001 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitDeadBJ(GetFilterUnit())==false))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitDead(GetFilterUnit())==false))
 endfunction
 function Trig_Telekinetic_Seizure_Loop_Func001Func001Func001Func016Func009002003002 takes nothing returns boolean
 return(IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_TS2_Hero[udg_TS2]))==false)
 endfunction
 function Trig_Telekinetic_Seizure_Loop_Func001Func001Func001Func016Func009002003 takes nothing returns boolean
-return GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitDeadBJ(GetFilterUnit())==false))),(IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_TS2_Hero[udg_TS2]))==false))
+return GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitDead(GetFilterUnit())==false))),(IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_TS2_Hero[udg_TS2]))==false))
 endfunction
 function Trig_Telekinetic_Seizure_Loop_Func001Func001Func001Func016Func010Func002Func002C takes nothing returns boolean
 if((RectContainsUnit(udg_rct_Region_230,GetEnumUnit())==true))then
@@ -33362,7 +33370,7 @@ else
 endif
 endfunction
 function Trig_Telekinetic_Seizure_Loop_Func001Func001Func001Func016Func016Func015C takes nothing returns boolean
-if((IsUnitDeadBJ(udg_TS2_Target[udg_TS2])==true))then
+if((IsUnitDead(udg_TS2_Target[udg_TS2])==true))then
 return true
 endif
 if((UnitHasBuffBJ(udg_TS2_Target[udg_TS2],'B01H')==false))then
@@ -33531,10 +33539,10 @@ function Trig_Ball_Llighting_Loop_Func005Func001Func016002003002001001 takes not
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false)
 endfunction
 function Trig_Ball_Llighting_Loop_Func005Func001Func016002003002001002 takes nothing returns boolean
-return(IsUnitDeadBJ(GetFilterUnit())==false)
+return(IsUnitDead(GetFilterUnit())==false)
 endfunction
 function Trig_Ball_Llighting_Loop_Func005Func001Func016002003002001 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(IsUnitDeadBJ(GetFilterUnit())==false))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(IsUnitDead(GetFilterUnit())==false))
 endfunction
 function Trig_Ball_Llighting_Loop_Func005Func001Func016002003002002001 takes nothing returns boolean
 return(IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_BL_Hero[udg_BL]))==false)
@@ -33546,10 +33554,10 @@ function Trig_Ball_Llighting_Loop_Func005Func001Func016002003002002 takes nothin
 return(IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_BL_Hero[udg_BL]))==false)
 endfunction
 function Trig_Ball_Llighting_Loop_Func005Func001Func016002003002 takes nothing returns boolean
-return GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(IsUnitDeadBJ(GetFilterUnit())==false))),((IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_BL_Hero[udg_BL]))==false)))
+return GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(IsUnitDead(GetFilterUnit())==false))),((IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_BL_Hero[udg_BL]))==false)))
 endfunction
 function Trig_Ball_Llighting_Loop_Func005Func001Func016002003 takes nothing returns boolean
-return GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(IsUnitType(GetFilterUnit(),UNIT_TYPE_MECHANICAL)==false))),(GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(IsUnitDeadBJ(GetFilterUnit())==false))),((IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_BL_Hero[udg_BL]))==false)))))
+return GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(IsUnitType(GetFilterUnit(),UNIT_TYPE_MECHANICAL)==false))),(GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(IsUnitDead(GetFilterUnit())==false))),((IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_BL_Hero[udg_BL]))==false)))))
 endfunction
 function Trig_Ball_Llighting_Loop_Func005Func001Func020Func007002003001001 takes nothing returns boolean
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false)
@@ -33564,10 +33572,10 @@ function Trig_Ball_Llighting_Loop_Func005Func001Func020Func007002003002001001 ta
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false)
 endfunction
 function Trig_Ball_Llighting_Loop_Func005Func001Func020Func007002003002001002 takes nothing returns boolean
-return(IsUnitDeadBJ(GetFilterUnit())==false)
+return(IsUnitDead(GetFilterUnit())==false)
 endfunction
 function Trig_Ball_Llighting_Loop_Func005Func001Func020Func007002003002001 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(IsUnitDeadBJ(GetFilterUnit())==false))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(IsUnitDead(GetFilterUnit())==false))
 endfunction
 function Trig_Ball_Llighting_Loop_Func005Func001Func020Func007002003002002001 takes nothing returns boolean
 return(IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_BL_Hero[udg_BL]))==false)
@@ -33579,10 +33587,10 @@ function Trig_Ball_Llighting_Loop_Func005Func001Func020Func007002003002002 takes
 return(IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_BL_Hero[udg_BL]))==false)
 endfunction
 function Trig_Ball_Llighting_Loop_Func005Func001Func020Func007002003002 takes nothing returns boolean
-return GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(IsUnitDeadBJ(GetFilterUnit())==false))),((IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_BL_Hero[udg_BL]))==false)))
+return GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(IsUnitDead(GetFilterUnit())==false))),((IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_BL_Hero[udg_BL]))==false)))
 endfunction
 function Trig_Ball_Llighting_Loop_Func005Func001Func020Func007002003 takes nothing returns boolean
-return GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(IsUnitType(GetFilterUnit(),UNIT_TYPE_MECHANICAL)==false))),(GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(IsUnitDeadBJ(GetFilterUnit())==false))),((IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_BL_Hero[udg_BL]))==false)))))
+return GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(IsUnitType(GetFilterUnit(),UNIT_TYPE_MECHANICAL)==false))),(GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(IsUnitDead(GetFilterUnit())==false))),((IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_BL_Hero[udg_BL]))==false)))))
 endfunction
 function Trig_Ball_Llighting_Loop_Func005Func001Func020Func008A takes nothing returns nothing
 call UnitDamageTargetBJ(udg_BL_Hero[udg_BL],GetEnumUnit(),udg_BL_Dmg[udg_BL],ATTACK_TYPE_NORMAL,DAMAGE_TYPE_LIGHTNING)
@@ -33749,19 +33757,19 @@ function Trig_Fire_Ball_Loop_Func005Func001Func011Func011002003002001001 takes n
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false)
 endfunction
 function Trig_Fire_Ball_Loop_Func005Func001Func011Func011002003002001002 takes nothing returns boolean
-return(IsUnitDeadBJ(GetFilterUnit())==false)
+return(IsUnitDead(GetFilterUnit())==false)
 endfunction
 function Trig_Fire_Ball_Loop_Func005Func001Func011Func011002003002001 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitDeadBJ(GetFilterUnit())==false))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitDead(GetFilterUnit())==false))
 endfunction
 function Trig_Fire_Ball_Loop_Func005Func001Func011Func011002003002002 takes nothing returns boolean
 return(IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_FB_Hero[udg_FB]))==false)
 endfunction
 function Trig_Fire_Ball_Loop_Func005Func001Func011Func011002003002 takes nothing returns boolean
-return GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitDeadBJ(GetFilterUnit())==false))),(IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_FB_Hero[udg_FB]))==false))
+return GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitDead(GetFilterUnit())==false))),(IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_FB_Hero[udg_FB]))==false))
 endfunction
 function Trig_Fire_Ball_Loop_Func005Func001Func011Func011002003 takes nothing returns boolean
-return GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false))),(GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitDeadBJ(GetFilterUnit())==false))),(IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_FB_Hero[udg_FB]))==false))))
+return GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false))),(GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitDead(GetFilterUnit())==false))),(IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_FB_Hero[udg_FB]))==false))))
 endfunction
 function Trig_Fire_Ball_Loop_Func005Func001Func011Func012C takes nothing returns boolean
 if(not(CountUnitsInGroup(udg_FB_Group[udg_FB])>0))then
@@ -33816,19 +33824,19 @@ function Trig_Fire_Ball_Loop_Func005Func001Func012Func010002003002001001 takes n
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false)
 endfunction
 function Trig_Fire_Ball_Loop_Func005Func001Func012Func010002003002001002 takes nothing returns boolean
-return(IsUnitDeadBJ(GetFilterUnit())==false)
+return(IsUnitDead(GetFilterUnit())==false)
 endfunction
 function Trig_Fire_Ball_Loop_Func005Func001Func012Func010002003002001 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitDeadBJ(GetFilterUnit())==false))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitDead(GetFilterUnit())==false))
 endfunction
 function Trig_Fire_Ball_Loop_Func005Func001Func012Func010002003002002 takes nothing returns boolean
 return(IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_FB_Hero[udg_FB]))==false)
 endfunction
 function Trig_Fire_Ball_Loop_Func005Func001Func012Func010002003002 takes nothing returns boolean
-return GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitDeadBJ(GetFilterUnit())==false))),(IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_FB_Hero[udg_FB]))==false))
+return GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitDead(GetFilterUnit())==false))),(IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_FB_Hero[udg_FB]))==false))
 endfunction
 function Trig_Fire_Ball_Loop_Func005Func001Func012Func010002003 takes nothing returns boolean
-return GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false))),(GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitDeadBJ(GetFilterUnit())==false))),(IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_FB_Hero[udg_FB]))==false))))
+return GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false))),(GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitDead(GetFilterUnit())==false))),(IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_FB_Hero[udg_FB]))==false))))
 endfunction
 function Trig_Fire_Ball_Loop_Func005Func001Func012Func011A takes nothing returns nothing
 call UnitDamageTargetBJ(udg_FB_Hero[udg_FB],GetEnumUnit(),udg_FB_Damage[udg_FB],ATTACK_TYPE_NORMAL,DAMAGE_TYPE_FIRE)
@@ -33989,16 +33997,16 @@ function Trig_Shield_bash_Loop_Func001Func001Func001Func004Func006Func0120020030
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false)
 endfunction
 function Trig_Shield_bash_Loop_Func001Func001Func001Func004Func006Func012002003001002 takes nothing returns boolean
-return(IsUnitDeadBJ(GetFilterUnit())==false)
+return(IsUnitDead(GetFilterUnit())==false)
 endfunction
 function Trig_Shield_bash_Loop_Func001Func001Func001Func004Func006Func012002003001 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitDeadBJ(GetFilterUnit())==false))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitDead(GetFilterUnit())==false))
 endfunction
 function Trig_Shield_bash_Loop_Func001Func001Func001Func004Func006Func012002003002 takes nothing returns boolean
 return(GetFilterUnit()!=udg_SB_Hero[udg_SB])
 endfunction
 function Trig_Shield_bash_Loop_Func001Func001Func001Func004Func006Func012002003 takes nothing returns boolean
-return GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitDeadBJ(GetFilterUnit())==false))),(GetFilterUnit()!=udg_SB_Hero[udg_SB]))
+return GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitDead(GetFilterUnit())==false))),(GetFilterUnit()!=udg_SB_Hero[udg_SB]))
 endfunction
 function Trig_Shield_bash_Loop_Func001Func001Func001Func004Func006Func016Func014002003001 takes nothing returns boolean
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false)
@@ -34007,7 +34015,7 @@ function Trig_Shield_bash_Loop_Func001Func001Func001Func004Func006Func016Func014
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false)
 endfunction
 function Trig_Shield_bash_Loop_Func001Func001Func001Func004Func006Func016Func014002003002002001 takes nothing returns boolean
-return(IsUnitDeadBJ(GetFilterUnit())==false)
+return(IsUnitDead(GetFilterUnit())==false)
 endfunction
 function Trig_Shield_bash_Loop_Func001Func001Func001Func004Func006Func016Func014002003002002002001 takes nothing returns boolean
 return(IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_SB_Hero[udg_SB]))==false)
@@ -34025,13 +34033,13 @@ function Trig_Shield_bash_Loop_Func001Func001Func001Func004Func006Func016Func014
 return GetBooleanAnd((IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_SB_Hero[udg_SB]))==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MECHANICAL)==false),(IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))
 endfunction
 function Trig_Shield_bash_Loop_Func001Func001Func001Func004Func006Func016Func014002003002002 takes nothing returns boolean
-return GetBooleanAnd((IsUnitDeadBJ(GetFilterUnit())==false),(GetBooleanAnd((IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_SB_Hero[udg_SB]))==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MECHANICAL)==false),(IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))
+return GetBooleanAnd((IsUnitDead(GetFilterUnit())==false),(GetBooleanAnd((IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_SB_Hero[udg_SB]))==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MECHANICAL)==false),(IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))
 endfunction
 function Trig_Shield_bash_Loop_Func001Func001Func001Func004Func006Func016Func014002003002 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(GetBooleanAnd((IsUnitDeadBJ(GetFilterUnit())==false),(GetBooleanAnd((IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_SB_Hero[udg_SB]))==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MECHANICAL)==false),(IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(GetBooleanAnd((IsUnitDead(GetFilterUnit())==false),(GetBooleanAnd((IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_SB_Hero[udg_SB]))==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MECHANICAL)==false),(IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))
 endfunction
 function Trig_Shield_bash_Loop_Func001Func001Func001Func004Func006Func016Func014002003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(GetBooleanAnd((IsUnitDeadBJ(GetFilterUnit())==false),(GetBooleanAnd((IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_SB_Hero[udg_SB]))==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MECHANICAL)==false),(IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(GetBooleanAnd((IsUnitDead(GetFilterUnit())==false),(GetBooleanAnd((IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_SB_Hero[udg_SB]))==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MECHANICAL)==false),(IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))))
 endfunction
 function Trig_Shield_bash_Loop_Func001Func001Func001Func004Func006Func016Func015Func005C takes nothing returns boolean
 if(not(udg_KB_Skip==0))then
@@ -34082,7 +34090,7 @@ function Trig_Shield_bash_Loop_Func001Func001Func001Func004Func013C takes nothin
 if((IsUnitType(udg_SB_Hero[udg_SB],UNIT_TYPE_STUNNED)==true))then
 return true
 endif
-if((IsUnitDeadBJ(udg_SB_Hero[udg_SB])==true))then
+if((IsUnitDead(udg_SB_Hero[udg_SB])==true))then
 return true
 endif
 return false
@@ -34270,7 +34278,7 @@ endif
 return true
 endfunction
 function Trig_deceiver_slam_Func003002003001 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_deceiver_slam_Func003002003002001 takes nothing returns boolean
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false)
@@ -34300,7 +34308,7 @@ function Trig_deceiver_slam_Func003002003002 takes nothing returns boolean
 return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_Antidesync_temp_unit),GetOwningPlayer(GetFilterUnit()))==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitType(GetTriggerUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))
 endfunction
 function Trig_deceiver_slam_Func003002003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_Antidesync_temp_unit),GetOwningPlayer(GetFilterUnit()))==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitType(GetTriggerUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))))
+return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_Antidesync_temp_unit),GetOwningPlayer(GetFilterUnit()))==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitType(GetTriggerUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))))
 endfunction
 function Trig_deceiver_slam_Func004A takes nothing returns nothing
 call UnitDamageTargetBJ(udg_Antidesync_temp_unit,GetEnumUnit(),150.00,ATTACK_TYPE_NORMAL,DAMAGE_TYPE_NORMAL)
@@ -34372,7 +34380,7 @@ endif
 return false
 endfunction
 function Trig_Zombie_Bloodlust_Func003Func001C takes nothing returns boolean
-if(not(IsUnitAliveBJ(GetEnumUnit())==true))then
+if(not(UnitAlive(GetEnumUnit())==true))then
 return false
 endif
 if(not Trig_Zombie_Bloodlust_Func003Func001Func003C())then
@@ -34599,28 +34607,28 @@ endif
 return true
 endfunction
 function Trig_Holy_Wrath_Func021002003001 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_Holy_Wrath_Func021002003002 takes nothing returns boolean
 return(IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_Temp_Caster))==true)
 endfunction
 function Trig_Holy_Wrath_Func021002003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_Temp_Caster))==true))
+return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_Temp_Caster))==true))
 endfunction
 function Trig_Holy_Wrath_Func023001003001 takes nothing returns boolean
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false)
 endfunction
 function Trig_Holy_Wrath_Func023001003002 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_Holy_Wrath_Func023001003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(IsUnitAliveBJ(GetFilterUnit())==true))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(UnitAlive(GetFilterUnit())==true))
 endfunction
 function Trig_Holy_Wrath_Func023Func001C takes nothing returns boolean
 if(not(IsUnitType(GetEnumUnit(),UNIT_TYPE_STRUCTURE)==false))then
 return false
 endif
-if(not(IsUnitAliveBJ(GetEnumUnit())==true))then
+if(not(UnitAlive(GetEnumUnit())==true))then
 return false
 endif
 if(not(IsUnitAlly(GetEnumUnit(),GetOwningPlayer(udg_Temp_Caster))==true))then
@@ -34633,7 +34641,7 @@ if(Trig_Holy_Wrath_Func023Func001C())then
 set udg_Unit_Location=GetUnitLoc(GetEnumUnit())
 call AddSpecialEffectLocBJ(udg_Unit_Location,"Abilities\\Spells\\Human\\HolyBolt\\HolyBoltSpecialArt.mdl")
 call DestroyEffectBJ(GetLastCreatedEffectBJ())
-call SetUnitLifeBJ(GetEnumUnit(),(GetUnitStateSwap(UNIT_STATE_LIFE,GetEnumUnit())+udg_Real_Heal))
+call SetUnitLifeChecked(GetEnumUnit(),(GetUnitStateSwap(UNIT_STATE_LIFE,GetEnumUnit())+udg_Real_Heal))
 call RemoveLocation(udg_Unit_Location)
 else
 set udg_Unit_Location=GetUnitLoc(GetEnumUnit())
@@ -35626,7 +35634,7 @@ endif
 return true
 endfunction
 function Trig_Tauren_Stomp_Func003002003001 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_Tauren_Stomp_Func003002003002001 takes nothing returns boolean
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false)
@@ -35656,7 +35664,7 @@ function Trig_Tauren_Stomp_Func003002003002 takes nothing returns boolean
 return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_Antidesync_temp_unit),GetOwningPlayer(GetFilterUnit()))==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitType(GetTriggerUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))
 endfunction
 function Trig_Tauren_Stomp_Func003002003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_Antidesync_temp_unit),GetOwningPlayer(GetFilterUnit()))==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitType(GetTriggerUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))))
+return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_Antidesync_temp_unit),GetOwningPlayer(GetFilterUnit()))==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitType(GetTriggerUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))))
 endfunction
 function Trig_Tauren_Stomp_Func004A takes nothing returns nothing
 call UnitDamageTargetBJ(udg_Antidesync_temp_unit,GetEnumUnit(),100.00,ATTACK_TYPE_NORMAL,DAMAGE_TYPE_NORMAL)
@@ -35672,19 +35680,19 @@ function Trig_Tauren_Stomp_Func008002003002001 takes nothing returns boolean
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false)
 endfunction
 function Trig_Tauren_Stomp_Func008002003002002001 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_Tauren_Stomp_Func008002003002002002 takes nothing returns boolean
 return(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(GetTriggerUnit()))==true)
 endfunction
 function Trig_Tauren_Stomp_Func008002003002002 takes nothing returns boolean
-return GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(GetTriggerUnit()))==true))
+return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(GetTriggerUnit()))==true))
 endfunction
 function Trig_Tauren_Stomp_Func008002003002 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(GetTriggerUnit()))==true))))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(GetTriggerUnit()))==true))))
 endfunction
 function Trig_Tauren_Stomp_Func008002003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(GetTriggerUnit()))==true))))))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(GetTriggerUnit()))==true))))))
 endfunction
 function Trig_Tauren_Stomp_Func009A takes nothing returns nothing
 if(IsTree(GetEnumDestructable())) then
@@ -35779,19 +35787,19 @@ function Trig_Sample_Explosion_Spell_Func004002003002001 takes nothing returns b
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false)
 endfunction
 function Trig_Sample_Explosion_Spell_Func004002003002002001 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_Sample_Explosion_Spell_Func004002003002002002 takes nothing returns boolean
 return(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(GetTriggerUnit()))==true)
 endfunction
 function Trig_Sample_Explosion_Spell_Func004002003002002 takes nothing returns boolean
-return GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(GetTriggerUnit()))==true))
+return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(GetTriggerUnit()))==true))
 endfunction
 function Trig_Sample_Explosion_Spell_Func004002003002 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(GetTriggerUnit()))==true))))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(GetTriggerUnit()))==true))))
 endfunction
 function Trig_Sample_Explosion_Spell_Func004002003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(GetTriggerUnit()))==true))))))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(GetTriggerUnit()))==true))))))
 endfunction
 function Trig_Sample_Explosion_Spell_Func005A takes nothing returns nothing
 if(IsTree(GetEnumDestructable())) then
@@ -35924,19 +35932,19 @@ endif
 return true
 endfunction
 function Trig_HydroJetWater_Func002Func023Func011001003001001 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_HydroJetWater_Func002Func023Func011001003001002 takes nothing returns boolean
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false)
 endfunction
 function Trig_HydroJetWater_Func002Func023Func011001003001 takes nothing returns boolean
-return GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false))
+return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false))
 endfunction
 function Trig_HydroJetWater_Func002Func023Func011001003002 takes nothing returns boolean
 return(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_TempUnit))==true)
 endfunction
 function Trig_HydroJetWater_Func002Func023Func011001003 takes nothing returns boolean
-return GetBooleanAnd((GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false))),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_TempUnit))==true))
+return GetBooleanAnd((GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false))),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_TempUnit))==true))
 endfunction
 function Trig_HydroJetWater_Func002Func023Func011Func001Func001C takes nothing returns boolean
 if(not(udg_A_Bool==true))then
@@ -35945,7 +35953,7 @@ endif
 return true
 endfunction
 function Trig_HydroJetWater_Func002Func023Func011Func001C takes nothing returns boolean
-if(not(IsUnitAliveBJ(udg_TempUnit)==true))then
+if(not(UnitAlive(udg_TempUnit)==true))then
 return false
 endif
 return true
@@ -35976,7 +35984,7 @@ endif
 return true
 endfunction
 function Trig_HydroJetWater_Func002Func023C takes nothing returns boolean
-if(not(IsUnitAliveBJ(udg_TempUnit)==true))then
+if(not(UnitAlive(udg_TempUnit)==true))then
 return false
 endif
 return true
@@ -36085,22 +36093,22 @@ function Trig_SandStormMovement_Func001Func002Func017001003001001001 takes nothi
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false)
 endfunction
 function Trig_SandStormMovement_Func001Func002Func017001003001001002 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_SandStormMovement_Func001Func002Func017001003001001 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(IsUnitAliveBJ(GetFilterUnit())==true))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(UnitAlive(GetFilterUnit())==true))
 endfunction
 function Trig_SandStormMovement_Func001Func002Func017001003001002 takes nothing returns boolean
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_GROUND)==true)
 endfunction
 function Trig_SandStormMovement_Func001Func002Func017001003001 takes nothing returns boolean
-return GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(IsUnitAliveBJ(GetFilterUnit())==true))),(IsUnitType(GetFilterUnit(),UNIT_TYPE_GROUND)==true))
+return GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(UnitAlive(GetFilterUnit())==true))),(IsUnitType(GetFilterUnit(),UNIT_TYPE_GROUND)==true))
 endfunction
 function Trig_SandStormMovement_Func001Func002Func017001003002 takes nothing returns boolean
 return(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_TempUnit))==true)
 endfunction
 function Trig_SandStormMovement_Func001Func002Func017001003 takes nothing returns boolean
-return GetBooleanAnd((GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(IsUnitAliveBJ(GetFilterUnit())==true))),(IsUnitType(GetFilterUnit(),UNIT_TYPE_GROUND)==true))),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_TempUnit))==true))
+return GetBooleanAnd((GetBooleanAnd((GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(UnitAlive(GetFilterUnit())==true))),(IsUnitType(GetFilterUnit(),UNIT_TYPE_GROUND)==true))),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_TempUnit))==true))
 endfunction
 function Trig_SandStormMovement_Func001Func002Func017Func001C takes nothing returns boolean
 if(not(IsUnitInGroup(GetEnumUnit(),udg_TempGroup)==false))then
@@ -36149,7 +36157,7 @@ endif
 return true
 endfunction
 function Trig_SandStormMovement_Func001Func002C takes nothing returns boolean
-if(not(IsUnitDeadBJ(udg_TempUnit)==true))then
+if(not(IsUnitDead(udg_TempUnit)==true))then
 return false
 endif
 return true
@@ -36478,10 +36486,10 @@ function Trig_Taste_of_Death_Func029002003001 takes nothing returns boolean
 return(IsPlayerEnemy(GetOwningPlayer(GetFilterUnit()),udg_ToD_Owner)==true)
 endfunction
 function Trig_Taste_of_Death_Func029002003002 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_Taste_of_Death_Func029002003 takes nothing returns boolean
-return GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(GetFilterUnit()),udg_ToD_Owner)==true),(IsUnitAliveBJ(GetFilterUnit())==true))
+return GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(GetFilterUnit()),udg_ToD_Owner)==true),(UnitAlive(GetFilterUnit())==true))
 endfunction
 function Trig_Taste_of_Death_Func032A takes nothing returns nothing
 set udg_ToD_Unit_Counter=CountUnitsInGroup(udg_ToD_Heal_Group)
@@ -37099,22 +37107,22 @@ function Trig_OOW_Dummies_Func001Func001Func014001003001 takes nothing returns b
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false)
 endfunction
 function Trig_OOW_Dummies_Func001Func001Func014001003002001001 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_OOW_Dummies_Func001Func001Func014001003002001002 takes nothing returns boolean
 return(IsUnitInGroup(GetFilterUnit(),udg_OOW_HitGroup[udg_OOW_LoopInteger])==false)
 endfunction
 function Trig_OOW_Dummies_Func001Func001Func014001003002001 takes nothing returns boolean
-return GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsUnitInGroup(GetFilterUnit(),udg_OOW_HitGroup[udg_OOW_LoopInteger])==false))
+return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(IsUnitInGroup(GetFilterUnit(),udg_OOW_HitGroup[udg_OOW_LoopInteger])==false))
 endfunction
 function Trig_OOW_Dummies_Func001Func001Func014001003002002 takes nothing returns boolean
 return(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_OOW_Caster[udg_OOW_LoopInteger]))==true)
 endfunction
 function Trig_OOW_Dummies_Func001Func001Func014001003002 takes nothing returns boolean
-return GetBooleanAnd((GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsUnitInGroup(GetFilterUnit(),udg_OOW_HitGroup[udg_OOW_LoopInteger])==false))),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_OOW_Caster[udg_OOW_LoopInteger]))==true))
+return GetBooleanAnd((GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(IsUnitInGroup(GetFilterUnit(),udg_OOW_HitGroup[udg_OOW_LoopInteger])==false))),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_OOW_Caster[udg_OOW_LoopInteger]))==true))
 endfunction
 function Trig_OOW_Dummies_Func001Func001Func014001003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsUnitInGroup(GetFilterUnit(),udg_OOW_HitGroup[udg_OOW_LoopInteger])==false))),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_OOW_Caster[udg_OOW_LoopInteger]))==true))))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(IsUnitInGroup(GetFilterUnit(),udg_OOW_HitGroup[udg_OOW_LoopInteger])==false))),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_OOW_Caster[udg_OOW_LoopInteger]))==true))))
 endfunction
 function Trig_OOW_Dummies_Func001Func001Func014A takes nothing returns nothing
 call UnitDamageTargetBJ(udg_OOW_Caster[udg_OOW_LoopInteger],GetEnumUnit(),(udg_OOW_DamageBase+((I2R(GetUnitAbilityLevelSwapped('A0B9',udg_OOW_Caster[udg_OOW_LoopInteger]))-1)*udg_OOW_DamageInc)),ATTACK_TYPE_NORMAL,DAMAGE_TYPE_UNIVERSAL)
@@ -37131,7 +37139,7 @@ endif
 return true
 endfunction
 function Trig_OOW_Dummies_Func001Func001C takes nothing returns boolean
-if(not(IsUnitAliveBJ(udg_OOW_Dummy[udg_OOW_LoopInteger])==true))then
+if(not(UnitAlive(udg_OOW_Dummy[udg_OOW_LoopInteger])==true))then
 return false
 endif
 return true
@@ -37258,16 +37266,16 @@ function Trig_Elune_Arrow_Move_Func001Func008002003001 takes nothing returns boo
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)!=true)
 endfunction
 function Trig_Elune_Arrow_Move_Func001Func008002003002001 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_Elune_Arrow_Move_Func001Func008002003002002 takes nothing returns boolean
 return(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_Arrow_Caster[udg_Arrow_CusValue]))==true)
 endfunction
 function Trig_Elune_Arrow_Move_Func001Func008002003002 takes nothing returns boolean
-return GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_Arrow_Caster[udg_Arrow_CusValue]))==true))
+return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_Arrow_Caster[udg_Arrow_CusValue]))==true))
 endfunction
 function Trig_Elune_Arrow_Move_Func001Func008002003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)!=true),(GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_Arrow_Caster[udg_Arrow_CusValue]))==true))))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)!=true),(GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_Arrow_Caster[udg_Arrow_CusValue]))==true))))
 endfunction
 function Trig_Elune_Arrow_Move_Func001Func010A takes nothing returns nothing
 call UnitDamageTargetBJ(udg_Arrow_Caster[udg_Arrow_CusValue],GetEnumUnit(),(90.00*I2R(GetUnitAbilityLevelSwapped('A05U',udg_Arrow_Caster[udg_Arrow_CusValue]))),ATTACK_TYPE_NORMAL,DAMAGE_TYPE_NORMAL)
@@ -37360,7 +37368,7 @@ call TriggerAddCondition(udg_trg_Agility,Condition(function Trig_Agility_Conditi
 call TriggerAddAction(udg_trg_Agility,function Trig_Agility_Actions)
 endfunction
 function Trig_Agility_Loop_Func002Func001Func001Func002C takes nothing returns boolean
-if(not(IsUnitAliveBJ(udg_AGI_Unit[udg_AGI_Integer])==true))then
+if(not(UnitAlive(udg_AGI_Unit[udg_AGI_Integer])==true))then
 return false
 endif
 return true
@@ -37378,13 +37386,13 @@ function Trig_Agility_Loop_Func002Func001Func004002003002001 takes nothing retur
 return(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_AGI_Unit[udg_AGI_Integer]))==true)
 endfunction
 function Trig_Agility_Loop_Func002Func001Func004002003002002 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_Agility_Loop_Func002Func001Func004002003002 takes nothing returns boolean
-return GetBooleanAnd((IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_AGI_Unit[udg_AGI_Integer]))==true),(IsUnitAliveBJ(GetFilterUnit())==true))
+return GetBooleanAnd((IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_AGI_Unit[udg_AGI_Integer]))==true),(UnitAlive(GetFilterUnit())==true))
 endfunction
 function Trig_Agility_Loop_Func002Func001Func004002003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_AGI_Unit[udg_AGI_Integer]))==true),(IsUnitAliveBJ(GetFilterUnit())==true))))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_AGI_Unit[udg_AGI_Integer]))==true),(UnitAlive(GetFilterUnit())==true))))
 endfunction
 function Trig_Agility_Loop_Func002Func001Func005A takes nothing returns nothing
 set udg_AGI_Target_Point[udg_AGI_Integer]=GetUnitLoc(GetEnumUnit())
@@ -37394,7 +37402,7 @@ call DestroyEffectBJ(GetLastCreatedEffectBJ())
 call RemoveLocation(udg_AGI_Target_Point[udg_AGI_Integer])
 endfunction
 function Trig_Agility_Loop_Func002Func001C takes nothing returns boolean
-if(not(IsUnitAliveBJ(udg_AGI_Unit[udg_AGI_Integer])==true))then
+if(not(UnitAlive(udg_AGI_Unit[udg_AGI_Integer])==true))then
 return false
 endif
 if(not(udg_AGI_Timer[udg_AGI_Count]<R2I(udg_AGI_Duration[udg_AGI_Count])))then
@@ -37546,7 +37554,7 @@ return GetSpellAbilityId()==udg_Plant__HeroAbility
 endfunction
 function Plant_UnitFilter takes nothing returns boolean
 local boolean ret=false
-if(GetWidgetLife(GetFilterUnit())>0.405)and(IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false)and(IsUnitType(GetFilterUnit(),UNIT_TYPE_MECHANICAL)==false)then
+if(UnitAlive(GetFilterUnit()))and(IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false)and(IsUnitType(GetFilterUnit(),UNIT_TYPE_MECHANICAL)==false)then
 set ret=(IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false)and(IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false)and(GetUnitFlyHeight(GetFilterUnit())==0)
 endif
 return ret
@@ -37975,7 +37983,7 @@ local real y=GetUnitY(udg_s__F_u[this])
 local real d
 local real a
 set udg_s__F_dur[this]=udg_s__F_dur[this]-1
-if udg_s__F_dur[this]<=0 or GetWidgetLife(udg_s__F_u[this])<=0.405 or GetUnitAbilityLevel(udg_s__F_u[this],FireRun__Buff)==0 then
+if udg_s__F_dur[this]<=0 or (not UnitAlive(udg_s__F_u[this])) or GetUnitAbilityLevel(udg_s__F_u[this],FireRun__Buff)==0 then
 set udg_s__F_u[this]=null
 set ii=udg_s__F_in[this]
 call s__F_deallocate(this)
@@ -38021,7 +38029,7 @@ constant function TimeStop__AreaOfEffect takes integer level returns real
 return 150.+(150.*level)
 endfunction
 function TimeStop__AllowedTargets takes unit caster,unit target returns boolean
-return IsUnitEnemy(target,GetOwningPlayer(caster))and GetWidgetLife(target)>0.405 and IsUnitType(target,UNIT_TYPE_MAGIC_IMMUNE)==false and IsUnitType(target,UNIT_TYPE_STRUCTURE)==false and IsUnitType(target,UNIT_TYPE_MECHANICAL)==false and true
+return IsUnitEnemy(target,GetOwningPlayer(caster))and UnitAlive(target) and IsUnitType(target,UNIT_TYPE_MAGIC_IMMUNE)==false and IsUnitType(target,UNIT_TYPE_STRUCTURE)==false and IsUnitType(target,UNIT_TYPE_MECHANICAL)==false and true
 endfunction
 function TimeStop__AdditionalSpecialEffects takes unit Effect,real casters_current_height returns nothing
 call SetUnitScale(Effect,2.,2.,2.)
@@ -38680,7 +38688,7 @@ endif
 return true
 endfunction
 function Trig_Death_Fall_loop_Func003Func001Func001Func002Func003Func007Func006Func001C takes nothing returns boolean
-if(not(IsUnitAliveBJ(GetEnumUnit())==true))then
+if(not(UnitAlive(GetEnumUnit())==true))then
 return false
 endif
 if(not(IsUnitType(GetEnumUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))then
@@ -38729,7 +38737,7 @@ endif
 return true
 endfunction
 function Trig_Death_Fall_loop_Func003Func001Func003Func001Func009Func001C takes nothing returns boolean
-if(not(IsUnitAliveBJ(GetEnumUnit())==true))then
+if(not(UnitAlive(GetEnumUnit())==true))then
 return false
 endif
 if(not(IsUnitType(GetEnumUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))then
@@ -38944,7 +38952,7 @@ function Trig_Thunderwrath_Loop_Func001Func003Func003Func005Func016001003002001 
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false)
 endfunction
 function Trig_Thunderwrath_Loop_Func001Func003Func003Func005Func016001003002002001 takes nothing returns boolean
-return(IsUnitDeadBJ(GetFilterUnit())==false)
+return(IsUnitDead(GetFilterUnit())==false)
 endfunction
 function Trig_Thunderwrath_Loop_Func001Func003Func003Func005Func016001003002002002001 takes nothing returns boolean
 return(IsUnitInGroup(GetFilterUnit(),udg_TW_DamagedUnits[LoadIntegerBJ(StringHashBJ("int"),GetHandleIdBJ(udg_TW_Handle),udg_TW_Hashtable)])==false)
@@ -38956,13 +38964,13 @@ function Trig_Thunderwrath_Loop_Func001Func003Func003Func005Func0160010030020020
 return GetBooleanAnd((IsUnitInGroup(GetFilterUnit(),udg_TW_DamagedUnits[LoadIntegerBJ(StringHashBJ("int"),GetHandleIdBJ(udg_TW_Handle),udg_TW_Hashtable)])==false),(IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_TW_Caster))==false))
 endfunction
 function Trig_Thunderwrath_Loop_Func001Func003Func003Func005Func016001003002002 takes nothing returns boolean
-return GetBooleanAnd((IsUnitDeadBJ(GetFilterUnit())==false),(GetBooleanAnd((IsUnitInGroup(GetFilterUnit(),udg_TW_DamagedUnits[LoadIntegerBJ(StringHashBJ("int"),GetHandleIdBJ(udg_TW_Handle),udg_TW_Hashtable)])==false),(IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_TW_Caster))==false))))
+return GetBooleanAnd((IsUnitDead(GetFilterUnit())==false),(GetBooleanAnd((IsUnitInGroup(GetFilterUnit(),udg_TW_DamagedUnits[LoadIntegerBJ(StringHashBJ("int"),GetHandleIdBJ(udg_TW_Handle),udg_TW_Hashtable)])==false),(IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_TW_Caster))==false))))
 endfunction
 function Trig_Thunderwrath_Loop_Func001Func003Func003Func005Func016001003002 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((IsUnitDeadBJ(GetFilterUnit())==false),(GetBooleanAnd((IsUnitInGroup(GetFilterUnit(),udg_TW_DamagedUnits[LoadIntegerBJ(StringHashBJ("int"),GetHandleIdBJ(udg_TW_Handle),udg_TW_Hashtable)])==false),(IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_TW_Caster))==false))))))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((IsUnitDead(GetFilterUnit())==false),(GetBooleanAnd((IsUnitInGroup(GetFilterUnit(),udg_TW_DamagedUnits[LoadIntegerBJ(StringHashBJ("int"),GetHandleIdBJ(udg_TW_Handle),udg_TW_Hashtable)])==false),(IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_TW_Caster))==false))))))
 endfunction
 function Trig_Thunderwrath_Loop_Func001Func003Func003Func005Func016001003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((IsUnitDeadBJ(GetFilterUnit())==false),(GetBooleanAnd((IsUnitInGroup(GetFilterUnit(),udg_TW_DamagedUnits[LoadIntegerBJ(StringHashBJ("int"),GetHandleIdBJ(udg_TW_Handle),udg_TW_Hashtable)])==false),(IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_TW_Caster))==false))))))))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((IsUnitDead(GetFilterUnit())==false),(GetBooleanAnd((IsUnitInGroup(GetFilterUnit(),udg_TW_DamagedUnits[LoadIntegerBJ(StringHashBJ("int"),GetHandleIdBJ(udg_TW_Handle),udg_TW_Hashtable)])==false),(IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_TW_Caster))==false))))))))
 endfunction
 function Trig_Thunderwrath_Loop_Func001Func003Func003Func005Func016A takes nothing returns nothing
 call GroupAddUnitSimple(GetEnumUnit(),udg_TW_DamagedUnits[LoadIntegerBJ(StringHashBJ("int"),GetHandleIdBJ(udg_TW_Handle),udg_TW_Hashtable)])
@@ -38983,7 +38991,7 @@ function Trig_Thunderwrath_Loop_Func001Func003Func003Func011Func013001003002001 
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false)
 endfunction
 function Trig_Thunderwrath_Loop_Func001Func003Func003Func011Func013001003002002001 takes nothing returns boolean
-return(IsUnitDeadBJ(GetFilterUnit())==false)
+return(IsUnitDead(GetFilterUnit())==false)
 endfunction
 function Trig_Thunderwrath_Loop_Func001Func003Func003Func011Func013001003002002002001 takes nothing returns boolean
 return(IsUnitInGroup(GetFilterUnit(),udg_TW_DamagedUnits[LoadIntegerBJ(StringHashBJ("int"),GetHandleIdBJ(udg_TW_Handle),udg_TW_Hashtable)])==false)
@@ -38995,13 +39003,13 @@ function Trig_Thunderwrath_Loop_Func001Func003Func003Func011Func0130010030020020
 return GetBooleanAnd((IsUnitInGroup(GetFilterUnit(),udg_TW_DamagedUnits[LoadIntegerBJ(StringHashBJ("int"),GetHandleIdBJ(udg_TW_Handle),udg_TW_Hashtable)])==false),(IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_TW_Caster))==false))
 endfunction
 function Trig_Thunderwrath_Loop_Func001Func003Func003Func011Func013001003002002 takes nothing returns boolean
-return GetBooleanAnd((IsUnitDeadBJ(GetFilterUnit())==false),(GetBooleanAnd((IsUnitInGroup(GetFilterUnit(),udg_TW_DamagedUnits[LoadIntegerBJ(StringHashBJ("int"),GetHandleIdBJ(udg_TW_Handle),udg_TW_Hashtable)])==false),(IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_TW_Caster))==false))))
+return GetBooleanAnd((IsUnitDead(GetFilterUnit())==false),(GetBooleanAnd((IsUnitInGroup(GetFilterUnit(),udg_TW_DamagedUnits[LoadIntegerBJ(StringHashBJ("int"),GetHandleIdBJ(udg_TW_Handle),udg_TW_Hashtable)])==false),(IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_TW_Caster))==false))))
 endfunction
 function Trig_Thunderwrath_Loop_Func001Func003Func003Func011Func013001003002 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((IsUnitDeadBJ(GetFilterUnit())==false),(GetBooleanAnd((IsUnitInGroup(GetFilterUnit(),udg_TW_DamagedUnits[LoadIntegerBJ(StringHashBJ("int"),GetHandleIdBJ(udg_TW_Handle),udg_TW_Hashtable)])==false),(IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_TW_Caster))==false))))))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((IsUnitDead(GetFilterUnit())==false),(GetBooleanAnd((IsUnitInGroup(GetFilterUnit(),udg_TW_DamagedUnits[LoadIntegerBJ(StringHashBJ("int"),GetHandleIdBJ(udg_TW_Handle),udg_TW_Hashtable)])==false),(IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_TW_Caster))==false))))))
 endfunction
 function Trig_Thunderwrath_Loop_Func001Func003Func003Func011Func013001003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((IsUnitDeadBJ(GetFilterUnit())==false),(GetBooleanAnd((IsUnitInGroup(GetFilterUnit(),udg_TW_DamagedUnits[LoadIntegerBJ(StringHashBJ("int"),GetHandleIdBJ(udg_TW_Handle),udg_TW_Hashtable)])==false),(IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_TW_Caster))==false))))))))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((IsUnitDead(GetFilterUnit())==false),(GetBooleanAnd((IsUnitInGroup(GetFilterUnit(),udg_TW_DamagedUnits[LoadIntegerBJ(StringHashBJ("int"),GetHandleIdBJ(udg_TW_Handle),udg_TW_Hashtable)])==false),(IsUnitAlly(GetFilterUnit(),GetOwningPlayer(udg_TW_Caster))==false))))))))
 endfunction
 function Trig_Thunderwrath_Loop_Func001Func003Func003Func011Func013A takes nothing returns nothing
 call GroupAddUnitSimple(GetEnumUnit(),udg_TW_DamagedUnits[LoadIntegerBJ(StringHashBJ("int"),GetHandleIdBJ(udg_TW_Handle),udg_TW_Hashtable)])
@@ -39202,7 +39210,7 @@ function Trig_Sheep_Loop_Func004Func013Func001C takes nothing returns boolean
 if(not(LoadBooleanBJ(11,GetHandleIdBJ(GetEnumUnit()),udg_ES_Hash)==false))then
 return false
 endif
-if(not(IsUnitDeadBJ(udg_ES_Targ)==true))then
+if(not(IsUnitDead(udg_ES_Targ)==true))then
 return false
 endif
 return true
@@ -39211,7 +39219,7 @@ function Trig_Sheep_Loop_Func004Func013C takes nothing returns boolean
 if(not(LoadBooleanBJ(11,GetHandleIdBJ(GetEnumUnit()),udg_ES_Hash)==true))then
 return false
 endif
-if(not(IsUnitDeadBJ(udg_ES_Targ)==true))then
+if(not(IsUnitDead(udg_ES_Targ)==true))then
 return false
 endif
 return true
@@ -39397,25 +39405,25 @@ function Trig_Initial_Telekinesis_GUI_Func042002003002001 takes nothing returns 
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false)
 endfunction
 function Trig_Initial_Telekinesis_GUI_Func042002003002002001001 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_Initial_Telekinesis_GUI_Func042002003002002001002 takes nothing returns boolean
 return(IsUnitInGroup(GetFilterUnit(),udg_TK_FlyingUnits)==false)
 endfunction
 function Trig_Initial_Telekinesis_GUI_Func042002003002002001 takes nothing returns boolean
-return GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsUnitInGroup(GetFilterUnit(),udg_TK_FlyingUnits)==false))
+return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(IsUnitInGroup(GetFilterUnit(),udg_TK_FlyingUnits)==false))
 endfunction
 function Trig_Initial_Telekinesis_GUI_Func042002003002002002 takes nothing returns boolean
 return(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(GetTriggerUnit()))==true)
 endfunction
 function Trig_Initial_Telekinesis_GUI_Func042002003002002 takes nothing returns boolean
-return GetBooleanAnd((GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsUnitInGroup(GetFilterUnit(),udg_TK_FlyingUnits)==false))),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(GetTriggerUnit()))==true))
+return GetBooleanAnd((GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(IsUnitInGroup(GetFilterUnit(),udg_TK_FlyingUnits)==false))),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(GetTriggerUnit()))==true))
 endfunction
 function Trig_Initial_Telekinesis_GUI_Func042002003002 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsUnitInGroup(GetFilterUnit(),udg_TK_FlyingUnits)==false))),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(GetTriggerUnit()))==true))))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(IsUnitInGroup(GetFilterUnit(),udg_TK_FlyingUnits)==false))),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(GetTriggerUnit()))==true))))
 endfunction
 function Trig_Initial_Telekinesis_GUI_Func042002003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsUnitInGroup(GetFilterUnit(),udg_TK_FlyingUnits)==false))),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(GetTriggerUnit()))==true))))))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(IsUnitInGroup(GetFilterUnit(),udg_TK_FlyingUnits)==false))),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(GetTriggerUnit()))==true))))))
 endfunction
 function Trig_Initial_Telekinesis_GUI_Func043Func001C takes nothing returns boolean
 if(not(udg_TK_Integers[1]==0))then
@@ -39601,7 +39609,7 @@ call TriggerAddCondition(udg_trg_Heroic_Leap_Cast,Condition(function Trig_Heroic
 call TriggerAddAction(udg_trg_Heroic_Leap_Cast,function Trig_Heroic_Leap_Cast_Actions)
 endfunction
 function Trig_Heroic_Leap_Loop_Func001Func016Func013002003001 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_Heroic_Leap_Loop_Func001Func016Func013002003002001 takes nothing returns boolean
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false)
@@ -39631,7 +39639,7 @@ function Trig_Heroic_Leap_Loop_Func001Func016Func013002003002 takes nothing retu
 return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_Caster),GetOwningPlayer(GetFilterUnit()))==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitType(GetTriggerUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))
 endfunction
 function Trig_Heroic_Leap_Loop_Func001Func016Func013002003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_Caster),GetOwningPlayer(GetFilterUnit()))==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitType(GetTriggerUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))))
+return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_Caster),GetOwningPlayer(GetFilterUnit()))==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitType(GetTriggerUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))))
 endfunction
 function Trig_Heroic_Leap_Loop_Func001Func016Func025001 takes nothing returns boolean
 return(udg_Real[2]>=udg_Real[1])
@@ -39865,7 +39873,7 @@ function Trig_TOS_Loop_Func002Func001Func001C takes nothing returns boolean
 if(not(UnitHasBuffBJ(udg_TOS_Caster[udg_TOS_Integer],'B01A')==true))then
 return false
 endif
-if(not(IsUnitAliveBJ(udg_TOS_Caster[udg_TOS_Integer])==true))then
+if(not(UnitAlive(udg_TOS_Caster[udg_TOS_Integer])==true))then
 return false
 endif
 return true
@@ -40387,16 +40395,16 @@ function Trig_Sine_Fall_and_Damage_Func002Func001Func004Func004002003001 takes n
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false)
 endfunction
 function Trig_Sine_Fall_and_Damage_Func002Func001Func004Func004002003002001 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_Sine_Fall_and_Damage_Func002Func001Func004Func004002003002002 takes nothing returns boolean
 return(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_RFSine_Caster[udg_RFSine_Integers[3]]))==true)
 endfunction
 function Trig_Sine_Fall_and_Damage_Func002Func001Func004Func004002003002 takes nothing returns boolean
-return GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_RFSine_Caster[udg_RFSine_Integers[3]]))==true))
+return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_RFSine_Caster[udg_RFSine_Integers[3]]))==true))
 endfunction
 function Trig_Sine_Fall_and_Damage_Func002Func001Func004Func004002003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_RFSine_Caster[udg_RFSine_Integers[3]]))==true))))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_RFSine_Caster[udg_RFSine_Integers[3]]))==true))))
 endfunction
 function Trig_Sine_Fall_and_Damage_Func002Func001Func004Func005A takes nothing returns nothing
 call UnitDamageTargetBJ(udg_RFSine_Caster[udg_RFSine_Integers[3]],GetEnumUnit(),GetRandomReal(udg_RF_MinDamagePerRock,udg_RFSine_MaxDamage[udg_RFSine_Integers[3]]),ATTACK_TYPE_NORMAL,DAMAGE_TYPE_UNIVERSAL)
@@ -40529,16 +40537,16 @@ function Trig_Move_Splitts_Func002Func001Func001Func002002003001 takes nothing r
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false)
 endfunction
 function Trig_Move_Splitts_Func002Func001Func001Func002002003002001 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_Move_Splitts_Func002Func001Func001Func002002003002002 takes nothing returns boolean
 return(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_RFA_Unit[udg_RFA_Integers[3]]))==true)
 endfunction
 function Trig_Move_Splitts_Func002Func001Func001Func002002003002 takes nothing returns boolean
-return GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_RFA_Unit[udg_RFA_Integers[3]]))==true))
+return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_RFA_Unit[udg_RFA_Integers[3]]))==true))
 endfunction
 function Trig_Move_Splitts_Func002Func001Func001Func002002003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_RFA_Unit[udg_RFA_Integers[3]]))==true))))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false),(GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_RFA_Unit[udg_RFA_Integers[3]]))==true))))
 endfunction
 function Trig_Move_Splitts_Func002Func001Func001Func003A takes nothing returns nothing
 call UnitDamageTargetBJ(udg_RFA_Caster[udg_RFA_Integers[3]],GetEnumUnit(),(GetRandomReal(udg_RF_MinDamagePerRock,udg_RFA_MaxDmg[udg_RFA_Integers[3]])/ 3.00),ATTACK_TYPE_NORMAL,DAMAGE_TYPE_UNIVERSAL)
@@ -40676,7 +40684,7 @@ endif
 return true
 endfunction
 function Trig_VO_Loop_Func001Func002Func002Func022C takes nothing returns boolean
-if(not(IsUnitAliveBJ(udg_VO_Victom[udg_VO_index[3]])==true))then
+if(not(UnitAlive(udg_VO_Victom[udg_VO_index[3]])==true))then
 return false
 endif
 return true
@@ -40778,16 +40786,16 @@ function Trig_TS_Loop_Func001Func001Func006002003001 takes nothing returns boole
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)!=true)
 endfunction
 function Trig_TS_Loop_Func001Func001Func006002003002001 takes nothing returns boolean
-return(IsUnitAliveBJ(GetFilterUnit())==true)
+return(UnitAlive(GetFilterUnit())==true)
 endfunction
 function Trig_TS_Loop_Func001Func001Func006002003002002 takes nothing returns boolean
 return(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_TS_Caster[udg_TS_Index[3]]))==true)
 endfunction
 function Trig_TS_Loop_Func001Func001Func006002003002 takes nothing returns boolean
-return GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_TS_Caster[udg_TS_Index[3]]))==true))
+return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_TS_Caster[udg_TS_Index[3]]))==true))
 endfunction
 function Trig_TS_Loop_Func001Func001Func006002003 takes nothing returns boolean
-return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)!=true),(GetBooleanAnd((IsUnitAliveBJ(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_TS_Caster[udg_TS_Index[3]]))==true))))
+return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)!=true),(GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_TS_Caster[udg_TS_Index[3]]))==true))))
 endfunction
 function Trig_TS_Loop_Func001Func001Func027C takes nothing returns boolean
 if(not(udg_TS_Duration[udg_TS_Index[3]]<=0.00))then
@@ -41127,7 +41135,7 @@ function Trig_Passive_Death_Coil_Func001Func001Func002Func002002001003 takes not
 return(IsPlayerEnemy(GetOwningPlayer(GetFilterUnit()),GetOwningPlayer(udg_DarkSylv))==true)
 endfunction
 function Trig_Passive_Death_Coil_Func001Func001Func002C takes nothing returns boolean
-if(not(IsUnitAliveBJ(udg_DarkSylv)==true))then
+if(not(UnitAlive(udg_DarkSylv)==true))then
 return false
 endif
 return true
@@ -41823,7 +41831,7 @@ local real y=GetUnitY(udg_s__F_u[this])
 local real d
 local real a
 set udg_s__F_dur[this]=udg_s__F_dur[this]-1
-if udg_s__F_dur[this]<=0 or GetWidgetLife(udg_s__F_u[this])<=0.405 or GetUnitAbilityLevel(udg_s__F_u[this],FireRun__Buff)==0 then
+if udg_s__F_dur[this]<=0 or (not UnitAlive(udg_s__F_u[this])) or GetUnitAbilityLevel(udg_s__F_u[this],FireRun__Buff)==0 then
 set udg_s__F_u[this]=null
 set ii=udg_s__F_in[this]
 call s__F_deallocate(this)
@@ -41888,7 +41896,7 @@ call GroupRemoveUnit(udg_s__HolyBirds___spelldata_group,u)
 endloop
 set i=i+1
 endloop
-if udg_s__HolyBirds___spelldata_duration[this]>=udg_HolyBirds___DURATION[udg_s__HolyBirds___spelldata_lvl[this]]or GetUnitAbilityLevel(udg_s__HolyBirds___spelldata_caster[this],HolyBirds___BUFF_ID)<=0 or GetWidgetLife(udg_s__HolyBirds___spelldata_caster[this])<=0.405 then
+if udg_s__HolyBirds___spelldata_duration[this]>=udg_HolyBirds___DURATION[udg_s__HolyBirds___spelldata_lvl[this]]or GetUnitAbilityLevel(udg_s__HolyBirds___spelldata_caster[this],HolyBirds___BUFF_ID)<=0 or (not UnitAlive(udg_s__HolyBirds___spelldata_caster[this])) then
 call s__HolyBirds___spelldata_deallocate(this)
 call ReleaseTimer(GetExpiredTimer())
 endif

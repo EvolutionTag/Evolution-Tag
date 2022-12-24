@@ -2109,14 +2109,18 @@ if(GetLocalPlayer()==whichPlayer)then
 call SelectUnit(whichUnit,false)
 endif
 endfunction
-function SetUnitLifeBJ takes unit whichUnit,real newValue returns nothing
-call SetUnitState(whichUnit,UNIT_STATE_LIFE,RMaxBJ(0,newValue))
+function SetUnitLifeBJ takes unit u, real hp returns nothing
+    if(GetWidgetLife(u)>0.405) then
+        call SetUnitState(u,UNIT_STATE_LIFE,RMaxBJ(0,hp))
+    endif
+endfunction
+function SetUnitLifePercentBJ takes unit u, real percent returns nothing
+    if(GetWidgetLife(u)>0.405) then
+        call SetUnitState(u,UNIT_STATE_LIFE,GetUnitState(u,UNIT_STATE_MAX_LIFE)*RMaxBJ(0,percent)*0.01)
+    endif
 endfunction
 function SetUnitManaBJ takes unit whichUnit,real newValue returns nothing
 call SetUnitState(whichUnit,UNIT_STATE_MANA,RMaxBJ(0,newValue))
-endfunction
-function SetUnitLifePercentBJ takes unit whichUnit,real percent returns nothing
-call SetUnitState(whichUnit,UNIT_STATE_LIFE,GetUnitState(whichUnit,UNIT_STATE_MAX_LIFE)*RMaxBJ(0,percent)*0.01)
 endfunction
 function SetUnitManaPercentBJ takes unit whichUnit,real percent returns nothing
 call SetUnitState(whichUnit,UNIT_STATE_MANA,GetUnitState(whichUnit,UNIT_STATE_MAX_MANA)*RMaxBJ(0,percent)*0.01)
