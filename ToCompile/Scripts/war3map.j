@@ -9162,7 +9162,7 @@ if(GetUnitTypeId(DyingUnit)!=0) then
     else
     call RespawnPlayer(DyingUnit)
     endif
-    call RemoveUnit_CreateSkeleton(DyingUnit)
+    call PlanUnitRemoval(DyingUnit,15)
 endif
 set DyingUnit = null
 endfunction
