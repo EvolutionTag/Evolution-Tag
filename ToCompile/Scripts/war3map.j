@@ -3164,7 +3164,6 @@ native UnitAlive takes unit id returns boolean
 //////////////////////////////////////////////////
 // //! import zinc "..\ToCompile\Scripts\Fixes\TerrainDeformFix.j"
 //! import zinc "..\ToCompile\Scripts\Fixes\NeutralFix.j"
-//! import zinc "..\ToCompile\Scripts\Fixes\movementFix.zn"
 // //! import zinc "..\ToCompile\Scripts\Fixes\RandomFix.zn"
 
 
