@@ -8157,7 +8157,7 @@ endfunction
 function Trig_CS_Setup_Actions takes nothing returns nothing
 local integer maxability=140
 local integer i=1
-local unit Dummy=CreateUnit(Player(0),'hfoo',0.00,0.00,0.00)
+local unit Dummy=CreateUnit(Player(0),'dDUM',0.00,0.00,0.00)
 set udg_CS_AddHP[1]='A0HO'
 set udg_CS_AddHP[2]='A0I0'
 set udg_CS_AddHP[3]='A0I1'
