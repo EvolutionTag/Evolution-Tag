@@ -1,3 +1,5 @@
+SmartCast = {}
+
 local function ClickButton(button)
 	if(type(button)~="number" or button==0) then
 	   -- TextPrint("Unknown button")
@@ -6,10 +8,10 @@ local function ClickButton(button)
 	--TextPrint("Clicking button")
 	thiscall2(AC.game+0x603440,button,1)
 end
-follow = false
+SmartCast.follow = false
 local s = {}
 
-PressedKeys = {}
+SmartCast.PressedKeys = {}
 
 s[VK.Q]={0,0};s[VK.W] = {0,1};s[ VK.E] = {0,2};s[VK.R] = {0,3};s[ VK.T]=0;s[VK.Y]=1;
 s[VK.A] = {1,0};s[VK.S]= {1,1};s[VK.D] = {1,2};s[ VK.F] = {1,3};s[VK.G]=2;s[VK.H]=3;
@@ -17,12 +19,12 @@ s[VK.Z] = {2,0};s[VK.X]={2,1};s[VK.C]={2,2};s[VK.V] = {2,3};s[VK.B]=4;s[VK.N]=5;
 s[0x20a] = function()
 	if(FS()==0 or FS()==nil) then 
 		SetCameraPosition(GetCameraTargetPositionX(),GetCameraTargetPositionY())
-		follow = false
+		SmartCast.follow = false
 	else
-		if(follow) then SetCameraTargetController(FS(),0,0,false)
+		if(SmartCast.follow) then SetCameraTargetController(FS(),0,0,false)
 			else SetCameraPosition(GetUnitX(FS()),GetUnitY(FS()))
 		end
-		follow = not follow
+		SmartCast.follow = not follow
 	end
    end
 local SCKey = s
@@ -30,7 +32,8 @@ s = {}
 local ALTKey = s
 s = nil
 
-VirtualEvent = {}
+local VirtualEvent = {}
+SmartCast.VirtualEvent = VirtualEvent
 
 VirtualEvent.cancel = function() end
 
@@ -38,7 +41,7 @@ VirtualEvent.__index = VirtualEvent
 
 
 
-function CancelCurrentModeSafe()
+SmartCast.CancelCurrentModeSafe = function()
 	local pGameUi = GetGameUI(0,0)
 	if(not pGameUi or pGameUi==0) then
 		return
@@ -57,7 +60,7 @@ function CancelCurrentModeSafe()
 		CancelCurrentMode()
 	end
 end
-function ProcessKey(key,code,e)
+SmartCast.PressedKey = function(key,code,e)
 	if(not IsInGame()) then return end
 	--gprint(1)
 	if(not code or code==0) then return end
@@ -86,7 +89,7 @@ function ProcessKey(key,code,e)
 	local bmode = ReadRealMemory(ui+0x220)
 	local tmode = ReadRealMemory(ui+0x210)
 	local smode = ReadRealMemory(ui+0x214)
-	if(not IsSelectMode() and (curr ~= bmode)) then CancelCurrentModeSafe()  end
+	if(not IsSelectMode() and (curr ~= bmode)) then SmartCast.CancelCurrentModeSafe()  end
 	curr = ReadRealMemory(ui+0x1b4)
 	if(not IsSelectMode() and (curr ~= bmode)) then return  end
 	--gprint(10)
@@ -130,7 +133,7 @@ function ProcessKey(key,code,e)
 	if(ClickableFrames[target] or ClickableFrames[pUbertipTarget] or ClickableFrames[TargetVF]) then
 	else
 		if((not IsSelectMode()) and curr~=bmode) then 
-			CancelCurrentModeSafe()
+			SmartCast.CancelCurrentModeSafe()
 			return;
 		end
 		if(curr == bmode) then
@@ -145,14 +148,14 @@ function ProcessKey(key,code,e)
 	e:cancel()
 	--gprint(13)
 	if(not IsSelectMode() ) then 
-		CancelCurrentModeSafe()
+		SmartCast.CancelCurrentModeSafe()
 	else
 		return
 	end
 	return;
 end
 
-function ProcessKeys()
+SmartCast.ProcessKeys = function()
 	--gprint(1)
 	ClickableFrames = {}
 	ClickableFrames[GetUIWorldFrameWar3()] = true
@@ -167,16 +170,16 @@ function ProcessKeys()
 	ClickableFrames[AC.game+0x93E83C] = true
 	ClickableFrames[0] = nil
 	local e = VirtualEvent
-	for key,mode in pairs(PressedKeys) do
+	for key,mode in pairs(SmartCast.PressedKeys) do
 		--gprint(key)
-		local r,s = pcall(ProcessKey,key,mode,e)
+		local r,s = pcall(SmartCast.PressedKey,key,mode,e)
 		if(not r) then
 			gprint(r)
 		end
 	end
 end
 
-function OnKey(e)
+SmartCast.OnKey = function(e)
 
 	--gprint(0)
 	ClickableFrames = {}
@@ -193,16 +196,16 @@ function OnKey(e)
 	ClickableFrames[0] = nil
 	local key = e:getData(EVENT_DATA_ID_INPUTED_KEY)
 	local code = e:getData(EVENT_DATA_ID_INPUTED_KEY_MODE)
-	local state, result = pcall(ProcessKey,key,code,e)
-	if( IsInGame() and not IsChatBoxOpen() and PressedKeys[key]~=2) then
+	local state, result = pcall(SmartCast.PressedKey,key,code,e)
+	if( IsInGame() and not IsChatBoxOpen() and SmartCast.PressedKeys[key]~=2) then
 		if( code ==1) then
-			if(PressedKeys[key]) then
-				PressedKeys[key] = 1
+			if(SmartCast.PressedKeys[key]) then
+				SmartCast.PressedKeys[key] = 1
 			else
-				PressedKeys[key] = 0
+				SmartCast.PressedKeys[key] = 0
 			end
 		else
-			PressedKeys[key] = nil
+			SmartCast.PressedKeys[key] = nil
 		end
 	end
 	if(state==false) then

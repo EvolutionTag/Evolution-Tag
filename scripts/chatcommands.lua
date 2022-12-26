@@ -5,12 +5,12 @@ Chatcommands = {}
 end
 
 local function RunKey(e)
-	return OnKey(e)
+	return SmartCast.OnKey(e)
 end
 
 
 local function ReRunKey()
-	return ProcessKeys()
+	return SmartCast.ProcessKeys()
 end
 Chatcommands["key"] = function() 
 	if(not keyevent) then
