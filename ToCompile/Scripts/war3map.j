@@ -14454,6 +14454,8 @@ function CreateNagas takes nothing returns nothing
 	call CreateUnitBonuses( Neutral_Nagas , 'nntg', 832.000 , 5440.000 , 270.000 )
 	call CreateUnitBonuses( Neutral_Nagas , 'n079', 1187.750 , 5265.000 , 109.360 )
 	call CreateUnitBonuses( Neutral_Nagas , 'n079', 1395.500 , 5262.000 , 85.550 )
+	call CreateUnitBonuses( Neutral_Nagas , 'nmcf', 56 , 838 , 85.550 )
+	call CreateUnitBonuses( Neutral_Nagas , 'nmcf', 95.500 , -1651.000 , 85.550 )
 endfunction
 function CreateSatyrsXTreme takes nothing returns nothing
 	call CreateUnitBonuses( Neutral_Satyrs , 'nsty', 1117.000 , 3942.000 , 173.985 )
@@ -15724,8 +15726,6 @@ set udg_Neutral_Alliance_Chance=GetRandomInt(1,2)
 call DisplayTimedTextToForce(GetPlayersAll(),30,"|cff32cd32Neutral Allies enabled|r")
 call SetUnitOwner(udg_unit_ngno_0004,Neutral_Bottom,true)
 call SetUnitOwner(udg_unit_ngno_0062,Neutral_Bottom,true)
-call ReplaceUnitBJ(udg_unit_ngno_0003,'nmcf',bj_UNIT_STATE_METHOD_RELATIVE)
-call ReplaceUnitBJ(udg_unit_ngno_0005,'nmcf',bj_UNIT_STATE_METHOD_RELATIVE)
 endfunction
 function InitTrig_Test_command_Copy takes nothing returns nothing
 set udg_trg_Test_command_Copy=CreateTrigger()
@@ -42454,8 +42454,6 @@ call DialogDisplayBJ(false,udg_CHOOSE_SETTINGS_2,GetEnumPlayer())
 call DisplayTimedTextToForce(GetPlayersAll(),30,"|cff32cd32Neutral Allies enabled|r")
 call SetUnitOwner(udg_unit_ngno_0004,Neutral_Bottom,true)
 call SetUnitOwner(udg_unit_ngno_0062,Neutral_Bottom,true)
-call ReplaceUnitBJ(udg_unit_ngno_0003,'nmcf',bj_UNIT_STATE_METHOD_RELATIVE)
-call ReplaceUnitBJ(udg_unit_ngno_0005,'nmcf',bj_UNIT_STATE_METHOD_RELATIVE)
 call DialogSetMessageBJ(udg_CHOOSE_SETTINGS_3,"|cff32cd32Game Mode:|r")
 call DialogAddButtonBJ(udg_CHOOSE_SETTINGS_3,"Hard")
 set udg_SETTINGS3_CHOICE2=GetLastCreatedButtonBJ()
@@ -42715,8 +42713,6 @@ set udg_Neutral_Alliance_Chance=GetRandomInt(1,2)
 call DisplayTimedTextToForce(GetPlayersAll(),30,"|cff32cd32Neutral Allies enabled|r")
 call SetUnitOwner(udg_unit_ngno_0004,Neutral_Bottom,true)
 call SetUnitOwner(udg_unit_ngno_0062,Neutral_Bottom,true)
-call ReplaceUnitBJ(udg_unit_ngno_0003,'nmcf',bj_UNIT_STATE_METHOD_RELATIVE)
-call ReplaceUnitBJ(udg_unit_ngno_0005,'nmcf',bj_UNIT_STATE_METHOD_RELATIVE)
 endif
 if(SubString(HCLcommand,3,4)=="n")then
 call DisplayTimedTextToForce(GetPlayersAll(),30,"|cff32cd32Normal Mode|r")
