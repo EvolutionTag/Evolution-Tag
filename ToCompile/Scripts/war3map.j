@@ -15977,7 +15977,7 @@ function Trig_uu_merchants_Actions takes nothing returns nothing
 local integer idx = 0
 loop 
     exitwhen idx==8
-    call CreateNUnitsAtLocBonuses(1,'n01Z',Player(PLAYER_NEUTRAL_PASSIVE),GetRandomLocInRect(udg_rct_Entire_map_AI_TARGEt),bj_UNIT_FACING)
+    call CreateNUnitsAtLocBonuses(1,'n01Z',Player(PLAYER_NEUTRAL_PASSIVE),GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds),bj_UNIT_FACING)
     call UnitAddAbility(GetLastCreatedUnit(),'A0M6')
     call IssueImmediateOrder(GetLastCreatedUnit(),"windwalk")
     //call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
