@@ -8898,7 +8898,7 @@ endif
 return false
 endfunction
 function AddBonusesForKillerCond takes nothing returns boolean
-return not((UnitAlive(GetFilterUnit()))and(IsUnitIllusionBJ(GetFilterUnit())))
+return ((UnitAlive(GetFilterUnit()))and(not IsUnitIllusionBJ(GetFilterUnit())))
 endfunction
 function AddBonusesForKillerAct takes nothing returns nothing
 set udg_CS_Unit=GetEnumUnit()
