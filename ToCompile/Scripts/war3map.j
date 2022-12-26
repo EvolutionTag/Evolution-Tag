@@ -25176,7 +25176,7 @@ set udg_si__HolyBirds___spelldata_V[this]=udg_si__HolyBirds___spelldata_F
 set udg_si__HolyBirds___spelldata_F=this
 endfunction
 function s__HolyBirds___spelldata_FilterFunc takes nothing returns boolean
-return (not UnitAlive(GetFilterUnit())) and GetUnitAbilityLevel(GetFilterUnit(),'Amim')<=0 and not IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)and not IsUnitType(GetFilterUnit(),UNIT_TYPE_MECHANICAL)and not IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)
+return (UnitAlive(GetFilterUnit())) and GetUnitAbilityLevel(GetFilterUnit(),'Amim')<=0 and not IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)and not IsUnitType(GetFilterUnit(),UNIT_TYPE_MECHANICAL)and not IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)
 endfunction
 function s__HolyBirds___spelldata_DamageHeal takes integer this,unit u returns nothing
 if IsUnitAlly(u,GetOwningPlayer(udg_s__HolyBirds___spelldata_caster[this]))and u!=udg_s__HolyBirds___spelldata_caster[this]then
