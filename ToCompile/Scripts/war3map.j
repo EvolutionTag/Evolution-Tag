@@ -7812,6 +7812,7 @@ function InitTrig_DestDropBonus takes nothing returns nothing
     call ItemPoolAddItemType(DestDrop,'ciri',2)
     call ItemPoolAddItemType(DestDrop,'dI04',0.1)
     call ItemPoolAddItemType(DestDrop,'dI02',0.1)
+    call ItemPoolAddItemType(DestDrop,'dI01',1)
     call ItemPoolAddItemType(DestDrop,'I022',0.01)
     call TriggerRegisterDestDeathInRegionEventEx(trg_DestDropBonus,GetPlayableMapRect())
     call TriggerAddAction(trg_DestDropBonus,function DestDropBonus_Actions)
@@ -8149,6 +8150,7 @@ endfunction
 function InitTrig_rune takes nothing returns nothing
 set runes_pool=CreateItemPool()
 call ItemPoolAddItemType(runes_pool,'dI00',1)
+call ItemPoolAddItemType(runes_pool,'dI01',1)
 call ItemPoolAddItemType(runes_pool,'dI02',1)
 call ItemPoolAddItemType(runes_pool,'dI03',1)
 call ItemPoolAddItemType(runes_pool,'dI04',1)
