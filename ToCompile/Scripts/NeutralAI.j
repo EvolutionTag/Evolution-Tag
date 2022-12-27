@@ -76,23 +76,37 @@ library NeutralAI requires InGameNeutrals{
         function PeriodicRestoreRectOrder() {
             timer t = GetExpiredTimer();
             unit u = LoadUnitHandle(NeutralOrders,GetHandleId(t),0);
+            integer hu;
             string order;
+            rect r;
             real x;
             real y;
             // BJDebugMsg("PeriodicRestoreRectOrder");
-            if(u==null || GetWidgetLife(u)<0.4) {
+            if(u==null) {
                 // BJDebugMsg("rect order Unit is dead or does not exists: "+I2S(GetHandleId(u))+" "+R2S(GetWidgetLife(u)));
-                FlushChildHashtable(NeutralOrders,GetHandleId(t));
-                FlushChildHashtable(NeutralOrders,GetHandleId(u));
+                RemoveSavedHandle(NeutralOrders,GetHandleId(t),0);
                 DestroyTimer(t);
+                t = null;
+                return;
             }
-            else {
-                order = LoadStr(NeutralOrders,GetHandleId(u),1);
-                x = GetRandomXInRect(LoadRectHandle(NeutralOrders,GetHandleId(u),2));
-                y = GetRandomYInRect(LoadRectHandle(NeutralOrders,GetHandleId(u),2));
-                IssuePointOrder(u,order,x,y);
-                // BJDebugMsg("rect order: "+order+" "+R2S(x)+" "+R2S(y)+" "+I2S(GetHandleId(u)));
+            hu = GetHandleId(u);
+            if (!UnitAlive(u)) {
+                RemoveSavedHandle(NeutralOrders,GetHandleId(t),0);  
+                RemoveSavedHandle(NeutralOrders,hu,2);
+                RemoveSavedString(NeutralOrders,hu,1);
+                DestroyTimer(t);
+                u = null;
+                t = null;
+                return;
             }
+            order = LoadStr(NeutralOrders,GetHandleId(u),1);
+            r = LoadRectHandle(NeutralOrders,hu,2);
+            x = GetRandomXInRect(r);
+            y = GetRandomYInRect(r);
+            r = null;
+            IssuePointOrder(u,order,x,y);
+            u = null;
+            t = null;
         }
 
         function PeriodicRestorePointOrder() {
@@ -145,7 +159,6 @@ library NeutralAI requires InGameNeutrals{
         public function NeutralIssueOrderRandomLocInRect(unit u, string order, rect r)
         {
             timer t = CreateTimer();
-            SaveInteger(NeutralOrders,GetHandleId(u),0,Order_random_point_in_rect);
             SaveStr(NeutralOrders,GetHandleId(u),1,order);
             SaveRectHandle(NeutralOrders,GetHandleId(u),2,r);
             IssuePointOrder(u,order,GetRandomXInRect(r),GetRandomYInRect(r));
@@ -201,10 +214,10 @@ library NeutralAI requires InGameNeutrals{
         public function onInit(){
             NeutralOrders = InitHashtable();
             //TimerStart(CreateTimer(),NeutralOrderTimerout,true, function OrderForAllNeutrals);
-            Death_Cleanup_trigger = CreateTrigger();
-            ForForce(bj_FORCE_ALL_PLAYERS,function(){TriggerRegisterPlayerUnitEvent(Death_Cleanup_trigger,GetEnumPlayer(),EVENT_PLAYER_UNIT_DEATH,function()->boolean {return IsPlayerInForce(GetTriggerPlayer(),Neutral_Players);});} );
+            //Death_Cleanup_trigger = CreateTrigger();
+            //ForForce(bj_FORCE_ALL_PLAYERS,function(){TriggerRegisterPlayerUnitEvent(Death_Cleanup_trigger,GetEnumPlayer(),EVENT_PLAYER_UNIT_DEATH,function()->boolean {return IsPlayerInForce(GetTriggerPlayer(),Neutral_Players);});} );
             Neutral_Players = CreateForce();
-            TriggerAddAction(Death_Cleanup_trigger, function() {ClearOrder(GetDyingUnit());});
+            //TriggerAddAction(Death_Cleanup_trigger, function() {ClearOrder(GetDyingUnit());});
         }
 }
 
