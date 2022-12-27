@@ -8030,12 +8030,21 @@ endfunction
 function EnableAnyDmgReturnTriggers takes nothing returns nothing
 call EnableTrigger(gg_trg_revenge)
 endfunction
-function Trig_Untitled_Trigger_001_Condition takes nothing returns boolean
+function GeneralTargetFilter takes unit u returns boolean
+    if(GetUnitAbilityLevel(u,'ACC7')>0) then
+    return false
+    endif
+    if(GetUnitAbilityLevel(u,'Aloc')>0) then 
+    return false
+    endif
+    return true
+endfunction
+function Trig_Dwarf_spell_Condition takes nothing returns boolean
 local unit atacked=GetTriggerUnit()
 local unit atacker=GetEventDamageSource()
 local unit dumy
 local integer lvl=GetUnitAbilityLevel(atacked,revengeid)
-if(not isDumy(atacker)and atacked!=null and atacker!=null and lvl>0 and (not IsUnitType(atacker,UNIT_TYPE_HERO) and (GetEventDamage()>0.4)) or (GetEventDamage()>GetRandomReal(0,50)))then
+if(not GeneralTargetFilter(atacker)and atacked!=null and atacker!=null and lvl>0 and (not IsUnitType(atacker,UNIT_TYPE_HERO) and (GetEventDamage()>0.4)) or (GetEventDamage()>GetRandomReal(0,50)))then
 set dumy=CreateDumy(GetOwningPlayer(atacked),GetUnitX(atacked),GetUnitY(atacked))
 call UnitAddAbility(dumy,RevengeThunderbolt)
 call SetUnitAbilityLevel(dumy,RevengeThunderbolt,GetUnitAbilityLevel(atacked,revengeid))
@@ -8094,7 +8103,7 @@ endif
 endfunction
 function InitTrig_revenge takes nothing returns nothing
 set gg_trg_revenge=CreateTrigger()
-call TriggerAddCondition(gg_trg_revenge,Condition(function Trig_Untitled_Trigger_001_Condition))
+call TriggerAddCondition(gg_trg_revenge,Condition(function Trig_Dwarf_spell_Condition))
 endfunction
 function Bounty takes player whichplayer,integer bounty,real x,real y returns nothing
 local texttag t=CreateTextTag()
@@ -8661,13 +8670,28 @@ function AddSpecialEffectIfNotBuilding takes string name, unit u, string attach 
 endfunction
 function CreateUnitBonuses takes player p,integer id,real x,real y,real facing returns unit
     set bj_lastCreatedUnit=CreateUnit(p,id,x,y,facing)
-    call AddRevengeCheck(bj_lastCreatedUnit)
-    call ApplyAllBonuses1(bj_lastCreatedUnit)
-    if(not udg_NO_FLYING_UNITS) then
-        call AddFlyingUnits(bj_lastCreatedUnit)
-    endif
-    call UnitApplyAdditionalEvolutions(bj_lastCreatedUnit)
     return bj_lastCreatedUnit
+endfunction
+
+function AddUnitBonusesCreated takes nothing returns nothing
+    call AddRevengeCheck(GetTriggerUnit())
+    call ApplyAllBonuses1(GetTriggerUnit())
+    if(not udg_NO_FLYING_UNITS) then
+        call AddFlyingUnits(GetTriggerUnit())
+    endif
+    call UnitApplyAdditionalEvolutions(GetTriggerUnit())
+endfunction
+function GeneralTargetCondition takes nothing returns boolean
+    return GeneralTargetFilter(GetTriggerUnit())
+
+endfunction
+
+
+function AddUnitBonusesCreatedInit takes nothing returns nothing
+    local trigger t = CreateTrigger()
+    call TriggerRegisterEnterRectSimple( t, GetPlayableMapRect() )
+    call TriggerAddCondition(t,function GeneralTargetCondition)
+    call TriggerAddAction( t, function AddUnitBonusesCreated )
 endfunction
 function ChangeUnit2 takes unit u,integer uid returns unit
 local unit u2
@@ -19189,15 +19213,6 @@ return true
 endfunction
 function Trig_reset_trees_Copy_Func001A takes nothing returns nothing
 call DestructableRestoreLife(GetEnumDestructable(),GetDestructableMaxLife(GetEnumDestructable()),true)
-endfunction
-function GeneralTargetFilter takes unit u returns boolean
-if(GetUnitAbilityLevel(u,'ACC7')>0) then
-return false
-endif
-if(GetUnitAbilityLevel(u,'Aloc')>0) then 
-return false
-endif
-return true
 endfunction
 function GeneralTargetFilterEnum takes nothing returns boolean
 return GeneralTargetFilter(GetEnumUnit())
@@ -41170,6 +41185,7 @@ function InitCustomTriggers2 takes nothing returns nothing
 call TimerStart(CreateTimer(),6,false,function InitStunDispatchers)
 call LuaCall_Init()
 call init_rect_control()
+call AddUnitBonusesCreatedInit()
 call InitTrig_Dead_area_top_left()
 call InitTrig_Dead_area_bot_left()
 call InitTrig_Dead_area_bot_right()
