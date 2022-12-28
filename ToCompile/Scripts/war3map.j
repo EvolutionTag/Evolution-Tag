@@ -2503,12 +2503,12 @@ destructable gg_dest_ATg3_1010=null
 destructable gg_dest_ATg1_0502=null
 destructable gg_dest_ATg1_0915=null
 constant boolean LIBRARY_DestructableLib=true
-constant integer DestructableLib___DUMMY_UNIT_ID=0x68666F6F
+constant integer DestructableLib___DUMMY_UNIT_ID='dDUM'
 constant integer DestructableLib___HARVEST_ID=0x4168726C
 constant player DestructableLib___OWNING_PLAYER=Player(15)
 unit DestructableLib___dummy=null
 constant boolean LIBRARY_KBS=true
-constant integer KBS__DUMMY_ID=0x68303345
+constant integer KBS__DUMMY_ID='dDUM'
 constant real KBS__INTERVAL=0.04
 constant string KBS__ATTACH_POINT="chest"
 constant string KBS__WATER_SFX="war3mapImported\\SlideWater.mdx"
@@ -2559,7 +2559,7 @@ integer TimerUtils__tN=0
 constant integer TimerUtils__HELD=0x28829022
 boolean TimerUtils__didinit=false
 constant boolean LIBRARY_xebasic=true
-constant integer XE_DUMMY_UNITID=0x65303046
+constant integer XE_DUMMY_UNITID='dDUM'
 constant integer XE_HEIGHT_ENABLER=0x416D7266
 constant integer XE_TREE_RECOGNITION=0x41656174
 constant real XE_ANIMATION_PERIOD=0.025
@@ -2672,8 +2672,8 @@ constant real FireRun__MaxDistance=800
 constant real FireRun__DelayedRemoval=1.5
 timer FireRun__t=CreateTimer()
 constant integer TimeStop__SPELL_ID=0x41303355
-constant integer TimeStop__DUMMY_ID=0x68303152
-constant integer TimeStop__EFFECT_DUMMY_ID=0x68303153
+constant integer TimeStop__DUMMY_ID='dDUM'
+constant integer TimeStop__EFFECT_DUMMY_ID='dDUM'
 hashtable TimeStop__Hash
 unit TimeStop__TemporareCaster
 boolexpr TimeStop__Target_Checker
