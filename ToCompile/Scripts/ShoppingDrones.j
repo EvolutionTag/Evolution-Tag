@@ -168,7 +168,7 @@ library ShoppingDrones
         UnitApplyTimedLife(u,'BTLF',60);
         UnitHideMovement(u);
         AddItemToStock(u,'AS30',5,5);
-        AddItemToStock(u,'manh',5,5);
+        AddItemToStock(u,'manh',1,1);
         AddItemToStock(u,'bspd',5,5);
         AddItemToStock(u,'I00J',5,5);
         AddItemToStock(u,'brac',5,5);
