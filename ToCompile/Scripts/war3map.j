@@ -8598,7 +8598,7 @@ if(GetUnitAbilityLevel(u,'ACC5')>0 or GetUnitAbilityLevel(u,'ACC1')>0 or GetUnit
 return 1.
 endif
 if(GetUnitAbilityLevel(u,'ACCF')>0)then
-return 0.25
+return 0.1
 endif
 return 0.25
 endfunction
