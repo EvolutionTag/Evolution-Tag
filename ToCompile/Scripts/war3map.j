@@ -16002,15 +16002,23 @@ set udg_trg_MAP_INIT_and_QUESTS=CreateTrigger()
 call TriggerRegisterTimerEventSingle(udg_trg_MAP_INIT_and_QUESTS,0.01)
 call TriggerAddAction(udg_trg_MAP_INIT_and_QUESTS,function Trig_MAP_INIT_and_QUESTS_Actions)
 endfunction
+function CreateAlchemistWithChance takes real x, real y returns nothing
+    if(GetRandomReal(0,1)<0.7) then
+        call CreateUnitBonuses(Player(PLAYER_NEUTRAL_PASSIVE),'n01Z',x,y,bj_UNIT_FACING)
+        call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
+        //call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+    endif
+endfunction
 function Trig_uu_merchants_Actions takes nothing returns nothing
-local integer idx = 0
-loop 
-    exitwhen idx==8
-    call CreateNUnitsAtLocBonuses(1,'n01Z',Player(PLAYER_NEUTRAL_PASSIVE),GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds),bj_UNIT_FACING)
-    call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-    //call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
-    set idx = idx + 1
-endloop
+    call CreateAlchemistWithChance(3200, 450)
+    call CreateAlchemistWithChance(3776, -2862)
+    call CreateAlchemistWithChance(0, -3800)
+    call CreateAlchemistWithChance(2800, -2170)
+    call CreateAlchemistWithChance(-3500, 2937)
+    call CreateAlchemistWithChance(1730, 2187)
+    call CreateAlchemistWithChance(0, 3180)
+    call CreateAlchemistWithChance(-3314, 443)
+    call CreateAlchemistWithChance(-2677, -3332)
 endfunction
 function InitTrig_uu_merchants takes nothing returns nothing
 set udg_trg_uu_merchants=CreateTrigger()
