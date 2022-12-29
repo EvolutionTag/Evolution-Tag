@@ -9,6 +9,7 @@
 		"Scripts\\TestCommandBarButtons.lua",
 		"Scripts\\ClearScreen.lua",
         "Scripts\\serializer.lua",
+		"Scripts\\Order.lua",
 		"Scripts\\DataDump.lua",
 		"Scripts\\chatcommands.lua",
 		"Scripts\\DebugC.lua",

@@ -81,6 +81,7 @@ function DumpData(name)
 			handle["orderid"] = orderid
 			handle["order"] = OrderId2String(orderid)
 		end
+		handle["exorder"] = Order.SerializeUnitOrder(u)
 		handle["TS"] = GetUnitTurnSpeed(u)
 		handle["PropWindow"] = GetUnitPropWindow(u)
 		handle["Fly Height"] = GetUnitFlyHeight(u)
