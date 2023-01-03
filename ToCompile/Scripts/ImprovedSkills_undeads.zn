@@ -8,7 +8,7 @@ library ImprovedSkillsUndeads requires SkillCastStat {
 
         //AddAbility('AUan', SKILL_FIELD_OFFSET_DATAA, 1,1,0,0,0.05,0,0);  //finger of death
 
-        AddAbility('ANdr', SKILL_FIELD_OFFSET_DATAA, 0,75,0.25,0.25,0.25,0,0);  //suck this hp (mannoroth)
+        AddAbility('ANdr', SKILL_FIELD_OFFSET_DATAA, 35,15,0.25,0.25,0.25,0,0);  //suck this hp (mannoroth)
 
         AddAbility('A0GB', SKILL_FIELD_OFFSET_DATAB, 0,75,0,0,0.7,0,0);  //frost blizzard
 
