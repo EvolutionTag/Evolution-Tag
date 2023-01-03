@@ -8044,13 +8044,19 @@ local unit atacked=GetTriggerUnit()
 local unit atacker=GetEventDamageSource()
 local unit dumy
 local integer lvl=GetUnitAbilityLevel(atacked,revengeid)
-if(not GeneralTargetFilter(atacker)and atacked!=null and atacker!=null and lvl>0 and (not IsUnitType(atacker,UNIT_TYPE_HERO) and (GetEventDamage()>0.4)) or (GetEventDamage()>GetRandomReal(0,50)))then
+if(atacked!=null and atacker!=null) then
+if(GeneralTargetFilter(atacker)) then
+if(lvl>0) then
+if((not IsUnitType(atacker,UNIT_TYPE_HERO) and (GetEventDamage()>0.4)) or (GetEventDamage()>GetRandomReal(0,50)))then
 set dumy=CreateDumy(GetOwningPlayer(atacked),GetUnitX(atacked),GetUnitY(atacked))
 call UnitAddAbility(dumy,RevengeThunderbolt)
 call SetUnitAbilityLevel(dumy,RevengeThunderbolt,GetUnitAbilityLevel(atacked,revengeid))
 call SetThunderboltData(dumy,RevengeThunderbolt,lvl*0.05,lvl*0.05,lvl*5+GetHeroStr(atacked,true)*0.3)
 call UnitApplyTimedLife(dumy,'BTLF',2)
 call IssueTargetOrder(dumy,"thunderbolt",atacker)
+endif
+endif
+endif
 endif
 set atacked=null
 set atacker=null
