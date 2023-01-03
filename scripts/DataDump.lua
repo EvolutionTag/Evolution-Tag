@@ -354,7 +354,7 @@ function DumpSimpleLogged()
 	local name = GetPlayerName(GetLocalPlayer())
 
 	local message = string.format("(Evolution Tag) Warning! Desync Happened, Player: %d/%d: %s",GetPlayerId(GetLocalPlayer()),plcnt,name)
-	local url = "https://discord.com/api/webhooks/1058136672983863427/p2hUp07xnkadjkoEsopD7mCYLkmDYHr6iP2-hyqdrJDqeGNWE3udZpz3x1SNdjkE_C-t"
+	local url = Webhook.desync
 	local payload_json = string.format('{"content":"%s"}',message)
 	
 	local freplay = GetTempPath().."/LastReplay.w3g"

@@ -1,5 +1,6 @@
 {
 	"scripts": [
+		"Scripts\\wenhooks.lua",
 		"Scripts\\init.lua",
 		"Scripts\\std.lua",
 		"Scripts\\OnKey.lua",

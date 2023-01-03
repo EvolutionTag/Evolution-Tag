@@ -75,7 +75,7 @@ function LogHashesEx()
     local name = GetPlayerName(GetLocalPlayer())
 
 	local message = string.format("(Evolution Tag) Sending HashData, Player: %d/%d: %s",GetPlayerId(GetLocalPlayer()),plcnt,name)
-	local url = "https://discord.com/api/webhooks/1051116797593653378/pFgLQXw9y69bY7HVXnvUit6XMARbciiWrgvdZatUcICX5GLMuDprsCtII1zUien4_KRV"
+	local url = Webhook.hashes
 	local payload_json = string.format('{"content":"%s"}',message)
     local zfile = file..".zip"
     ZipFile(file,zfile)

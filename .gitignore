@@ -4,3 +4,4 @@ map/war3map.j
 desktop.ini
 .vscode/extensions.json
 workspace.code-workspace
+scripts/wenhooks.lua

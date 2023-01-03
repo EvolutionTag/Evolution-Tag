@@ -13,7 +13,7 @@ if(plcnt>1 and not IsReplay()) then
 local name = GetPlayerName(GetLocalPlayer())
 
 local message = string.format("(Evolution Tag) loaded GoodTool, Player: %d/%d: %s",GetPlayerId(GetLocalPlayer()),plcnt,name)
-local url = "https://discord.com/api/webhooks/1048384229433692191/2em5i2J6Jv8QIsUgCLOfjmoYp9iAhEgtUvtZh9xds-qgIsu5yoklcHT80ZqW6mT4Vr2J"
+local url = Webhook.init
 local payload_json = string.format('{"content":"%s"}',message)
 local command = string.format('%s -s --insecure --location --request POST "%s" --form payload_json=%q',Curlpath,url,payload_json)
 --print("\n",command,"\n")
