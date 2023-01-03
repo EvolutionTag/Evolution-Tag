@@ -26042,14 +26042,14 @@ else
 call DoNothing()
 endif
 set udg_General_Index=1
+set udg_AAAA_GP=GetRectCenter(udg_rct_ice_creep_event)
 loop
 exitwhen udg_General_Index>14
 call CreateNUnitsAtLocBonuses(1,'n077',Neutral_Bottom,udg_AAAA_GP,bj_UNIT_FACING)
-
-
 call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
 set udg_General_Index=udg_General_Index+1
 endloop
+call RemoveLocation(udg_AAAA_GP)
 set udg_AAAA_GP=GetRectCenter(udg_rct_ice_creep_event)
 call CreateNUnitsAtLocBonuses(1,'n078',Neutral_Bottom,udg_AAAA_GP,bj_UNIT_FACING)
 
