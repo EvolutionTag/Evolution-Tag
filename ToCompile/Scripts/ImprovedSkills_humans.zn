@@ -44,7 +44,7 @@ library ImprovedSkillsHumans requires SkillCastStat {
         AddAbility('AEsh', SKILL_FIELD_OFFSET_DATAA, 0,10,0,0.5,0,0,0);  
 
 
-        AddAbility('A0KK', SKILL_FIELD_OFFSET_DATAA, 150,50,0,2,0,0,0);  //Fire!
+        AddAbility('A0KK', SKILL_FIELD_OFFSET_DATAA, 150,50,0,0,0,0,0);  //Fire!
 
         AddAbility('ACmf', SKILL_FIELD_OFFSET_DATAA, 0,1,0,0.03,0,0,0);  //magic shield marine
         
