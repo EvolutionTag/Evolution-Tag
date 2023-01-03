@@ -26046,6 +26046,7 @@ set udg_AAAA_GP=GetRectCenter(udg_rct_ice_creep_event)
 loop
 exitwhen udg_General_Index>14
 call CreateNUnitsAtLocBonuses(1,'n077',Neutral_Bottom,udg_AAAA_GP,bj_UNIT_FACING)
+call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
 call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
 set udg_General_Index=udg_General_Index+1
 endloop
