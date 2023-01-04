@@ -8688,7 +8688,7 @@ function AddUnitBonusesCreated takes nothing returns nothing
     call UnitApplyAdditionalEvolutions(GetTriggerUnit())
 endfunction
 function GeneralTargetCondition takes nothing returns boolean
-    return GeneralTargetFilter(GetTriggerUnit())
+    return GeneralTargetFilter(GetTriggerUnit()) and (not IsUnitIllusion(GetTriggerUnit()))
 
 endfunction
 
