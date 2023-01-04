@@ -16012,7 +16012,7 @@ function CreateAlchemistWithChance takes real x, real y returns nothing
     if(GetRandomReal(0,1)<0.7) then
         call CreateUnitBonuses(Player(PLAYER_NEUTRAL_PASSIVE),'n01Z',x,y,bj_UNIT_FACING)
         call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-        //call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+        //call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
     endif
 endfunction
 function Trig_uu_merchants_Actions takes nothing returns nothing
@@ -17998,7 +17998,7 @@ call TriggerAddAction(udg_trg_ultimate_farm_construction,function Trig_ultimate_
 endfunction
 function Trig_BOSSes_AI_Func001Func002A takes nothing returns nothing
 local location target = GetRandomLocInRect(MainMap)
-call IssuePointOrderLocBJ(GetEnumUnit(),"patrol",target)
+call IssuePointOrderLocBJ(GetEnumUnit(),"attack",target)
 call RemoveLocation(target)
 set target = null
 endfunction
@@ -18314,9 +18314,9 @@ set udg_Topleft_Integer_Chance=GetRandomInt(1,20)
 if(Trig_Naga_Spawns_Func008C())then
 
 
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_outa_bounds_2)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_excluding_outa_bounds_2)
 else
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 endif
 endfunction
 function InitTrig_Naga_Spawns takes nothing returns nothing
@@ -18361,9 +18361,9 @@ call CreateNUnitsAtLocBonuses(1,'ngno',Neutral_Bottom,udg_AAAA_GP,bj_UNIT_FACING
 call RemoveLocation(udg_AAAA_GP)
 set udg_Topleft_Integer_Chance=GetRandomInt(1,20)
 if(Trig_Gnoll_Spawn_Func008C())then
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_outa_bounds_2)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_excluding_outa_bounds_2)
 else
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 endif
 endfunction
 function InitTrig_Gnoll_Spawn takes nothing returns nothing
@@ -18408,9 +18408,9 @@ call CreateNUnitsAtLocBonuses(1,'ntkf',Neutral_Bottom,udg_AAAA_GP,bj_UNIT_FACING
 call RemoveLocation(udg_AAAA_GP)
 set udg_Topleft_Integer_Chance=GetRandomInt(1,20)
 if(Trig_Ice_Spawn_Func008C())then
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_outa_bounds_2)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_excluding_outa_bounds_2)
 else
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 endif
 endfunction
 function InitTrig_Ice_Spawn takes nothing returns nothing
@@ -18455,9 +18455,9 @@ call CreateNUnitsAtLocBonuses(1,'h07O',Neutral_Satyrs,udg_AAAA_GP,bj_UNIT_FACING
 call RemoveLocation(udg_AAAA_GP)
 set udg_Topleft_Integer_Chance=GetRandomInt(1,20)
 if(Trig_Pirate_Spawn_Func008C())then
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_outa_bounds_2)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_excluding_outa_bounds_2)
 else
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 endif
 endfunction
 function InitTrig_Pirate_Spawn takes nothing returns nothing
@@ -18785,7 +18785,7 @@ if(Trig_Satyr_Spawn_Func003C())then
 call CreateNUnitsAtLocBonuses(1,'n05X',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
 call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
 
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 else
 endif
 endfunction
@@ -18804,18 +18804,18 @@ call EnableTrigger(udg_trg_Pigs_lvl_1_spawn)
 set udg_AAAA_GP=GetUnitLoc(udg_unit_h01G_0084)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
 call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
 call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 call RemoveLocation(udg_AAAA_GP)
 set udg_AAAA_GP2=GetUnitLoc(udg_unit_h01G_0215)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
 call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
 call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 call RemoveLocation(udg_AAAA_GP2)
 endfunction
 function InitTrig_Level_1 takes nothing returns nothing
@@ -18844,12 +18844,12 @@ call CreateNUnitsAtLocBonuses(1,'n05Y',Neutral_Satyrs,udg_SatyrBarracks_Point,bj
 call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
 
 
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
 call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
 
 
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 else
 endif
 endfunction
@@ -18872,24 +18872,24 @@ call EnableTrigger(udg_trg_Pigs_lvl_2_spawn)
 set udg_AAAA_GP=GetUnitLoc(udg_unit_h01G_0084)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
 call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
 call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 call CreateNUnitsAtLocBonuses(1,'n05Z',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
 call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 call RemoveLocation(udg_AAAA_GP)
 set udg_AAAA_GP2=GetUnitLoc(udg_unit_h01G_0215)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
 call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
 call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 call CreateNUnitsAtLocBonuses(1,'n05Z',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
 call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 call RemoveLocation(udg_AAAA_GP2)
 endfunction
 function InitTrig_Level_2 takes nothing returns nothing
@@ -18918,17 +18918,17 @@ call CreateNUnitsAtLocBonuses(1,'n05Y',Neutral_Satyrs,udg_SatyrBarracks_Point,bj
 call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
 
 
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
 call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
 
 
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 call CreateNUnitsAtLocBonuses(1,'n05Z',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
 call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
 
 
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 else
 endif
 endfunction
@@ -18951,24 +18951,24 @@ call EnableTrigger(udg_trg_Pigs_lvl_3_spawn)
 set udg_AAAA_GP=GetUnitLoc(udg_unit_h01G_0084)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
 call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
 call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 call CreateNUnitsAtLocBonuses(1,'n05Z',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
 call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 call RemoveLocation(udg_AAAA_GP)
 set udg_AAAA_GP2=GetUnitLoc(udg_unit_h01G_0215)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
 call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
 call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 call CreateNUnitsAtLocBonuses(1,'n05Z',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
 call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 call RemoveLocation(udg_AAAA_GP2)
 endfunction
 function InitTrig_Level_3 takes nothing returns nothing
@@ -18986,12 +18986,12 @@ function Trig_Level_3_Part_2_Actions takes nothing returns nothing
 //call PrintHidden("Trig_Level_3_Part_2_Actions")
 // set udg_AAAA_GP=GetUnitLoc(udg_unit_h01G_0084)
 // call CreateNUnitsAtLocBonuses(1,'n060',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
-// call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+// call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 //call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
 // call RemoveLocation(udg_AAAA_GP)
 // set udg_AAAA_GP2=GetUnitLoc(udg_unit_h01G_0215)
 // call CreateNUnitsAtLocBonuses(1,'n060',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
-// call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+// call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 //call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
 // call RemoveLocation(udg_AAAA_GP2)
 endfunction
@@ -19019,7 +19019,7 @@ function Trig_Pigs_lvl_3_spawn_Actions takes nothing returns nothing
 if(Trig_Pigs_lvl_3_spawn_Func003C())then
 // call CreateNUnitsAtLocBonuses(1,'n060',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
 //call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-// call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+// call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 else
 endif
 endfunction
@@ -19166,7 +19166,7 @@ if(Trig_Creature_Event_Func001C())then
 call DisplayTimedTextToForce(GetPlayersAll(),7.50,"|cffffff00A creature approaches!|r")
 call EnumDestructablesInRectAll(udg_rct_Region_248,function Trig_Creature_Event_Func001Func002A)
 call CreateNUnitsAtLocBonuses(1,'n04I',Neutral_Satyrs,GetRectCenter(udg_rct_ABC_loc_4),bj_UNIT_FACING)
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 set udg_ABC_Creature=GetLastCreatedUnit()
 call CreateNUnitsAtLocBonuses(1,'h05O',Neutral_Satyrs,GetUnitLoc(GetLastCreatedUnit()),bj_UNIT_FACING)
 call IssueTargetOrderBJ(GetLastCreatedUnit(),"bloodlust",udg_ABC_Creature)
@@ -19176,7 +19176,7 @@ if(Trig_Creature_Event_Func002C())then
 call DisplayTimedTextToForce(GetPlayersAll(),7.50,"|cffffff00A creature approaches!|r")
 call EnumDestructablesInRectAll(udg_rct_Region_249,function Trig_Creature_Event_Func002Func002A)
 call CreateNUnitsAtLocBonuses(1,'n04I',Neutral_Satyrs,GetRectCenter(udg_rct_ABC_loc_5),bj_UNIT_FACING)
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 set udg_ABC_Creature=GetLastCreatedUnit()
 call CreateNUnitsAtLocBonuses(1,'h05O',Neutral_Satyrs,GetUnitLoc(GetLastCreatedUnit()),bj_UNIT_FACING)
 call IssueTargetOrderBJ(GetLastCreatedUnit(),"bloodlust",udg_ABC_Creature)
@@ -19185,7 +19185,7 @@ endif
 if(Trig_Creature_Event_Func004C())then
 call DisplayTimedTextToForce(GetPlayersAll(),7.50,"|cffffff00A creature approaches!|r")
 call CreateNUnitsAtLocBonuses(1,'nhar',Neutral_Satyrs,GetRectCenter(udg_rct_ABC_loc_1),bj_UNIT_FACING)
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 else
 endif
 if(Trig_Creature_Event_Func005C())then
@@ -23111,11 +23111,11 @@ endif
 return true
 endfunction
 function Trig_Gate_destroyed_Func001A takes nothing returns nothing
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_FB_Human_Side)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_FB_Human_Side)
 
 endfunction
 function Trig_Gate_destroyed_Func002A takes nothing returns nothing
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_FB_Undead_Side)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_FB_Undead_Side)
 endfunction
 function Trig_Gate_destroyed_Actions takes nothing returns nothing
 call ForGroupBJ(udg_FB_Neutral_Group[1],function Trig_Gate_destroyed_Func001A)
@@ -23658,7 +23658,7 @@ call TriggerAddAction(udg_trg_coins,function Trig_coins_Actions)
 endfunction
 function Trig_Spawn_Golden_Chickens_Actions takes nothing returns nothing
 call CreateNUnitsAtLoc(1,'n010',Player(PLAYER_NEUTRAL_PASSIVE),GetRandomLocInRect(udg_rct_The_ring_of_trees),bj_UNIT_FACING)
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 endfunction
 function InitTrig_Spawn_Golden_Chickens takes nothing returns nothing
 set udg_trg_Spawn_Golden_Chickens=CreateTrigger()
@@ -23695,7 +23695,7 @@ function Trig_Spawn_Bunnies_Actions takes nothing returns nothing
 set udg_Rabbit_Point=GetRandomLocInRect(udg_rct_The_ring_of_trees)
 call CreateNUnitsAtLoc(1,'necr',Player(PLAYER_NEUTRAL_PASSIVE),udg_Rabbit_Point,bj_UNIT_FACING)
 call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 call RemoveLocation(udg_Rabbit_Point)
 endfunction
 function InitTrig_Spawn_Bunnies takes nothing returns nothing
@@ -23727,13 +23727,13 @@ if(Trig_Spawn_Special_Bunny_Func002C())then
 set udg_Rabbit_Point=GetRandomLocInRect(udg_rct_Entire_map_excluding_outa_bounds_2)
 call CreateNUnitsAtLocBonuses(1,'necr',Player(PLAYER_NEUTRAL_PASSIVE),udg_Rabbit_Point,bj_UNIT_FACING)
 call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 call SetUnitVertexColorBJ(GetLastCreatedUnit(),66.00,25.00,100,0)
 else
 set udg_Rabbit_Point=GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
 call CreateNUnitsAtLocBonuses(1,'necr',Player(PLAYER_NEUTRAL_PASSIVE),udg_Rabbit_Point,bj_UNIT_FACING)
 call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 call SetUnitVertexColorBJ(GetLastCreatedUnit(),66.00,25.00,100,0)
 endif
 call RemoveLocation(udg_Rabbit_Point)
@@ -25460,7 +25460,7 @@ set udg_AAAA_GP2=GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
 call CreateNUnitsAtLocBonuses(1,'n079',Neutral_Nagas,udg_AAAA_GP,bj_UNIT_FACING)
 
 
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 call RemoveLocation(udg_AAAA_GP)
 call RemoveLocation(udg_AAAA_GP2)
 set udg_General_Index=udg_General_Index+1
@@ -25489,7 +25489,7 @@ exitwhen udg_General_Index>20
 set udg_AAAA_GP=GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
 call CreateNUnitsAtLoc(1,'necr',Player(PLAYER_NEUTRAL_PASSIVE),udg_AAAA_GP,bj_UNIT_FACING)
 call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 call RemoveLocation(udg_AAAA_GP)
 set udg_General_Index=udg_General_Index+1
 endloop
@@ -25519,7 +25519,7 @@ function Trig_Massive_Rabbit_Event_Copy_Actions takes nothing returns nothing
 call DisplayTimedTextToForce(GetPlayersAll(),10.00,"|cffff0000A golden chicken has just spawned somewhere!!|r")
 set udg_AAAA_GP=GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
 call CreateNUnitsAtLoc(1,'n010',Player(PLAYER_NEUTRAL_PASSIVE),udg_AAAA_GP,bj_UNIT_FACING)
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 call RemoveLocation(udg_AAAA_GP)
 endfunction
 function InitTrig_Massive_Rabbit_Event_Copy takes nothing returns nothing
@@ -25760,7 +25760,7 @@ endif
 return true
 endfunction
 function Trig_New_random_events_Func006Func005A takes nothing returns nothing
-call NeutralIssueOrderRandomLocInRect(GetEnumUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(GetEnumUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 endfunction
 function Trig_New_random_events_Func006C takes nothing returns boolean
 if(not(udg_AAAA_RandomEventChance==6))then
@@ -25834,7 +25834,7 @@ if(Trig_New_random_events_Func007C())then
 call DisplayTimedTextToForce(GetPlayersAll(),10.00,"|cffff00ffA Furious JungleStalker has spawned near the middle!!|r")
 set udg_AAAA_GP=GetRectCenter(udg_rct_Region_162)
 call CreateNUnitsAtLocBonuses(1,'n05O',Neutral_Satyrs,udg_AAAA_GP,bj_UNIT_FACING)
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 call PlaySoundBJ(udg_snd_GoodJob)
 call KillSoundWhenDoneBJ(GetLastPlayedSound())
 else
@@ -25881,7 +25881,7 @@ call CreateNUnitsAtLocBonuses(1,'n05M',Neutral_Satyrs,udg_AAAA_GP,bj_UNIT_FACING
 
 call AddSpecialEffectLocBJ(udg_AAAA_GP,"Objects\\Spawnmodels\\Naga\\NagaDeath\\NagaDeath.mdl")
 call DestroyEffectBJ(GetLastCreatedEffectBJ())
-call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_TurtleRestPoint)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"attack",udg_AAAA_TurtleRestPoint)
 call RemoveLocation(udg_AAAA_GP)
 if(Trig_Tortle_Spawn_Func008C())then
 call DisableTrigger(GetTriggeringTrigger())
@@ -25903,7 +25903,7 @@ call CreateNUnitsAtLocBonuses(1,'n05N',Neutral_Satyrs,udg_AAAA_GP,bj_UNIT_FACING
 
 call AddSpecialEffectLocBJ(udg_AAAA_GP,"Objects\\Spawnmodels\\Naga\\NagaDeath\\NagaDeath.mdl")
 call DestroyEffectBJ(GetLastCreatedEffectBJ())
-call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_TurtleRestPoint)
+call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"attack",udg_AAAA_TurtleRestPoint)
 call RemoveLocation(udg_AAAA_GP)
 endfunction
 function InitTrig_reef_ele_Spawn takes nothing returns nothing
@@ -26047,7 +26047,7 @@ loop
 exitwhen udg_General_Index>14
 call CreateNUnitsAtLocBonuses(1,'n077',Neutral_Bottom,udg_AAAA_GP,bj_UNIT_FACING)
 call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 set udg_General_Index=udg_General_Index+1
 endloop
 call RemoveLocation(udg_AAAA_GP)
@@ -26055,11 +26055,11 @@ set udg_AAAA_GP=GetRectCenter(udg_rct_ice_creep_event)
 call CreateNUnitsAtLocBonuses(1,'n078',Neutral_Bottom,udg_AAAA_GP,bj_UNIT_FACING)
 
 
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 call RemoveLocation(udg_AAAA_GP)
 set udg_AAAA_GP=GetRectCenter(udg_rct_ice_creep_event)
 call CreateNUnitsAtLocBonuses(1,'nqb4',Neutral_Bottom,udg_AAAA_GP,bj_UNIT_FACING)
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 call RemoveLocation(udg_AAAA_GP)
 endfunction
 function InitTrig_Creep_attack_event takes nothing returns nothing
@@ -27196,7 +27196,7 @@ return true
 endfunction
 function Trig_Spawn_Boss_and_set_variable_Actions takes nothing returns nothing
 set udg_BOSS_UNIT = CreateUnitBonuses(Neutral_Satyrs,udg_BossType[GetRandomInt(1,2)],4029,-533,0)
-call NeutralIssueOrderRandomLocInRect(udg_BOSS_UNIT,"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(udg_BOSS_UNIT,"attack",udg_rct_Entire_map_AI_TARGEt)
 endfunction
 function InitTrig_Spawn_Boss_and_set_variable takes nothing returns nothing
 set udg_trg_Spawn_Boss_and_set_variable=CreateTrigger()
@@ -35248,10 +35248,10 @@ call TriggerAddAction(udg_trg_Mount_hippogryph,function Trig_Mount_hippogryph_Ac
 endfunction
 function Trig_Random_hippo_move_Actions takes nothing returns nothing
     set udg_General_Point2=GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
-    call IssuePointOrderLoc(udg_unit_ehip_0093,"patrol",udg_General_Point2)
+    call IssuePointOrderLoc(udg_unit_ehip_0093,"attack",udg_General_Point2)
     call RemoveLocation(udg_General_Point2)
     set udg_General_Point2=GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
-    call IssuePointOrderLoc(udg_unit_ehip_0092,"patrol",udg_General_Point2)
+    call IssuePointOrderLoc(udg_unit_ehip_0092,"attack",udg_General_Point2)
     call RemoveLocation(udg_General_Point2)
 endfunction
 function InitTrig_Random_hippo_move takes nothing returns nothing
