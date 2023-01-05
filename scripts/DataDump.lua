@@ -361,6 +361,8 @@ function DumpSimpleLogged()
 	local netdata = GetCNetData()
 	local zfile = file..".zip"
 	local zreplay = freplay..".zip"
+	os.execute(string.format("del %q",freplay))
+	os.execute(string.format("del %q",zreplay))
 	ZipFile(file,zfile)
 	ZipFile(freplay,zreplay)
 		thiscall2(AC.game+0x53e360,netdata,freplay) --save replay
