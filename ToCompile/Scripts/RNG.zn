@@ -35,6 +35,10 @@ library RNG {
         }
         return min+GenerateInt(rng,0,1000000)*(max-min)/1000000;
     }
+    public function GenerateRandomLocInRect(RNGenerator rng,rect r)->location
+    {
+        return Location(GenerateReal(rng,GetRectMinX(r),GetRectMaxX(r)),GenerateReal(rng,GetRectMinY(r),GetRectMaxY(r)));
+    }
 }
 
 

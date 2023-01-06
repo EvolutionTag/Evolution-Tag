@@ -15871,12 +15871,12 @@ call TriggerAddCondition(udg_trg_Stop_unit_dropping_item,Condition(function Trig
 call TriggerAddAction(udg_trg_Stop_unit_dropping_item,function Trig_Stop_unit_dropping_item_Actions)
 endfunction
 function Trig_lumber_spawn_in_top_left_tree_area_Actions takes nothing returns nothing
-call CreateItemLoc('I03L',GetRandomLocInRect(udg_rct_Top_Left_Tree_Area))
-call CreateItemLoc('I03L',GetRandomLocInRect(udg_rct_Top_Left_Tree_Area))
-call CreateItemLoc('I03L',GetRandomLocInRect(udg_rct_Top_Left_Tree_Area))
-call CreateItemLoc('I03L',GetRandomLocInRect(udg_rct_Top_Left_Tree_Area))
-call CreateItemLoc('I03L',GetRandomLocInRect(udg_rct_Top_Left_Tree_Area))
-call CreateItemLoc('I03L',GetRandomLocInRect(udg_rct_Top_Left_Tree_Area))
+call CreateItemLoc('I03L',GenerateRandomLocInRect(MainGenerator,udg_rct_Top_Left_Tree_Area))
+call CreateItemLoc('I03L',GenerateRandomLocInRect(MainGenerator,udg_rct_Top_Left_Tree_Area))
+call CreateItemLoc('I03L',GenerateRandomLocInRect(MainGenerator,udg_rct_Top_Left_Tree_Area))
+call CreateItemLoc('I03L',GenerateRandomLocInRect(MainGenerator,udg_rct_Top_Left_Tree_Area))
+call CreateItemLoc('I03L',GenerateRandomLocInRect(MainGenerator,udg_rct_Top_Left_Tree_Area))
+call CreateItemLoc('I03L',GenerateRandomLocInRect(MainGenerator,udg_rct_Top_Left_Tree_Area))
 endfunction
 function InitTrig_lumber_spawn_in_top_left_tree_area takes nothing returns nothing
 set udg_trg_lumber_spawn_in_top_left_tree_area=CreateTrigger()
@@ -16185,7 +16185,7 @@ endif
 return true
 endfunction
 function Trig_Spawn_Tree_Actions takes nothing returns nothing
-call CreateDestructableLoc('WTst',GetRandomLocInRect(udg_rct_The_ring_of_trees),GetRandomDirectionDeg(),1,0)
+call CreateDestructableLoc('WTst',GenerateRandomLocInRect(MainGenerator,udg_rct_The_ring_of_trees),GetRandomDirectionDeg(),1,0)
 call AddSpecialEffectLocBJ(GetDestructableLoc(GetLastCreatedDestructable()),"Abilities\\Spells\\Human\\DispelMagic\\DispelMagicTarget.mdl")
 call DestroyEffectBJ(GetLastCreatedEffectBJ())
 endfunction
@@ -17998,7 +17998,7 @@ call TriggerAddCondition(udg_trg_ultimate_farm_construction,Condition(function T
 call TriggerAddAction(udg_trg_ultimate_farm_construction,function Trig_ultimate_farm_construction_Actions)
 endfunction
 function Trig_BOSSes_AI_Func001Func002A takes nothing returns nothing
-local location target = GetRandomLocInRect(MainMap)
+local location target = GenerateRandomLocInRect(MainGenerator,MainMap)
 call IssuePointOrderLocBJ(GetEnumUnit(),"attack",target)
 call RemoveLocation(target)
 set target = null
@@ -19071,7 +19071,7 @@ return true
 endfunction
 function Trig_Raining_Pigs_Actions takes nothing returns nothing
 if(Trig_Raining_Pigs_Func001C())then
-set udg_General_Point=GetRandomLocInRect(udg_rct_Region_251)
+set udg_General_Point=GenerateRandomLocInRect(MainGenerator,udg_rct_Region_251)
 call CreateNUnitsAtLocBonuses(1,'n06A',Player(PLAYER_NEUTRAL_PASSIVE),udg_General_Point,bj_UNIT_FACING)
 call IssueImmediateOrderBJ(GetLastCreatedUnit(),"unravenform")
 call UnitApplyTimedLifeBJ(60.00,'BTLF',GetLastCreatedUnit())
@@ -19097,17 +19097,17 @@ function Trig_Rain_of_Fire_Event_Actions takes nothing returns nothing
 if(Trig_Rain_of_Fire_Event_Func001C())then
 call PlaySoundBJ(udg_snd_Hint)
 call DisplayTimedTextToForce(GetPlayersAll(),7.50,"|cffffff00Rain of Fire!|r")
-set udg_General_Point=GetRandomLocInRect(udg_rct_Region_251)
+set udg_General_Point=GenerateRandomLocInRect(MainGenerator,udg_rct_Region_251)
 call CreateNUnitsAtLocBonuses(1,'h075',Player(PLAYER_NEUTRAL_PASSIVE),udg_General_Point,bj_UNIT_FACING)
 call UnitApplyTimedLifeBJ(30.00,'BTLF',GetLastCreatedUnit())
 call IssuePointOrderLocBJ(GetLastCreatedUnit(),"rainoffire",udg_General_Point)
 call RemoveLocation(udg_General_Point)
-set udg_General_Point=GetRandomLocInRect(udg_rct_Region_251)
+set udg_General_Point=GenerateRandomLocInRect(MainGenerator,udg_rct_Region_251)
 call CreateNUnitsAtLocBonuses(1,'h075',Player(PLAYER_NEUTRAL_PASSIVE),udg_General_Point,bj_UNIT_FACING)
 call UnitApplyTimedLifeBJ(30.00,'BTLF',GetLastCreatedUnit())
 call IssuePointOrderLocBJ(GetLastCreatedUnit(),"rainoffire",udg_General_Point)
 call RemoveLocation(udg_General_Point)
-set udg_General_Point=GetRandomLocInRect(udg_rct_Region_251)
+set udg_General_Point=GenerateRandomLocInRect(MainGenerator,udg_rct_Region_251)
 call CreateNUnitsAtLocBonuses(1,'h075',Player(PLAYER_NEUTRAL_PASSIVE),udg_General_Point,bj_UNIT_FACING)
 call UnitApplyTimedLifeBJ(30.00,'BTLF',GetLastCreatedUnit())
 call IssuePointOrderLocBJ(GetLastCreatedUnit(),"rainoffire",udg_General_Point)
@@ -19193,7 +19193,7 @@ if(Trig_Creature_Event_Func005C())then
 call DisplayTimedTextToForce(GetPlayersAll(),7.50,"|cffffff00A creature approaches!|r")
 call EnumDestructablesInRectAll(udg_rct_Region_252,function Trig_Creature_Event_Func005Func002A)
 call CreateNUnitsAtLocBonuses(1,'n04K',Neutral_Satyrs,GetRectCenter(udg_rct_ABC_loc_3),bj_UNIT_FACING)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"selfdestruct",GetRandomLocInRect(udg_rct_Region_253))
+call IssuePointOrderLocBJ(GetLastCreatedUnit(),"selfdestruct",GenerateRandomLocInRect(MainGenerator,udg_rct_Region_253))
 else
 endif
 endfunction
@@ -19491,7 +19491,7 @@ endfunction
 function Trig_AAA_Fire_Guy_FireBolt_Copy_Actions takes nothing returns nothing
 set udg_AAA_FireGuyCastInterval=GenerateInt(MainGenerator, 1,5)
 if(Trig_AAA_Fire_Guy_FireBolt_Copy_Func003C())then
-set udg_AAA_FireGuyCastPoint=GetRandomLocInRect(udg_rct_The_ring_of_trees)
+set udg_AAA_FireGuyCastPoint=GenerateRandomLocInRect(MainGenerator,udg_rct_The_ring_of_trees)
 call IssuePointOrderLocBJ(udg_AAA_FireGuy,"blink",udg_AAA_FireGuyCastPoint)
 call RemoveLocation(udg_AAA_FireGuyCastPoint)
 else
@@ -20466,7 +20466,7 @@ return true
 endfunction
 function Trig_Duel_Copy_2_Func013A takes nothing returns nothing
 if(Trig_Duel_Copy_2_Func013Func001C())then
-set udg_AAAA_GP=GetRandomLocInRect(udg_Region1)
+set udg_AAAA_GP=GenerateRandomLocInRect(MainGenerator,udg_Region1)
 if((GetBooleanAnd((IsPlayerInForce(GetOwningPlayer(GetEnumUnit()),udg_Evil)==true),(IsUnitType(GetEnumUnit(),UNIT_TYPE_STRUCTURE)==false)))and(UnitAlive(GetEnumUnit())))then
 call CreateNUnitsAtLocBonuses(1,GetUnitTypeId(GetEnumUnit()),GetOwningPlayer(GetEnumUnit()),udg_AAAA_GP,bj_UNIT_FACING)
 call SetHeroXP(bj_lastCreatedUnit,GetHeroXP(GetEnumUnit()),true)
@@ -20516,7 +20516,7 @@ return true
 endfunction
 function Trig_Duel_Copy_2_Func015A takes nothing returns nothing
 if(Trig_Duel_Copy_2_Func015Func001C())then
-call CreateNUnitsAtLocBonuses(1,GetUnitTypeId(GetEnumUnit()),GetOwningPlayer(GetEnumUnit()),GetRandomLocInRect(udg_rct_Creep_duel_spawn),bj_UNIT_FACING)
+call CreateNUnitsAtLocBonuses(1,GetUnitTypeId(GetEnumUnit()),GetOwningPlayer(GetEnumUnit()),GenerateRandomLocInRect(MainGenerator,udg_rct_Creep_duel_spawn),bj_UNIT_FACING)
 else
 call DoNothing()
 endif
@@ -20574,7 +20574,7 @@ return true
 endfunction
 function Trig_Duel_Copy_2_Func018A takes nothing returns nothing
 if(Trig_Duel_Copy_2_Func018Func001C())then
-call CreateNUnitsAtLocBonuses(1,GetUnitTypeId(GetEnumUnit()),GetOwningPlayer(GetEnumUnit()),GetRandomLocInRect(udg_rct_Naga_duel_spawn_area),bj_UNIT_FACING)
+call CreateNUnitsAtLocBonuses(1,GetUnitTypeId(GetEnumUnit()),GetOwningPlayer(GetEnumUnit()),GenerateRandomLocInRect(MainGenerator,udg_rct_Naga_duel_spawn_area),bj_UNIT_FACING)
 else
 call DoNothing()
 endif
@@ -20665,7 +20665,7 @@ return true
 endfunction
 function Trig_Duel_Copy_2_Func021A takes nothing returns nothing
 if(Trig_Duel_Copy_2_Func021Func001C())then
-set udg_AAAA_GP=GetRandomLocInRect(udg_Region2)
+set udg_AAAA_GP=GenerateRandomLocInRect(MainGenerator,udg_Region2)
 if((GetBooleanAnd((IsPlayerInForce(GetOwningPlayer(GetEnumUnit()),udg_Humans)==true),(IsUnitType(GetEnumUnit(),UNIT_TYPE_SUMMONED)==false)))and(UnitAlive(GetEnumUnit())))then
 call CreateNUnitsAtLocBonuses(1,GetUnitTypeId(GetEnumUnit()),GetOwningPlayer(GetEnumUnit()),udg_AAAA_GP,bj_UNIT_FACING)
 call SetHeroXP(bj_lastCreatedUnit,GetHeroXP(GetEnumUnit()),true)
@@ -20843,19 +20843,19 @@ return true
 endfunction
 function Trig_Send_in_the_neutrals_Actions takes nothing returns nothing
 if(Trig_Send_in_the_neutrals_Func001C())then
-set udg_AAAA_GP=GetRandomLocInRect(udg_rct_Duel_area)
+set udg_AAAA_GP=GenerateRandomLocInRect(MainGenerator,udg_rct_Duel_area)
 call CreateNUnitsAtLocBonuses(1,'ngsp',Neutral_Satyrs,udg_AAAA_GP,bj_UNIT_FACING)
 call RemoveLocation(udg_AAAA_GP)
-set udg_AAAA_GP=GetRandomLocInRect(udg_rct_Duel_area)
+set udg_AAAA_GP=GenerateRandomLocInRect(MainGenerator,udg_rct_Duel_area)
 call CreateNUnitsAtLocBonuses(1,'ngrd',Neutral_Satyrs,udg_AAAA_GP,bj_UNIT_FACING)
 call RemoveLocation(udg_AAAA_GP)
 else
 endif
 if(Trig_Send_in_the_neutrals_Func002C())then
-set udg_AAAA_GP=GetRandomLocInRect(udg_rct_Top_right_forest_minigame)
+set udg_AAAA_GP=GenerateRandomLocInRect(MainGenerator,udg_rct_Top_right_forest_minigame)
 call CreateNUnitsAtLocBonuses(1,'ngsp',Neutral_Satyrs,udg_AAAA_GP,bj_UNIT_FACING)
 call RemoveLocation(udg_AAAA_GP)
-set udg_AAAA_GP=GetRandomLocInRect(udg_rct_Top_right_forest_minigame)
+set udg_AAAA_GP=GenerateRandomLocInRect(MainGenerator,udg_rct_Top_right_forest_minigame)
 call CreateNUnitsAtLocBonuses(1,'ngrd',Neutral_Satyrs,udg_AAAA_GP,bj_UNIT_FACING)
 call RemoveLocation(udg_AAAA_GP)
 else
@@ -21190,7 +21190,7 @@ set udg_Duel_Boolean=true
 set udg_General_Index=1
 loop
 exitwhen udg_General_Index>41
-set udg_AAAA_GP=GetRandomLocInRect(udg_rct_Random_tree_spawn_area)
+set udg_AAAA_GP=GenerateRandomLocInRect(MainGenerator,udg_rct_Random_tree_spawn_area)
 call CreateDestructableLoc('WTst',udg_AAAA_GP,GetRandomDirectionDeg(),1,0)
 call RemoveLocation(udg_AAAA_GP)
 set udg_General_Index=udg_General_Index+1
@@ -21248,7 +21248,7 @@ return true
 endfunction
 function Trig_Duel_in_forest_area_Copy_Func013A takes nothing returns nothing
 if(Trig_Duel_in_forest_area_Copy_Func013Func001C())then
-set udg_AAAA_GP=GetRandomLocInRect(udg_rct_undead_spawn_area_foest)
+set udg_AAAA_GP=GenerateRandomLocInRect(MainGenerator,udg_rct_undead_spawn_area_foest)
 if((GetBooleanAnd((IsPlayerInForce(GetOwningPlayer(GetEnumUnit()),udg_Evil)==true),(IsUnitType(GetEnumUnit(),UNIT_TYPE_STRUCTURE)==false)))and(UnitAlive(GetEnumUnit())))then
 call CreateNUnitsAtLocBonuses(1,GetUnitTypeId(GetEnumUnit()),GetOwningPlayer(GetEnumUnit()),udg_AAAA_GP,bj_UNIT_FACING)
 call SetHeroXP(bj_lastCreatedUnit,GetHeroXP(GetEnumUnit()),false)
@@ -21298,7 +21298,7 @@ return true
 endfunction
 function Trig_Duel_in_forest_area_Copy_Func015A takes nothing returns nothing
 if(Trig_Duel_in_forest_area_Copy_Func015Func001C())then
-call CreateNUnitsAtLocBonuses(1,GetUnitTypeId(GetEnumUnit()),GetOwningPlayer(GetEnumUnit()),GetRandomLocInRect(udg_rct_Region_110),bj_UNIT_FACING)
+call CreateNUnitsAtLocBonuses(1,GetUnitTypeId(GetEnumUnit()),GetOwningPlayer(GetEnumUnit()),GenerateRandomLocInRect(MainGenerator,udg_rct_Region_110),bj_UNIT_FACING)
 else
 call DoNothing()
 endif
@@ -21356,7 +21356,7 @@ return true
 endfunction
 function Trig_Duel_in_forest_area_Copy_Func018A takes nothing returns nothing
 if(Trig_Duel_in_forest_area_Copy_Func018Func001C())then
-call CreateNUnitsAtLocBonuses(1,GetUnitTypeId(GetEnumUnit()),GetOwningPlayer(GetEnumUnit()),GetRandomLocInRect(udg_rct_Region_111),bj_UNIT_FACING)
+call CreateNUnitsAtLocBonuses(1,GetUnitTypeId(GetEnumUnit()),GetOwningPlayer(GetEnumUnit()),GenerateRandomLocInRect(MainGenerator,udg_rct_Region_111),bj_UNIT_FACING)
 else
 call DoNothing()
 endif
@@ -21447,7 +21447,7 @@ return true
 endfunction
 function Trig_Duel_in_forest_area_Copy_Func021A takes nothing returns nothing
 if(Trig_Duel_in_forest_area_Copy_Func021Func001C())then
-set udg_AAAA_GP=GetRandomLocInRect(udg_rct_human_spawn_area)
+set udg_AAAA_GP=GenerateRandomLocInRect(MainGenerator,udg_rct_human_spawn_area)
 if((GetBooleanAnd((IsPlayerInForce(GetOwningPlayer(GetEnumUnit()),udg_Humans)==true),(IsUnitType(GetEnumUnit(),UNIT_TYPE_SUMMONED)==false)))and(UnitAlive(GetEnumUnit())))then
 call CreateNUnitsAtLocBonuses(1,GetUnitTypeId(GetEnumUnit()),GetOwningPlayer(GetEnumUnit()),udg_AAAA_GP,bj_UNIT_FACING)
 call SetHeroXP(bj_lastCreatedUnit,GetHeroXP(GetEnumUnit()),true)
@@ -22108,26 +22108,26 @@ endfunction
 function Trig_FinalBattle_Run_MoveUnits takes nothing returns nothing
 local location loc = null
 if(Trig_FinalBattle_Run_Filter_Humans())then
-set loc=GetRandomLocInRect(udg_rct_FB_Human_Spawn)
+set loc=GenerateRandomLocInRect(MainGenerator,udg_rct_FB_Human_Spawn)
 call GroupRemoveUnit(ControlledGroups[CONTROL_ID_MAIN_MAP],GetEnumUnit())
 call GroupRemoveUnit(GetneralControlledFroup,GetEnumUnit())
 call SetUnitPositionLoc(GetEnumUnit(),loc)
 call RemoveLocation(loc)
 elseif(Trig_FinalBattle_Run_Fulter_Undeads())then
-set loc=GetRandomLocInRect(udg_rct_FB_Undead_Spawn)
+set loc=GenerateRandomLocInRect(MainGenerator,udg_rct_FB_Undead_Spawn)
 call GroupRemoveUnit(ControlledGroups[CONTROL_ID_MAIN_MAP],GetEnumUnit())
 call GroupRemoveUnit(GetneralControlledFroup,GetEnumUnit())
 call SetUnitPositionLoc(GetEnumUnit(),loc)
 call RemoveLocation(loc)
 elseif(Trig_FinalBattle_Run_Fulter_Undead_Allies()) then
-    set loc=GetRandomLocInRect(udg_rct_FB_Neutral_Spawn_Undead_Side)
+    set loc=GenerateRandomLocInRect(MainGenerator,udg_rct_FB_Neutral_Spawn_Undead_Side)
     call SetUnitPositionLoc(GetEnumUnit(),loc)
     call GroupRemoveUnit(ControlledGroups[CONTROL_ID_MAIN_MAP],GetEnumUnit())
 call GroupRemoveUnit(GetneralControlledFroup,GetEnumUnit())
 call IssueTargetDestructableOrder(GetEnumUnit(),"attack",gg_dest_LTg3_4382)
 call RemoveLocation(loc)
 elseif(Trig_FinalBattle_Run_Fulter_Human_Allies()) then
-    set loc=GetRandomLocInRect(udg_rct_FB_Neutral_Spawn_Human_Side)
+    set loc=GenerateRandomLocInRect(MainGenerator,udg_rct_FB_Neutral_Spawn_Human_Side)
     call SetUnitPositionLoc(GetEnumUnit(),loc)
     call GroupRemoveUnit(ControlledGroups[CONTROL_ID_MAIN_MAP],GetEnumUnit())
 call GroupRemoveUnit(GetneralControlledFroup,GetEnumUnit())
@@ -22265,7 +22265,7 @@ return true
 endfunction
 function Trig_FinalBattle_Run_neut_alliance_1a_Func015A takes nothing returns nothing
 if(Trig_FinalBattle_Run_neut_alliance_1a_Func015Func001C())then
-call SetUnitPositionLoc(GetEnumUnit(),GetRandomLocInRect(udg_rct_FB_Human_Spawn))
+call SetUnitPositionLoc(GetEnumUnit(),GenerateRandomLocInRect(MainGenerator,udg_rct_FB_Human_Spawn))
 else
 endif
 endfunction
@@ -22283,7 +22283,7 @@ return true
 endfunction
 function Trig_FinalBattle_Run_neut_alliance_1a_Func017A takes nothing returns nothing
 if(Trig_FinalBattle_Run_neut_alliance_1a_Func017Func001C())then
-call SetUnitPositionLoc(GetEnumUnit(),GetRandomLocInRect(udg_rct_FB_Undead_Spawn))
+call SetUnitPositionLoc(GetEnumUnit(),GenerateRandomLocInRect(MainGenerator,udg_rct_FB_Undead_Spawn))
 else
 endif
 endfunction
@@ -22310,7 +22310,7 @@ return true
 endfunction
 function Trig_FinalBattle_Run_neut_alliance_1a_Func019A takes nothing returns nothing
 if(Trig_FinalBattle_Run_neut_alliance_1a_Func019Func001C())then
-call SetUnitPositionLoc(GetEnumUnit(),GetRandomLocInRect(udg_rct_FB_Neutral_Spawn_Human_Side))
+call SetUnitPositionLoc(GetEnumUnit(),GenerateRandomLocInRect(MainGenerator,udg_rct_FB_Neutral_Spawn_Human_Side))
 else
 endif
 endfunction
@@ -22337,7 +22337,7 @@ return true
 endfunction
 function Trig_FinalBattle_Run_neut_alliance_1a_Func021A takes nothing returns nothing
 if(Trig_FinalBattle_Run_neut_alliance_1a_Func021Func001C())then
-call SetUnitPositionLoc(GetEnumUnit(),GetRandomLocInRect(udg_rct_FB_Neutral_Spawn_Undead_Side))
+call SetUnitPositionLoc(GetEnumUnit(),GenerateRandomLocInRect(MainGenerator,udg_rct_FB_Neutral_Spawn_Undead_Side))
 else
 endif
 endfunction
@@ -22708,19 +22708,19 @@ endif
 endfunction
 function Trig_FinalBattle_Runy_Copy_Func014A takes nothing returns nothing
 if(Trig_FinalBattle_Runy_Copy_Func014Func001C())then
-call SetUnitPositionLoc(GetEnumUnit(),GetRandomLocInRect(udg_rct_FB_Human_Spawn))
+call SetUnitPositionLoc(GetEnumUnit(),GenerateRandomLocInRect(MainGenerator,udg_rct_FB_Human_Spawn))
 else
 endif
 if(Trig_FinalBattle_Runy_Copy_Func014Func002C())then
-call SetUnitPositionLoc(GetEnumUnit(),GetRandomLocInRect(udg_rct_FB_Undead_Spawn))
+call SetUnitPositionLoc(GetEnumUnit(),GenerateRandomLocInRect(MainGenerator,udg_rct_FB_Undead_Spawn))
 else
 endif
 if(Trig_FinalBattle_Runy_Copy_Func014Func003C())then
-call SetUnitPositionLoc(GetEnumUnit(),GetRandomLocInRect(udg_rct_FB_Neutral_Spawn_Undead_Side))
+call SetUnitPositionLoc(GetEnumUnit(),GenerateRandomLocInRect(MainGenerator,udg_rct_FB_Neutral_Spawn_Undead_Side))
 else
 endif
 if(Trig_FinalBattle_Runy_Copy_Func014Func004C())then
-call SetUnitPositionLoc(GetEnumUnit(),GetRandomLocInRect(udg_rct_FB_Neutral_Spawn_Human_Side))
+call SetUnitPositionLoc(GetEnumUnit(),GenerateRandomLocInRect(MainGenerator,udg_rct_FB_Neutral_Spawn_Human_Side))
 else
 endif
 set bj_wantDestroyGroup=true
@@ -22843,7 +22843,7 @@ return true
 endfunction
 function Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func014A takes nothing returns nothing
 if(Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func014Func001C())then
-call SetUnitPositionLoc(GetEnumUnit(),GetRandomLocInRect(udg_rct_FB_Human_Spawn))
+call SetUnitPositionLoc(GetEnumUnit(),GenerateRandomLocInRect(MainGenerator,udg_rct_FB_Human_Spawn))
 else
 endif
 endfunction
@@ -22861,7 +22861,7 @@ return true
 endfunction
 function Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func016A takes nothing returns nothing
 if(Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func016Func001C())then
-call SetUnitPositionLoc(GetEnumUnit(),GetRandomLocInRect(udg_rct_FB_Undead_Spawn))
+call SetUnitPositionLoc(GetEnumUnit(),GenerateRandomLocInRect(MainGenerator,udg_rct_FB_Undead_Spawn))
 else
 endif
 endfunction
@@ -22888,7 +22888,7 @@ return true
 endfunction
 function Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func018A takes nothing returns nothing
 if(Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func018Func001C())then
-call SetUnitPositionLoc(GetEnumUnit(),GetRandomLocInRect(udg_rct_FB_Neutral_Spawn_Human_Side))
+call SetUnitPositionLoc(GetEnumUnit(),GenerateRandomLocInRect(MainGenerator,udg_rct_FB_Neutral_Spawn_Human_Side))
 else
 endif
 endfunction
@@ -22915,7 +22915,7 @@ return true
 endfunction
 function Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func020A takes nothing returns nothing
 if(Trig_FinalBattle_Runy_Copy_neut_alliance_1a_Func020Func001C())then
-call SetUnitPositionLoc(GetEnumUnit(),GetRandomLocInRect(udg_rct_FB_Neutral_Spawn_Undead_Side))
+call SetUnitPositionLoc(GetEnumUnit(),GenerateRandomLocInRect(MainGenerator,udg_rct_FB_Neutral_Spawn_Undead_Side))
 else
 endif
 endfunction
@@ -23129,8 +23129,8 @@ call TriggerAddCondition(udg_trg_Gate_destroyed,Condition(function Trig_Gate_des
 call TriggerAddAction(udg_trg_Gate_destroyed,function Trig_Gate_destroyed_Actions)
 endfunction
 function Trig_Send_in_the_neutrals_2_Actions takes nothing returns nothing
-call CreateNUnitsAtLocBonuses(1,'ngsp',Neutral_Satyrs,GetRandomLocInRect(udg_rct_FB_Whole_Area),bj_UNIT_FACING)
-call CreateNUnitsAtLocBonuses(1,'ngrd',Neutral_Satyrs,GetRandomLocInRect(udg_rct_FB_Whole_Area),bj_UNIT_FACING)
+call CreateNUnitsAtLocBonuses(1,'ngsp',Neutral_Satyrs,GenerateRandomLocInRect(MainGenerator,udg_rct_FB_Whole_Area),bj_UNIT_FACING)
+call CreateNUnitsAtLocBonuses(1,'ngrd',Neutral_Satyrs,GenerateRandomLocInRect(MainGenerator,udg_rct_FB_Whole_Area),bj_UNIT_FACING)
 endfunction
 function InitTrig_Send_in_the_neutrals_2 takes nothing returns nothing
 set udg_trg_Send_in_the_neutrals_2=CreateTrigger()
@@ -23337,7 +23337,7 @@ function Trig_Dead_area_top_left_Actions takes nothing returns nothing
 call GroupRemoveUnit(GetneralControlledFroup,GetTriggerUnit())    
 call GroupRemoveUnit(ControlledGroups[CONTROL_ID_RESURRECT],GetTriggerUnit()) 
 call DisableTrigger(InitTrigger[CONTROL_ID_RESURRECT])   
-call SetUnitPositionLoc(GetEnteringUnit(),GetRandomLocInRect(udg_rct_Trees_top_left))
+call SetUnitPositionLoc(GetEnteringUnit(),GenerateRandomLocInRect(MainGenerator,udg_rct_Trees_top_left))
 call SmartCameraPanBJModified(GetOwningPlayer(GetEnteringUnit()),GetUnitLoc(GetEnteringUnit()),0)
 call AddSpecialEffectLocBJ(GetUnitLoc(GetEnteringUnit()),"Abilities\\Spells\\NightElf\\Blink\\BlinkCaster.mdl")
 call EnableTrigger(InitTrigger[CONTROL_ID_RESURRECT])
@@ -23422,7 +23422,7 @@ call BuffUnitThatEntersTpZone()
 call GroupRemoveUnit(GetneralControlledFroup,GetTriggerUnit())    
 call GroupRemoveUnit(ControlledGroups[CONTROL_ID_RESURRECT],GetTriggerUnit()) 
 call DisableTrigger(InitTrigger[CONTROL_ID_RESURRECT])   
-call SetUnitPositionLoc(GetEnteringUnit(),GetRandomLocInRect(udg_rct_bottom_left))
+call SetUnitPositionLoc(GetEnteringUnit(),GenerateRandomLocInRect(MainGenerator,udg_rct_bottom_left))
 call SmartCameraPanBJModified(GetOwningPlayer(GetEnteringUnit()),GetUnitLoc(GetEnteringUnit()),0)
 call AddSpecialEffectLocBJ(GetUnitLoc(GetEnteringUnit()),"Abilities\\Spells\\NightElf\\Blink\\BlinkCaster.mdl")
 call EnableTrigger(InitTrigger[CONTROL_ID_RESURRECT])
@@ -23507,7 +23507,7 @@ function Trig_Dead_area_bot_right_Actions takes nothing returns nothing
     call GroupRemoveUnit(GetneralControlledFroup,GetTriggerUnit())    
     call GroupRemoveUnit(ControlledGroups[CONTROL_ID_RESURRECT],GetTriggerUnit()) 
     call DisableTrigger(InitTrigger[CONTROL_ID_RESURRECT])   
-call SetUnitPositionLoc(GetEnteringUnit(),GetRandomLocInRect(udg_rct_Bot_right))
+call SetUnitPositionLoc(GetEnteringUnit(),GenerateRandomLocInRect(MainGenerator,udg_rct_Bot_right))
 call SmartCameraPanBJModified(GetOwningPlayer(GetEnteringUnit()),GetUnitLoc(GetEnteringUnit()),0)
 call AddSpecialEffectLocBJ(GetUnitLoc(GetEnteringUnit()),"Abilities\\Spells\\NightElf\\Blink\\BlinkCaster.mdl")
     call EnableTrigger(InitTrigger[CONTROL_ID_RESURRECT])
@@ -23592,7 +23592,7 @@ call BuffUnitThatEntersTpZone()
 call GroupRemoveUnit(GetneralControlledFroup,GetTriggerUnit())    
 call GroupRemoveUnit(ControlledGroups[CONTROL_ID_RESURRECT],GetTriggerUnit()) 
 call DisableTrigger(InitTrigger[CONTROL_ID_RESURRECT])   
-call SetUnitPositionLoc(GetEnteringUnit(),GetRandomLocInRect(udg_rct_Trees_Right))
+call SetUnitPositionLoc(GetEnteringUnit(),GenerateRandomLocInRect(MainGenerator,udg_rct_Trees_Right))
 call SmartCameraPanBJModified(GetOwningPlayer(GetEnteringUnit()),GetUnitLoc(GetEnteringUnit()),0)
 call AddSpecialEffectLocBJ(GetUnitLoc(GetEnteringUnit()),"Abilities\\Spells\\NightElf\\Blink\\BlinkCaster.mdl")
 call EnableTrigger(InitTrigger[CONTROL_ID_RESURRECT])
@@ -23636,18 +23636,18 @@ return true
 endfunction
 function Trig_coins_Actions takes nothing returns nothing
 set udg_Topleft_integer_chance2=GenerateInt(MainGenerator, 1,20)
-set udg_Coin_Point=GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
+set udg_Coin_Point=GenerateRandomLocInRect(MainGenerator,udg_rct_Entire_map_excluding_out_of_bounds)
 if(Trig_coins_Func003C())then
-set udg_Coin_Point=GetRandomLocInRect(udg_rct_Entire_map_excluding_outa_bounds_2)
+set udg_Coin_Point=GenerateRandomLocInRect(MainGenerator,udg_rct_Entire_map_excluding_outa_bounds_2)
 call CreateItemLoc('gold',udg_Coin_Point)
 call RemoveLocation(udg_Coin_Point)
-set udg_Coin_Point=GetRandomLocInRect(udg_rct_Entire_map_excluding_outa_bounds_2)
+set udg_Coin_Point=GenerateRandomLocInRect(MainGenerator,udg_rct_Entire_map_excluding_outa_bounds_2)
 call CreateRandomRune(GetLocationX(udg_Coin_Point),GetLocationY(udg_Coin_Point))
 else
-set udg_Coin_Point=GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
+set udg_Coin_Point=GenerateRandomLocInRect(MainGenerator,udg_rct_Entire_map_excluding_out_of_bounds)
 call CreateItemLoc('gold',udg_Coin_Point)
 call RemoveLocation(udg_Coin_Point)
-set udg_Coin_Point=GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
+set udg_Coin_Point=GenerateRandomLocInRect(MainGenerator,udg_rct_Entire_map_excluding_out_of_bounds)
 call CreateRandomRune(GetLocationX(udg_Coin_Point),GetLocationY(udg_Coin_Point))
 endif
 call RemoveLocation(udg_Coin_Point)
@@ -23658,7 +23658,7 @@ call TriggerRegisterTimerEventPeriodic(udg_trg_coins,40.00)
 call TriggerAddAction(udg_trg_coins,function Trig_coins_Actions)
 endfunction
 function Trig_Spawn_Golden_Chickens_Actions takes nothing returns nothing
-call CreateNUnitsAtLoc(1,'n010',Player(PLAYER_NEUTRAL_PASSIVE),GetRandomLocInRect(udg_rct_The_ring_of_trees),bj_UNIT_FACING)
+call CreateNUnitsAtLoc(1,'n010',Player(PLAYER_NEUTRAL_PASSIVE),GenerateRandomLocInRect(MainGenerator,udg_rct_The_ring_of_trees),bj_UNIT_FACING)
 call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 endfunction
 function InitTrig_Spawn_Golden_Chickens takes nothing returns nothing
@@ -23693,7 +23693,7 @@ call TriggerRegisterTimerEventSingle(udg_trg_Enable_Bunny_Spawn,300.00)
 call TriggerAddAction(udg_trg_Enable_Bunny_Spawn,function Trig_Enable_Bunny_Spawn_Actions)
 endfunction
 function Trig_Spawn_Bunnies_Actions takes nothing returns nothing
-set udg_Rabbit_Point=GetRandomLocInRect(udg_rct_The_ring_of_trees)
+set udg_Rabbit_Point=GenerateRandomLocInRect(MainGenerator,udg_rct_The_ring_of_trees)
 call CreateNUnitsAtLoc(1,'necr',Player(PLAYER_NEUTRAL_PASSIVE),udg_Rabbit_Point,bj_UNIT_FACING)
 call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
 call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
@@ -23706,7 +23706,7 @@ call TriggerRegisterTimerEventPeriodic(udg_trg_Spawn_Bunnies,11.00)
 call TriggerAddAction(udg_trg_Spawn_Bunnies,function Trig_Spawn_Bunnies_Actions)
 endfunction
 function Trig_Spawn_furbolgs_p_Actions takes nothing returns nothing
-set udg_Rabbit_Point=GetRandomLocInRect(udg_rct_The_ring_of_trees)
+set udg_Rabbit_Point=GenerateRandomLocInRect(MainGenerator,udg_rct_The_ring_of_trees)
 call CreateNUnitsAtLocBonuses(1,'nfrl',Neutral_Satyrs,udg_Rabbit_Point,bj_UNIT_FACING)
 call RemoveLocation(udg_Rabbit_Point)
 endfunction
@@ -23725,13 +23725,13 @@ endfunction
 function Trig_Spawn_Special_Bunny_Actions takes nothing returns nothing
 set udg_Topleft_integer_chance2=GenerateInt(MainGenerator, 1,18)
 if(Trig_Spawn_Special_Bunny_Func002C())then
-set udg_Rabbit_Point=GetRandomLocInRect(udg_rct_Entire_map_excluding_outa_bounds_2)
+set udg_Rabbit_Point=GenerateRandomLocInRect(MainGenerator,udg_rct_Entire_map_excluding_outa_bounds_2)
 call CreateNUnitsAtLocBonuses(1,'necr',Player(PLAYER_NEUTRAL_PASSIVE),udg_Rabbit_Point,bj_UNIT_FACING)
 call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
 call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 call SetUnitVertexColorBJ(GetLastCreatedUnit(),66.00,25.00,100,0)
 else
-set udg_Rabbit_Point=GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
+set udg_Rabbit_Point=GenerateRandomLocInRect(MainGenerator,udg_rct_Entire_map_excluding_out_of_bounds)
 call CreateNUnitsAtLocBonuses(1,'necr',Player(PLAYER_NEUTRAL_PASSIVE),udg_Rabbit_Point,bj_UNIT_FACING)
 call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
 call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
@@ -23798,7 +23798,7 @@ call TriggerRegisterPlayerKeyEventBJ(udg_trg_Secret_Hero_3,Player(6),bj_KEYEVENT
 call TriggerAddAction(udg_trg_Secret_Hero_3,function Trig_Secret_Hero_3_Actions)
 endfunction
 function Trig_Spawn_Giant_Rabbit_Actions takes nothing returns nothing
-set udg_Rabbit_Point=GetRandomLocInRect(udg_rct_The_ring_of_trees)
+set udg_Rabbit_Point=GenerateRandomLocInRect(MainGenerator,udg_rct_The_ring_of_trees)
 call CreateNUnitsAtLoc(1,'n02G',Player(PLAYER_NEUTRAL_PASSIVE),udg_Rabbit_Point,bj_UNIT_FACING)
 call RemoveLocation(udg_Rabbit_Point)
 endfunction
@@ -25335,7 +25335,7 @@ endif
 return true
 endfunction
 function Trig_Movement_Actions takes nothing returns nothing
-call IssuePointOrderLocBJ(udg_unit_nzep_0261,"move",GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds))
+call IssuePointOrderLocBJ(udg_unit_nzep_0261,"move",GenerateRandomLocInRect(MainGenerator,udg_rct_Entire_map_excluding_out_of_bounds))
 endfunction
 function InitTrig_Movement takes nothing returns nothing
 set udg_trg_Movement=CreateTrigger()
@@ -25385,7 +25385,7 @@ endif
 return true
 endfunction
 function Trig_Activate_A_Random_Event_Actions takes nothing returns nothing
-call CreateNUnitsAtLocBonuses(1,'h016',Player(PLAYER_NEUTRAL_PASSIVE),GetRandomLocInRect(udg_rct_Random_event),bj_UNIT_FACING)
+call CreateNUnitsAtLocBonuses(1,'h016',Player(PLAYER_NEUTRAL_PASSIVE),GenerateRandomLocInRect(MainGenerator,udg_rct_Random_event),bj_UNIT_FACING)
 call RemoveUnit(GetLastCreatedUnit())
 endfunction
 function InitTrig_Activate_A_Random_Event takes nothing returns nothing
@@ -25457,7 +25457,7 @@ set udg_General_Index=1
 loop
 exitwhen udg_General_Index>14
 set udg_AAAA_GP=GetRectCenter(udg_rct_naga_creep_event_area)
-set udg_AAAA_GP2=GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
+set udg_AAAA_GP2=GenerateRandomLocInRect(MainGenerator,udg_rct_Entire_map_excluding_out_of_bounds)
 call CreateNUnitsAtLocBonuses(1,'n079',Neutral_Nagas,udg_AAAA_GP,bj_UNIT_FACING)
 
 
@@ -25487,14 +25487,14 @@ call DisplayTimedTextToForce(GetPlayersAll(),10.00,"|cffff0000Rabbits have just 
 set udg_General_Index=1
 loop
 exitwhen udg_General_Index>20
-set udg_AAAA_GP=GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
+set udg_AAAA_GP=GenerateRandomLocInRect(MainGenerator,udg_rct_Entire_map_excluding_out_of_bounds)
 call CreateNUnitsAtLoc(1,'necr',Player(PLAYER_NEUTRAL_PASSIVE),udg_AAAA_GP,bj_UNIT_FACING)
 call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
 call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 call RemoveLocation(udg_AAAA_GP)
 set udg_General_Index=udg_General_Index+1
 endloop
-set udg_AAAA_GP=GetRandomLocInRect(udg_rct_Bottom_Moonlight)
+set udg_AAAA_GP=GenerateRandomLocInRect(MainGenerator,udg_rct_Bottom_Moonlight)
 call CreateNUnitsAtLocBonuses(1,'e00Y',Player(PLAYER_NEUTRAL_PASSIVE),udg_AAAA_GP,bj_UNIT_FACING)
 call UnitApplyTimedLifeBJ(90.00,'BTLF',GetLastCreatedUnit())
 call CreateNUnitsAtLocBonuses(1,'e00Z',Player(PLAYER_NEUTRAL_PASSIVE),udg_AAAA_GP,bj_UNIT_FACING)
@@ -25518,7 +25518,7 @@ return true
 endfunction
 function Trig_Massive_Rabbit_Event_Copy_Actions takes nothing returns nothing
 call DisplayTimedTextToForce(GetPlayersAll(),10.00,"|cffff0000A golden chicken has just spawned somewhere!!|r")
-set udg_AAAA_GP=GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
+set udg_AAAA_GP=GenerateRandomLocInRect(MainGenerator,udg_rct_Entire_map_excluding_out_of_bounds)
 call CreateNUnitsAtLoc(1,'n010',Player(PLAYER_NEUTRAL_PASSIVE),udg_AAAA_GP,bj_UNIT_FACING)
 call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
 call RemoveLocation(udg_AAAA_GP)
@@ -25543,7 +25543,7 @@ call DisplayTimedTextToForce(GetPlayersAll(),10.00,"|cffff0000Coins have just sp
 set udg_General_Index=1
 loop
 exitwhen udg_General_Index>15
-set udg_AAAA_GP=GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
+set udg_AAAA_GP=GenerateRandomLocInRect(MainGenerator,udg_rct_Entire_map_excluding_out_of_bounds)
 call CreateItemLoc('gold',udg_AAAA_GP)
 call RemoveLocation(udg_AAAA_GP)
 set udg_General_Index=udg_General_Index+1
@@ -25855,7 +25855,7 @@ return true
 endfunction
 function Trig_Penguin_Movement_Actions takes nothing returns nothing
 if(Trig_Penguin_Movement_Func001C())then
-set udg_AAAA_GP=GetRandomLocInRect(udg_rct_WHOLE_MAP_NOT_DUEL)
+set udg_AAAA_GP=GenerateRandomLocInRect(MainGenerator,udg_rct_WHOLE_MAP_NOT_DUEL)
 call IssuePointOrderLocBJ(udg_AAAA_ANGRY_PENGU,"move",udg_AAAA_GP)
 call RemoveLocation(udg_AAAA_GP)
 else
@@ -25875,7 +25875,7 @@ endif
 return true
 endfunction
 function Trig_Tortle_Spawn_Actions takes nothing returns nothing
-set udg_AAAA_GP=GetRandomLocInRect(udg_rct_Top_left_Lake)
+set udg_AAAA_GP=GenerateRandomLocInRect(MainGenerator,udg_rct_Top_left_Lake)
 set udg_AAAA_TurtleEventCount=(udg_AAAA_TurtleEventCount+1)
 call CreateNUnitsAtLocBonuses(1,'n05M',Neutral_Satyrs,udg_AAAA_GP,bj_UNIT_FACING)
 
@@ -25898,7 +25898,7 @@ call TriggerRegisterTimerEventPeriodic(udg_trg_Tortle_Spawn,4.00)
 call TriggerAddAction(udg_trg_Tortle_Spawn,function Trig_Tortle_Spawn_Actions)
 endfunction
 function Trig_reef_ele_Spawn_Actions takes nothing returns nothing
-set udg_AAAA_GP=GetRandomLocInRect(udg_rct_Top_left_Lake)
+set udg_AAAA_GP=GenerateRandomLocInRect(MainGenerator,udg_rct_Top_left_Lake)
 call CreateNUnitsAtLocBonuses(1,'n05N',Neutral_Satyrs,udg_AAAA_GP,bj_UNIT_FACING)
 
 
@@ -25961,7 +25961,7 @@ endif
 return true
 endfunction
 function Trig_Activate_A_Random_Event_Copy_Actions takes nothing returns nothing
-call CreateNUnitsAtLocBonuses(1,'h016',Player(PLAYER_NEUTRAL_PASSIVE),GetRandomLocInRect(udg_rct_Event_area_2),bj_UNIT_FACING)
+call CreateNUnitsAtLocBonuses(1,'h016',Player(PLAYER_NEUTRAL_PASSIVE),GenerateRandomLocInRect(MainGenerator,udg_rct_Event_area_2),bj_UNIT_FACING)
 call RemoveUnit(GetLastCreatedUnit())
 endfunction
 function InitTrig_Activate_A_Random_Event_Copy takes nothing returns nothing
@@ -34406,7 +34406,7 @@ else
 endif
 endfunction
 function Trig_Zombie_Bloodlust_Actions takes nothing returns nothing
-set udg_ZA_Point[9]=GetRandomLocInRect(udg_rct_Random_Events_Bandit_Spawn)
+set udg_ZA_Point[9]=GenerateRandomLocInRect(MainGenerator,udg_rct_Random_Events_Bandit_Spawn)
 set bj_wantDestroyGroup=true
 call ForGroupBJ(GetUnitsInRectAll(GetEntireMapRect()),function Trig_Zombie_Bloodlust_Func003A)
 set udg_ZB_NumberOfZombies=CountUnitsInGroup(udg_ZB_ZombieUnitGroup)
@@ -34455,7 +34455,7 @@ return true
 endfunction
 function Trig_Zombie_apocalypse_Actions takes nothing returns nothing
 if(Trig_Zombie_apocalypse_Func001C())then
-set udg_ZA_Point[2]=GetRandomLocInRect(udg_rct_Entire_map_excluding_outa_bounds_2)
+set udg_ZA_Point[2]=GenerateRandomLocInRect(MainGenerator,udg_rct_Entire_map_excluding_outa_bounds_2)
 call CreateNUnitsAtLocBonuses(1,'ndmu',GetOwningPlayer(GetTriggerUnit()),udg_ZA_Point[2],bj_UNIT_FACING)
 call UnitApplyTimedLifeBJ(240.00,'BTLF',GetLastCreatedUnit())
 call SetUnitAnimation(GetLastCreatedUnit(),"birth")
@@ -34463,7 +34463,7 @@ call RemoveLocation(udg_ZA_Point[2])
 set udg_ZA_Integer=1
 loop
 exitwhen udg_ZA_Integer>14
-set udg_ZA_Point[1]=GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
+set udg_ZA_Point[1]=GenerateRandomLocInRect(MainGenerator,udg_rct_Entire_map_excluding_out_of_bounds)
 call CreateNUnitsAtLocBonuses(1,'ndmu',GetOwningPlayer(GetTriggerUnit()),udg_ZA_Point[1],bj_UNIT_FACING)
 call UnitApplyTimedLifeBJ(240.00,'BTLF',GetLastCreatedUnit())
 call SetUnitAnimation(GetLastCreatedUnit(),"birth")
@@ -34713,7 +34713,7 @@ endfunction
 function Trig_Teleport_Actions takes nothing returns nothing
 if(Trig_Teleport_Func002C())then
 call AddSpecialEffectLocBJ(GetUnitLoc(GetSpellAbilityUnit()),"Abilities\\Spells\\NightElf\\Blink\\BlinkCaster.mdl")
-call SetUnitPositionLoc(GetSpellAbilityUnit(),GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds))
+call SetUnitPositionLoc(GetSpellAbilityUnit(),GenerateRandomLocInRect(MainGenerator,udg_rct_Entire_map_excluding_out_of_bounds))
 call SmartCameraPanBJModified(GetOwningPlayer(GetSpellAbilityUnit()),GetUnitLoc(GetSpellAbilityUnit()),0)
 call AddSpecialEffectLocBJ(GetUnitLoc(GetSpellAbilityUnit()),"Abilities\\Spells\\NightElf\\Blink\\BlinkCaster.mdl")
 else
@@ -35086,7 +35086,7 @@ endfunction
 function Trig_Firelord_Attacks_Actions takes nothing returns nothing
 set udg_Firelord_Pos=GetUnitLoc(GetAttacker())
 set udg_Firelord_Temp_Region=RectFromCenterSizeBJ(udg_Firelord_Pos,600.00,600.00)
-set udg_Firelord_Rand_Point=GetRandomLocInRect(udg_Firelord_Temp_Region)
+set udg_Firelord_Rand_Point=GenerateRandomLocInRect(MainGenerator,udg_Firelord_Temp_Region)
 set udg_Firelord_Attacked_Pos=GetUnitLoc(GetAttackedUnitBJ())
 call CreateNUnitsAtLocBonuses(1,'dDUM',GetOwningPlayer(GetAttacker()),udg_Firelord_Attacked_Pos,bj_UNIT_FACING)
 call UnitAddAbility(GetLastCreatedUnit(),'AHfs')
@@ -35205,10 +35205,10 @@ call TriggerAddCondition(udg_trg_Mount_Horse_Copy,Condition(function Trig_Mount_
 call TriggerAddAction(udg_trg_Mount_Horse_Copy,function Trig_Mount_Horse_Copy_Actions)
 endfunction
 function Trig_Horse_movement_Actions takes nothing returns nothing
-set udg_General_Point=GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
+set udg_General_Point=GenerateRandomLocInRect(MainGenerator,udg_rct_Entire_map_excluding_out_of_bounds)
 call IssuePointOrderLocBJ(udg_unit_hhdl_0061,"move",udg_General_Point)
 call RemoveLocation(udg_General_Point)
-set udg_General_Point=GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
+set udg_General_Point=GenerateRandomLocInRect(MainGenerator,udg_rct_Entire_map_excluding_out_of_bounds)
 call IssuePointOrderLocBJ(udg_unit_hhdl_0060,"move",udg_General_Point)
 call RemoveLocation(udg_General_Point)
 endfunction
@@ -35248,10 +35248,10 @@ call TriggerAddCondition(udg_trg_Mount_hippogryph,Condition(function Trig_Mount_
 call TriggerAddAction(udg_trg_Mount_hippogryph,function Trig_Mount_hippogryph_Actions)
 endfunction
 function Trig_Random_hippo_move_Actions takes nothing returns nothing
-    set udg_General_Point2=GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
+    set udg_General_Point2=GenerateRandomLocInRect(MainGenerator,udg_rct_Entire_map_excluding_out_of_bounds)
     call IssuePointOrderLoc(udg_unit_ehip_0093,"attack",udg_General_Point2)
     call RemoveLocation(udg_General_Point2)
-    set udg_General_Point2=GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds)
+    set udg_General_Point2=GenerateRandomLocInRect(MainGenerator,udg_rct_Entire_map_excluding_out_of_bounds)
     call IssuePointOrderLoc(udg_unit_ehip_0092,"attack",udg_General_Point2)
     call RemoveLocation(udg_General_Point2)
 endfunction
@@ -35345,8 +35345,8 @@ endif
 return true
 endfunction
 function Trig_Skele_Spell_Wraith_Actions takes nothing returns nothing
-call CreateNUnitsAtLocBonuses(1,'h004',GetOwningPlayer(GetSpellAbilityUnit()),GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds),bj_UNIT_FACING)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"stasistrap",GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds))
+call CreateNUnitsAtLocBonuses(1,'h004',GetOwningPlayer(GetSpellAbilityUnit()),GenerateRandomLocInRect(MainGenerator,udg_rct_Entire_map_excluding_out_of_bounds),bj_UNIT_FACING)
+call IssuePointOrderLocBJ(GetLastCreatedUnit(),"stasistrap",GenerateRandomLocInRect(MainGenerator,udg_rct_Entire_map_excluding_out_of_bounds))
 call RemoveUnit(GetLastCreatedUnit())
 endfunction
 function InitTrig_Skele_Spell_Wraith takes nothing returns nothing
@@ -35407,8 +35407,8 @@ endif
 return true
 endfunction
 function Trig_Skele_Spell_Actions takes nothing returns nothing
-call CreateNUnitsAtLocBonuses(1,'h004',GetOwningPlayer(GetSpellAbilityUnit()),GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds),bj_UNIT_FACING)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"ward",GetRandomLocInRect(udg_rct_Entire_map_excluding_out_of_bounds))
+call CreateNUnitsAtLocBonuses(1,'h004',GetOwningPlayer(GetSpellAbilityUnit()),GenerateRandomLocInRect(MainGenerator,udg_rct_Entire_map_excluding_out_of_bounds),bj_UNIT_FACING)
+call IssuePointOrderLocBJ(GetLastCreatedUnit(),"ward",GenerateRandomLocInRect(MainGenerator,udg_rct_Entire_map_excluding_out_of_bounds))
 call RemoveUnit(GetLastCreatedUnit())
 endfunction
 function InitTrig_Skele_Spell takes nothing returns nothing
