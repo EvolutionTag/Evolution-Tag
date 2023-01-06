@@ -1,4 +1,4 @@
-library PauseUnitsInRectEx
+library PauseUnitsInRectEx requires MemoryHackUnitNormalAPI
 {
     hashtable pausetable = null;
     group activegroup = null;

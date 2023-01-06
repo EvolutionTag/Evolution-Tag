@@ -1,7 +1,7 @@
 //TESH.scrollpos=30
 //TESH.alwaysfold=0
 //! nocjass
-library MemoryHackUnitNormalAPI
+library MemoryHackUnitNormalAPI requires mainRNG
     globals
         integer pUnitData                   = 0
         integer pRedrawUnit                 = 0
@@ -986,7 +986,7 @@ library MemoryHackUnitNormalAPI
 
     function GetUnitAttackDamage takes unit u returns real
         local integer dmg = GetUnitDamageDicesCount( u )
-        local integer spread = GetRandomInt( dmg, dmg * GetUnitDamageDicesSideCount( u ) )
+        local integer spread = GenerateInt(MainGenerator, dmg, dmg * GetUnitDamageDicesSideCount( u ) )
 
         return I2R( GetUnitBaseDamage( u ) + GetUnitBonusDamage( u ) + spread )
     endfunction

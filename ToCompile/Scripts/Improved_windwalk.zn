@@ -1,4 +1,4 @@
-library ImprovedSkillWindwalk requires SkillCastStat {
+library ImprovedSkillWindwalk requires SkillCastStat, MemoryHackUnitNormalAPI{
 
     public integer kWWDmgScale = 100;
     public function WindWalkCallback () {

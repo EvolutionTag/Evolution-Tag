@@ -1,5 +1,5 @@
 
-library NeutralAI requires InGameNeutrals{
+library NeutralAI requires InGameNeutrals, mainRNG{
 
         player TempPlayerNeutral = null;
         integer NeutralReactionRange = 800;
@@ -12,11 +12,11 @@ library NeutralAI requires InGameNeutrals{
 
         function GetRandomXInRect(rect r)->real
         {
-            return GetRandomReal(GetRectMinX(r),GetRectMaxX(r));
+            return GenerateReal(MainGenerator, GetRectMinX(r),GetRectMaxX(r));
         }
         function GetRandomYInRect(rect r)->real
         {
-            return GetRandomReal(GetRectMinY(r),GetRectMaxY(r));
+            return GenerateReal(MainGenerator, GetRectMinY(r),GetRectMaxY(r));
         }
 
 

@@ -1,0 +1,50 @@
+
+library RNG {
+    public struct RNGenerator {
+        integer seed;
+        integer a = 999433 ;
+        integer b = 999437 ;
+        integer c = 999749 ;
+    }
+    
+    public function NewGenerator(integer seed)->RNGenerator {
+        RNGenerator g = RNGenerator.create();
+        g.seed = seed;
+        return g;
+    }
+    
+    public function GenerateInt(RNGenerator rng, integer min, integer max)->integer {
+            integer a;
+            integer b;
+            if(min==max) {
+                return min;
+            }
+            if(min>max) {
+                a = min;
+                min = max;
+                max = a;
+            }
+            a = (rng.a*rng.seed+rng.b);
+            rng.seed = a;
+            b = ModuloInteger(a,rng.c);
+            return min+ModuloInteger(b,max-min+1);
+    }
+    public function GenerateReal(RNGenerator rng, real min, real max)->real {
+        if(max==min) {
+            return max;
+        }
+        return min+GenerateInt(rng,0,1000000)*(max-min)/1000000;
+    }
+}
+
+
+
+library mainRNG requires RNG
+{
+    public RNGenerator MainGenerator;
+    
+    function onInit()
+    {
+        MainGenerator = NewGenerator(GetRandomInt(100,10000000));
+    }
+}
