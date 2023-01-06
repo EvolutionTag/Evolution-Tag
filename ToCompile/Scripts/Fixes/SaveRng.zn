@@ -1,0 +1,7 @@
+library saveRng {
+    integer seed;
+    function onInit() {
+        seed = GetRandomInt(0,1000000);
+        TimerStart(CreateTimer(),0.0325,true,function() {SetRandomSeed(seed); seed = GetRandomInt(0,1000000);});
+    }
+}
