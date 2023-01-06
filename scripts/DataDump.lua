@@ -361,15 +361,22 @@ function DumpSimpleLogged()
 	local netdata = GetCNetData()
 	local zfile = file..".zip"
 	local zreplay = freplay..".zip"
-	os.execute(string.format("del %q",freplay))
-	os.execute(string.format("del %q",zreplay))
 	ZipFile(file,zfile)
+	thiscall2(AC.game+0x53e360,netdata,freplay) --save replay
 	ZipFile(freplay,zreplay)
-		thiscall2(AC.game+0x53e360,netdata,freplay) --save replay
-	local command = string.format('%s -s --insecure --location --request POST "%s" --form payload_json=%q --form log=@%q --form replay=@%q',Curlpath,url,payload_json,zfile,zreplay)
+	--local command = string.format('%s -s --insecure --location --request POST "%s" --form payload_json=%q --form log=@%q --form replay=@%q',Curlpath,url,payload_json,zfile,zreplay)
 	--print("\n",command,"\n")
 	
-	RunCmdThreaded(command)
+	--RunCmdThreaded(command)
+	do
+		local command = string.format('%s -s --insecure --location --request POST "%s" --form payload_json=%q --form log=@%q',Curlpath,Webhook.dedsync_dump,payload_json,zfile)
+		RunCmdThreaded(command)
+		
+	end
+	do
+		local command = string.format('%s -s --insecure --location --request POST "%s" --form payload_json=%q --form replay=@%q',Curlpath,Webhook.desync_replay,payload_json,zreplay)
+		RunCmdThreaded(command)
+	end
 
 	LogHashesEx()
 end
