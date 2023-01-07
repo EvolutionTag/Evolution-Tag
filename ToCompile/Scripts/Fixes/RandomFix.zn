@@ -10,6 +10,8 @@ library RandomFix
             WriteRealMemory(pGameDLL+0x49B3A3,0x5B5E0000);
             AddNewOffsetToRestore(pGameDLL + 0x49B3A7 , ReadRealMemory(pGameDLL + 0x49B3A7 ));
             WriteRealMemory(pGameDLL+0x49B3A7,0xC208C483);
+            AddNewOffsetToRestore(pGameDLL + 0x49B3AA , ReadRealMemory(pGameDLL + 0x49B3AA ));
+            WriteRealMemory(pGameDLL+0x49B3AA,0x000004C2);
             VirtualProtect(pGameDLL+0x49B390 , 64 , oldprotection);
         }
 
