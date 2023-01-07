@@ -17082,7 +17082,7 @@ else
 endif
 if(Trig_Remove_Selling_Unit_HERO_SHOP_Func003C())then
 if(IsUnitInGroup(GetBuyingUnit(),morphs))then
-call AdjustPlayerStateSimpleBJ(GetOwningPlayer(GetBuyingUnit()),PLAYER_STATE_RESOURCE_GOLD,175)
+call AdjustPlayerStateSimpleBJ(GetOwningPlayer(GetBuyingUnit()),PLAYER_STATE_RESOURCE_GOLD,100)
 call RemoveUnit(GetSoldUnit())
 return
 endif
@@ -17090,7 +17090,7 @@ if(Trig_Remove_Selling_Unit_HERO_SHOP_Func003Func001C())then
 call ChangeUnit2(GetBuyingUnit(),GetUnitTypeId(GetSoldUnit()))
 call RemoveUnit(GetSoldUnit())
 else
-call AdjustPlayerStateSimpleBJ(GetOwningPlayer(GetBuyingUnit()),PLAYER_STATE_RESOURCE_GOLD,175)
+call AdjustPlayerStateSimpleBJ(GetOwningPlayer(GetBuyingUnit()),PLAYER_STATE_RESOURCE_GOLD,100)
 call RemoveUnit(GetSoldUnit())
 endif
 else
