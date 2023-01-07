@@ -3161,12 +3161,12 @@ native UnitAlive takes unit id returns boolean
 //! import zinc "..\ToCompile\Scripts\ImprovedSkills_undeads.zn"
 //! import zinc "..\ToCompile\Scripts\Improved_windwalk.zn"
 //! import zinc "..\ToCompile\Scripts\RNG.zn"
-//! import zinc "..\ToCompile\Scripts\Fixes\SaveRng.zn"
 
 //////////////////////////////////////////////////
 // //! import zinc "..\ToCompile\Scripts\Fixes\TerrainDeformFix.j"
+//! import zinc "..\ToCompile\Scripts\Fixes\SaveRng.zn"
 //! import zinc "..\ToCompile\Scripts\Fixes\NeutralFix.j"
-// //! import zinc "..\ToCompile\Scripts\Fixes\RandomFix.zn"
+//! import zinc "..\ToCompile\Scripts\Fixes\RandomFix.zn"
 
 
 
