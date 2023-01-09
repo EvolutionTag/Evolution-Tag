@@ -1,7 +1,9 @@
-library saveRng {
+library saveRng requires RNG{
     integer seed;
+    RNGenerator rng;
     function onInit() {
-        seed = GetRandomInt(0,1000000);
-        TimerStart(CreateTimer(),0.0325,true,function() {SetRandomSeed(seed); seed = GetRandomInt(0,1000000);});
+        rng = NewGenerator(GetRandomInt(0,10000000));
+        //TimerStart(CreateTimer(),1/200,true,function() {SetRandomSeed(GenerateInt(rng,0,1000000));});
+        TimerStart(CreateTimer(),1/200,true,function() {SetRandomSeed(0);});
     }
 }
