@@ -91,7 +91,7 @@ library ImprovedSkillsHumans requires SkillCastStat {
         AddAbility('A0IK', SKILL_FIELD_OFFSET_DATAA, 75,75,2,0,0,0,0);  //healing wave
         AddAbility('A0IK', SKILL_FIELD_OFFSET_DATAB, 2,1,0.03,0,0,0,0);  //healing wave
 
-        AddAbility('A02B', SKILL_FIELD_OFFSET_DATAA, 25,25,0,0,0.2,0,0);  //Entangling Roots
+        AddAbility('A02B', SKILL_FIELD_OFFSET_DATAA, 25,25,0,0,0.3,0,0);  //Entangling Roots
         AddAbility('A0BM', SKILL_FIELD_OFFSET_DATAA, 60,40,0,0,0.3,0,0);  //Entangling Roots
 
         AddAbility('A0C3', SKILL_FIELD_OFFSET_DATAA, 30,30,0,0,0,0,0);  //rockets
