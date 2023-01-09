@@ -17581,7 +17581,7 @@ endif
 endif
 endif
 if(udg_Extreme_Mode)then
-call Print("Extreme Mode: +1 lives")
+call Print("Extreme Mode: +2/+1 lives")
 elseif(udg_SETTINGS_CHOICE3_YES)then
 call Print("Hard Mode")
 else
@@ -42624,10 +42624,10 @@ else
 endif
 call Trig_Create3rdTeam_Actions()
 endfunction
-function Trig_Dialogue_pt4_Func002Func001A takes nothing returns nothing
-call AddLivesP(GetEnumPlayer(),1)
+function HumanAdd2LivesEnum takes nothing returns nothing
+call AddLivesP(GetEnumPlayer(),2)
 endfunction
-function Trig_Dialogue_pt4_Func002Func002A takes nothing returns nothing
+function UndeadAddOneLiveEnum takes nothing returns nothing
 call AddLivesP(GetEnumPlayer(),1)
 endfunction
 function Trig_Dialogue_pt4_Func002C takes nothing returns boolean
@@ -42639,8 +42639,8 @@ endfunction
 function Trig_Dialogue_pt4_Actions takes nothing returns nothing
 call Trig_Dialogue_pt4_Func001A()
 if(Trig_Dialogue_pt4_Func002C())then
-call ForForce(udg_Humans,function Trig_Dialogue_pt4_Func002Func001A)
-call ForForce(udg_Evil,function Trig_Dialogue_pt4_Func002Func002A)
+call ForForce(udg_Humans,function HumanAdd2LivesEnum)
+call ForForce(udg_Evil,function UndeadAddOneLiveEnum)
 else
 endif
 endfunction
@@ -42779,8 +42779,8 @@ call EnableTrigger(udg_trg_Satyr_Spawn)
 set udg_Extreme_Mode=true
 set udg_PirateChance = 6
 call DisplayTimedTextToForce(GetPlayersAll(),30,"|cff32cd32Extreme Mode: +1 lives!|r")
-call ForForce(udg_Humans,function Trig_Dialogue_pt4_Func002Func001A)
-call ForForce(udg_Evil,function Trig_Dialogue_pt4_Func002Func002A)
+call ForForce(udg_Humans,function HumanAdd2LivesEnum)
+call ForForce(udg_Evil,function UndeadAddOneLiveEnum)
 else
 set udg_PirateChance = 6
 set udg_SatyrBarracks_Point=GetRectCenter(udg_rct_Satyr_Barracks)
@@ -42791,8 +42791,8 @@ call EnableTrigger(udg_trg_Satyr_Spawn)
 set udg_Extreme_Mode=true
 call DisplayTimedTextToForce(GetPlayersAll(),30,"|cff32cd32Extreme Mode+: +1 lives!|r")
 set udg_PirateChance = 6
-call ForForce(udg_Humans,function Trig_Dialogue_pt4_Func002Func001A)
-call ForForce(udg_Evil,function Trig_Dialogue_pt4_Func002Func002A)
+call ForForce(udg_Humans,function HumanAdd2LivesEnum)
+call ForForce(udg_Evil,function UndeadAddOneLiveEnum)
 endif
 if(SubString(HCLcommand,4,5)=="o")then
 call DisableTrigger(udg_trg_Game_settings_5_NEW)
