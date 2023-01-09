@@ -2970,6 +2970,7 @@ rect rct_Trees_FB3
 rect rct_Trees_FB4
 item array items
 trigger udg_SaveMorphBonuses
+trigger udg_SaveUpgradeBonuses
 trigger udg_hidden_heroes
 boolean HCLCompleted=false
 group Psychos=CreateGroup()
@@ -35288,6 +35289,11 @@ call TriggerRegisterAnyUnitEventBJ(udg_SaveMorphBonuses,EVENT_PLAYER_UNIT_SPELL_
 call TriggerAddAction(udg_SaveMorphBonuses,function SaveMorphBonuses_Actions)
 call TriggerAddCondition(udg_SaveMorphBonuses,Condition(function SaveMorphBonuses_Condition))
 endfunction
+function InitTrig_SaveUpgradeBonuses takes nothing returns nothing
+set udg_SaveUpgradeBonuses=CreateTrigger()
+call TriggerRegisterAnyUnitEventBJ(udg_SaveUpgradeBonuses,EVENT_PLAYER_UNIT_UPGRADE_FINISH)
+call TriggerAddAction(udg_SaveUpgradeBonuses,function SaveMorphBonuses_Actions)
+endfunction
 function Trig_Flame_Sniper_2_Conditions takes nothing returns boolean
 if(not(GetUnitTypeId(GetAttacker())=='H032'))then
 return false
@@ -41217,6 +41223,7 @@ call InitTrig_humansundead_player_check()
 call InitTrig_Final_Mechanical_Weapon()
 call InitTrig_Final_Mechanical_Armor()
 call InitTrig_SaveMorphBonuses()
+call InitTrig_SaveUpgradeBonuses()
 call InitTrig_EnableTrade()
 call InitTrig_SyncLeaderboard()
 call Event_RemoveDuyingHeroes_init()
