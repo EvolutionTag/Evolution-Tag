@@ -11142,14 +11142,11 @@ endfunction
 function s__xefx__get_y takes integer this returns real
 return GetUnitY(udg_s__xefx_dummy[this])
 endfunction
-function s__xefx__get_z takes integer this returns real
-return GetUnitFlyHeight(udg_s__xefx_dummy[this])
-endfunction
 function SetUnitFlyHeightChecked takes unit u, real value, real delay returns nothing
     if(value<0) then
         set value = 0
     endif
-    call SetUnitFlyHeight(u,value,delay)
+    //call SetUnitFlyHeight(u,0,0)
 endfunction
 function s__xefx__set_z takes integer this,real value returns nothing
 call SetUnitFlyHeightChecked(udg_s__xefx_dummy[this],value,0)
