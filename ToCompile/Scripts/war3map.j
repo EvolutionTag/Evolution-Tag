@@ -8720,16 +8720,10 @@ endif
 call ApplyRandomBuff(u2)
 call SetUnitLifePercentChecked(u2,GetUnitLifePercent(u)+25)
 call SetUnitManaPercentBJ(u2,GetUnitManaPercent(u)+50)
-set idx=0
-loop
-
-if(GetLocalPlayer()==Player(idx) and IsUnitSelected(u,Player(idx)))then
+if(IsUnitSelected(u,GetLocalPlayer()))then
 call SelectUnit(u,false)
 call SelectUnit(u2,true)
 endif
-set idx=idx+1
-exitwhen idx>11
-endloop
 call RemoveUnit(u)
 set u=u2
 set u2=null
@@ -9349,15 +9343,10 @@ exitwhen idx>6
 endloop
 call SetUnitLifePercentChecked(u2,GetUnitLifePercent(u))
 call SetUnitManaPercentBJ(u2,GetUnitManaPercent(u))
-set idx=0
-loop
-if(GetLocalPlayer()==Player(idx) and IsUnitSelected(u,Player(idx)))then
+if(IsUnitSelected(u,GetLocalPlayer()))then
 call SelectUnit(u,false)
 call SelectUnit(u2,true)
 endif
-set idx=idx+1
-exitwhen idx>11
-endloop
 call RemoveUnit(u)
 set u=u2
 set u2=null
@@ -9475,15 +9464,10 @@ call AddUnitMaxMana(u2,GetHeroInt(u,true)*15)
 endif
 call SetUnitLifePercentChecked(u2,GetUnitLifePercent(u))
 call SetUnitManaPercentBJ(u2,GetUnitManaPercent(u))
-set idx=0
-loop
-if(GetLocalPlayer()==Player(idx) and IsUnitSelected(u,Player(idx)))then
+if(IsUnitSelected(u,GetLocalPlayer()))then
 call SelectUnit(u,false)
 call SelectUnit(u2,true)
 endif
-set idx=idx+1
-exitwhen idx>11
-endloop
 call TimerStart(t_timer,morph_length,false,function Morph_On_Timer_End)
 set ttmd=CreateTimerDialogBJ(t_timer,"Morphing")
 call TimerDialogDisplay(ttmd,false)
