@@ -65,6 +65,7 @@ library JumpSystem requires TimerData, Plan
                 else{
                     h = h - jumpstep;
                 }
+                if(h<0) {h=0;} 
                 x = GetUnitX(u)+dx;
                 y = GetUnitY(u)+dy;
                 SetUnitX(u,x);

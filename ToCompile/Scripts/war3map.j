@@ -11145,8 +11145,14 @@ endfunction
 function s__xefx__get_z takes integer this returns real
 return GetUnitFlyHeight(udg_s__xefx_dummy[this])
 endfunction
+function SetUnitFlyHeightChecked takes unit u, real value, real delay returns nothing
+    if(value<0) then
+        set value = 0
+    endif
+    call SetUnitFlyHeight(u,value,delay)
+endfunction
 function s__xefx__set_z takes integer this,real value returns nothing
-call SetUnitFlyHeight(udg_s__xefx_dummy[this],value,0)
+call SetUnitFlyHeightChecked(udg_s__xefx_dummy[this],value,0)
 endfunction
 function s__xefx__set_x takes integer this,real value returns nothing
 call SetUnitX(udg_s__xefx_dummy[this],value)
@@ -25163,7 +25169,7 @@ loop
 set udg_s___HolyBirds___spelldata_missile[udg_s__HolyBirds___spelldata_missile[this]+i]=s__xefx_create(GetUnitX(udg_s__HolyBirds___spelldata_caster[this])+HolyBirds___MISSILE_DISTANCE*Cos(pos),GetUnitY(udg_s__HolyBirds___spelldata_caster[this])+HolyBirds___MISSILE_DISTANCE*Sin(pos),pos+bj_PI/ 2)
 call s__xefx__set_fxpath(udg_s___HolyBirds___spelldata_missile[udg_s__HolyBirds___spelldata_missile[this]+i],HolyBirds___MISSILE_MODEL)
 call s__xefx__set_scale(udg_s___HolyBirds___spelldata_missile[udg_s__HolyBirds___spelldata_missile[this]+i],HolyBirds___MISSILE_SIZE)
-call SetUnitFlyHeight(udg_s__xefx_dummy[(udg_s___HolyBirds___spelldata_missile[udg_s__HolyBirds___spelldata_missile[this]+i])],((HolyBirds___MISSILE_HEIGH)*1.0),0)
+call SetUnitFlyHeightChecked(udg_s__xefx_dummy[(udg_s___HolyBirds___spelldata_missile[udg_s__HolyBirds___spelldata_missile[this]+i])],((HolyBirds___MISSILE_HEIGH)*1.0),0)
 call s__xefx_recolor(udg_s___HolyBirds___spelldata_missile[udg_s__HolyBirds___spelldata_missile[this]+i],HolyBirds___MISSILE_RED,HolyBirds___MISSILE_GREEN,HolyBirds___MISSILE_BLUE,HolyBirds___MISSILE_ALPHA)
 set pos=pos+(2*bj_PI/ HolyBirds___MISSILES)
 set udg_s___HolyBirds___spelldata_targets[udg_s__HolyBirds___spelldata_targets[this]+i]=NewGroup()
@@ -30406,7 +30412,7 @@ set udg_SU_Temp=udg_SU_Integer[udg_SU_Loop]
 set udg_SU_Point[2]=GetUnitLoc(udg_SU_Meteor[udg_SU_Temp])
 set udg_SU_Real[udg_SU_Temp]=0.00
 if(Trig_Shattered_universe_loop_Func001Func004C())then
-call SetUnitFlyHeightBJ(udg_SU_Meteor[udg_SU_Temp],(GetUnitFlyHeight(udg_SU_Meteor[udg_SU_Temp])-udg_SU_Fall[udg_SU_Temp]),0.00)
+call SetUnitFlyHeightChecked(udg_SU_Meteor[udg_SU_Temp],(GetUnitFlyHeight(udg_SU_Meteor[udg_SU_Temp])-udg_SU_Fall[udg_SU_Temp]),0.00)
 else
 call ExplodeUnitBJ(udg_SU_Meteor[udg_SU_Temp])
 set udg_SU_Explosion[udg_SU_Temp]=1
@@ -33446,7 +33452,7 @@ else
 call SetUnitPositionLoc(udg_TS2_Target[udg_TS2],udg_TS2_Point[3])
 endif
 set udg_TS2_Parabola[udg_TS2]=(((4.00*udg_TS2_Height[udg_TS2])/ udg_TS2_MaxDistance[udg_TS2])*((udg_TS2_MaxDistance[udg_TS2]-udg_TS2_Distance[udg_TS2])*(udg_TS2_Distance[udg_TS2]/ udg_TS2_MaxDistance[udg_TS2])))
-call SetUnitFlyHeightBJ(udg_TS2_Target[udg_TS2],udg_TS2_Parabola[udg_TS2],0.00)
+call SetUnitFlyHeightChecked(udg_TS2_Target[udg_TS2],udg_TS2_Parabola[udg_TS2],0.00)
 call SetUnitFacingToFaceUnitTimed(udg_TS2_Hero[udg_TS2],udg_TS2_Target[udg_TS2],0)
 call RemoveLocation(udg_TS2_Point[2])
 call RemoveLocation(udg_TS2_Point[3])
@@ -33509,7 +33515,7 @@ set udg_BL_Collision[udg_BL_Times]=(50.00+(15.00*I2R(GetUnitAbilityLevelSwapped(
 set udg_BL_Scale=(100.00+(20.00*I2R(GetUnitAbilityLevelSwapped('A0CU',udg_BL_Hero[udg_BL_Times]))))
 call CreateNUnitsAtLocBonuses(1,'n045',GetOwningPlayer(udg_BL_Hero[udg_BL_Times]),udg_BL_Point[0],udg_BL_Angle[udg_BL_Times])
 set udg_BL_Missile[udg_BL_Times]=GetLastCreatedUnit()
-call SetUnitFlyHeightBJ(udg_BL_Missile[udg_BL_Times],30.00,0.00)
+call SetUnitFlyHeightChecked(udg_BL_Missile[udg_BL_Times],30.00,0.00)
 call SetUnitScalePercent(udg_BL_Missile[udg_BL_Times],udg_BL_Scale,udg_BL_Scale,udg_BL_Scale)
 call AddSpecialEffectTargetUnitBJ("chest",udg_BL_Missile[udg_BL_Times],"Abilities\\Weapons\\DragonHawkMissile\\DragonHawkMissile.mdl")
 set udg_BL_Effect1[udg_BL_Times]=GetLastCreatedEffectBJ()
@@ -33707,7 +33713,7 @@ set udg_FB_Fragments[udg_FB_Times]=(2+(1*GetUnitAbilityLevelSwapped('A0CV',GetSp
 set udg_FB_Scale=(90.00+(10.00*I2R(GetUnitAbilityLevelSwapped('A0CV',GetSpellAbilityUnit()))))
 call CreateNUnitsAtLocBonuses(1,'n045',GetOwningPlayer(udg_FB_Hero[udg_FB_Times]),udg_FB_Point[0],udg_FB_Angle[udg_FB_Times])
 set udg_FB_Missile[udg_FB_Times]=GetLastCreatedUnit()
-call SetUnitFlyHeightBJ(udg_FB_Missile[udg_FB_Times],30.00,0.00)
+call SetUnitFlyHeightChecked(udg_FB_Missile[udg_FB_Times],30.00,0.00)
 call SetUnitScalePercent(udg_FB_Missile[udg_FB_Times],udg_FB_Scale,udg_FB_Scale,udg_FB_Scale)
 call AddSpecialEffectTargetUnitBJ("chest",udg_FB_Missile[udg_FB_Times],"Abilities\\Weapons\\RedDragonBreath\\RedDragonMissile.mdl")
 set udg_FB_Effect1[udg_FB_Times]=GetLastCreatedEffectBJ()
@@ -33878,7 +33884,7 @@ endif
 call DestroyGroup(udg_FB_Group[udg_FB])
 else
 set udg_FB_Parabola[udg_FB]=(((4.00*udg_FB_Height[udg_FB])/ udg_FB_MaxDistance[udg_FB])*((udg_FB_MaxDistance[udg_FB]-udg_FB_Distance[udg_FB])*(udg_FB_Distance[udg_FB]/ udg_FB_MaxDistance[udg_FB])))
-call SetUnitFlyHeightBJ(udg_FB_Missile[udg_FB],udg_FB_Parabola[udg_FB],0.00)
+call SetUnitFlyHeightChecked(udg_FB_Missile[udg_FB],udg_FB_Parabola[udg_FB],0.00)
 endif
 if(Trig_Fire_Ball_Loop_Func005Func001Func012C())then
 call DestroyEffectBJ(udg_FB_Effect1[udg_FB])
@@ -37100,7 +37106,7 @@ endfunction
 function Trig_OOW_Dummies_Func001Func001Func001A takes nothing returns nothing
 call GroupRemoveUnitSimple(GetEnumUnit(),udg_OOW_HitGroup[udg_OOW_LoopInteger])
 call PauseUnitBJ(false,GetEnumUnit())
-call SetUnitFlyHeightBJ(GetEnumUnit(),GetUnitDefaultFlyHeight(GetEnumUnit()),1000.00)
+call SetUnitFlyHeightChecked(GetEnumUnit(),GetUnitDefaultFlyHeight(GetEnumUnit()),1000.00)
 endfunction
 function Trig_OOW_Dummies_Func001Func001Func009C takes nothing returns boolean
 if(not(udg_OOW_CastCount==0))then
@@ -37135,7 +37141,7 @@ call GroupAddUnitSimple(GetEnumUnit(),udg_OOW_HitGroup[udg_OOW_LoopInteger])
 call PauseUnitBJ(true,GetEnumUnit())
 call UnitAddAbilityBJ('Aave',GetEnumUnit())
 call UnitRemoveAbilityBJ('Aave',GetEnumUnit())
-call SetUnitFlyHeightBJ(GetEnumUnit(),0.00,0.00)
+call SetUnitFlyHeightChecked(GetEnumUnit(),0.00,0.00)
 endfunction
 function Trig_OOW_Dummies_Func001Func001Func017C takes nothing returns boolean
 if(not(udg_OOW_Angle[udg_OOW_LoopInteger]==360.00))then
@@ -37200,11 +37206,11 @@ function Trig_OOW_Units_Func001Func001A takes nothing returns nothing
 if(Trig_OOW_Units_Func001Func001Func001C())then
 call AddSpecialEffectTargetUnitBJ("origin",GetEnumUnit(),"Objects\\Spawnmodels\\Naga\\NagaDeath\\NagaDeath.mdl")
 call DestroyEffectBJ(GetLastCreatedEffectBJ())
-call SetUnitFlyHeightBJ(GetEnumUnit(),(GetUnitFlyHeight(GetEnumUnit())+10.00),0.00)
+call SetUnitFlyHeightChecked(GetEnumUnit(),(GetUnitFlyHeight(GetEnumUnit())+10.00),0.00)
 else
 call GroupRemoveUnitSimple(GetEnumUnit(),udg_OOW_HitGroup[udg_OOW_LoopInteger])
 call PauseUnitBJ(false,GetEnumUnit())
-call SetUnitFlyHeightBJ(GetEnumUnit(),GetUnitDefaultFlyHeight(GetEnumUnit()),1000.00)
+call SetUnitFlyHeightChecked(GetEnumUnit(),GetUnitDefaultFlyHeight(GetEnumUnit()),1000.00)
 endif
 endfunction
 function Trig_OOW_Units_Actions takes nothing returns nothing
@@ -37678,7 +37684,7 @@ set a=1
 loop
 exitwhen a>udg_Plant__TendrilPartsNumber
 set xx=I2R(a)/ I2R(udg_Plant__TendrilPartsNumber)
-call SetUnitFlyHeight(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],Sin(xx*bj_PI)*r+(xx*udg_Plant__TendrilDefaultHeightGround)+udg_Plant__TendrilStartHeight,0.00)
+call SetUnitFlyHeightChecked(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],Sin(xx*bj_PI)*r+(xx*udg_Plant__TendrilDefaultHeightGround)+udg_Plant__TendrilStartHeight,0.00)
 call SetUnitX(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],GetUnitX(udg_s__Tendril_AttachUnit[data])+xx*udg_s__Tendril_Distance[data]*Cos(udg_s__Tendril_angle[data]*bj_DEGTORAD))
 call SetUnitY(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],GetUnitY(udg_s__Tendril_AttachUnit[data])+xx*udg_s__Tendril_Distance[data]*Sin(udg_s__Tendril_angle[data]*bj_DEGTORAD))
 call SetUnitZFacing(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],-90+Rad2Deg(Atan(r/(udg_s__Tendril_Distance[data])*bj_PI*Cos(xx*bj_PI))))
@@ -37699,7 +37705,7 @@ endif
 loop
 exitwhen a>udg_Plant__TendrilPartsNumber
 set xx=I2R(a)/ I2R(udg_Plant__TendrilPartsNumber)
-call SetUnitFlyHeight(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],(xx*udg_Plant__TendrilTargetHeight)+Sin(xx*bj_PI)*(r+(udg_Plant__DefaultMovementAmplitude*Sin(udg_s__Tendril_DefaultMovement[data]-3.14)))+(xx*udg_Plant__TendrilDefaultHeightGround)+udg_Plant__TendrilStartHeight,500000.00)
+call SetUnitFlyHeightChecked(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],(xx*udg_Plant__TendrilTargetHeight)+Sin(xx*bj_PI)*(r+(udg_Plant__DefaultMovementAmplitude*Sin(udg_s__Tendril_DefaultMovement[data]-3.14)))+(xx*udg_Plant__TendrilDefaultHeightGround)+udg_Plant__TendrilStartHeight,500000.00)
 call SetUnitX(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],GetUnitX(udg_s__Tendril_AttachUnit[data])+xx*(udg_s__Tendril_Distance[data]+(udg_Plant__DefaultMovementAmplitude*Sin(udg_s__Tendril_DefaultMovement[data]-3.14)))*Cos(udg_s__Tendril_angle[data]*bj_DEGTORAD))
 call SetUnitY(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],GetUnitY(udg_s__Tendril_AttachUnit[data])+xx*(udg_s__Tendril_Distance[data]+(udg_Plant__DefaultMovementAmplitude*Sin(udg_s__Tendril_DefaultMovement[data]-3.14)))*Sin(udg_s__Tendril_angle[data]*bj_DEGTORAD))
 call SetUnitZFacing(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],-90+Rad2Deg(Atan(r/(udg_s__Tendril_Distance[data])*bj_PI*Cos(xx*bj_PI))))
@@ -37740,7 +37746,7 @@ loop
 exitwhen a>udg_Plant__TendrilPartsNumber
 set xx=I2R(a)/ I2R(udg_Plant__TendrilPartsNumber)
 call SetUnitFacing(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],udg_s__Tendril_angle[data])
-call SetUnitFlyHeight(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],Sin(xx*bj_PI)*r+(xx*udg_Plant__TendrilTargetHeight)+(xx*udg_Plant__TendrilDefaultHeightGround*(1-(udg_s__Tendril_Distance[data]/ d)))+udg_Plant__TendrilStartHeight,0.00)
+call SetUnitFlyHeightChecked(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],Sin(xx*bj_PI)*r+(xx*udg_Plant__TendrilTargetHeight)+(xx*udg_Plant__TendrilDefaultHeightGround*(1-(udg_s__Tendril_Distance[data]/ d)))+udg_Plant__TendrilStartHeight,0.00)
 call SetUnitX(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],GetUnitX(udg_s__Tendril_AttachUnit[data])+xx*udg_s__Tendril_Distance[data]*Cos(udg_s__Tendril_angle[data]*bj_DEGTORAD))
 call SetUnitY(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],GetUnitY(udg_s__Tendril_AttachUnit[data])+xx*udg_s__Tendril_Distance[data]*Sin(udg_s__Tendril_angle[data]*bj_DEGTORAD))
 call SetUnitZFacing(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],-90+Rad2Deg(Atan(r/(udg_s__Tendril_Distance[data])*bj_PI*Cos(xx*bj_PI))))
@@ -37760,7 +37766,7 @@ endif
 loop
 exitwhen a>udg_Plant__TendrilPartsNumber
 set xx=I2R(a)/ I2R(udg_Plant__TendrilPartsNumber)
-call SetUnitFlyHeight(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],Sin(xx*bj_PI)*r+(xx*udg_Plant__TendrilTargetHeight)+udg_Plant__TendrilStartHeight,0.00)
+call SetUnitFlyHeightChecked(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],Sin(xx*bj_PI)*r+(xx*udg_Plant__TendrilTargetHeight)+udg_Plant__TendrilStartHeight,0.00)
 call SetUnitX(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],GetUnitX(udg_s__Tendril_AttachUnit[data])+xx*udg_s__Tendril_Distance[data]*Cos(udg_s__Tendril_angle[data]*bj_DEGTORAD))
 call SetUnitY(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],GetUnitY(udg_s__Tendril_AttachUnit[data])+xx*udg_s__Tendril_Distance[data]*Sin(udg_s__Tendril_angle[data]*bj_DEGTORAD))
 call SetUnitZFacing(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],-90+Rad2Deg(Atan(r/(udg_s__Tendril_Distance[data])*bj_PI*Cos(xx*bj_PI))))
@@ -37781,7 +37787,7 @@ endif
 loop
 exitwhen a>udg_Plant__TendrilPartsNumber
 set xx=I2R(a)/ I2R(udg_Plant__TendrilPartsNumber)
-call SetUnitFlyHeight(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],Sin(xx*bj_PI)*r+(xx*d)+udg_Plant__TendrilStartHeight,0.00)
+call SetUnitFlyHeightChecked(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],Sin(xx*bj_PI)*r+(xx*d)+udg_Plant__TendrilStartHeight,0.00)
 call SetUnitX(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],GetUnitX(udg_s__Tendril_AttachUnit[data])+xx*udg_s__Tendril_Distance[data]*Cos(udg_s__Tendril_angle[data]*bj_DEGTORAD))
 call SetUnitY(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],GetUnitY(udg_s__Tendril_AttachUnit[data])+xx*udg_s__Tendril_Distance[data]*Sin(udg_s__Tendril_angle[data]*bj_DEGTORAD))
 call SetUnitZFacing(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],-90+Rad2Deg(Atan(r/(udg_s__Tendril_Distance[data])*bj_PI*Cos(xx*bj_PI))))
@@ -37820,7 +37826,7 @@ if udg_s__Tendril_rem[data]!=udg_Plant__TendrilPartsNumber then
 loop
 exitwhen a>udg_Plant__TendrilPartsNumber
 set xx=I2R(a-udg_s__Tendril_rem[data])/ I2R(udg_Plant__TendrilPartsNumber-udg_s__Tendril_rem[data])
-call SetUnitFlyHeight(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],Sin(xx*bj_PI)*r+(xx*d)+udg_Plant__TendrilStartHeight,0.00)
+call SetUnitFlyHeightChecked(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],Sin(xx*bj_PI)*r+(xx*d)+udg_Plant__TendrilStartHeight,0.00)
 call SetUnitX(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],GetUnitX(udg_s__Tendril_AttachUnit[data])+xx*udg_s__Tendril_Distance[data]*Cos(udg_s__Tendril_angle[data]*bj_DEGTORAD))
 call SetUnitY(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],GetUnitY(udg_s__Tendril_AttachUnit[data])+xx*udg_s__Tendril_Distance[data]*Sin(udg_s__Tendril_angle[data]*bj_DEGTORAD))
 call SetUnitZFacing(udg_s___Tendril_TendrilPart[udg_s__Tendril_TendrilPart[data]+a],-90+Rad2Deg(Atan(r/(udg_s__Tendril_Distance[data]+1)*bj_PI*Cos(xx*bj_PI))))
@@ -37887,7 +37893,7 @@ set l__Plant__Plant=udg_s__Tendril_AttachUnit[udg_s__Tendril_Data[udg_s__Tendril
 set udg_s__Tendril_PlantEffect[udg_s__Tendril_Data[udg_s__Tendril_Index-1]]=AddSpecialEffectTarget(udg_Plant__PlantDummyEffect,l__Plant__Plant,"origin")
 set udg_s__Tendril_PlantEffect2[udg_s__Tendril_Data[udg_s__Tendril_Index-1]]=AddSpecialEffectTarget(udg_Plant__PlantDummyEffect2,l__Plant__Plant,"origin")
 call SetUnitScale(udg_s__Tendril_AttachUnit[udg_s__Tendril_Data[udg_s__Tendril_Index-1]],udg_Plant__PlantSize,udg_Plant__PlantSize,udg_Plant__PlantSize)
-call SetUnitFlyHeight(udg_s__Tendril_AttachUnit[udg_s__Tendril_Data[udg_s__Tendril_Index-1]],udg_Plant__PlantHeight,500)
+call SetUnitFlyHeightChecked(udg_s__Tendril_AttachUnit[udg_s__Tendril_Data[udg_s__Tendril_Index-1]],udg_Plant__PlantHeight,500)
 call SetUnitZFacing(udg_s__Tendril_AttachUnit[udg_s__Tendril_Data[udg_s__Tendril_Index-1]],0)
 else
 set udg_s__Tendril_AttachUnit[udg_s__Tendril_Data[udg_s__Tendril_Index-1]]=l__Plant__Plant
@@ -38038,7 +38044,7 @@ return IsUnitEnemy(target,GetOwningPlayer(caster))and UnitAlive(target) and IsUn
 endfunction
 function TimeStop__AdditionalSpecialEffects takes unit Effect,real casters_current_height returns nothing
 call SetUnitScale(Effect,2.,2.,2.)
-call SetUnitFlyHeight(Effect,casters_current_height+100.,0.)
+call SetUnitFlyHeightChecked(Effect,casters_current_height+100.,0.)
 endfunction
 function TimeStop__RevertTimeScale takes unit target returns nothing
 call SetUnitTimeScale(target,1.)
@@ -38252,7 +38258,7 @@ call UnitAddAbility(udg_s__Haunt__HauntSReturn_c[this],'Amrf')
 call SetUnitPathing(udg_s__Haunt__HauntSReturn_c[this],false)
 call UnitAddAbility(udg_s__Haunt__HauntSReturn_c[this],'Aloc')
 call UnitAddAbility(udg_s__Haunt__HauntSReturn_c[this],'Avul')
-call SetUnitFlyHeight(udg_s__Haunt__HauntSReturn_c[this],Haunt__GHOSTHEIGHT,0)
+call SetUnitFlyHeightChecked(udg_s__Haunt__HauntSReturn_c[this],Haunt__GHOSTHEIGHT,0)
 call PauseUnit(udg_s__Haunt__HauntSReturn_c[this],true)
 call SetUnitVertexColor(udg_s__Haunt__HauntSReturn_c[this],Haunt__SOULRED,Haunt__SOULGREEN,Haunt__SOULBLUE,Haunt__TRANSPARENCY)
 call SetUnitPathing(target,true)
@@ -38446,7 +38452,7 @@ endif
 set udg_s___Haunt__HauntS_sfx[udg_s__Haunt__HauntS_sfx[this]+i]=AddSpecialEffectTarget(Haunt__DUMMYSFX,udg_s___Haunt__HauntS_dum[udg_s__Haunt__HauntS_dum[this]+i],"origin")
 call UnitAddAbility(udg_s___Haunt__HauntS_dum[udg_s__Haunt__HauntS_dum[this]+i],'Aloc')
 call UnitAddAbility(udg_s___Haunt__HauntS_dum[udg_s__Haunt__HauntS_dum[this]+i],'Amrf')
-call SetUnitFlyHeight(udg_s___Haunt__HauntS_dum[udg_s__Haunt__HauntS_dum[this]+i],Haunt__SOULHEIGHT,0)
+call SetUnitFlyHeightChecked(udg_s___Haunt__HauntS_dum[udg_s__Haunt__HauntS_dum[this]+i],Haunt__SOULHEIGHT,0)
 set i=i+1
 endloop
 return this
@@ -38660,13 +38666,13 @@ set udg_DF_Range[udg_DF_index[2]]=550.00
 set udg_DF_FriendlyDamage[udg_DF_index[2]]=false
 call CreateNUnitsAtLocBonuses(1,'h07C',Player(PLAYER_NEUTRAL_PASSIVE),udg_DF_Target[udg_DF_index[2]],270.00)
 set udg_DF_Dummy[udg_DF_index[2]]=GetLastCreatedUnit()
-call SetUnitFlyHeightBJ(udg_DF_Dummy[udg_DF_index[2]],800.00,999999.00)
+call SetUnitFlyHeightChecked(udg_DF_Dummy[udg_DF_index[2]],800.00,999999.00)
 call AddSpecialEffectTargetUnitBJ("origin",udg_DF_Dummy[udg_DF_index[2]],"Abilities\\Spells\\Undead\\DeathCoil\\DeathCoilMissile.mdl")
 set udg_DF_SEffect1[udg_DF_index[2]]=GetLastCreatedEffectBJ()
 call SetUnitScalePercent(udg_DF_Dummy[udg_DF_index[2]],600.00,600.00,600.00)
 call CreateNUnitsAtLocBonuses(1,'h07C',Player(PLAYER_NEUTRAL_PASSIVE),udg_DF_Target[udg_DF_index[2]],bj_UNIT_FACING)
 call UnitApplyTimedLifeBJ(6.00,'BTLF',GetLastCreatedUnit())
-call SetUnitFlyHeightBJ(GetLastCreatedUnit(),0.00,0.00)
+call SetUnitFlyHeightChecked(GetLastCreatedUnit(),0.00,0.00)
 call SetUnitScalePercent(GetLastCreatedUnit(),800.00,800.00,800.00)
 call AddSpecialEffectTargetUnitBJ("origin",GetLastCreatedUnit(),"Abilities\\Spells\\NightElf\\TargetArtLumber\\TargetArtLumber.mdl")
 set udg_DF_SEffect2[udg_DF_index[2]]=GetLastCreatedEffectBJ()
@@ -38789,7 +38795,7 @@ if(Trig_Death_Fall_loop_Func003Func001C())then
 set udg_DF_Timer[udg_DF_index[3]]=(udg_DF_Timer[udg_DF_index[3]]-1)
 if(Trig_Death_Fall_loop_Func003Func001Func003C())then
 set udg_DF_Fallspeed[udg_DF_index[3]]=(udg_DF_Fallspeed[udg_DF_index[3]]+10.00)
-call SetUnitFlyHeightBJ(udg_DF_Dummy[udg_DF_index[3]],(GetUnitFlyHeight(udg_DF_Dummy[udg_DF_index[3]])-udg_DF_Fallspeed[udg_DF_index[3]]),600.00)
+call SetUnitFlyHeightChecked(udg_DF_Dummy[udg_DF_index[3]],(GetUnitFlyHeight(udg_DF_Dummy[udg_DF_index[3]])-udg_DF_Fallspeed[udg_DF_index[3]]),600.00)
 else
 if(Trig_Death_Fall_loop_Func003Func001Func003Func001C())then
 set udg_DF_Boolean[udg_DF_index[3]]=true
@@ -38810,7 +38816,7 @@ call KillUnit(udg_DF_Dummy[udg_DF_index[3]])
 call DestroyEffectBJ(udg_DF_SEffect1[udg_DF_index[3]])
 call CreateNUnitsAtLocBonuses(1,'h07C',Player(PLAYER_NEUTRAL_PASSIVE),udg_DF_Target[udg_DF_index[3]],bj_UNIT_FACING)
 call UnitApplyTimedLifeBJ(5.00,'BTLF',GetLastCreatedUnit())
-call SetUnitFlyHeightBJ(GetLastCreatedUnit(),0.00,0.00)
+call SetUnitFlyHeightChecked(GetLastCreatedUnit(),0.00,0.00)
 call SetUnitScalePercent(GetLastCreatedUnit(),400.00,400.00,400.00)
 call AddSpecialEffectTargetUnitBJ("chest",GetLastCreatedUnit(),"Objects\\Spawnmodels\\Undead\\UCancelDeath\\UCancelDeath.mdl")
 set udg_DF_SEffect1[udg_DF_index[3]]=GetLastCreatedEffectBJ()
@@ -39538,7 +39544,7 @@ if(Trig_Telekinesis_GUI_Func001Func001C())then
 if(Trig_Telekinesis_GUI_Func001Func001Func001C())then
 set udg_TK_Interval[udg_TK_Integers[3]]=(udg_TK_Interval[udg_TK_Integers[3]]+udg_TK_FSpeed[udg_TK_Integers[3]])
 set udg_TK_LsfxT[udg_TK_Integers[3]]=(udg_TK_LsfxT[udg_TK_Integers[3]]+0.01)
-call SetUnitFlyHeightBJ(udg_TK_Unit[udg_TK_Integers[3]],((SinBJ(udg_TK_Interval[udg_TK_Integers[3]])*udg_TK_MaxHeight[udg_TK_Integers[3]])+GetUnitDefaultFlyHeight(udg_TK_Unit[udg_TK_Integers[3]])),0.00)
+call SetUnitFlyHeightChecked(udg_TK_Unit[udg_TK_Integers[3]],((SinBJ(udg_TK_Interval[udg_TK_Integers[3]])*udg_TK_MaxHeight[udg_TK_Integers[3]])+GetUnitDefaultFlyHeight(udg_TK_Unit[udg_TK_Integers[3]])),0.00)
 if(Trig_Telekinesis_GUI_Func001Func001Func001Func015C())then
 call AddSpecialEffectTargetUnitBJ("chest",udg_TK_Unit[udg_TK_Integers[3]],udg_TK_LiftSFX)
 call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -39554,7 +39560,7 @@ else
 endif
 call AddSpecialEffectLocBJ(udg_TK_TempPoint[1],udg_TK_ImpactSFX)
 call DestroyEffectBJ(GetLastCreatedEffectBJ())
-call SetUnitFlyHeightBJ(udg_TK_Unit[udg_TK_Integers[3]],GetUnitDefaultFlyHeight(udg_TK_Unit[udg_TK_Integers[3]]),0.00)
+call SetUnitFlyHeightChecked(udg_TK_Unit[udg_TK_Integers[3]],GetUnitDefaultFlyHeight(udg_TK_Unit[udg_TK_Integers[3]]),0.00)
 call UnitDamageTargetBJ(udg_TK_Hero[udg_TK_Integers[3]],udg_TK_Unit[udg_TK_Integers[3]],((udg_TK_HDmgInPercStart+(udg_TK_HDmgInPercIncreasement*(I2R(udg_TK_Level[udg_TK_Integers[3]])-1)))+(udg_TK_ImpactDmgStart+(udg_TK_ImpactDmgIncreasement*(I2R(udg_TK_Level[udg_TK_Integers[3]])-1)))),udg_TK_AttackType,udg_TK_DamageType)
 call RemoveLocation(udg_TK_TempPoint[1])
 set udg_TK_Unit[udg_TK_Integers[3]]=null
@@ -39672,9 +39678,9 @@ set udg_Real[1]=-8.00
 endif
 call UnitAddAbilityBJ('Amrf',udg_Caster)
 call UnitRemoveAbilityBJ('Amrf',udg_Caster)
-call SetUnitFlyHeightBJ(udg_Caster,(GetUnitFlyHeight(udg_Caster)+udg_Real[1]),1000000000.00)
+call SetUnitFlyHeightChecked(udg_Caster,(GetUnitFlyHeight(udg_Caster)+udg_Real[1]),1000000000.00)
 else
-call SetUnitFlyHeightBJ(udg_Caster,0.00,100000000.00)
+call SetUnitFlyHeightChecked(udg_Caster,0.00,100000000.00)
 call SetUnitPathing(udg_Caster,true)
 call IssueTargetOrderBJ(udg_Caster,"attack",udg_Target)
 set udg_TempGroup=GetUnitsInRangeOfLocMatching(300.00,udg_Points[1],Condition(function Trig_Heroic_Leap_Loop_Func001Func016Func013002003))
@@ -40029,7 +40035,7 @@ call RemoveLocation(udg_JP_Point[1])
 call RemoveLocation(udg_JP_Point[2])
 set udg_JP_Fly[udg_JP]=(udg_JP_Fly[udg_JP]+(180.00/(udg_JP_Fly_Distance[udg_JP]/ udg_JP_Speed[udg_JP])))
 set udg_JP_Parabole[udg_JP]=(SinBJ(udg_JP_Fly[udg_JP])*udg_JP_Formula[udg_JP])
-call SetUnitFlyHeightBJ(udg_JP_Hero[udg_JP],udg_JP_Parabole[udg_JP],1000000000.00)
+call SetUnitFlyHeightChecked(udg_JP_Hero[udg_JP],udg_JP_Parabole[udg_JP],1000000000.00)
 endif
 else
 endif
@@ -40272,7 +40278,7 @@ if(Trig_Rock_Creation_Func003Func001Func002C())then
 set udg_RFS_Timer[udg_RFS_DummyIntegers[3]]=0.00
 set udg_RFS_ConjurPoint=PolarProjectionBJ(udg_RFS_TempPoint[udg_RFS_DummyIntegers[3]],GenerateReal(MainGenerator, 0,udg_RF_AoE),GetRandomDirectionDeg())
 call CreateNUnitsAtLocBonuses(1,'n01C',GetOwningPlayer(udg_RFS_Caster[udg_RFS_DummyIntegers[3]]),udg_RFS_ConjurPoint,GetRandomDirectionDeg())
-call SetUnitFlyHeightBJ(GetLastCreatedUnit(),450.00,0.00)
+call SetUnitFlyHeightChecked(GetLastCreatedUnit(),450.00,0.00)
 call SetUnitTimeScalePercent(GetLastCreatedUnit(),0.00)
 call RemoveLocation(udg_RFS_ConjurPoint)
 if(Trig_Rock_Creation_Func003Func001Func002Func009C())then
@@ -40453,7 +40459,7 @@ loop
 exitwhen udg_RFSine_Integers[3]>udg_RFSine_Integers[1]
 if(Trig_Sine_Fall_and_Damage_Func002Func001C())then
 set udg_RF_SineReals[udg_RFSine_Integers[3]]=(udg_RF_SineReals[udg_RFSine_Integers[3]]+((90.00/ udg_RF_FallingTime)*0.01))
-call SetUnitFlyHeightBJ(udg_RFSine_Unit[udg_RFSine_Integers[3]],(SinBJ((90.00+udg_RF_SineReals[udg_RFSine_Integers[3]]))*450.00),0.00)
+call SetUnitFlyHeightChecked(udg_RFSine_Unit[udg_RFSine_Integers[3]],(SinBJ((90.00+udg_RF_SineReals[udg_RFSine_Integers[3]]))*450.00),0.00)
 if(Trig_Sine_Fall_and_Damage_Func002Func001Func004C())then
 set udg_RF_DamagePoint=GetUnitLoc(udg_RFSine_Unit[udg_RFSine_Integers[3]])
 call AddSpecialEffectLocBJ(udg_RF_DamagePoint,"Abilities\\Weapons\\AncientProtectorMissile\\AncientProtectorMissile.mdl")
@@ -40599,7 +40605,7 @@ call SetUnitPositionLoc(udg_RFA_Unit[udg_RFA_Integers[3]],udg_RFA_TempPoint[2])
 set udg_RFA_ReachedDistance[udg_RFA_Integers[3]]=(udg_RFA_ReachedDistance[udg_RFA_Integers[3]]+udg_RFA_SpeedUnits[udg_RFA_Integers[3]])
 set udg_RFA_RealTimer[udg_RFA_Integers[3]]=(udg_RFA_RealTimer[udg_RFA_Integers[3]]+(180.00/(udg_RFA_Distances[udg_RFA_Integers[3]]/ udg_RFA_SpeedUnits[udg_RFA_Integers[3]])))
 set udg_RFA_JumpHigh[udg_RFA_Integers[3]]=(SinBJ(udg_RFA_RealTimer[udg_RFA_Integers[3]])*udg_RFA_HighSettings[udg_RFA_Integers[3]])
-call SetUnitFlyHeightBJ(udg_RFA_Unit[udg_RFA_Integers[3]],udg_RFA_JumpHigh[udg_RFA_Integers[3]],0.00)
+call SetUnitFlyHeightChecked(udg_RFA_Unit[udg_RFA_Integers[3]],udg_RFA_JumpHigh[udg_RFA_Integers[3]],0.00)
 call RemoveLocation(udg_RFA_TempPoint[1])
 call RemoveLocation(udg_RFA_TempPoint[2])
 else
@@ -40974,7 +40980,7 @@ else
 endif
 set udg_JD_RealTimer[udg_JD_Integers[3]]=(udg_JD_RealTimer[udg_JD_Integers[3]]+(180.00/(udg_JD_Distances[udg_JD_Integers[3]]/ udg_JD_SpeedUnits[udg_JD_Integers[3]])))
 set udg_JD_JumpHigh[udg_JD_Integers[3]]=(SinBJ(udg_JD_RealTimer[udg_JD_Integers[3]])*udg_JD_HighSettings[udg_JD_Integers[3]])
-call SetUnitFlyHeightBJ(udg_JD_Unit[udg_JD_Integers[3]],udg_JD_JumpHigh[udg_JD_Integers[3]],1000000000.00)
+call SetUnitFlyHeightChecked(udg_JD_Unit[udg_JD_Integers[3]],udg_JD_JumpHigh[udg_JD_Integers[3]],1000000000.00)
 call RemoveLocation(udg_JD_TempPoint[1])
 call RemoveLocation(udg_JD_TempPoint[2])
 else
