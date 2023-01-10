@@ -8707,6 +8707,7 @@ local unit u2
 local integer idx=1
 local real tx=GetUnitX(u)
 local real ty=GetUnitY(u)
+local real face = GetUnitFacing(u)
 call UnregUnitBonuses(u)
 set u2 = CreateUnitBonuses(GetOwningPlayer(u),uid,GetUnitX(u),GetUnitY(u),GetUnitFacing(u))
 loop
@@ -8730,6 +8731,8 @@ set u2=null
 if(udg_NO_FLYING_UNITS) then
     call RemoveUnitFromStock(u,'ugar')
 endif
+call SetUnitPosition(u,tx,ty)
+call SetUnitFacing(u,face)
 return u
 endfunction
 
