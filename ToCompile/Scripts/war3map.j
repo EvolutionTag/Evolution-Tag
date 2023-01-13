@@ -8257,7 +8257,7 @@ function InitTrig_CS_Setup takes nothing returns nothing
 set udg_trg_CS_Setup=CreateTrigger()
 call TriggerAddAction(udg_trg_CS_Setup,function Trig_CS_Setup_Actions)
 endfunction
-library smelter requires Messages
+library smelter requires Messages, TimerData
 public function playercnt takes nothing returns nothing
 call Messages_DMSG(I2S(Smelter_counts[GetPlayerId(GetLocalPlayer())]))
 endfunction
@@ -8326,6 +8326,7 @@ call UnitRemoveAbility(u,'AInv')
 endif
 set itm=null
 endfunction
+
 public function UnitApplyAvailiableBonuses takes unit u returns nothing
 local integer plr=GetPlayerId(GetOwningPlayer(u))
 local integer l__cnt=Smelter_counts[plr]
@@ -8686,10 +8687,29 @@ set udg_CS_Value=udg_Player_DamagePoints[GetConvertedPlayerId(udg_CS_Player)]
 call AddWhiteDamageRestricted(udg_CS_Unit,udg_CS_Value)
 call ApplyBookBonuses(u)
 endfunction
+
+
 function ApplyAllBonuses1 takes unit u returns nothing
 call ApplyStatBonuses(u)
 call ApplyAllNotStatBonuses(u)
 call AddAlliedVisionCheck(u)
+endfunction
+
+function ApplyAllBonuses1_callback takes nothing returns nothing
+    local integer id = GetHandleId(GetExpiredTimer())
+    local unit u = LoadUnitHandle(timerdata,id,0)
+    call DestroyTimer(GetExpiredTimer())
+    if(GetUnitTypeId(u)!=0) then
+        call ApplyAllBonuses1(u)
+    endif
+    call FlushChildHashtable(timerdata,id)
+    set u = null
+endfunction
+
+function ApplyAllBonuses1_timed takes unit u returns nothing
+    local timer t = CreateTimer()
+    call SaveUnitHandle(timerdata,GetHandleId(t),0,u)
+    call TimerStart(t,0.01,false,function ApplyAllBonuses1_callback)
 endfunction
 
 function AddSpecialEffectIfNotBuilding takes string name, unit u, string attach returns nothing
@@ -8704,7 +8724,7 @@ endfunction
 
 function AddUnitBonusesCreated takes nothing returns nothing
     call AddRevengeCheck(GetTriggerUnit())
-    call ApplyAllBonuses1(GetTriggerUnit())
+    call ApplyAllBonuses1_timed(GetTriggerUnit())
     if(not udg_NO_FLYING_UNITS) then
         call AddFlyingUnits(GetTriggerUnit())
     endif
@@ -9124,19 +9144,19 @@ function SendToPirates takes player p returns nothing
 call AllyWithPlayerAI(p,Neutral_Satyrs)
 call DisplayTimedTextToForce(GetPlayersAll(),10.00,udg_AAA_Player_Colors[GetConvertedPlayerId(p)]+" will join the pirates")
 call CreateNUnitsAtLoc(1,'h07M',p,GetRectCenter(udg_rct_Satyr_Barracks),bj_UNIT_FACING)
-call ApplyAllBonuses1(GetLastCreatedUnit())
+call ApplyAllBonuses1_timed(GetLastCreatedUnit())
 call SmartCameraPanBJModified(p,GetRectCenter(udg_rct_Satyr_Barracks),0)
 endfunction
 function SendToBottom takes player p returns nothing
 call AllyWithPlayerAI(p,Neutral_Bottom)
 if(GenerateInt(MainGenerator, 1,2)==1)then
 call CreateNUnitsAtLoc(1,'nwwf',p,GetRectCenter(udg_rct_Ice_creep_camp_spawn),bj_UNIT_FACING)
-call ApplyAllBonuses1(GetLastCreatedUnit())
+call ApplyAllBonuses1_timed(GetLastCreatedUnit())
 call SmartCameraPanBJModified(p,GetRectCenter(udg_rct_Ice_creep_camp_spawn),0)
 call DisplayTimedTextToForce(GetPlayersAll(),10.00,(udg_AAA_Player_Colors[GetConvertedPlayerId(p)]+" will join the ice team"))
 else
 call CreateNUnitsAtLoc(1,'n014',p,GetRectCenter(udg_rct_Gnoll_spawn_area),bj_UNIT_FACING)
-call ApplyAllBonuses1(GetLastCreatedUnit())
+call ApplyAllBonuses1_timed(GetLastCreatedUnit())
 call SmartCameraPanBJModified(p,GetRectCenter(udg_rct_Gnoll_spawn_area),0)
 call DisplayTimedTextToForce(GetPlayersAll(),10.00,(udg_AAA_Player_Colors[GetConvertedPlayerId(p)]+" will join the gnoll"))
 endif
@@ -9145,7 +9165,7 @@ function SendToNaga takes player p returns nothing
 call AllyWithPlayerAI(p,Neutral_Nagas)
 call DisplayTimedTextToForce(GetPlayersAll(),10.00,(udg_AAA_Player_Colors[GetConvertedPlayerId(p)]+" will join the naga team"))
 call CreateNUnitsAtLoc(1,'n079',p,GetRectCenter(udg_rct_Naga_spawn_area),bj_UNIT_FACING)
-call ApplyAllBonuses1(GetLastCreatedUnit())
+call ApplyAllBonuses1_timed(GetLastCreatedUnit())
 call SmartCameraPanBJModified(p,GetRectCenter(udg_rct_Naga_spawn_area),0)
 endfunction
 function SendToRandomNeutral takes player p returns nothing
@@ -9361,7 +9381,7 @@ if(IsUnitType(u,UNIT_TYPE_HERO))then
 call SetHeroXP(u2,GetHeroXP(u),false)
 endif
 call smelter_UnregUnitBonuses(u)
-call ApplyAllBonuses1(u2)
+call ApplyAllBonuses1_timed(u2)
 loop
 call UnitAddItem(u2,UnitItemInSlotBJ(u,idx))
 set idx=idx+1
@@ -9471,7 +9491,7 @@ call UnitRemoveAbility(u2,'Aien')
 call UnitRemoveAbility(u2,'Aiun')
 call UnitAddAbility(u2,'AInv')
 call smelter_UnregUnitBonuses(u)
-call ApplyAllBonuses1(u2)
+call ApplyAllBonuses1_timed(u2)
 loop
 call UnitAddItem(u2,UnitItemInSlotBJ(u,idx))
 set idx=idx+1
@@ -16836,17 +16856,19 @@ set damageBonuses[GetPlayerId(GetOwningPlayer(GetTriggerUnit()))]=damageBonuses[
 set HPBonuses[GetPlayerId(GetOwningPlayer(GetTriggerUnit()))]=HPBonuses[GetPlayerId(GetOwningPlayer(GetTriggerUnit()))]+500
 set idx=1
 elseif(GetUnitTypeId(GetSoldUnit())=='e00P')then
+call RemoveUnit(GetSoldUnit())
 if(treant_count<1)then
 set treant_count=treant_count+1
 set created=ChangeUnit2(GetSellingUnit(),'e00P')
 else
-call RemoveUnit(GetSoldUnit())
 set sold=null
 set created=null
 set selling=null
 return
 endif
 else
+set tmp_int = GetUnitTypeId(sold)
+call RemoveUnit(sold)
 set created=ChangeUnit2(GetSellingUnit(),GetUnitTypeId(sold))
 endif
 if(RectContainsUnit(udg_rct_Dead_teleport_area,created))then
@@ -17080,6 +17102,7 @@ endif
 return true
 endfunction
 function Trig_Remove_Selling_Unit_HERO_SHOP_Actions takes nothing returns nothing
+local integer soldtype = GetUnitTypeId(GetSoldUnit())
 if(Trig_Remove_Selling_Unit_HERO_SHOP_Func002C())then
 if(IsUnitInGroup(GetBuyingUnit(),morphs))then
 call AdjustPlayerStateSimpleBJ(GetOwningPlayer(GetBuyingUnit()),PLAYER_STATE_RESOURCE_GOLD,175)
@@ -17087,8 +17110,8 @@ call RemoveUnit(GetSoldUnit())
 return
 endif
 if(Trig_Remove_Selling_Unit_HERO_SHOP_Func002Func001C())then
-call ChangeUnit2(GetBuyingUnit(),GetUnitTypeId(GetSoldUnit()))
 call RemoveUnit(GetSoldUnit())
+call ChangeUnit2(GetBuyingUnit(),soldtype)
 else
 call AdjustPlayerStateSimpleBJ(GetOwningPlayer(GetBuyingUnit()),PLAYER_STATE_RESOURCE_GOLD,175)
 call RemoveUnit(GetSoldUnit())
@@ -17102,8 +17125,8 @@ call RemoveUnit(GetSoldUnit())
 return
 endif
 if(Trig_Remove_Selling_Unit_HERO_SHOP_Func003Func001C())then
-call ChangeUnit2(GetBuyingUnit(),GetUnitTypeId(GetSoldUnit()))
-call RemoveUnit(GetSoldUnit())
+    call RemoveUnit(GetSoldUnit())
+call ChangeUnit2(GetBuyingUnit(),soldtype)
 else
 call AdjustPlayerStateSimpleBJ(GetOwningPlayer(GetBuyingUnit()),PLAYER_STATE_RESOURCE_GOLD,100)
 call RemoveUnit(GetSoldUnit())
@@ -17117,8 +17140,8 @@ call RemoveUnit(GetSoldUnit())
 return
 endif
 if(Trig_Remove_Selling_Unit_HERO_SHOP_Func004Func001C())then
-call ChangeUnit2(GetBuyingUnit(),GetUnitTypeId(GetSoldUnit()))
 call RemoveUnit(GetSoldUnit())
+call ChangeUnit2(GetBuyingUnit(),soldtype)
 else
 call AdjustPlayerStateSimpleBJ(GetOwningPlayer(GetBuyingUnit()),PLAYER_STATE_RESOURCE_GOLD,65)
 call RemoveUnit(GetSoldUnit())
@@ -17132,8 +17155,8 @@ call RemoveUnit(GetSoldUnit())
 return
 endif
 if(Trig_Remove_Selling_Unit_HERO_SHOP_Func005Func001C())then
-call ChangeUnit2(GetBuyingUnit(),GetUnitTypeId(GetSoldUnit()))
-call RemoveUnit(GetSoldUnit())
+    call RemoveUnit(GetSoldUnit())
+call ChangeUnit2(GetBuyingUnit(),soldtype)
 else
 call AdjustPlayerStateSimpleBJ(GetOwningPlayer(GetBuyingUnit()),PLAYER_STATE_RESOURCE_GOLD,100)
 call RemoveUnit(GetSoldUnit())
