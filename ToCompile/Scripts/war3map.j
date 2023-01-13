@@ -8380,21 +8380,21 @@ local integer uh
 local integer max
 local integer rind
 local integer ucnt
-call BJDebugMsg("var0")
+
 set plr=GetPlayerId(GetOwningPlayer(u))
-call BJDebugMsg("var1")
+
 set l__cnt=Smelter_counts[plr]
-call BJDebugMsg("var2")
+
 set smh=Smelter_owned_items[plr]
-call BJDebugMsg("var3")
+
 set smg=Smelter_owners
-call BJDebugMsg("var4")
+
 set uh=GetHandleId(u)
-call BJDebugMsg("var5")
+
 set max=Smelter_max
-call BJDebugMsg("var6")
+
 set rind=max*plr+l__cnt
-call BJDebugMsg("OMG0")
+
 set ucnt=LoadInteger(smh,uh,max+10)
 call GroupRemoveUnit(smg,u)
 loop
@@ -8406,7 +8406,7 @@ endloop
 call SaveInteger(smh,uh,max+10,0)
 set smg=null
 set smh=null
-call BJDebugMsg("OMG")
+
 endfunction
 public function Trig_Smelter_Conditions takes nothing returns boolean
 if(not(GetSpellAbilityId()==Smelter_ab_id))then
@@ -9232,9 +9232,9 @@ function Trig_PlayerDies_Actions takes nothing returns nothing
 local unit DyingUnit = GetDyingUnit()
 call RegisterKill()
 if(GetUnitTypeId(DyingUnit)!=0) then
-    call BJDebugMsg("death0")
+    
     call smelter_UnregUnitBonuses(DyingUnit)
-    call BJDebugMsg("death1")
+    
     if(AddLivesP(GetOwningPlayer(DyingUnit),-1))then
     call PlayerDefeated(GetOwningPlayer(DyingUnit))
     call MultiboardSetItemIconBJ(udg_LIVES_MULTIBOARD,1,2+GetPlayerId(GetOwningPlayer(DyingUnit)),"ReplaceableTextures\\CommandButtons\\BTNPig.blp")
