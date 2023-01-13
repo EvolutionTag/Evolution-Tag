@@ -50,7 +50,7 @@ library JumpSystem requires TimerData, Plan
             {
                 dx = Cos(angle)*step;
                 dy = Sin(angle)*step;
-                h = 0;//hrrrrrrrr
+                h = GetUnitFlyHeight(u);
                 remained = remained - 1;
                 if(remained>count/2)
                 {
