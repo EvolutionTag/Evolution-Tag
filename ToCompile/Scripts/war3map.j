@@ -2419,7 +2419,7 @@ trigger array udg_st___prototype10008
 trigger array udg_st___prototype41
 trigger udg_f__arg_trigger1=null
 integer udg_f__arg_integer1=0
-unit udg_f__arg_unit1=null
+unit udg_gg___arg_integer2=null
 real udg_f__arg_real1=0
 real udg_f__arg_real2=0
 real udg_f__arg_real3=0
@@ -2933,7 +2933,7 @@ trigger array st___prototype10008
 trigger array st___prototype41
 trigger f__arg_trigger1
 integer f__arg_integer1
-unit f__arg_unit1
+unit gg___arg_integer2
 real f__arg_real1
 real f__arg_real2
 real f__arg_real3
@@ -3170,13 +3170,18 @@ native UnitAlive takes unit id returns boolean
 // //! import zinc "..\ToCompile\Scripts\Fixes\RandomFix.zn"
 
 
+library Messages
+    public function Print takes string s returns nothing
+        call DisplayTextToPlayer(GetLocalPlayer(),0,0,s)
+    endfunction
+    public function DisplayTextAuto15 takes string s returns nothing
+        call DisplayTimedTextToPlayer(GetLocalPlayer(),0,0,15,s)
+    endfunction
+    public function DMSG takes string s returns nothing
+        call Print(s)
+    endfunction
+endlibrary
 
-function Print takes string s returns nothing
-    call DisplayTextToPlayer(GetLocalPlayer(),0,0,s)
-endfunction
-function DisplayTextAuto15 takes string s returns nothing
-    call DisplayTimedTextToPlayer(GetLocalPlayer(),0,0,15,s)
-endfunction
 function s__Sync__allocate takes nothing returns integer
  local integer this=si__Sync_F
     if (this!=0) then
@@ -7743,9 +7748,6 @@ set gg_rct_Rocks_Mid_Left=Rect(-2400.0,-768.0,-2048.0,-224.0)
 set gg_rct_All_Map_Exclude_Out_OF_bounds_1=Rect(-7552.0,-4192.0,4192.0,4096.0)
 set gg_rct_Main_Map=Rect(-7904.0,-6176.0,4416.0,6464.0)
 endfunction
-function DMSG takes string s returns nothing
-call Print(s)
-endfunction
 function InitTrig_____________________________________002 takes nothing returns nothing
 call PreloadGenStart()
 endfunction
@@ -8255,10 +8257,11 @@ function InitTrig_CS_Setup takes nothing returns nothing
 set udg_trg_CS_Setup=CreateTrigger()
 call TriggerAddAction(udg_trg_CS_Setup,function Trig_CS_Setup_Actions)
 endfunction
-function playercnt takes nothing returns nothing
-call DMSG(I2S(Smelter_counts[GetPlayerId(GetLocalPlayer())]))
+library smelter requires Messages
+public function playercnt takes nothing returns nothing
+call Messages_DMSG(I2S(Smelter_counts[GetPlayerId(GetLocalPlayer())]))
 endfunction
-function playercntfree takes nothing returns nothing
+public function playercntfree takes nothing returns nothing
 local integer idx=Smelter_max*GetPlayerId(GetLocalPlayer())+cnt
 local integer l__cnt=0
 loop
@@ -8268,9 +8271,9 @@ set l__cnt=l__cnt+1
 endif
 set idx=idx-1
 endloop
-call DMSG(I2S(l__cnt))
+call Messages_DMSG(I2S(l__cnt))
 endfunction
-function UnitAddRegistredItemBonus takes unit u,item i returns nothing
+public function UnitAddRegistredItemBonus takes unit u,item i returns nothing
 local integer plr=GetPlayerId(GetOwningPlayer(u))
 local integer l__cnt=Smelter_counts[plr]
 local hashtable smh=Smelter_owned_items[plr]
@@ -8301,14 +8304,14 @@ endif
 set smg=null
 set smh=null
 endfunction
-function UnitAddRegistredItemBonusById takes unit u,integer iid returns nothing
+public function UnitAddRegistredItemBonusById takes unit u,integer iid returns nothing
 local item itm=CreateItem(iid,GetUnitX(u),GetUnitY(u))
 call UnitAddItem(u,itm)
 call UnitAddRegistredItemBonus(u,itm)
 call RemoveItem(itm)
 set itm=null
 endfunction
-function UnitAddRegistredItemBonusByIdAny takes unit u,integer iid returns nothing
+public function UnitAddRegistredItemBonusByIdAny takes unit u,integer iid returns nothing
 local item itm=CreateItem(iid,GetUnitX(u),GetUnitY(u))
 local boolean hasntinv=false
 if(not(GetUnitAbilityLevel(u,'AInv')>0))then
@@ -8323,7 +8326,7 @@ call UnitRemoveAbility(u,'AInv')
 endif
 set itm=null
 endfunction
-function UnitApplyAvailiableBonuses takes unit u returns nothing
+public function UnitApplyAvailiableBonuses takes unit u returns nothing
 local integer plr=GetPlayerId(GetOwningPlayer(u))
 local integer l__cnt=Smelter_counts[plr]
 local hashtable smh=Smelter_owned_items[plr]
@@ -8357,7 +8360,7 @@ endloop
 set smg=null
 set smh=null
 endfunction
-function UnitApplyAvailiableBonusesAny takes unit u returns nothing
+public function UnitApplyAvailiableBonusesAny takes unit u returns nothing
 if(GetUnitAbilityLevel(u,'AInv')>0)then
 call UnitApplyAvailiableBonuses(u)
 else
@@ -8366,7 +8369,7 @@ call UnitApplyAvailiableBonuses(u)
 call UnitRemoveAbility(u,'AInv')
 endif
 endfunction
-function UnregUnitBonuses takes unit u returns nothing
+public function UnregUnitBonuses takes unit u returns nothing
 local integer plr=GetPlayerId(GetOwningPlayer(u))
 local integer l__cnt=Smelter_counts[plr]
 local hashtable smh=Smelter_owned_items[plr]
@@ -8388,7 +8391,7 @@ call SaveInteger(smh,uh,max+10,0)
 set smg=null
 set smh=null
 endfunction
-function Trig_Smelter_Conditions takes nothing returns boolean
+public function Trig_Smelter_Conditions takes nothing returns boolean
 if(not(GetSpellAbilityId()==Smelter_ab_id))then
 return false
 endif
@@ -8400,14 +8403,14 @@ return false
 endif
 return true
 endfunction
-function Trig_Smelter_Actions takes nothing returns nothing
+public function Trig_Smelter_Actions takes nothing returns nothing
 call UnitAddItem(GetTriggerUnit(),GetSpellTargetItem())
 if(UnitHasItem(GetTriggerUnit(),GetSpellTargetItem()))then
 call UnitAddRegistredItemBonus(GetTriggerUnit(),GetSpellTargetItem())
 call RemoveItem(GetSpellTargetItem())
 endif
 endfunction
-function InitTrig_Smelter takes nothing returns nothing
+public function InitTrig_Smelter takes nothing returns nothing
 local integer idx=0
 set gg_trg_Smelter=CreateTrigger()
 call TriggerAddAction(gg_trg_Smelter,function Trig_Smelter_Actions)
@@ -8421,36 +8424,36 @@ exitwhen idx>11
 endloop
 set Smelter_owners=CreateGroup()
 endfunction
-function printcnt takes nothing returns nothing
-call DMSG(I2S(cnt))
+public function printcnt takes nothing returns nothing
+call Messages_DMSG(I2S(cnt))
 endfunction
-function AddUnit takes unit u returns nothing
+public function AddUnit takes unit u returns nothing
 if((cnt<8000)and(not IsUnitInGroup(u,eval)))then
 set cnt=cnt+1
 set handled_units[cnt]=u
 call GroupAddUnit(eval,u)
 endif
 endfunction
-function AddUnitLazy takes nothing returns nothing
+public function AddUnitLazy takes nothing returns nothing
 if((cnt<8000)and(not IsUnitInGroup(tmp_unit_smelter,eval)))then
 set cnt=cnt+1
 set handled_units[cnt]=tmp_unit_smelter
 call GroupAddUnit(eval,tmp_unit_smelter)
 endif
 endfunction
-function IsUnitRemoved takes unit u returns boolean
+public function IsUnitRemoved takes unit u returns boolean
 if(not IsUnitInGroup(u,eval))then
 return true
 endif
 return false
 endfunction
-function CheckUnits takes nothing returns nothing
+public function CheckUnits takes nothing returns nothing
 local integer idx=1
 local integer jdx
 loop
 exitwhen idx>cnt
 if(IsUnitRemoved(handled_units[idx]))then
-call UnregUnitBonuses(handled_units[idx])
+call smelter_UnregUnitBonuses(handled_units[idx])
 set jdx=idx
 loop
 exitwhen jdx>=cnt
@@ -8462,11 +8465,12 @@ endif
 set idx=idx+1
 endloop
 endfunction
-function InitTrig_event_unit_removed_smelter takes nothing returns nothing
+public function InitTrig_event_unit_removed_smelter takes nothing returns nothing
 set gg_trg_event_unit_removed_smelter=CreateTrigger()
 call TriggerRegisterTimerEventPeriodic(gg_trg_event_unit_removed_smelter,5.00)
 call TriggerAddAction(gg_trg_event_unit_removed_smelter,function CheckUnits)
 endfunction
+endlibrary
 function PlayerAddDamagePermanent takes player p,integer l__cnt returns nothing
 set damageBonuses[GetPlayerId(p)]=damageBonuses[GetPlayerId(p)]+l__cnt
 endfunction
@@ -8628,9 +8632,9 @@ function ApplyBookDmgBonuses takes unit u returns nothing
 call AddWhiteDamage(u,damageBonuses[GetPlayerId(GetOwningPlayer(u))])
 endfunction
 function ApplySmelterBonuses takes unit u returns nothing
-    call UnitApplyAvailiableBonusesAny(u)
+    call smelter_UnitApplyAvailiableBonusesAny(u)
     if(IsUnitInGroup(u,Smelter_owners)) then
-        call AddUnit(u)
+        call smelter_AddUnit(u)
     endif
 endfunction
 
@@ -8708,7 +8712,7 @@ local integer idx=1
 local real tx=GetUnitX(u)
 local real ty=GetUnitY(u)
 local real face = GetUnitFacing(u)
-call UnregUnitBonuses(u)
+call smelter_UnregUnitBonuses(u)
 set u2 = CreateUnitBonuses(GetOwningPlayer(u),uid,GetUnitX(u),GetUnitY(u),GetUnitFacing(u))
 loop
 call UnitAddItem(u2,UnitItemInSlotBJ(u,idx))
@@ -8752,7 +8756,7 @@ function RecreateUnitPosBonusesNotRemove takes unit u,real x,real y returns unit
 local unit u2
 local integer idx=0
 local real mult
-call UnregUnitBonuses(u)
+call smelter_UnregUnitBonuses(u)
 loop
 set itemexchange[idx] = UnitRemoveItemFromSlot(u,idx)
 set idx=idx+1
@@ -9192,7 +9196,7 @@ function Trig_PlayerDies_Actions takes nothing returns nothing
 local unit DyingUnit = GetDyingUnit()
 call RegisterKill()
 if(GetUnitTypeId(DyingUnit)!=0) then
-    call UnregUnitBonuses(DyingUnit)
+    call smelter_UnregUnitBonuses(DyingUnit)
     if(AddLivesP(GetOwningPlayer(DyingUnit),-1))then
     call PlayerDefeated(GetOwningPlayer(DyingUnit))
     call MultiboardSetItemIconBJ(udg_LIVES_MULTIBOARD,1,2+GetPlayerId(GetOwningPlayer(DyingUnit)),"ReplaceableTextures\\CommandButtons\\BTNPig.blp")
@@ -9338,7 +9342,7 @@ call UnitAddAbility(u2,'AInv')
 if(IsUnitType(u,UNIT_TYPE_HERO))then
 call SetHeroXP(u2,GetHeroXP(u),false)
 endif
-call UnregUnitBonuses(u)
+call smelter_UnregUnitBonuses(u)
 call ApplyAllBonuses1(u2)
 loop
 call UnitAddItem(u2,UnitItemInSlotBJ(u,idx))
@@ -9374,7 +9378,7 @@ if(IsUnitType(u,UNIT_TYPE_HERO))then
 call SetHeroXP(u2,GetHeroXP(u),false)
 endif
 set idx=0
-call UnregUnitBonuses(u)
+call smelter_UnregUnitBonuses(u)
 call RemoveUnit(u)
 set u=u2
 set u2=null
@@ -9448,7 +9452,7 @@ call UnitRemoveAbility(u2,'Aion')
 call UnitRemoveAbility(u2,'Aien')
 call UnitRemoveAbility(u2,'Aiun')
 call UnitAddAbility(u2,'AInv')
-call UnregUnitBonuses(u)
+call smelter_UnregUnitBonuses(u)
 call ApplyAllBonuses1(u2)
 loop
 call UnitAddItem(u2,UnitItemInSlotBJ(u,idx))
@@ -10003,12 +10007,12 @@ set udg_f__arg_integer1=a2
 call TriggerEvaluate(udg_st___prototype11[i])
 endfunction
 function sc___prototype13_execute takes integer i,unit a1,real a2 returns nothing
-set udg_f__arg_unit1=a1
+set udg_gg___arg_integer2=a1
 set udg_f__arg_real1=a2
 call TriggerExecute(udg_st___prototype13[i])
 endfunction
 function sc___prototype13_evaluate takes integer i,unit a1,real a2 returns nothing
-set udg_f__arg_unit1=a1
+set udg_gg___arg_integer2=a1
 set udg_f__arg_real1=a2
 call TriggerEvaluate(udg_st___prototype13[i])
 endfunction
@@ -10022,7 +10026,7 @@ call TriggerEvaluate(udg_st___prototype10008[i])
 endfunction
 function sc___prototype41_execute takes integer i,integer a1,unit a2,real a3,real a4,real a5 returns nothing
 set udg_f__arg_integer1=a1
-set udg_f__arg_unit1=a2
+set udg_gg___arg_integer2=a2
 set udg_f__arg_real1=a3
 set udg_f__arg_real2=a4
 set udg_f__arg_real3=a5
@@ -10030,7 +10034,7 @@ call TriggerExecute(udg_st___prototype41[i])
 endfunction
 function sc___prototype41_evaluate takes integer i,integer a1,unit a2,real a3,real a4,real a5 returns nothing
 set udg_f__arg_integer1=a1
-set udg_f__arg_unit1=a2
+set udg_gg___arg_integer2=a2
 set udg_f__arg_real1=a3
 set udg_f__arg_real2=a4
 set udg_f__arg_real3=a5
@@ -15011,7 +15015,7 @@ call TriggerAddCondition(udg_trg_Flame_Breath,Condition(function Trig_Flame_Brea
 call TriggerAddAction(udg_trg_Flame_Breath,function Trig_Flame_Breath_Actions)
 endfunction
 function Trig_Treant_Fix_Conditions takes nothing returns boolean
-call Print("unroot ordered")
+call Messages_Print("unroot ordered")
 return (GetSpellAbilityId()=='Aro1')
 endfunction
 function Trig_Treant_Fix_Actions takes nothing returns nothing
@@ -15717,7 +15721,7 @@ endif
 return true
 endfunction
 function Trig_Spider_evolve_2_Actions takes nothing returns nothing
-    //call PrintHidden("Trig_Spider_evolve_2_Actions")
+    //call Messages_PrintHidden("Trig_Spider_evolve_2_Actions")
 call ReplaceUnitBJ(udg_Spider,'n04U',bj_UNIT_STATE_METHOD_RELATIVE)
 set udg_Spider=GetLastReplacedUnitBJ()
 endfunction
@@ -17532,51 +17536,51 @@ endfunction
 function Trig_Display_mode_Actions takes nothing returns nothing
 if(GetLocalPlayer()==GetTriggerPlayer())then
 if(udg_NO_FLYING_UNITS)then
-call Print("No Flying Units")
+call Messages_Print("No Flying Units")
 else
-call Print("All units")
+call Messages_Print("All units")
 endif
 if(udg_SETTINGS_CHOICE1_YES)then
-call Print("Long Game: 5/3 Lives and Final Battle in 42 minutes")
+call Messages_Print("Long Game: 5/3 Lives and Final Battle in 42 minutes")
 elseif(udg_SETTINGS_CHOICE3_YES)then
-call Print("Normal Game: 5/3 Lives and Final Battle in 30 minutes")
+call Messages_Print("Normal Game: 5/3 Lives and Final Battle in 30 minutes")
 else
-call Print("Normal Game: 3/2 Lives and Final Battle in 30 minutes")
+call Messages_Print("Normal Game: 3/2 Lives and Final Battle in 30 minutes")
 endif
 if(udg_Neutral_Alliance_Chance==0)then
-call Print("Neutral allies disabled")
+call Messages_Print("Neutral allies disabled")
 else
-call Print("Neutral Allies enabled")
+call Messages_Print("Neutral Allies enabled")
 if(udg_Neutral_Alliance_Chance==1)then
 if(udg_PirateChance>=9)then
-call Print("The Pirates with Humans")
-call Print("The Naga team with Undead")
+call Messages_Print("The Pirates with Humans")
+call Messages_Print("The Naga team with Undead")
 elseif(udg_PirateChance>=7)then
-call Print("The Bottom Neutrals with Humans")
-call Print("The Pirates with Undead")
+call Messages_Print("The Bottom Neutrals with Humans")
+call Messages_Print("The Pirates with Undead")
 else
-call Print("The Bottom Neutrals with Humans")
-call Print("The Naga Team with Undead")
+call Messages_Print("The Bottom Neutrals with Humans")
+call Messages_Print("The Naga Team with Undead")
 endif
 elseif(udg_Neutral_Alliance_Chance==2)then
 if(udg_PirateChance>=9)then
-call Print("The Pirates with Humans")
-call Print("The bottom neutrals with Undead")
+call Messages_Print("The Pirates with Humans")
+call Messages_Print("The bottom neutrals with Undead")
 elseif(udg_PirateChance>=7)then
-call Print("The Naga team with Humans")
-call Print("The Pirates with Undead")
+call Messages_Print("The Naga team with Humans")
+call Messages_Print("The Pirates with Undead")
 else
-call Print("The Naga team with Humans")
-call Print("The Bottom neutrals with Undead")
+call Messages_Print("The Naga team with Humans")
+call Messages_Print("The Bottom neutrals with Undead")
 endif
 endif
 endif
 if(udg_Extreme_Mode)then
-call Print("Extreme Mode: +2/+1 lives")
+call Messages_Print("Extreme Mode: +2/+1 lives")
 elseif(udg_SETTINGS_CHOICE3_YES)then
-call Print("Hard Mode")
+call Messages_Print("Hard Mode")
 else
-call Print("Normal Mode")
+call Messages_Print("Normal Mode")
 endif
 endif
 endfunction
@@ -18940,7 +18944,7 @@ endif
 return true
 endfunction
 function Trig_Level_3_Actions takes nothing returns nothing
-//call PrintHidden("Trig_Level_3_Actions")
+//call Messages_PrintHidden("Trig_Level_3_Actions")
 call EnableTrigger(udg_trg_Pigs_lvl_3_spawn)
 set udg_AAAA_GP=GetUnitLoc(udg_unit_h01G_0084)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
@@ -18977,7 +18981,7 @@ endif
 return true
 endfunction
 function Trig_Level_3_Part_2_Actions takes nothing returns nothing
-//call PrintHidden("Trig_Level_3_Part_2_Actions")
+//call Messages_PrintHidden("Trig_Level_3_Part_2_Actions")
 // set udg_AAAA_GP=GetUnitLoc(udg_unit_h01G_0084)
 // call CreateNUnitsAtLocBonuses(1,'n060',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
 // call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"attack",udg_rct_Entire_map_AI_TARGEt)
@@ -20795,7 +20799,7 @@ endif
 return true
 endfunction
 function Trig_Duel_Copy_Actions takes nothing returns nothing
-    //call PrintHidden("Trig_Duel_Copy_Actions")
+    //call Messages_PrintHidden("Trig_Duel_Copy_Actions")
 call EnableTrigger(udg_trg_Send_in_the_neutrals)
 if(Trig_Duel_Copy_Func003C())then
 call ForForce(udg_Evil,function Trig_Duel_Copy_Func003Func002A)
@@ -22726,7 +22730,7 @@ endif
 return true
 endfunction
 function Trig_FinalBattle_Runy_Copy_Actions takes nothing returns nothing
-    //call PrintHidden("Trig_FinalBattle_Runy_Copy_Actions")
+    //call Messages_PrintHidden("Trig_FinalBattle_Runy_Copy_Actions")
 call EnableFinalBattle()
 call PauseTimerBJ(true,udg_CountdownTimer_Copy)
 call DestroyTimerDialogBJ(udg_CountdownTimerWindow_Copy)
@@ -23141,7 +23145,7 @@ endif
 return true
 endfunction
 function Trig_Final_Battle_Timer_Actions takes nothing returns nothing
-    //call PrintHidden("Trig_Final_Battle_Timer_Actions")
+    //call Messages_PrintHidden("Trig_Final_Battle_Timer_Actions")
 call StartTimerBJ(udg_CountdownTimer_Copy,false,540.00)
 set udg_CountdownTimer_Copy=GetLastCreatedTimerBJ()
 call CreateTimerDialogBJ(udg_CountdownTimer_Copy,"Final Battle")
@@ -23739,7 +23743,7 @@ call TriggerRegisterTimerEventPeriodic(udg_trg_Spawn_Special_Bunny,60.01)
 call TriggerAddAction(udg_trg_Spawn_Special_Bunny,function Trig_Spawn_Special_Bunny_Actions)
 endfunction
 function Trig_Bunnies_stop_and_exp_on_Actions takes nothing returns nothing
-    //call PrintHidden("Trig_Bunnies_stop_and_exp_on_Actions")
+    //call Messages_PrintHidden("Trig_Bunnies_stop_and_exp_on_Actions")
 call PlaySoundBJ(udg_snd_Hint)
 call KillSoundWhenDoneBJ(GetLastPlayedSound())
 call DisplayTimedTextToForce(GetPlayersAll(),10.00,"|cffffa500Bunnies have stopped spawning and auto exp has been turned on|r")
@@ -25937,7 +25941,7 @@ endif
 return true
 endfunction
 function Trig_Turn_on_events_2_Actions takes nothing returns nothing
-    //call PrintHidden("Trig_Turn_on_events_2_Actions")
+    //call Messages_PrintHidden("Trig_Turn_on_events_2_Actions")
 call DisplayTimedTextToForce(GetPlayersAll(),10.00,"|cff7777aaMore random events coming!!|r")
 call EnableTrigger(udg_trg_Activate_A_Random_Event_Copy)
 endfunction
@@ -28535,7 +28539,7 @@ endif
 return true
 endfunction
 function Trig_Spawn_spell_shop_2_Actions takes nothing returns nothing
-    //call PrintHidden("Trig_Spawn_spell_shop_2_Actions")
+    //call Messages_PrintHidden("Trig_Spawn_spell_shop_2_Actions")
 call DisplayTimedTextToForce(GetPlayersAll(),6.00,"Hero Shop has spawned!")
 call CreateNUnitsAtLocBonuses(1,'n03X',Player(PLAYER_NEUTRAL_PASSIVE),GetRectCenter(udg_rct_hero_shop),bj_UNIT_FACING)
 endfunction
@@ -37031,7 +37035,7 @@ endfunction
 function Trig_GandalfTeleport_Actions takes nothing returns nothing
     call IssueImmediateOrder(GetSpellAbilityUnit(), "stop")
     if ( Trig_GandalfTeleport_Func002C() ) then
-        call Print("Incorrect target. Must swap with allied boss or hero that costs lives")
+        call Messages_Print("Incorrect target. Must swap with allied boss or hero that costs lives")
     else
     endif
 endfunction
@@ -41938,7 +41942,7 @@ set udg_s__xefx_dummy[this]=null
 return true
 endfunction
 function sa___prototype13_SetUnitMoveSpeedX takes nothing returns boolean
-call s__MoveSpeedXGUI__MoveSpeedStruct_update((udg_f__arg_unit1),((udg_f__arg_real1)*1.0))
+call s__MoveSpeedXGUI__MoveSpeedStruct_update((udg_gg___arg_integer2),((udg_f__arg_real1)*1.0))
 return true
 endfunction
 function sa___prototype2_TimerUtils__init takes nothing returns boolean
@@ -41965,7 +41969,7 @@ call GroupUtils__HookDestroyBoolExpr(udg_f__arg_boolexpr1)
 return true
 endfunction
 function sa___prototype41_FireRun__CreateFlame takes nothing returns boolean
-call FireRun__CreateFlame(udg_f__arg_integer1,udg_f__arg_unit1,udg_f__arg_real1,udg_f__arg_real2,udg_f__arg_real3)
+call FireRun__CreateFlame(udg_f__arg_integer1,udg_gg___arg_integer2,udg_f__arg_real1,udg_f__arg_real2,udg_f__arg_real3)
 return true
 endfunction
 function jasshelper__initstructs300963337 takes nothing returns nothing
@@ -43461,3 +43465,18 @@ call InitCustomPlayerSlots()
 call InitCustomTeams()
 call InitAllyPriorities()
 endfunction
+
+function onRemoval takes unit u returns nothing
+    call smelter_UnregUnitBonuses(u)
+endfunction
+hook RemoveUnit onRemoval
+//! zinc
+    library checkdeathbonuses requires smelter{
+        trigger t;
+        function onInit() {
+            t = CreateTrigger();
+            TriggerAddCondition(t,function()->boolean {return GetUnitAbilityLevel(GetTriggerUnit(),'ACCX')>0;});
+            TriggerAddAction(t,function() {smelter_UnregUnitBonuses(GetTriggerUnit());});
+        }
+    }
+//! endzinc
