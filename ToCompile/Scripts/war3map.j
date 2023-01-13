@@ -8370,15 +8370,30 @@ call UnitRemoveAbility(u,'AInv')
 endif
 endfunction
 public function UnregUnitBonuses takes unit u returns nothing
-local integer plr=GetPlayerId(GetOwningPlayer(u))
-local integer l__cnt=Smelter_counts[plr]
-local hashtable smh=Smelter_owned_items[plr]
-local group smg=Smelter_owners
+local integer plr
+local integer l__cnt
+local hashtable smh
+local group smg
 local integer iid
-local integer uh=GetHandleId(u)
-local integer max=Smelter_max
-local integer rind=max*plr+l__cnt
+local integer uh
+local integer max
+local integer rind
 local integer ucnt
+call BJDebugMsg("var0")
+set plr=GetPlayerId(GetOwningPlayer(u))
+call BJDebugMsg("var1")
+set l__cnt=Smelter_counts[plr]
+call BJDebugMsg("var2")
+set smh=Smelter_owned_items[plr]
+call BJDebugMsg("var3")
+set smg=Smelter_owners
+call BJDebugMsg("var4")
+set uh=GetHandleId(u)
+call BJDebugMsg("var5")
+set max=Smelter_max
+call BJDebugMsg("var6")
+set rind=max*plr+l__cnt
+call BJDebugMsg("OMG0")
 set ucnt=LoadInteger(smh,uh,max+10)
 call GroupRemoveUnit(smg,u)
 loop
@@ -8390,6 +8405,7 @@ endloop
 call SaveInteger(smh,uh,max+10,0)
 set smg=null
 set smh=null
+call BJDebugMsg("OMG")
 endfunction
 public function Trig_Smelter_Conditions takes nothing returns boolean
 if(not(GetSpellAbilityId()==Smelter_ab_id))then
@@ -9196,7 +9212,9 @@ function Trig_PlayerDies_Actions takes nothing returns nothing
 local unit DyingUnit = GetDyingUnit()
 call RegisterKill()
 if(GetUnitTypeId(DyingUnit)!=0) then
+    call BJDebugMsg("death0")
     call smelter_UnregUnitBonuses(DyingUnit)
+    call BJDebugMsg("death1")
     if(AddLivesP(GetOwningPlayer(DyingUnit),-1))then
     call PlayerDefeated(GetOwningPlayer(DyingUnit))
     call MultiboardSetItemIconBJ(udg_LIVES_MULTIBOARD,1,2+GetPlayerId(GetOwningPlayer(DyingUnit)),"ReplaceableTextures\\CommandButtons\\BTNPig.blp")
@@ -43096,8 +43114,8 @@ call InitTrig_Cam()
 call InitTrig_revenge()
 call InitTrig_rune()
 call InitTrig_CS_Setup()
-call InitTrig_Smelter()
-call InitTrig_event_unit_removed_smelter()
+call smelter_InitTrig_Smelter()
+call smelter_InitTrig_event_unit_removed_smelter()
 call InitTrig_Bonuses()
 call InitTrig_Unlock_tree_inv()
 call InitTrig_NoGroundAttackWithTrident()
@@ -43473,10 +43491,14 @@ hook RemoveUnit onRemoval
 //! zinc
     library checkdeathbonuses requires smelter{
         trigger t;
+        
         function onInit() {
+            TimerStart(CreateTimer(),0.1,false,function(){
             t = CreateTrigger();
-            TriggerAddCondition(t,function()->boolean {return GetUnitAbilityLevel(GetTriggerUnit(),'ACCX')>0;});
+            TriggerRegisterAnyUnitEventBJ(t,EVENT_PLAYER_UNIT_DEATH);
+            TriggerAddCondition(t,function()->boolean {return GetUnitAbilityLevel(GetTriggerUnit(),'ACCX')==0;});
             TriggerAddAction(t,function() {smelter_UnregUnitBonuses(GetTriggerUnit());});
-        }
+        });
+    }
     }
 //! endzinc
