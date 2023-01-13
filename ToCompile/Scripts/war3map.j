@@ -8773,6 +8773,7 @@ call SmartCameraPanModified(GetOwningPlayer(u2),x,y,0)
 call SelectUnitForPlayerSingle(u2,GetOwningPlayer(u2))
 set u=u2
 set u2=null
+set bj_lastCreatedUnit = null
 return u
 endfunction
 function InitTrig_Bonuses takes nothing returns nothing
