@@ -43465,7 +43465,6 @@ call SetStartLocPrio(11,1,9,MAP_LOC_PRIO_HIGH)
 call SetStartLocPrio(11,2,10,MAP_LOC_PRIO_HIGH)
 endfunction
 function main takes nothing returns nothing
-call SetRandomSeed(0)
 call SetCameraBounds(-8192.0+GetCameraMargin(CAMERA_MARGIN_LEFT),-6400.0+GetCameraMargin(CAMERA_MARGIN_BOTTOM),8192.0-GetCameraMargin(CAMERA_MARGIN_RIGHT),9728.0-GetCameraMargin(CAMERA_MARGIN_TOP),-8769.0+GetCameraMargin(CAMERA_MARGIN_LEFT),9728.0-GetCameraMargin(CAMERA_MARGIN_TOP),8769.0-GetCameraMargin(CAMERA_MARGIN_RIGHT),-6400.0+GetCameraMargin(CAMERA_MARGIN_BOTTOM))
 call SetDayNightModels("Environment\\DNC\\DNCLordaeron\\DNCLordaeronTerrain\\DNCLordaeronTerrain.mdl","Environment\\DNC\\DNCLordaeron\\DNCLordaeronUnit\\DNCLordaeronUnit.mdl")
 call NewSoundEnvironment("Default")
