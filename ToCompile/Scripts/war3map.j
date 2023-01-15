@@ -13862,14 +13862,16 @@ function UnitEnters_STD_Action takes nothing returns nothing
 endfunction
 
 function ControlArea takes rect r, integer id, conditionfunc initaction, conditionfunc runcondition returns nothing
-    set ControlledAreas[id] = r
+    local rect WidtherR = Rect(GetRectMinX(r)+64,GetRectMinY(r)+64,GetRectMaxX(r)-64,GetRectMaxY(r)-64)
+    set ControlledAreas[id] = WidtherR
     set ControlledGroups[id] = CreateGroup()
     set ControllTrigger[id] = CreateTrigger()
     call TriggerAddCondition(ControllTrigger[id],runcondition)
-    call TriggerRegisterLeaveRectSimple(ControllTrigger[id],r)
+    call TriggerRegisterLeaveRectSimple(ControllTrigger[id],WidtherR)
     set InitTrigger[id] = CreateTrigger()
     call TriggerAddCondition(InitTrigger[id],initaction)
-    call TriggerRegisterEnterRectSimple(InitTrigger[id],r)
+    call TriggerRegisterEnterRectSimple(InitTrigger[id],WidtherR)
+    set WidtherR = null
 endfunction
 
 function return2Bounds takes rect area returns nothing
