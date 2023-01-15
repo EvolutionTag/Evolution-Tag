@@ -8495,28 +8495,35 @@ function PlayerAddHPPermanent takes player p,integer l__cnt returns nothing
 set HPBonuses[GetPlayerId(p)]=HPBonuses[GetPlayerId(p)]+l__cnt
 endfunction
 function ApplyRandomBuff takes unit u returns nothing
+local unit templastcreatedunit
 set udg_RANDOM_BUFF=GenerateInt(MainGenerator, 1,50)
 if(udg_RANDOM_BUFF==1)then
 call CreateNUnitsAtLoc(1,'h039',GetOwningPlayer(u),GetRectCenter(udg_rct_Random_Events_Bandit_Spawn),bj_UNIT_FACING)
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"innerfire",u)
-call RemoveUnit(GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call IssueTargetOrderBJ(templastcreatedunit,"innerfire",u)
+call RemoveUnit(templastcreatedunit)
 elseif(udg_RANDOM_BUFF==2)then
 call CreateNUnitsAtLoc(1,'h03A',GetOwningPlayer(u),GetRectCenter(udg_rct_Random_Events_Bandit_Spawn),bj_UNIT_FACING)
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"innerfire",u)
-call RemoveUnit(GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call IssueTargetOrderBJ(templastcreatedunit,"innerfire",u)
+call RemoveUnit(templastcreatedunit)
 elseif(udg_RANDOM_BUFF==3)then
 call CreateNUnitsAtLoc(1,'h03B',GetOwningPlayer(u),GetRectCenter(udg_rct_Random_Events_Bandit_Spawn),bj_UNIT_FACING)
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"innerfire",u)
-call RemoveUnit(GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call IssueTargetOrderBJ(templastcreatedunit,"innerfire",u)
+call RemoveUnit(templastcreatedunit)
 elseif(udg_RANDOM_BUFF==4)then
 call CreateNUnitsAtLoc(1,'h03B',GetOwningPlayer(u),GetRectCenter(udg_rct_Random_Events_Bandit_Spawn),bj_UNIT_FACING)
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"invisibility",u)
-call RemoveUnit(GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call IssueTargetOrderBJ(templastcreatedunit,"invisibility",u)
+call RemoveUnit(templastcreatedunit)
 elseif(udg_RANDOM_BUFF==5)then
 call CreateNUnitsAtLoc(1,'h03B',GetOwningPlayer(u),GetRectCenter(udg_rct_Random_Events_Bandit_Spawn),bj_UNIT_FACING)
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"bloodlust",u)
-call RemoveUnit(GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call IssueTargetOrderBJ(templastcreatedunit,"bloodlust",u)
+call RemoveUnit(templastcreatedunit)
 endif
+set templastcreatedunit = null
 endfunction
 function AddHP takes nothing returns nothing
 local integer i=1
@@ -9141,32 +9148,42 @@ call DestroyGroup(g)
 set g=null
 endfunction
 function SendToPirates takes player p returns nothing
+local unit templastcreatedunit
 call AllyWithPlayerAI(p,Neutral_Satyrs)
 call DisplayTimedTextToForce(GetPlayersAll(),10.00,udg_AAA_Player_Colors[GetConvertedPlayerId(p)]+" will join the pirates")
 call CreateNUnitsAtLoc(1,'h07M',p,GetRectCenter(udg_rct_Satyr_Barracks),bj_UNIT_FACING)
-call ApplyAllBonuses1_timed(GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call ApplyAllBonuses1_timed(templastcreatedunit)
 call SmartCameraPanBJModified(p,GetRectCenter(udg_rct_Satyr_Barracks),0)
+set templastcreatedunit = null
 endfunction
 function SendToBottom takes player p returns nothing
+local unit templastcreatedunit
 call AllyWithPlayerAI(p,Neutral_Bottom)
 if(GenerateInt(MainGenerator, 1,2)==1)then
 call CreateNUnitsAtLoc(1,'nwwf',p,GetRectCenter(udg_rct_Ice_creep_camp_spawn),bj_UNIT_FACING)
-call ApplyAllBonuses1_timed(GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call ApplyAllBonuses1_timed(templastcreatedunit)
 call SmartCameraPanBJModified(p,GetRectCenter(udg_rct_Ice_creep_camp_spawn),0)
 call DisplayTimedTextToForce(GetPlayersAll(),10.00,(udg_AAA_Player_Colors[GetConvertedPlayerId(p)]+" will join the ice team"))
 else
 call CreateNUnitsAtLoc(1,'n014',p,GetRectCenter(udg_rct_Gnoll_spawn_area),bj_UNIT_FACING)
-call ApplyAllBonuses1_timed(GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call ApplyAllBonuses1_timed(templastcreatedunit)
 call SmartCameraPanBJModified(p,GetRectCenter(udg_rct_Gnoll_spawn_area),0)
 call DisplayTimedTextToForce(GetPlayersAll(),10.00,(udg_AAA_Player_Colors[GetConvertedPlayerId(p)]+" will join the gnoll"))
 endif
+set templastcreatedunit = null
 endfunction
 function SendToNaga takes player p returns nothing
+local unit templastcreatedunit
 call AllyWithPlayerAI(p,Neutral_Nagas)
 call DisplayTimedTextToForce(GetPlayersAll(),10.00,(udg_AAA_Player_Colors[GetConvertedPlayerId(p)]+" will join the naga team"))
 call CreateNUnitsAtLoc(1,'n079',p,GetRectCenter(udg_rct_Naga_spawn_area),bj_UNIT_FACING)
-call ApplyAllBonuses1_timed(GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call ApplyAllBonuses1_timed(templastcreatedunit)
 call SmartCameraPanBJModified(p,GetRectCenter(udg_rct_Naga_spawn_area),0)
+set templastcreatedunit = null
 endfunction
 function SendToRandomNeutral takes player p returns nothing
 if(GenerateInt(MainGenerator, 1,2)==1)then
@@ -14443,6 +14460,7 @@ function CreateShops takes nothing returns nothing
     endfunction
 
 function CreateNeutralUnits takes nothing returns nothing
+local unit templastcreatedunit
     local unit u = null
     local trigger t = null
 	call CreateUnitBonuses( Player(15) , 'nrac', -2513.941 , -984.056 , 314.141 )
@@ -14480,11 +14498,13 @@ function CreateNeutralUnits takes nothing returns nothing
 	set udg_unit_nzep_0261 =  CreateUnitBonuses( Player(15) , 'nzep', -808.003 , -1331.791 , 337.986 )
 	call CreateUnitBonuses( Player(15) , 'nshe', -2771.029 , 254.473 , 356.660 )
 	set udg_unit_hhdl_0060 = CreateUnitBonuses( Player(15) , 'hhdl', -3600.000 , 907.595 , 176.656 )
-    call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
+set templastcreatedunit = GetLastCreatedUnit()
+    call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
 	call CreateUnitBonuses( Player(15) , 'nshe', -3420.113 , 1001.849 , 86.929 )
 	call CreateUnitBonuses( Player(15) , 'n061', -3536.000 , 1168.000 , 280.000 )
 	set udg_unit_hhdl_0061 =  CreateUnitBonuses( Player(15) , 'hhdl', 826.514 , 1328.006 , 181.015 )
-    call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
+set templastcreatedunit = GetLastCreatedUnit()
+    call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
 	call CreateUnitBonuses( Player(15) , 'n062', -3853.750 , 1836.500 , 355.671 )
 	call CreateUnitBonuses( Player(15) , 'npig', -2054.659 , 2021.318 , 138.434 )
     set u=CreateUnitBonuses(Player(15) , 'npig' , - 7447.7 , 4832.4 , 303.980)
@@ -14494,6 +14514,7 @@ function CreateNeutralUnits takes nothing returns nothing
     call TriggerAddAction(t, function Unit000311_DropItems)
 	call CreateUnitBonuses( Player(15) , 'n065', -4048.000 , 5552.000 , 320.000 )
     call CreateShops()
+set templastcreatedunit = null
 endfunction
 function CreateNagas takes nothing returns nothing
 	call CreateUnitBonuses( Neutral_Nagas , 'h01G', 1280.000 , 5376.000 , 270.000 )
@@ -14626,16 +14647,20 @@ function CreateSatyrsXTreme takes nothing returns nothing
 endfunction
 
 function CreateBottomTeam takes nothing returns nothing
+local unit templastcreatedunit
     local unit u = null
     local trigger t = null
 	call CreateUnitBonuses( Neutral_Bottom , 'n07E', -2541.500 , -5758.250 , 107.560 )
 	call CreateUnitBonuses( Neutral_Bottom , 'n07E', -1097.500 , -5970.250 , 107.560 )
 	call CreateUnitBonuses( Neutral_Bottom , 'n06T', 2256.000 , -5040.000 , 296.660 )
-    call IssueImmediateOrder(GetLastCreatedUnit(),"holdposition")
+set templastcreatedunit = GetLastCreatedUnit()
+    call IssueImmediateOrder(templastcreatedunit,"holdposition")
 	call CreateUnitBonuses( Neutral_Bottom , 'n06T', 1191.000 , -5921.500 , 296.660 )
-    call IssueImmediateOrder(GetLastCreatedUnit(),"holdposition")
+set templastcreatedunit = GetLastCreatedUnit()
+    call IssueImmediateOrder(templastcreatedunit,"holdposition")
 	call CreateUnitBonuses( Neutral_Bottom , 'n06T', 0.000 , -5120.500 , 296.660 )
-    call IssueImmediateOrder(GetLastCreatedUnit(),"holdposition")
+set templastcreatedunit = GetLastCreatedUnit()
+    call IssueImmediateOrder(templastcreatedunit,"holdposition")
 	call CreateUnitBonuses( Neutral_Bottom , 'n07E', -4119.000 , -5500.500 , 296.660 )
 	call CreateUnitBonuses( Neutral_Bottom , 'n075', -2363.000 , -5397.250 , 60.000 )
 	call CreateUnitBonuses( Neutral_Bottom , 'n075', -5055.000 , -5708.000 , 60.000 )
@@ -14687,6 +14712,7 @@ function CreateBottomTeam takes nothing returns nothing
 	call CreateUnitBonuses( Neutral_Bottom , 'nfr2', -1856.000 , -4608.000 , 270.000 )
 	call CreateUnitBonuses( Neutral_Bottom , 'ngno', 1295.750 , -673.750 , 204.835 )
 	call CreateUnitBonuses( Neutral_Bottom , 'ngno', -1292.000 , -627.500 , 267.690 )
+set templastcreatedunit = null
 endfunction
 
 function CreatePirates takes nothing returns nothing
@@ -15034,18 +15060,21 @@ endif
 return true
 endfunction
 function Trig_Flame_Breath_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_AAAA_GP=GetSpellTargetLoc()
 set udg_ZZZ_Caster[udg_ZZZ_count]=GetTriggerUnit()
 set udg_ZZZ_FireDelay[udg_ZZZ_loopIndex]=48
 call GroupAddUnitSimple(udg_ZZZ_Caster[udg_ZZZ_count],udg_ZZZ_Units)
 call CreateNUnitsAtLocBonuses(1,'h07Q',GetOwningPlayer(udg_ZZZ_Caster[udg_ZZZ_count]),udg_AAAA_GP,bj_UNIT_FACING)
-set udg_ZZZ_Dummy[udg_ZZZ_count]=GetLastCreatedUnit()
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"rainoffire",udg_AAAA_GP)
-call UnitApplyTimedLifeBJ(10.00,'BTLF',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+set udg_ZZZ_Dummy[udg_ZZZ_count]=templastcreatedunit
+call IssuePointOrderLocBJ(templastcreatedunit,"rainoffire",udg_AAAA_GP)
+call UnitApplyTimedLifeBJ(10.00,'BTLF',templastcreatedunit)
 set udg_ZZZ_InUse[udg_ZZZ_count]=true
 set udg_ZZZ_count=(udg_ZZZ_count+1)
 call EnableTrigger(udg_trg_Flame_Breath_Loop)
 call RemoveLocation(udg_AAAA_GP)
+set templastcreatedunit = null
 endfunction
 function InitTrig_Flame_Breath takes nothing returns nothing
 set udg_trg_Flame_Breath=CreateTrigger()
@@ -15195,12 +15224,15 @@ function Trig_Generic_Slam_Func005002003 takes nothing returns boolean
 return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_Antidesync_temp_unit),GetOwningPlayer(GetFilterUnit()))==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitType(GetTriggerUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))))
 endfunction
 function Trig_Generic_Slam_Func006A takes nothing returns nothing
+local unit templastcreatedunit
 call UnitDamageTargetBJ(udg_Antidesync_temp_unit,GetEnumUnit(),200.00,ATTACK_TYPE_NORMAL,DAMAGE_TYPE_NORMAL)
 call CreateNUnitsAtLocBonuses(1,'e018',GetOwningPlayer(udg_Antidesync_temp_unit),udg_TempPoint,bj_UNIT_FACING)
-call UnitAddAbilityBJ('A0JW',GetLastCreatedUnit())
-call SetUnitAbilityLevelSwapped('A0JW',GetLastCreatedUnit(),2)
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"slow",GetEnumUnit())
-call UnitApplyTimedLifeBJ(1.00,'BTLF',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitAddAbilityBJ('A0JW',templastcreatedunit)
+call SetUnitAbilityLevelSwapped('A0JW',templastcreatedunit,2)
+call IssueTargetOrderBJ(templastcreatedunit,"slow",GetEnumUnit())
+call UnitApplyTimedLifeBJ(1.00,'BTLF',templastcreatedunit)
+set templastcreatedunit = null
 endfunction
 function Trig_Generic_Slam_Actions takes nothing returns nothing
 set udg_Antidesync_temp_unit=GetTriggerUnit()
@@ -15256,10 +15288,13 @@ function Trig_Generic_Slam_Copy_Func005002003 takes nothing returns boolean
 return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_Antidesync_temp_unit),GetOwningPlayer(GetFilterUnit()))==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitType(GetTriggerUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))))
 endfunction
 function Trig_Generic_Slam_Copy_Func006A takes nothing returns nothing
+local unit templastcreatedunit
 call UnitDamageTargetBJ(udg_Antidesync_temp_unit,GetEnumUnit(),(80.00*I2R(GetUnitAbilityLevelSwapped('A000',GetTriggerUnit()))),ATTACK_TYPE_NORMAL,DAMAGE_TYPE_NORMAL)
 call CreateNUnitsAtLocBonuses(1,'h001',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint,bj_UNIT_FACING)
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"slow",GetEnumUnit())
-call UnitApplyTimedLifeBJ(1.00,'BTLF',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call IssueTargetOrderBJ(templastcreatedunit,"slow",GetEnumUnit())
+call UnitApplyTimedLifeBJ(1.00,'BTLF',templastcreatedunit)
+set templastcreatedunit = null
 endfunction
 function Trig_Generic_Slam_Copy_Actions takes nothing returns nothing
 set udg_Antidesync_temp_unit=GetTriggerUnit()
@@ -15316,11 +15351,14 @@ function Trig_Plated_Footman_Warstomp_Func005002003 takes nothing returns boolea
 return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_Antidesync_temp_unit),GetOwningPlayer(GetFilterUnit()))==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitType(GetTriggerUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))))
 endfunction
 function Trig_Plated_Footman_Warstomp_Func006A takes nothing returns nothing
+local unit templastcreatedunit
 call CreateNUnitsAtLocBonuses(1,'e018',GetOwningPlayer(udg_Antidesync_temp_unit),udg_TempPoint,bj_UNIT_FACING)
-call UnitAddAbilityBJ('A0K0',GetLastCreatedUnit())
-call SetUnitAbilityLevelSwapped('A0K0',GetLastCreatedUnit(),GetUnitAbilityLevelSwapped('A0K2',udg_Antidesync_temp_unit))
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"thunderbolt",GetEnumUnit())
-call UnitApplyTimedLifeBJ(1.00,'BTLF',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitAddAbilityBJ('A0K0',templastcreatedunit)
+call SetUnitAbilityLevelSwapped('A0K0',templastcreatedunit,GetUnitAbilityLevelSwapped('A0K2',udg_Antidesync_temp_unit))
+call IssueTargetOrderBJ(templastcreatedunit,"thunderbolt",GetEnumUnit())
+call UnitApplyTimedLifeBJ(1.00,'BTLF',templastcreatedunit)
+set templastcreatedunit = null
 endfunction
 function Trig_Plated_Footman_Warstomp_Actions takes nothing returns nothing
 set udg_Antidesync_temp_unit=GetTriggerUnit()
@@ -15376,11 +15414,14 @@ function Trig_Paladin_uu_warstomp_Func005002003 takes nothing returns boolean
 return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_Antidesync_temp_unit),GetOwningPlayer(GetFilterUnit()))==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitType(GetTriggerUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))))
 endfunction
 function Trig_Paladin_uu_warstomp_Func006A takes nothing returns nothing
+local unit templastcreatedunit
 call CreateNUnitsAtLocBonuses(1,'e018',GetOwningPlayer(udg_Antidesync_temp_unit),udg_TempPoint,bj_UNIT_FACING)
-call UnitAddAbilityBJ('A0K0',GetLastCreatedUnit())
-call SetUnitAbilityLevelSwapped('A0K0',GetLastCreatedUnit(),(11+GetUnitAbilityLevelSwapped('A0K6',udg_Antidesync_temp_unit)))
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"thunderbolt",GetEnumUnit())
-call UnitApplyTimedLifeBJ(1.00,'BTLF',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitAddAbilityBJ('A0K0',templastcreatedunit)
+call SetUnitAbilityLevelSwapped('A0K0',templastcreatedunit,(11+GetUnitAbilityLevelSwapped('A0K6',udg_Antidesync_temp_unit)))
+call IssueTargetOrderBJ(templastcreatedunit,"thunderbolt",GetEnumUnit())
+call UnitApplyTimedLifeBJ(1.00,'BTLF',templastcreatedunit)
+set templastcreatedunit = null
 endfunction
 function Trig_Paladin_uu_warstomp_Actions takes nothing returns nothing
 set udg_Antidesync_temp_unit=GetTriggerUnit()
@@ -15436,11 +15477,14 @@ function Trig_Icey_Explosion_Func005002003 takes nothing returns boolean
 return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_Antidesync_temp_unit),GetOwningPlayer(GetFilterUnit()))==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitType(GetTriggerUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))))
 endfunction
 function Trig_Icey_Explosion_Func006A takes nothing returns nothing
+local unit templastcreatedunit
 call CreateNUnitsAtLocBonuses(1,'e018',GetOwningPlayer(udg_Antidesync_temp_unit),udg_TempPoint,bj_UNIT_FACING)
-call UnitAddAbilityBJ('A0K0',GetLastCreatedUnit())
-call SetUnitAbilityLevelSwapped('A0K0',GetLastCreatedUnit(),(5+GetUnitAbilityLevelSwapped('A0K5',udg_Antidesync_temp_unit)))
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"thunderbolt",GetEnumUnit())
-call UnitApplyTimedLifeBJ(1.00,'BTLF',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitAddAbilityBJ('A0K0',templastcreatedunit)
+call SetUnitAbilityLevelSwapped('A0K0',templastcreatedunit,(5+GetUnitAbilityLevelSwapped('A0K5',udg_Antidesync_temp_unit)))
+call IssueTargetOrderBJ(templastcreatedunit,"thunderbolt",GetEnumUnit())
+call UnitApplyTimedLifeBJ(1.00,'BTLF',templastcreatedunit)
+set templastcreatedunit = null
 endfunction
 function Trig_Icey_Explosion_Actions takes nothing returns nothing
 set udg_Antidesync_temp_unit=GetTriggerUnit()
@@ -15496,11 +15540,14 @@ function Trig_Generic_War_Stomp_Func004002003 takes nothing returns boolean
 return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_Antidesync_temp_unit),GetOwningPlayer(GetFilterUnit()))==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitType(GetTriggerUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))))
 endfunction
 function Trig_Generic_War_Stomp_Func005A takes nothing returns nothing
+local unit templastcreatedunit
 call CreateNUnitsAtLocBonuses(1,'e018',GetOwningPlayer(udg_Antidesync_temp_unit),udg_TempPoint,bj_UNIT_FACING)
-call UnitAddAbilityBJ('A0K0',GetLastCreatedUnit())
-call SetUnitAbilityLevelSwapped('A0K0',GetLastCreatedUnit(),5)
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"thunderbolt",GetEnumUnit())
-call UnitApplyTimedLifeBJ(1.00,'BTLF',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitAddAbilityBJ('A0K0',templastcreatedunit)
+call SetUnitAbilityLevelSwapped('A0K0',templastcreatedunit,5)
+call IssueTargetOrderBJ(templastcreatedunit,"thunderbolt",GetEnumUnit())
+call UnitApplyTimedLifeBJ(1.00,'BTLF',templastcreatedunit)
+set templastcreatedunit = null
 endfunction
 function Trig_Generic_War_Stomp_Actions takes nothing returns nothing
 set udg_Antidesync_temp_unit=GetTriggerUnit()
@@ -15717,10 +15764,13 @@ endif
 return true
 endfunction
 function Trig_Zombie_spawn_from_grave_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_AAAA_GP=GetUnitLoc(GetTriggerUnit())
 call CreateNUnitsAtLocBonuses(1,'n05P',GetOwningPlayer(GetTriggerUnit()),udg_AAAA_GP,bj_UNIT_FACING)
-call SetUnitAnimation(GetLastCreatedUnit(),"birth")
+set templastcreatedunit = GetLastCreatedUnit()
+call SetUnitAnimation(templastcreatedunit,"birth")
 call RemoveLocation(udg_AAAA_GP)
+set templastcreatedunit = null
 endfunction
 function InitTrig_Zombie_spawn_from_grave takes nothing returns nothing
 set udg_trg_Zombie_spawn_from_grave=CreateTrigger()
@@ -16046,11 +16096,14 @@ call TriggerRegisterTimerEventSingle(udg_trg_MAP_INIT_and_QUESTS,0.01)
 call TriggerAddAction(udg_trg_MAP_INIT_and_QUESTS,function Trig_MAP_INIT_and_QUESTS_Actions)
 endfunction
 function CreateAlchemistWithChance takes real x, real y returns nothing
+local unit templastcreatedunit
     if(GenerateReal(MainGenerator, 0,1)<0.7) then
         call CreateUnitBonuses(Player(PLAYER_NEUTRAL_PASSIVE),'n01Z',x,y,bj_UNIT_FACING)
-        call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-        //call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+set templastcreatedunit = GetLastCreatedUnit()
+        call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
+        //call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
     endif
+set templastcreatedunit = null
 endfunction
 function Trig_uu_merchants_Actions takes nothing returns nothing
     call CreateAlchemistWithChance(3200, 450)
@@ -18347,17 +18400,20 @@ endif
 return true
 endfunction
 function Trig_Naga_Spawns_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_AAAA_GP=GetRectCenter(udg_rct_Naga_spawn_area)
 call CreateNUnitsAtLocBonuses(1,'n07B',Neutral_Nagas,udg_AAAA_GP,bj_UNIT_FACING)
+set templastcreatedunit = GetLastCreatedUnit()
 call RemoveLocation(udg_AAAA_GP)
 set udg_Topleft_Integer_Chance=GenerateInt(MainGenerator, 1,20)
 if(Trig_Naga_Spawns_Func008C())then
 
 
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_outa_bounds_2)
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_excluding_outa_bounds_2)
 else
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
 endif
+set templastcreatedunit = null
 endfunction
 function InitTrig_Naga_Spawns takes nothing returns nothing
 set udg_trg_Naga_Spawns=CreateTrigger()
@@ -18394,17 +18450,20 @@ endif
 return true
 endfunction
 function Trig_Gnoll_Spawn_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_AAAA_GP=GetRectCenter(udg_rct_Gnoll_spawn_area)
 call CreateNUnitsAtLocBonuses(1,'ngno',Neutral_Bottom,udg_AAAA_GP,bj_UNIT_FACING)
+set templastcreatedunit = GetLastCreatedUnit()
 
 
 call RemoveLocation(udg_AAAA_GP)
 set udg_Topleft_Integer_Chance=GenerateInt(MainGenerator, 1,20)
 if(Trig_Gnoll_Spawn_Func008C())then
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_outa_bounds_2)
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_excluding_outa_bounds_2)
 else
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
 endif
+set templastcreatedunit = null
 endfunction
 function InitTrig_Gnoll_Spawn takes nothing returns nothing
 set udg_trg_Gnoll_Spawn=CreateTrigger()
@@ -18441,17 +18500,20 @@ endif
 return true
 endfunction
 function Trig_Ice_Spawn_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_AAAA_GP=GetRectCenter(udg_rct_Ice_creep_camp_spawn)
 call CreateNUnitsAtLocBonuses(1,'ntkf',Neutral_Bottom,udg_AAAA_GP,bj_UNIT_FACING)
+set templastcreatedunit = GetLastCreatedUnit()
 
 
 call RemoveLocation(udg_AAAA_GP)
 set udg_Topleft_Integer_Chance=GenerateInt(MainGenerator, 1,20)
 if(Trig_Ice_Spawn_Func008C())then
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_outa_bounds_2)
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_excluding_outa_bounds_2)
 else
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
 endif
+set templastcreatedunit = null
 endfunction
 function InitTrig_Ice_Spawn takes nothing returns nothing
 set udg_trg_Ice_Spawn=CreateTrigger()
@@ -18488,17 +18550,20 @@ endif
 return true
 endfunction
 function Trig_Pirate_Spawn_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_AAAA_GP=GetRectCenter(udg_rct_Pirate_Spawn)
 call CreateNUnitsAtLocBonuses(1,'h07O',Neutral_Satyrs,udg_AAAA_GP,bj_UNIT_FACING)
+set templastcreatedunit = GetLastCreatedUnit()
 
 
 call RemoveLocation(udg_AAAA_GP)
 set udg_Topleft_Integer_Chance=GenerateInt(MainGenerator, 1,20)
 if(Trig_Pirate_Spawn_Func008C())then
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_excluding_outa_bounds_2)
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_excluding_outa_bounds_2)
 else
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
 endif
+set templastcreatedunit = null
 endfunction
 function InitTrig_Pirate_Spawn takes nothing returns nothing
 set udg_trg_Pirate_Spawn=CreateTrigger()
@@ -18558,16 +18623,19 @@ endif
 return true
 endfunction
 function Trig_Pirate_Autoshoot_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_AAAA_GP=GetUnitLoc(GetTriggerUnit())
 call CreateNUnitsAtLocBonuses(1,'h075',GetOwningPlayer(GetTriggerUnit()),udg_AAAA_GP,bj_UNIT_FACING)
-call UnitAddAbilityBJ('A0KT',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitAddAbilityBJ('A0KT',templastcreatedunit)
 if(Trig_Pirate_Autoshoot_Func004C())then
-call SetUnitAbilityLevelSwapped('A0KT',GetLastCreatedUnit(),2)
+call SetUnitAbilityLevelSwapped('A0KT',templastcreatedunit,2)
 else
 endif
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"firebolt",GetSpellTargetUnit())
-call UnitApplyTimedLifeBJ(5.00,'BTLF',GetLastCreatedUnit())
+call IssueTargetOrderBJ(templastcreatedunit,"firebolt",GetSpellTargetUnit())
+call UnitApplyTimedLifeBJ(5.00,'BTLF',templastcreatedunit)
 call RemoveLocation(udg_AAAA_GP)
+set templastcreatedunit = null
 endfunction
 function InitTrig_Pirate_Autoshoot takes nothing returns nothing
 set udg_trg_Pirate_Autoshoot=CreateTrigger()
@@ -18821,13 +18889,16 @@ endif
 return true
 endfunction
 function Trig_Satyr_Spawn_Actions takes nothing returns nothing
+local unit templastcreatedunit
 if(Trig_Satyr_Spawn_Func003C())then
 call CreateNUnitsAtLocBonuses(1,'n05X',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
-call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
 
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
 else
 endif
+set templastcreatedunit = null
 endfunction
 function InitTrig_Satyr_Spawn takes nothing returns nothing
 set udg_trg_Satyr_Spawn=CreateTrigger()
@@ -18840,23 +18911,29 @@ function Trig_Level_1_Conditions takes nothing returns boolean
 return true
 endfunction
 function Trig_Level_1_Actions takes nothing returns nothing
+local unit templastcreatedunit
 call EnableTrigger(udg_trg_Pigs_lvl_1_spawn)
 set udg_AAAA_GP=GetUnitLoc(udg_unit_h01G_0084)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
-call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
-call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
 call RemoveLocation(udg_AAAA_GP)
 set udg_AAAA_GP2=GetUnitLoc(udg_unit_h01G_0215)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
-call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
-call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
 call RemoveLocation(udg_AAAA_GP2)
+set templastcreatedunit = null
 endfunction
 function InitTrig_Level_1 takes nothing returns nothing
 set udg_trg_Level_1=CreateTrigger()
@@ -18879,19 +18956,23 @@ endif
 return true
 endfunction
 function Trig_Pigs_lvl_1_spawn_Actions takes nothing returns nothing
+local unit templastcreatedunit
 if(Trig_Pigs_lvl_1_spawn_Func003C())then
 call CreateNUnitsAtLocBonuses(1,'n05Y',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
-call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
 
 
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
-call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
 
 
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
 else
 endif
+set templastcreatedunit = null
 endfunction
 function InitTrig_Pigs_lvl_1_spawn takes nothing returns nothing
 set udg_trg_Pigs_lvl_1_spawn=CreateTrigger()
@@ -18907,30 +18988,38 @@ endif
 return true
 endfunction
 function Trig_Level_2_Actions takes nothing returns nothing
+local unit templastcreatedunit
 call DisableTrigger(udg_trg_Pigs_lvl_1_spawn)
 call EnableTrigger(udg_trg_Pigs_lvl_2_spawn)
 set udg_AAAA_GP=GetUnitLoc(udg_unit_h01G_0084)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
-call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
-call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
 call CreateNUnitsAtLocBonuses(1,'n05Z',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
-call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
 call RemoveLocation(udg_AAAA_GP)
 set udg_AAAA_GP2=GetUnitLoc(udg_unit_h01G_0215)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
-call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
-call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
 call CreateNUnitsAtLocBonuses(1,'n05Z',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
-call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
 call RemoveLocation(udg_AAAA_GP2)
+set templastcreatedunit = null
 endfunction
 function InitTrig_Level_2 takes nothing returns nothing
 set udg_trg_Level_2=CreateTrigger()
@@ -18953,24 +19042,29 @@ endif
 return true
 endfunction
 function Trig_Pigs_lvl_2_spawn_Actions takes nothing returns nothing
+local unit templastcreatedunit
 if(Trig_Pigs_lvl_2_spawn_Func003C())then
 call CreateNUnitsAtLocBonuses(1,'n05Y',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
-call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
 
 
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
-call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
 
 
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
 call CreateNUnitsAtLocBonuses(1,'n05Z',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
-call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
 
 
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
 else
 endif
+set templastcreatedunit = null
 endfunction
 function InitTrig_Pigs_lvl_2_spawn takes nothing returns nothing
 set udg_trg_Pigs_lvl_2_spawn=CreateTrigger()
@@ -18986,30 +19080,38 @@ endif
 return true
 endfunction
 function Trig_Level_3_Actions takes nothing returns nothing
+local unit templastcreatedunit
 //call Messages_PrintHidden("Trig_Level_3_Actions")
 call EnableTrigger(udg_trg_Pigs_lvl_3_spawn)
 set udg_AAAA_GP=GetUnitLoc(udg_unit_h01G_0084)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
-call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
-call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
 call CreateNUnitsAtLocBonuses(1,'n05Z',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
-call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
 call RemoveLocation(udg_AAAA_GP)
 set udg_AAAA_GP2=GetUnitLoc(udg_unit_h01G_0215)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
-call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
-call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
 call CreateNUnitsAtLocBonuses(1,'n05Z',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
-call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
 call RemoveLocation(udg_AAAA_GP2)
+set templastcreatedunit = null
 endfunction
 function InitTrig_Level_3 takes nothing returns nothing
 set udg_trg_Level_3=CreateTrigger()
@@ -19023,17 +19125,21 @@ endif
 return true
 endfunction
 function Trig_Level_3_Part_2_Actions takes nothing returns nothing
+local unit templastcreatedunit
 //call Messages_PrintHidden("Trig_Level_3_Part_2_Actions")
 // set udg_AAAA_GP=GetUnitLoc(udg_unit_h01G_0084)
 // call CreateNUnitsAtLocBonuses(1,'n060',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
-// call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
-//call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
+set templastcreatedunit = GetLastCreatedUnit()
+// call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
+//call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
 // call RemoveLocation(udg_AAAA_GP)
 // set udg_AAAA_GP2=GetUnitLoc(udg_unit_h01G_0215)
 // call CreateNUnitsAtLocBonuses(1,'n060',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
-// call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
-//call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
+set templastcreatedunit = GetLastCreatedUnit()
+// call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
+//call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
 // call RemoveLocation(udg_AAAA_GP2)
+set templastcreatedunit = null
 endfunction
 function InitTrig_Level_3_Part_2 takes nothing returns nothing
 set udg_trg_Level_3_Part_2=CreateTrigger()
@@ -19056,12 +19162,15 @@ endif
 return true
 endfunction
 function Trig_Pigs_lvl_3_spawn_Actions takes nothing returns nothing
-if(Trig_Pigs_lvl_3_spawn_Func003C())then
+// local unit templastcreatedunit
+// if(Trig_Pigs_lvl_3_spawn_Func003C())then
 // call CreateNUnitsAtLocBonuses(1,'n060',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
-//call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-// call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
-else
-endif
+// set templastcreatedunit = GetLastCreatedUnit()
+// call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
+// call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
+// else
+// endif
+// set templastcreatedunit = null
 endfunction
 function InitTrig_Pigs_lvl_3_spawn takes nothing returns nothing
 set udg_trg_Pigs_lvl_3_spawn=CreateTrigger()
@@ -19109,16 +19218,19 @@ endif
 return true
 endfunction
 function Trig_Raining_Pigs_Actions takes nothing returns nothing
+local unit templastcreatedunit
 if(Trig_Raining_Pigs_Func001C())then
 set udg_General_Point=GenerateRandomLocInRect(MainGenerator,udg_rct_Region_251)
 call CreateNUnitsAtLocBonuses(1,'n06A',Player(PLAYER_NEUTRAL_PASSIVE),udg_General_Point,bj_UNIT_FACING)
-call IssueImmediateOrderBJ(GetLastCreatedUnit(),"unravenform")
-call UnitApplyTimedLifeBJ(60.00,'BTLF',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call IssueImmediateOrderBJ(templastcreatedunit,"unravenform")
+call UnitApplyTimedLifeBJ(60.00,'BTLF',templastcreatedunit)
 call RemoveLocation(udg_General_Point)
 else
 call DisableTrigger(GetTriggeringTrigger())
 endif
 set udg_ABC_ChaosCounter=(udg_ABC_ChaosCounter+1)
+set templastcreatedunit = null
 endfunction
 function InitTrig_Raining_Pigs takes nothing returns nothing
 set udg_trg_Raining_Pigs=CreateTrigger()
@@ -19133,26 +19245,31 @@ endif
 return true
 endfunction
 function Trig_Rain_of_Fire_Event_Actions takes nothing returns nothing
+local unit templastcreatedunit
 if(Trig_Rain_of_Fire_Event_Func001C())then
 call PlaySoundBJ(udg_snd_Hint)
 call DisplayTimedTextToForce(GetPlayersAll(),7.50,"|cffffff00Rain of Fire!|r")
 set udg_General_Point=GenerateRandomLocInRect(MainGenerator,udg_rct_Region_251)
 call CreateNUnitsAtLocBonuses(1,'h075',Player(PLAYER_NEUTRAL_PASSIVE),udg_General_Point,bj_UNIT_FACING)
-call UnitApplyTimedLifeBJ(30.00,'BTLF',GetLastCreatedUnit())
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"rainoffire",udg_General_Point)
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitApplyTimedLifeBJ(30.00,'BTLF',templastcreatedunit)
+call IssuePointOrderLocBJ(templastcreatedunit,"rainoffire",udg_General_Point)
 call RemoveLocation(udg_General_Point)
 set udg_General_Point=GenerateRandomLocInRect(MainGenerator,udg_rct_Region_251)
 call CreateNUnitsAtLocBonuses(1,'h075',Player(PLAYER_NEUTRAL_PASSIVE),udg_General_Point,bj_UNIT_FACING)
-call UnitApplyTimedLifeBJ(30.00,'BTLF',GetLastCreatedUnit())
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"rainoffire",udg_General_Point)
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitApplyTimedLifeBJ(30.00,'BTLF',templastcreatedunit)
+call IssuePointOrderLocBJ(templastcreatedunit,"rainoffire",udg_General_Point)
 call RemoveLocation(udg_General_Point)
 set udg_General_Point=GenerateRandomLocInRect(MainGenerator,udg_rct_Region_251)
 call CreateNUnitsAtLocBonuses(1,'h075',Player(PLAYER_NEUTRAL_PASSIVE),udg_General_Point,bj_UNIT_FACING)
-call UnitApplyTimedLifeBJ(30.00,'BTLF',GetLastCreatedUnit())
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"rainoffire",udg_General_Point)
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitApplyTimedLifeBJ(30.00,'BTLF',templastcreatedunit)
+call IssuePointOrderLocBJ(templastcreatedunit,"rainoffire",udg_General_Point)
 call RemoveLocation(udg_General_Point)
 else
 endif
+set templastcreatedunit = null
 endfunction
 function InitTrig_Rain_of_Fire_Event takes nothing returns nothing
 set udg_trg_Rain_of_Fire_Event=CreateTrigger()
@@ -19202,39 +19319,47 @@ endif
 return true
 endfunction
 function Trig_Creature_Event_Actions takes nothing returns nothing
+local unit templastcreatedunit
 if(Trig_Creature_Event_Func001C())then
 call DisplayTimedTextToForce(GetPlayersAll(),7.50,"|cffffff00A creature approaches!|r")
 call EnumDestructablesInRectAll(udg_rct_Region_248,function Trig_Creature_Event_Func001Func002A)
 call CreateNUnitsAtLocBonuses(1,'n04I',Neutral_Satyrs,GetRectCenter(udg_rct_ABC_loc_4),bj_UNIT_FACING)
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
-set udg_ABC_Creature=GetLastCreatedUnit()
-call CreateNUnitsAtLocBonuses(1,'h05O',Neutral_Satyrs,GetUnitLoc(GetLastCreatedUnit()),bj_UNIT_FACING)
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"bloodlust",udg_ABC_Creature)
+set templastcreatedunit = GetLastCreatedUnit()
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
+set udg_ABC_Creature=templastcreatedunit
+call CreateNUnitsAtLocBonuses(1,'h05O',Neutral_Satyrs,GetUnitLoc(templastcreatedunit),bj_UNIT_FACING)
+set templastcreatedunit = GetLastCreatedUnit()
+call IssueTargetOrderBJ(templastcreatedunit,"bloodlust",udg_ABC_Creature)
 else
 endif
 if(Trig_Creature_Event_Func002C())then
 call DisplayTimedTextToForce(GetPlayersAll(),7.50,"|cffffff00A creature approaches!|r")
 call EnumDestructablesInRectAll(udg_rct_Region_249,function Trig_Creature_Event_Func002Func002A)
 call CreateNUnitsAtLocBonuses(1,'n04I',Neutral_Satyrs,GetRectCenter(udg_rct_ABC_loc_5),bj_UNIT_FACING)
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
-set udg_ABC_Creature=GetLastCreatedUnit()
-call CreateNUnitsAtLocBonuses(1,'h05O',Neutral_Satyrs,GetUnitLoc(GetLastCreatedUnit()),bj_UNIT_FACING)
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"bloodlust",udg_ABC_Creature)
+set templastcreatedunit = GetLastCreatedUnit()
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
+set udg_ABC_Creature=templastcreatedunit
+call CreateNUnitsAtLocBonuses(1,'h05O',Neutral_Satyrs,GetUnitLoc(templastcreatedunit),bj_UNIT_FACING)
+set templastcreatedunit = GetLastCreatedUnit()
+call IssueTargetOrderBJ(templastcreatedunit,"bloodlust",udg_ABC_Creature)
 else
 endif
 if(Trig_Creature_Event_Func004C())then
 call DisplayTimedTextToForce(GetPlayersAll(),7.50,"|cffffff00A creature approaches!|r")
 call CreateNUnitsAtLocBonuses(1,'nhar',Neutral_Satyrs,GetRectCenter(udg_rct_ABC_loc_1),bj_UNIT_FACING)
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+set templastcreatedunit = GetLastCreatedUnit()
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
 else
 endif
 if(Trig_Creature_Event_Func005C())then
 call DisplayTimedTextToForce(GetPlayersAll(),7.50,"|cffffff00A creature approaches!|r")
 call EnumDestructablesInRectAll(udg_rct_Region_252,function Trig_Creature_Event_Func005Func002A)
 call CreateNUnitsAtLocBonuses(1,'n04K',Neutral_Satyrs,GetRectCenter(udg_rct_ABC_loc_3),bj_UNIT_FACING)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"selfdestruct",GenerateRandomLocInRect(MainGenerator,udg_rct_Region_253))
+set templastcreatedunit = GetLastCreatedUnit()
+call IssuePointOrderLocBJ(templastcreatedunit,"selfdestruct",GenerateRandomLocInRect(MainGenerator,udg_rct_Region_253))
 else
 endif
+set templastcreatedunit = null
 endfunction
 function InitTrig_Creature_Event takes nothing returns nothing
 set udg_trg_Creature_Event=CreateTrigger()
@@ -19344,9 +19469,11 @@ endif
 return true
 endfunction
 function Trig_kiljaeden_event_Actions takes nothing returns nothing
+local unit templastcreatedunit
 call DisplayTimedTextToForce(GetPlayersAll(),7.50,"|cffffff00kil'jaeden has appeared!|r")
 call CreateNUnitsAtLocBonuses(1,'Nkjx',Neutral_Satyrs,GetRectCenter(udg_rct_Zombie_Spawn),bj_UNIT_FACING)
-set udg_AAA_FireGuy=GetLastCreatedUnit()
+set templastcreatedunit = GetLastCreatedUnit()
+set udg_AAA_FireGuy=templastcreatedunit
 call UnitAddItemByIdSwapped('pman',udg_AAA_FireGuy)
 call EnableTrigger(udg_trg_AAA_Fire_Guy_FireBolt_Copy)
 call EnableTrigger(udg_trg_AAA_Fire_Guy_Teleport_Copy)
@@ -19354,6 +19481,7 @@ call EnableTrigger(udg_trg_AAA_Fire_Guy_Bloodlust_Copy)
 call EnableTrigger(udg_trg_AAA_Timer_FireGuy_Dies_Copy)
 call StartTimerBJ(udg_AAA_Timer[3],false,85.00)
 set udg_AAA_Timer[3]=GetLastCreatedTimerBJ()
+set templastcreatedunit = null
 endfunction
 function InitTrig_kiljaeden_event takes nothing returns nothing
 set udg_trg_kiljaeden_event=CreateTrigger()
@@ -19493,12 +19621,14 @@ endif
 return true
 endfunction
 function Trig_AAA_Fire_Guy_Bloodlust_Copy_Actions takes nothing returns nothing
+local unit templastcreatedunit
 local location loc = GetUnitLoc(udg_AAA_FireGuy)
 call IssueImmediateOrderBJ(udg_AAA_FireGuy,"stomp")
 call CreateNUnitsAtLocBonuses(1,'dDUM',GetOwningPlayer(udg_AAA_FireGuy),loc,bj_UNIT_FACING)
-call UnitAddAbility(GetLastCreatedUnit(),'Ablo')
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"bloodlust",udg_AAA_FireGuy)
-call RemoveUnit(GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitAddAbility(templastcreatedunit,'Ablo')
+call IssueTargetOrderBJ(templastcreatedunit,"bloodlust",udg_AAA_FireGuy)
+call RemoveUnit(templastcreatedunit)
 call RemoveLocation(loc)
 set loc = null
 set udg_AAA_FireGuy_ManaPotChance=GenerateInt(MainGenerator, 1,2)
@@ -19507,6 +19637,7 @@ call UnitUseItem(udg_AAA_FireGuy,GetItemOfTypeFromUnitBJ(udg_AAA_FireGuy,'pman')
 else
 endif
 set udg_AAA_ManaPotBoolean=true
+set templastcreatedunit = null
 endfunction
 function InitTrig_AAA_Fire_Guy_Bloodlust_Copy takes nothing returns nothing
 set udg_trg_AAA_Fire_Guy_Bloodlust_Copy=CreateTrigger()
@@ -20703,13 +20834,15 @@ endif
 return true
 endfunction
 function Trig_Duel_Copy_2_Func021A takes nothing returns nothing
+local unit templastcreatedunit
 if(Trig_Duel_Copy_2_Func021Func001C())then
 set udg_AAAA_GP=GenerateRandomLocInRect(MainGenerator,udg_Region2)
 if((GetBooleanAnd((IsPlayerInForce(GetOwningPlayer(GetEnumUnit()),udg_Humans)==true),(IsUnitType(GetEnumUnit(),UNIT_TYPE_SUMMONED)==false)))and(UnitAlive(GetEnumUnit())))then
 call CreateNUnitsAtLocBonuses(1,GetUnitTypeId(GetEnumUnit()),GetOwningPlayer(GetEnumUnit()),udg_AAAA_GP,bj_UNIT_FACING)
+set templastcreatedunit = GetLastCreatedUnit()
 call SetHeroXP(bj_lastCreatedUnit,GetHeroXP(GetEnumUnit()),true)
 if(Trig_Duel_Copy_2_Func021Func001Func005C())then
-call UnitAddItemByIdSwapped('I03N',GetLastCreatedUnit())
+call UnitAddItemByIdSwapped('I03N',templastcreatedunit)
 else
 endif
 else
@@ -20719,6 +20852,7 @@ call RemoveLocation(udg_AAAA_GP)
 else
 call DoNothing()
 endif
+set templastcreatedunit = null
 endfunction
 function Trig_Duel_Copy_2_Func023Func001001 takes nothing returns boolean
 return(IsUnitType(GetEnumUnit(),UNIT_TYPE_HERO)==true)
@@ -21485,13 +21619,15 @@ endif
 return true
 endfunction
 function Trig_Duel_in_forest_area_Copy_Func021A takes nothing returns nothing
+local unit templastcreatedunit
 if(Trig_Duel_in_forest_area_Copy_Func021Func001C())then
 set udg_AAAA_GP=GenerateRandomLocInRect(MainGenerator,udg_rct_human_spawn_area)
 if((GetBooleanAnd((IsPlayerInForce(GetOwningPlayer(GetEnumUnit()),udg_Humans)==true),(IsUnitType(GetEnumUnit(),UNIT_TYPE_SUMMONED)==false)))and(UnitAlive(GetEnumUnit())))then
 call CreateNUnitsAtLocBonuses(1,GetUnitTypeId(GetEnumUnit()),GetOwningPlayer(GetEnumUnit()),udg_AAAA_GP,bj_UNIT_FACING)
+set templastcreatedunit = GetLastCreatedUnit()
 call SetHeroXP(bj_lastCreatedUnit,GetHeroXP(GetEnumUnit()),true)
 if(Trig_Duel_in_forest_area_Copy_Func021Func001Func005C())then
-call UnitAddItemByIdSwapped('I03N',GetLastCreatedUnit())
+call UnitAddItemByIdSwapped('I03N',templastcreatedunit)
 else
 endif
 else
@@ -21501,6 +21637,7 @@ call RemoveLocation(udg_AAAA_GP)
 else
 call DoNothing()
 endif
+set templastcreatedunit = null
 endfunction
 function Trig_Duel_in_forest_area_Copy_Func023Func001001 takes nothing returns boolean
 return(IsUnitType(GetEnumUnit(),UNIT_TYPE_HERO)==true)
@@ -23151,11 +23288,10 @@ endif
 return true
 endfunction
 function Trig_Gate_destroyed_Func001A takes nothing returns nothing
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_FB_Human_Side)
-
+call NeutralIssueOrderRandomLocInRect(GetEnumUnit(),"patrol",udg_rct_FB_Human_Side)
 endfunction
 function Trig_Gate_destroyed_Func002A takes nothing returns nothing
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_FB_Undead_Side)
+call NeutralIssueOrderRandomLocInRect(GetEnumUnit(),"patrol",udg_rct_FB_Undead_Side)
 endfunction
 function Trig_Gate_destroyed_Actions takes nothing returns nothing
 call ForGroupBJ(udg_FB_Neutral_Group[1],function Trig_Gate_destroyed_Func001A)
@@ -23697,8 +23833,11 @@ call TriggerRegisterTimerEventPeriodic(udg_trg_coins,40.00)
 call TriggerAddAction(udg_trg_coins,function Trig_coins_Actions)
 endfunction
 function Trig_Spawn_Golden_Chickens_Actions takes nothing returns nothing
+local unit templastcreatedunit
 call CreateNUnitsAtLoc(1,'n010',Player(PLAYER_NEUTRAL_PASSIVE),GenerateRandomLocInRect(MainGenerator,udg_rct_The_ring_of_trees),bj_UNIT_FACING)
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+set templastcreatedunit = GetLastCreatedUnit()
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
+set templastcreatedunit = null
 endfunction
 function InitTrig_Spawn_Golden_Chickens takes nothing returns nothing
 set udg_trg_Spawn_Golden_Chickens=CreateTrigger()
@@ -23732,11 +23871,14 @@ call TriggerRegisterTimerEventSingle(udg_trg_Enable_Bunny_Spawn,300.00)
 call TriggerAddAction(udg_trg_Enable_Bunny_Spawn,function Trig_Enable_Bunny_Spawn_Actions)
 endfunction
 function Trig_Spawn_Bunnies_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_Rabbit_Point=GenerateRandomLocInRect(MainGenerator,udg_rct_The_ring_of_trees)
 call CreateNUnitsAtLoc(1,'necr',Player(PLAYER_NEUTRAL_PASSIVE),udg_Rabbit_Point,bj_UNIT_FACING)
-call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
 call RemoveLocation(udg_Rabbit_Point)
+set templastcreatedunit = null
 endfunction
 function InitTrig_Spawn_Bunnies takes nothing returns nothing
 set udg_trg_Spawn_Bunnies=CreateTrigger()
@@ -23762,21 +23904,25 @@ endif
 return true
 endfunction
 function Trig_Spawn_Special_Bunny_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_Topleft_integer_chance2=GenerateInt(MainGenerator, 1,18)
 if(Trig_Spawn_Special_Bunny_Func002C())then
 set udg_Rabbit_Point=GenerateRandomLocInRect(MainGenerator,udg_rct_Entire_map_excluding_outa_bounds_2)
 call CreateNUnitsAtLocBonuses(1,'necr',Player(PLAYER_NEUTRAL_PASSIVE),udg_Rabbit_Point,bj_UNIT_FACING)
-call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
-call SetUnitVertexColorBJ(GetLastCreatedUnit(),66.00,25.00,100,0)
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
+call SetUnitVertexColorBJ(templastcreatedunit,66.00,25.00,100,0)
 else
 set udg_Rabbit_Point=GenerateRandomLocInRect(MainGenerator,udg_rct_Entire_map_excluding_out_of_bounds)
 call CreateNUnitsAtLocBonuses(1,'necr',Player(PLAYER_NEUTRAL_PASSIVE),udg_Rabbit_Point,bj_UNIT_FACING)
-call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
-call SetUnitVertexColorBJ(GetLastCreatedUnit(),66.00,25.00,100,0)
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
+call SetUnitVertexColorBJ(templastcreatedunit,66.00,25.00,100,0)
 endif
 call RemoveLocation(udg_Rabbit_Point)
+set templastcreatedunit = null
 endfunction
 function InitTrig_Spawn_Special_Bunny takes nothing returns nothing
 set udg_trg_Spawn_Special_Bunny=CreateTrigger()
@@ -25424,8 +25570,11 @@ endif
 return true
 endfunction
 function Trig_Activate_A_Random_Event_Actions takes nothing returns nothing
+local unit templastcreatedunit
 call CreateNUnitsAtLocBonuses(1,'h016',Player(PLAYER_NEUTRAL_PASSIVE),GenerateRandomLocInRect(MainGenerator,udg_rct_Random_event),bj_UNIT_FACING)
-call RemoveUnit(GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call RemoveUnit(templastcreatedunit)
+set templastcreatedunit = null
 endfunction
 function InitTrig_Activate_A_Random_Event takes nothing returns nothing
 set udg_trg_Activate_A_Random_Event=CreateTrigger()
@@ -25443,9 +25592,12 @@ endif
 return true
 endfunction
 function Trig_Dangerous_Water_Event_Actions takes nothing returns nothing
+local unit templastcreatedunit
 call DisplayTimedTextToForce(GetPlayersAll(),10.00,"|cffff0000Angry Fish are coming to the lakes in 10 seconds!!|r")
 call CreateNUnitsAtLocBonuses(1,'e010',Neutral_Satyrs,GetRectCenter(udg_rct_Bottom_Right_Snow),bj_UNIT_FACING)
-call UnitApplyTimedLifeBJ(10.00,'BTLF',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitApplyTimedLifeBJ(10.00,'BTLF',templastcreatedunit)
+set templastcreatedunit = null
 endfunction
 function InitTrig_Dangerous_Water_Event takes nothing returns nothing
 set udg_trg_Dangerous_Water_Event=CreateTrigger()
@@ -25463,8 +25615,11 @@ endif
 return true
 endfunction
 function Trig_Dangerous_Water_Event_2_Actions takes nothing returns nothing
+local unit templastcreatedunit
 call CreateNUnitsAtLocBonuses(1,'n008',Neutral_Satyrs,GetRectCenter(udg_rct_Bottom_of_water),bj_UNIT_FACING)
-call UnitApplyTimedLifeBJ(25.00,'BTLF',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitApplyTimedLifeBJ(25.00,'BTLF',templastcreatedunit)
+set templastcreatedunit = null
 endfunction
 function InitTrig_Dangerous_Water_Event_2 takes nothing returns nothing
 set udg_trg_Dangerous_Water_Event_2=CreateTrigger()
@@ -25485,6 +25640,7 @@ function Trig_Creeps_invade_1_Func004001 takes nothing returns boolean
 return(IsDestructableAliveBJ(gg_dest_ATg1_0915)==true)
 endfunction
 function Trig_Creeps_invade_1_Actions takes nothing returns nothing
+local unit templastcreatedunit
 call PlaySoundBJ(udg_snd_MurlocYesAttack1)
 call DisplayTimedTextToForce(GetPlayersAll(),10.00,"|cffff0000Creeps are invading!!|r")
 if((IsDestructableAliveBJ(gg_dest_ATg1_0915)==true))then
@@ -25498,13 +25654,15 @@ exitwhen udg_General_Index>14
 set udg_AAAA_GP=GetRectCenter(udg_rct_naga_creep_event_area)
 set udg_AAAA_GP2=GenerateRandomLocInRect(MainGenerator,udg_rct_Entire_map_excluding_out_of_bounds)
 call CreateNUnitsAtLocBonuses(1,'n079',Neutral_Nagas,udg_AAAA_GP,bj_UNIT_FACING)
+set templastcreatedunit = GetLastCreatedUnit()
 
 
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
 call RemoveLocation(udg_AAAA_GP)
 call RemoveLocation(udg_AAAA_GP2)
 set udg_General_Index=udg_General_Index+1
 endloop
+set templastcreatedunit = null
 endfunction
 function InitTrig_Creeps_invade_1 takes nothing returns nothing
 set udg_trg_Creeps_invade_1=CreateTrigger()
@@ -25522,23 +25680,28 @@ endif
 return true
 endfunction
 function Trig_Massive_Rabbit_Event_Actions takes nothing returns nothing
+local unit templastcreatedunit
 call DisplayTimedTextToForce(GetPlayersAll(),10.00,"|cffff0000Rabbits have just spawned everywhere!!!|r")
 set udg_General_Index=1
 loop
 exitwhen udg_General_Index>20
 set udg_AAAA_GP=GenerateRandomLocInRect(MainGenerator,udg_rct_Entire_map_excluding_out_of_bounds)
 call CreateNUnitsAtLoc(1,'necr',Player(PLAYER_NEUTRAL_PASSIVE),udg_AAAA_GP,bj_UNIT_FACING)
-call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
 call RemoveLocation(udg_AAAA_GP)
 set udg_General_Index=udg_General_Index+1
 endloop
 set udg_AAAA_GP=GenerateRandomLocInRect(MainGenerator,udg_rct_Bottom_Moonlight)
 call CreateNUnitsAtLocBonuses(1,'e00Y',Player(PLAYER_NEUTRAL_PASSIVE),udg_AAAA_GP,bj_UNIT_FACING)
-call UnitApplyTimedLifeBJ(90.00,'BTLF',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitApplyTimedLifeBJ(90.00,'BTLF',templastcreatedunit)
 call CreateNUnitsAtLocBonuses(1,'e00Z',Player(PLAYER_NEUTRAL_PASSIVE),udg_AAAA_GP,bj_UNIT_FACING)
-call UnitApplyTimedLifeBJ(120.00,'BTLF',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitApplyTimedLifeBJ(120.00,'BTLF',templastcreatedunit)
 call RemoveLocation(udg_AAAA_GP)
+set templastcreatedunit = null
 endfunction
 function InitTrig_Massive_Rabbit_Event takes nothing returns nothing
 set udg_trg_Massive_Rabbit_Event=CreateTrigger()
@@ -25556,11 +25719,14 @@ endif
 return true
 endfunction
 function Trig_Massive_Rabbit_Event_Copy_Actions takes nothing returns nothing
+local unit templastcreatedunit
 call DisplayTimedTextToForce(GetPlayersAll(),10.00,"|cffff0000A golden chicken has just spawned somewhere!!|r")
 set udg_AAAA_GP=GenerateRandomLocInRect(MainGenerator,udg_rct_Entire_map_excluding_out_of_bounds)
 call CreateNUnitsAtLoc(1,'n010',Player(PLAYER_NEUTRAL_PASSIVE),udg_AAAA_GP,bj_UNIT_FACING)
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+set templastcreatedunit = GetLastCreatedUnit()
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
 call RemoveLocation(udg_AAAA_GP)
+set templastcreatedunit = null
 endfunction
 function InitTrig_Massive_Rabbit_Event_Copy takes nothing returns nothing
 set udg_trg_Massive_Rabbit_Event_Copy=CreateTrigger()
@@ -25724,13 +25890,16 @@ endif
 return true
 endfunction
 function Trig_Evil_Vision_Event_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_AAAA_GP=GetRectCenter(udg_rct_Zombie_Spawn)
 call DisplayTimedTextToForce(GetPlayersAll(),10.00,"|cffff0000The evil team has gained full vision of the entire map for 30 seconds!!|r")
 call CreateNUnitsAtLocBonuses(1,'dDUM',ForcePickRandomPlayer(udg_Evil),udg_AAAA_GP,bj_UNIT_FACING)
-call UnitAddAbility(GetLastCreatedUnit(),'AOfs')
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"farsight",udg_AAAA_GP)
-call RemoveUnit(GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitAddAbility(templastcreatedunit,'AOfs')
+call IssuePointOrderLocBJ(templastcreatedunit,"farsight",udg_AAAA_GP)
+call RemoveUnit(templastcreatedunit)
 call RemoveLocation(udg_AAAA_GP)
+set templastcreatedunit = null
 endfunction
 function InitTrig_Evil_Vision_Event takes nothing returns nothing
 endfunction
@@ -25815,6 +25984,7 @@ endif
 return true
 endfunction
 function Trig_New_random_events_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_AAAA_RandomEventChance=GenerateInt(MainGenerator, 1,12)
 if(Trig_New_random_events_Func002C())then
 call DisplayTimedTextToForce(GetPlayersAll(),10.00,"|cffff00ffA group of bandits has appeared in the village|r")
@@ -25874,11 +26044,13 @@ if(Trig_New_random_events_Func007C())then
 call DisplayTimedTextToForce(GetPlayersAll(),10.00,"|cffff00ffA Furious JungleStalker has spawned near the middle!!|r")
 set udg_AAAA_GP=GetRectCenter(udg_rct_Region_162)
 call CreateNUnitsAtLocBonuses(1,'n05O',Neutral_Satyrs,udg_AAAA_GP,bj_UNIT_FACING)
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+set templastcreatedunit = GetLastCreatedUnit()
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
 call PlaySoundBJ(udg_snd_GoodJob)
 call KillSoundWhenDoneBJ(GetLastPlayedSound())
 else
 endif
+set templastcreatedunit = null
 endfunction
 function InitTrig_New_random_events takes nothing returns nothing
 set udg_trg_New_random_events=CreateTrigger()
@@ -25914,14 +26086,16 @@ endif
 return true
 endfunction
 function Trig_Tortle_Spawn_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_AAAA_GP=GenerateRandomLocInRect(MainGenerator,udg_rct_Top_left_Lake)
 set udg_AAAA_TurtleEventCount=(udg_AAAA_TurtleEventCount+1)
 call CreateNUnitsAtLocBonuses(1,'n05M',Neutral_Satyrs,udg_AAAA_GP,bj_UNIT_FACING)
+set templastcreatedunit = GetLastCreatedUnit()
 
 
 call AddSpecialEffectLocBJ(udg_AAAA_GP,"Objects\\Spawnmodels\\Naga\\NagaDeath\\NagaDeath.mdl")
 call DestroyEffectBJ(GetLastCreatedEffectBJ())
-call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_TurtleRestPoint)
+call NeutralIssuePointOrderSavedLoc(templastcreatedunit,"patrol",udg_AAAA_TurtleRestPoint)
 call RemoveLocation(udg_AAAA_GP)
 if(Trig_Tortle_Spawn_Func008C())then
 call DisableTrigger(GetTriggeringTrigger())
@@ -25929,6 +26103,7 @@ call DisableTrigger(udg_trg_reef_ele_Spawn)
 set udg_AAAA_TurtleEventCount=0
 else
 endif
+set templastcreatedunit = null
 endfunction
 function InitTrig_Tortle_Spawn takes nothing returns nothing
 set udg_trg_Tortle_Spawn=CreateTrigger()
@@ -25937,14 +26112,17 @@ call TriggerRegisterTimerEventPeriodic(udg_trg_Tortle_Spawn,4.00)
 call TriggerAddAction(udg_trg_Tortle_Spawn,function Trig_Tortle_Spawn_Actions)
 endfunction
 function Trig_reef_ele_Spawn_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_AAAA_GP=GenerateRandomLocInRect(MainGenerator,udg_rct_Top_left_Lake)
 call CreateNUnitsAtLocBonuses(1,'n05N',Neutral_Satyrs,udg_AAAA_GP,bj_UNIT_FACING)
+set templastcreatedunit = GetLastCreatedUnit()
 
 
 call AddSpecialEffectLocBJ(udg_AAAA_GP,"Objects\\Spawnmodels\\Naga\\NagaDeath\\NagaDeath.mdl")
 call DestroyEffectBJ(GetLastCreatedEffectBJ())
-call NeutralIssuePointOrderSavedLoc(GetLastCreatedUnit(),"patrol",udg_AAAA_TurtleRestPoint)
+call NeutralIssuePointOrderSavedLoc(templastcreatedunit,"patrol",udg_AAAA_TurtleRestPoint)
 call RemoveLocation(udg_AAAA_GP)
+set templastcreatedunit = null
 endfunction
 function InitTrig_reef_ele_Spawn takes nothing returns nothing
 set udg_trg_reef_ele_Spawn=CreateTrigger()
@@ -26000,8 +26178,11 @@ endif
 return true
 endfunction
 function Trig_Activate_A_Random_Event_Copy_Actions takes nothing returns nothing
+local unit templastcreatedunit
 call CreateNUnitsAtLocBonuses(1,'h016',Player(PLAYER_NEUTRAL_PASSIVE),GenerateRandomLocInRect(MainGenerator,udg_rct_Event_area_2),bj_UNIT_FACING)
-call RemoveUnit(GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call RemoveUnit(templastcreatedunit)
+set templastcreatedunit = null
 endfunction
 function InitTrig_Activate_A_Random_Event_Copy takes nothing returns nothing
 set udg_trg_Activate_A_Random_Event_Copy=CreateTrigger()
@@ -26075,6 +26256,7 @@ function Trig_Creep_attack_event_Func003001 takes nothing returns boolean
 return(IsDestructableAliveBJ(gg_dest_ATg1_0502)==true)
 endfunction
 function Trig_Creep_attack_event_Actions takes nothing returns nothing
+local unit templastcreatedunit
 call DisplayTimedTextToForce(GetPlayersAll(),10.00,"|cff7777aaCreeps are invading!!|r")
 if((IsDestructableAliveBJ(gg_dest_ATg1_0502)==true))then
 call ModifyGateBJ(bj_GATEOPERATION_OPEN,gg_dest_ATg1_0502)
@@ -26086,21 +26268,25 @@ set udg_AAAA_GP=GetRectCenter(udg_rct_ice_creep_event)
 loop
 exitwhen udg_General_Index>14
 call CreateNUnitsAtLocBonuses(1,'n077',Neutral_Bottom,udg_AAAA_GP,bj_UNIT_FACING)
-call UnitImmediateUseAbility(GetLastCreatedUnit(),'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
 set udg_General_Index=udg_General_Index+1
 endloop
 call RemoveLocation(udg_AAAA_GP)
 set udg_AAAA_GP=GetRectCenter(udg_rct_ice_creep_event)
 call CreateNUnitsAtLocBonuses(1,'n078',Neutral_Bottom,udg_AAAA_GP,bj_UNIT_FACING)
+set templastcreatedunit = GetLastCreatedUnit()
 
 
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
 call RemoveLocation(udg_AAAA_GP)
 set udg_AAAA_GP=GetRectCenter(udg_rct_ice_creep_event)
 call CreateNUnitsAtLocBonuses(1,'nqb4',Neutral_Bottom,udg_AAAA_GP,bj_UNIT_FACING)
-call NeutralIssueOrderRandomLocInRect(GetLastCreatedUnit(),"patrol",udg_rct_Entire_map_AI_TARGEt)
+set templastcreatedunit = GetLastCreatedUnit()
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
 call RemoveLocation(udg_AAAA_GP)
+set templastcreatedunit = null
 endfunction
 function InitTrig_Creep_attack_event takes nothing returns nothing
 set udg_trg_Creep_attack_event=CreateTrigger()
@@ -26714,15 +26900,18 @@ endif
 return true
 endfunction
 function Trig_Blight_skeletons_Func005A takes nothing returns nothing
+local unit templastcreatedunit
 if(Trig_Blight_skeletons_Func005Func001C())then
 set udg_Nazgul_Point=GetUnitLoc(GetEnumUnit())
 call CreateNUnitsAtLocBonuses(1,'u00K',ForcePickRandomPlayer(udg_Nazgul_Rider_Players),udg_Nazgul_Point,bj_UNIT_FACING)
-call AddSpecialEffectLocBJ(GetUnitLoc(GetLastCreatedUnit()),"Abilities\\Spells\\Undead\\AnimateDead\\AnimateDeadTarget.mdl")
+set templastcreatedunit = GetLastCreatedUnit()
+call AddSpecialEffectLocBJ(GetUnitLoc(templastcreatedunit),"Abilities\\Spells\\Undead\\AnimateDead\\AnimateDeadTarget.mdl")
 call DestroyEffectBJ(GetLastCreatedEffectBJ())
 call RemoveLocation(udg_Nazgul_Point)
 else
 call DoNothing()
 endif
+set templastcreatedunit = null
 endfunction
 function Trig_Blight_skeletons_Actions takes nothing returns nothing
 set bj_wantDestroyGroup=true
@@ -27310,12 +27499,15 @@ function Trig_Sand_Slam_Func003002003 takes nothing returns boolean
 return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_Antidesync_temp_unit),GetOwningPlayer(GetFilterUnit()))==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitType(GetTriggerUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))))
 endfunction
 function Trig_Sand_Slam_Func004A takes nothing returns nothing
+local unit templastcreatedunit
 call UnitDamageTargetBJ(udg_Antidesync_temp_unit,GetEnumUnit(),100.00,ATTACK_TYPE_NORMAL,DAMAGE_TYPE_NORMAL)
 call CreateNUnitsAtLocBonuses(1,'e018',GetOwningPlayer(udg_Antidesync_temp_unit),udg_TempPoint,bj_UNIT_FACING)
-call UnitAddAbilityBJ('A0JW',GetLastCreatedUnit())
-call SetUnitAbilityLevelSwapped('A0JW',GetLastCreatedUnit(),3)
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"slow",GetEnumUnit())
-call UnitApplyTimedLifeBJ(1.00,'BTLF',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitAddAbilityBJ('A0JW',templastcreatedunit)
+call SetUnitAbilityLevelSwapped('A0JW',templastcreatedunit,3)
+call IssueTargetOrderBJ(templastcreatedunit,"slow",GetEnumUnit())
+call UnitApplyTimedLifeBJ(1.00,'BTLF',templastcreatedunit)
+set templastcreatedunit = null
 endfunction
 function Trig_Sand_Slam_Func007001003 takes nothing returns boolean
 return(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(GetTriggerUnit()))==true)
@@ -27327,16 +27519,19 @@ endif
 return true
 endfunction
 function Trig_Sand_Slam_Func007A takes nothing returns nothing
+local unit templastcreatedunit
 if(Trig_Sand_Slam_Func007Func001C())then
 set udg_General_Point2=GetUnitLoc(GetEnumUnit())
 call CreateNUnitsAtLocBonuses(1,'h07G',GetOwningPlayer(GetTriggerUnit()),udg_General_Point2,bj_UNIT_FACING)
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"soulburn",GetEnumUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call IssueTargetOrderBJ(templastcreatedunit,"soulburn",GetEnumUnit())
 call AddSpecialEffectLocBJ(udg_General_Point2,"Abilities\\Spells\\Orc\\FeralSpirit\\feralspirittarget.mdl")
 call DestroyEffectBJ(GetLastCreatedEffectBJ())
-call UnitApplyTimedLifeBJ(3.00,'BTLF',GetLastCreatedUnit())
+call UnitApplyTimedLifeBJ(3.00,'BTLF',templastcreatedunit)
 call RemoveLocation(udg_General_Point2)
 else
 endif
+set templastcreatedunit = null
 endfunction
 function Trig_Sand_Slam_Actions takes nothing returns nothing
 set udg_Antidesync_temp_unit=GetTriggerUnit()
@@ -27671,6 +27866,7 @@ endif
 return true
 endfunction
 function Trig_Sand_Stomp_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set bj_forLoopAIndex=1
 set bj_forLoopAIndexEnd=18
 loop
@@ -27680,14 +27876,16 @@ set udg_ST_Location=GetUnitLoc(udg_ST_TC)
 set udg_ST_Ability='A0JI'
 set udg_ST_Loop_Location=PolarProjectionBJ(udg_ST_Location,200.00,(20.00*I2R(GetForLoopIndexA())))
 call CreateNUnitsAtLocFacingLocBJ(1,'h07H',GetOwningPlayer(udg_ST_TC),udg_ST_Loop_Location,udg_ST_Location)
-call UnitAddAbilityBJ(udg_ST_Ability,GetLastCreatedUnit())
-call SetUnitAbilityLevelSwapped(udg_ST_Ability,GetLastCreatedUnit(),GetUnitAbilityLevelSwapped('A0JH',udg_ST_TC))
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"impale",udg_ST_Location)
-call UnitApplyTimedLifeBJ(2.00,'BTLF',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitAddAbilityBJ(udg_ST_Ability,templastcreatedunit)
+call SetUnitAbilityLevelSwapped(udg_ST_Ability,templastcreatedunit,GetUnitAbilityLevelSwapped('A0JH',udg_ST_TC))
+call IssuePointOrderLocBJ(templastcreatedunit,"impale",udg_ST_Location)
+call UnitApplyTimedLifeBJ(2.00,'BTLF',templastcreatedunit)
 call RemoveLocation(udg_ST_Loop_Location)
 call RemoveLocation(udg_ST_Location)
 set bj_forLoopAIndex=bj_forLoopAIndex+1
 endloop
+set templastcreatedunit = null
 endfunction
 function InitTrig_Sand_Stomp takes nothing returns nothing
 set udg_trg_Sand_Stomp=CreateTrigger()
@@ -27711,6 +27909,7 @@ endif
 return true
 endfunction
 function Trig_Sand_Quaker_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_SQ_Chances=1
 set udg_SQ_Unit[1]=GetAttacker()
 set udg_SQ_Unit[2]=GetAttackedUnitBJ()
@@ -27728,15 +27927,17 @@ call SetUnitAnimation(udg_SQ_Unit[1],"attack slam")
 call AddSpecialEffectTargetUnitBJ("weapon",udg_SQ_Unit[1],"Objects\\Spawnmodels\\Undead\\ImpaleTargetDust\\ImpaleTargetDust.mdl")
 call DestroyEffectBJ(GetLastCreatedEffectBJ())
 call CreateNUnitsAtLocBonuses(1,'h07I',GetOwningPlayer(udg_SQ_Unit[1]),udg_SQ_Location[2],bj_UNIT_FACING)
-call UnitAddAbilityBJ(udg_SQ_Ability,GetLastCreatedUnit())
-call SetUnitAbilityLevelSwapped(udg_SQ_Ability,GetLastCreatedUnit(),GetUnitAbilityLevelSwapped('A0JJ',udg_SQ_Unit[1]))
-call IssueImmediateOrderBJ(GetLastCreatedUnit(),"fanofknives")
-call UnitApplyTimedLifeBJ(0.50,'BTLF',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitAddAbilityBJ(udg_SQ_Ability,templastcreatedunit)
+call SetUnitAbilityLevelSwapped(udg_SQ_Ability,templastcreatedunit,GetUnitAbilityLevelSwapped('A0JJ',udg_SQ_Unit[1]))
+call IssueImmediateOrderBJ(templastcreatedunit,"fanofknives")
+call UnitApplyTimedLifeBJ(0.50,'BTLF',templastcreatedunit)
 call RemoveLocation(udg_SQ_Location[1])
 call RemoveLocation(udg_SQ_Location[2])
 else
 call DoNothing()
 endif
+set templastcreatedunit = null
 endfunction
 function InitTrig_Sand_Quaker takes nothing returns nothing
 set udg_trg_Sand_Quaker=CreateTrigger()
@@ -27867,6 +28068,7 @@ endif
 return true
 endfunction
 function Trig_Throw_Shield_Actions takes nothing returns nothing
+local unit templastcreatedunit
 call RemoveItem(GetItemOfTypeFromUnitBJ(GetTriggerUnit(),'I03N'))
 set udg_AAACAS_CasterPoint=GetUnitLoc(GetTriggerUnit())
 set udg_AAACAS_CastCount=(udg_AAACAS_CastCount+1)
@@ -27874,12 +28076,14 @@ set udg_AAACAS_Instances=(udg_AAACAS_Instances+1)
 set udg_AAACAS_TargetPoint=GetSpellTargetLoc()
 set udg_AAACAS_Angle[udg_AAACAS_CastCount]=AngleBetweenPoints(udg_AAACAS_CasterPoint,udg_AAACAS_TargetPoint)
 call CreateNUnitsAtLocFacingLocBJ(1,'h074',GetOwningPlayer(GetTriggerUnit()),udg_AAACAS_CasterPoint,udg_AAACAS_TargetPoint)
-set udg_AAACAS_unit[udg_AAACAS_CastCount]=GetLastCreatedUnit()
+set templastcreatedunit = GetLastCreatedUnit()
+set udg_AAACAS_unit[udg_AAACAS_CastCount]=templastcreatedunit
 set udg_AAACAS_Distance[udg_AAACAS_CastCount]=DistanceBetweenPoints(udg_AAACAS_CasterPoint,udg_AAACAS_TargetPoint)
 set udg_AAACAS_Distance_Counter[udg_AAACAS_CastCount]=24.00
 call RemoveLocation(udg_AAACAS_CasterPoint)
 call RemoveLocation(udg_AAACAS_TargetPoint)
 call EnableTrigger(udg_trg_Shield_Loop)
+set templastcreatedunit = null
 endfunction
 function InitTrig_Throw_Shield takes nothing returns nothing
 set udg_trg_Throw_Shield=CreateTrigger()
@@ -27909,14 +28113,17 @@ endif
 return true
 endfunction
 function Trig_Shield_Loop_Func001Func001Func007A takes nothing returns nothing
+local unit templastcreatedunit
 if(Trig_Shield_Loop_Func001Func001Func007Func001C())then
 set udg_AAACAS_TargetUnit_Point[udg_AAACAS_Integer]=GetUnitLoc(GetEnumUnit())
 call CreateNUnitsAtLocBonuses(1,'h075',GetOwningPlayer(udg_AAACAS_unit[udg_AAACAS_Integer]),udg_AAACAS_TargetUnit_Point[udg_AAACAS_Integer],bj_UNIT_FACING)
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"thunderbolt",GetEnumUnit())
-call UnitApplyTimedLifeBJ(3.00,'BTLF',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call IssueTargetOrderBJ(templastcreatedunit,"thunderbolt",GetEnumUnit())
+call UnitApplyTimedLifeBJ(3.00,'BTLF',templastcreatedunit)
 call GroupAddUnitSimple(GetEnumUnit(),udg_AAACAS_HitUnitsGroup[udg_AAACAS_Integer])
 else
 endif
+set templastcreatedunit = null
 endfunction
 function Trig_Shield_Loop_Func001Func001Func008C takes nothing returns boolean
 if(not(udg_AAACAS_Distance_Counter[udg_AAACAS_Integer]>=udg_AAACAS_Distance[udg_AAACAS_Integer]))then
@@ -27988,19 +28195,22 @@ endif
 return true
 endfunction
 function Trig_Firebolt_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_AAS1_CastCount=(udg_AAS1_CastCount+1)
 set udg_AAS1_CasterPoint=GetUnitLoc(GetTriggerUnit())
 set udg_AAS1_TargetPoint=GetSpellTargetLoc()
 set udg_AAS1_Angle=AngleBetweenPoints(udg_AAS1_CasterPoint,udg_AAS1_TargetPoint)
 call CreateNUnitsAtLocBonuses(1,'h034',GetOwningPlayer(GetTriggerUnit()),udg_AAS1_CasterPoint,udg_AAS1_Angle)
-set udg_AAS1_Dummy[udg_AAS1_CastCount]=GetLastCreatedUnit()
-call GroupAddUnitSimple(GetLastCreatedUnit(),udg_AAS1_UnitGroup)
-call SetUnitUserData(GetLastCreatedUnit(),udg_AAS1_CastCount)
-call UnitApplyTimedLifeBJ(6.10,'BTLF',GetLastCreatedUnit())
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"move",udg_AAS1_TargetPoint)
+set templastcreatedunit = GetLastCreatedUnit()
+set udg_AAS1_Dummy[udg_AAS1_CastCount]=templastcreatedunit
+call GroupAddUnitSimple(templastcreatedunit,udg_AAS1_UnitGroup)
+call SetUnitUserData(templastcreatedunit,udg_AAS1_CastCount)
+call UnitApplyTimedLifeBJ(6.10,'BTLF',templastcreatedunit)
+call IssuePointOrderLocBJ(templastcreatedunit,"move",udg_AAS1_TargetPoint)
 call RemoveLocation(udg_AAS1_CasterPoint)
 call RemoveLocation(udg_AAS1_TargetPoint)
 call EnableTrigger(udg_trg_Loop_Copy)
+set templastcreatedunit = null
 endfunction
 function InitTrig_Firebolt takes nothing returns nothing
 set udg_trg_Firebolt=CreateTrigger()
@@ -28077,11 +28287,14 @@ endif
 return true
 endfunction
 function Trig_Firebolt_death_Actions takes nothing returns nothing
+local unit templastcreatedunit
 call GroupRemoveUnitSimple(GetTriggerUnit(),udg_AAS1_UnitGroup)
 set udg_AAS1_DeathPoint=GetUnitLoc(GetTriggerUnit())
 call CreateNUnitsAtLocBonuses(1,'h01A',GetOwningPlayer(GetTriggerUnit()),udg_AAS1_DeathPoint,bj_UNIT_FACING)
-call UnitApplyTimedLifeBJ(3.50,'BTLF',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitApplyTimedLifeBJ(3.50,'BTLF',templastcreatedunit)
 call RemoveLocation(udg_AAS1_DeathPoint)
+set templastcreatedunit = null
 endfunction
 function InitTrig_Firebolt_death takes nothing returns nothing
 set udg_trg_Firebolt_death=CreateTrigger()
@@ -28108,6 +28321,7 @@ endif
 return true
 endfunction
 function Trig_snowball_Init_Actions takes nothing returns nothing
+local unit templastcreatedunit
 if(Trig_snowball_Init_Func002C())then
 call EnableTrigger(udg_trg_snowball_Loop)
 else
@@ -28125,10 +28339,12 @@ set udg_AB_Point2=GetSpellTargetLoc()
 set udg_AB_Duration[udg_AB_Temp]=5.00
 set udg_AB_Damage[udg_AB_Temp]=100.00
 call CreateNUnitsAtLocBonuses(1,'h04P',GetOwningPlayer(udg_AB_Caster[udg_AB_Temp]),udg_AB_Point1,AngleBetweenPoints(udg_AB_Point1,udg_AB_Point2))
-set udg_AB_Orb[udg_AB_Temp]=GetLastCreatedUnit()
+set templastcreatedunit = GetLastCreatedUnit()
+set udg_AB_Orb[udg_AB_Temp]=templastcreatedunit
 call SetUnitPathing(udg_AB_Orb[udg_AB_Temp],false)
 call RemoveLocation(udg_AB_Point1)
 call RemoveLocation(udg_AB_Point2)
+set templastcreatedunit = null
 endfunction
 function InitTrig_snowball_Init takes nothing returns nothing
 set udg_trg_snowball_Init=CreateTrigger()
@@ -28473,8 +28689,11 @@ endif
 return true
 endfunction
 function Trig_Purchase_Creep_Actions takes nothing returns nothing
+local unit templastcreatedunit
 call CreateNUnitsAtLocBonuses(1,udg_RANDOM_NEUTRAL[GenerateInt(MainGenerator, 1,15)],GetOwningPlayer(GetTriggerUnit()),GetRectCenter(udg_rct_Hire_Creep_Spawn),bj_UNIT_FACING)
-call AddSpecialEffectLocBJ(GetUnitLoc(GetLastCreatedUnit()),"Abilities\\Spells\\Orc\\FeralSpirit\\feralspiritdone.mdl")
+set templastcreatedunit = GetLastCreatedUnit()
+call AddSpecialEffectLocBJ(GetUnitLoc(templastcreatedunit),"Abilities\\Spells\\Orc\\FeralSpirit\\feralspiritdone.mdl")
+set templastcreatedunit = null
 endfunction
 function InitTrig_Purchase_Creep takes nothing returns nothing
 set udg_trg_Purchase_Creep=CreateTrigger()
@@ -29113,6 +29332,7 @@ endif
 return true
 endfunction
 function Trig_Knowledge_of_Shadows_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_SystemPoint[0]=GetUnitLoc(GetAttacker())
 set udg_KoS_Angle[0]=GetUnitFacing(GetAttacker())
 set udg_KoS_Angle[1]=GetUnitFacing(GetAttackedUnitBJ())
@@ -29123,13 +29343,15 @@ set udg_tempSESSpecialEffect=GetLastCreatedEffectBJ()
 set udg_tempSESTimer=1.00
 call ConditionalTriggerExecute(udg_trg_Add_Special_Effect_to_System)
 call CreateNUnitsAtLocBonuses(1,'h076',GetOwningPlayer(GetAttacker()),udg_SystemPoint[0],udg_KoS_Angle[0])
-call UnitApplyTimedLifeBJ(1.00,'BTLF',GetLastCreatedUnit())
-call UnitAddAbilityBJ('A0I9',GetLastCreatedUnit())
-call SetUnitAbilityLevelSwapped('A0I9',GetLastCreatedUnit(),GetUnitAbilityLevelSwapped('A0IA',GetAttacker()))
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"curse",GetAttackedUnitBJ())
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitApplyTimedLifeBJ(1.00,'BTLF',templastcreatedunit)
+call UnitAddAbilityBJ('A0I9',templastcreatedunit)
+call SetUnitAbilityLevelSwapped('A0I9',templastcreatedunit,GetUnitAbilityLevelSwapped('A0IA',GetAttacker()))
+call IssueTargetOrderBJ(templastcreatedunit,"curse",GetAttackedUnitBJ())
 else
 endif
 call RemoveLocation(udg_SystemPoint[0])
+set templastcreatedunit = null
 endfunction
 function InitTrig_Knowledge_of_Shadows takes nothing returns nothing
 set udg_trg_Knowledge_of_Shadows=CreateTrigger()
@@ -29223,6 +29445,7 @@ return false
 return true
 endfunction
 function Trig_BS_Setings_Actions takes nothing returns nothing
+local unit templastcreatedunit
 if(Trig_BS_Setings_Func001C())then
 call EnableTrigger(udg_trg_BS_Loop)
 else
@@ -29252,12 +29475,14 @@ set udg_BS_COSINE[udg_BS_Times]=(udg_BS_Height[udg_BS_Times]/ udg_BS_Hyp[udg_BS_
 set udg_BS_HYPSpeed[udg_BS_Times]=40.00
 set udg_BS_Speed[udg_BS_Times]=(udg_BS_HYPSpeed[udg_BS_Times]*udg_BS_SINE[udg_BS_Times])
 call CreateNUnitsAtLocBonuses(1,'n01G',GetOwningPlayer(udg_BS_Hero[udg_BS_Times]),udg_BS_Point[2],udg_BS_Angle[udg_BS_Times])
-set udg_BS_Missile[udg_BS_Times]=GetLastCreatedUnit()
+set templastcreatedunit = GetLastCreatedUnit()
+set udg_BS_Missile[udg_BS_Times]=templastcreatedunit
 set udg_BS_MC=udg_BS_MC+1
 endloop
 call RemoveLocation(udg_BS_Point[0])
 call RemoveLocation(udg_BS_Point[1])
 call RemoveLocation(udg_BS_Point[2])
+set templastcreatedunit = null
 endfunction
 function InitTrig_BS_Setings takes nothing returns nothing
 set udg_trg_BS_Setings=CreateTrigger()
@@ -30036,6 +30261,7 @@ endif
 return true
 endfunction
 function Trig_Shadow_Burst_Cast_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_SB_Count=(udg_SB_Count+1)
 set udg_SB_Damage[udg_SB_Count]=(150.00*I2R(GetUnitAbilityLevelSwapped('A0GM',GetTriggerUnit())))
 set udg_SB_CountFinishedSpell=(udg_SB_CountFinishedSpell+1)
@@ -30045,10 +30271,12 @@ set udg_SB_Timer[udg_SB_Count]=(I2R(udg_SB_Orb_Stick_Duration)*0.99)
 set udg_SB_Angle[udg_SB_Count]=AngleBetweenPoints(udg_SB_Caster_Point,udg_SB_Target_Point)
 set udg_SB_Orb_Size[udg_SB_Count]=240.00
 call CreateNUnitsAtLocBonuses(1,'h06R',GetOwningPlayer(GetTriggerUnit()),udg_SB_Caster_Point,udg_SB_Angle[udg_SB_Count])
-set udg_SB_Unit[udg_SB_Count]=GetLastCreatedUnit()
+set templastcreatedunit = GetLastCreatedUnit()
+set udg_SB_Unit[udg_SB_Count]=templastcreatedunit
 call RemoveLocation(udg_SB_Caster_Point)
 call RemoveLocation(udg_SB_Target_Point)
 call EnableTrigger(udg_trg_Shadow_Burst_Loop)
+set templastcreatedunit = null
 endfunction
 function InitTrig_Shadow_Burst_Cast takes nothing returns nothing
 set udg_trg_Shadow_Burst_Cast=CreateTrigger()
@@ -30183,6 +30411,7 @@ endif
 return true
 endfunction
 function Trig_Shadow_Burst_Loop_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_SB_Integer=1
 loop
 exitwhen udg_SB_Integer>udg_SB_Count
@@ -30216,8 +30445,9 @@ set udg_SB_CountdownToCast[udg_SB_Integer]=(udg_SB_CountdownToCast[udg_SB_Intege
 if(Trig_Shadow_Burst_Loop_Func001Func001Func004Func003Func010Func018C())then
 set udg_SB_General_Point[udg_SB_Integer]=PolarProjectionBJ(udg_SB_Enemy_Point[udg_SB_Integer],GenerateReal(MainGenerator, 200.00,800.00),GenerateReal(MainGenerator, -360.00,360.00))
 call CreateNUnitsAtLocBonuses(1,'h06Q',GetOwningPlayer(udg_SB_Unit[udg_SB_Integer]),udg_SB_General_Point[udg_SB_Integer],bj_UNIT_FACING)
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"firebolt",udg_SB_Target_Unit[udg_SB_Integer])
-call UnitApplyTimedLifeBJ(2.00,'BTLF',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call IssueTargetOrderBJ(templastcreatedunit,"firebolt",udg_SB_Target_Unit[udg_SB_Integer])
+call UnitApplyTimedLifeBJ(2.00,'BTLF',templastcreatedunit)
 set udg_SB_CountdownToCast[udg_SB_Integer]=0
 call RemoveLocation(udg_SB_General_Point[udg_SB_Integer])
 set udg_SB_Orb_Size[udg_SB_Integer]=(udg_SB_Orb_Size[udg_SB_Integer]+udg_SB_Orb_Growth_Rate)
@@ -30228,8 +30458,9 @@ if(Trig_Shadow_Burst_Loop_Func001Func001Func004Func003Func010Func019C())then
 call UnitDamageTargetBJ(udg_SB_Unit[udg_SB_Integer],udg_SB_Target_Unit[udg_SB_Integer],udg_SB_Damage[udg_SB_Integer],ATTACK_TYPE_NORMAL,DAMAGE_TYPE_NORMAL)
 set udg_SB_Orb_Current_Point[udg_SB_Integer]=GetUnitLoc(udg_SB_Unit[udg_SB_Integer])
 call CreateNUnitsAtLocBonuses(1,'h06Q',GetOwningPlayer(udg_SB_Unit[udg_SB_Integer]),udg_SB_Orb_Current_Point[udg_SB_Integer],bj_UNIT_FACING)
+set templastcreatedunit = GetLastCreatedUnit()
 call KillUnit(udg_SB_Unit[udg_SB_Integer])
-set udg_SB_Unit[udg_SB_Integer]=GetLastCreatedUnit()
+set udg_SB_Unit[udg_SB_Integer]=templastcreatedunit
 call SetUnitScalePercent(udg_SB_Unit[udg_SB_Integer],500.00,500.00,500.00)
 call UnitAddAbilityBJ('A0GN',udg_SB_Unit[udg_SB_Integer])
 call UnitRemoveAbilityBJ('A0GI',udg_SB_Unit[udg_SB_Integer])
@@ -30332,6 +30563,7 @@ call DisableTrigger(GetTriggeringTrigger())
 set udg_SB_Count=0
 else
 endif
+set templastcreatedunit = null
 endfunction
 function InitTrig_Shadow_Burst_Loop takes nothing returns nothing
 set udg_trg_Shadow_Burst_Loop=CreateTrigger()
@@ -30346,11 +30578,14 @@ endif
 return true
 endfunction
 function Trig_DK_TAUNT_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_AAAA_GP=GetUnitLoc(GetTriggerUnit())
 call CreateNUnitsAtLocBonuses(1,'h01J',GetOwningPlayer(GetSpellAbilityUnit()),udg_AAAA_GP,bj_UNIT_FACING)
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"bloodlust",GetSpellAbilityUnit())
-call RemoveUnit(GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call IssueTargetOrderBJ(templastcreatedunit,"bloodlust",GetSpellAbilityUnit())
+call RemoveUnit(templastcreatedunit)
 call RemoveLocation(udg_AAAA_GP)
+set templastcreatedunit = null
 endfunction
 function InitTrig_DK_TAUNT takes nothing returns nothing
 set udg_trg_DK_TAUNT=CreateTrigger()
@@ -30412,6 +30647,7 @@ endif
 return true
 endfunction
 function Trig_Shattered_universe_init_Actions takes nothing returns nothing
+local unit templastcreatedunit
 if(Trig_Shattered_universe_init_Func001C())then
 call EnableTrigger(udg_trg_Shattered_universe_loop)
 else
@@ -30426,9 +30662,11 @@ set udg_SU_Temp=udg_SU_Integer[udg_SU_Indexsize]
 set udg_SU_Caster[udg_SU_Temp]=GetTriggerUnit()
 set udg_SU_Point[1]=GetSpellTargetLoc()
 call CreateNUnitsAtLocBonuses(1,'h06U',GetOwningPlayer(udg_SU_Caster[udg_SU_Temp]),udg_SU_Point[1],bj_UNIT_FACING)
-set udg_SU_Meteor[udg_SU_Temp]=GetLastCreatedUnit()
+set templastcreatedunit = GetLastCreatedUnit()
+set udg_SU_Meteor[udg_SU_Temp]=templastcreatedunit
 set udg_SU_Fall[udg_SU_Temp]=7.50
 call RemoveLocation(udg_SU_Point[1])
+set templastcreatedunit = null
 endfunction
 function InitTrig_Shattered_universe_init takes nothing returns nothing
 set udg_trg_Shattered_universe_init=CreateTrigger()
@@ -30449,6 +30687,7 @@ endif
 return true
 endfunction
 function Trig_Shattered_universe_loop_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_SU_Loop=1
 loop
 exitwhen udg_SU_Loop>udg_SU_Indexsize
@@ -30464,9 +30703,10 @@ loop
 exitwhen udg_SU_Explosion[udg_SU_Temp]>20
 set udg_SU_Point[3]=PolarProjectionBJ(udg_SU_Point[2],500.00,udg_SU_Real[udg_SU_Temp])
 call CreateNUnitsAtLocBonuses(1,'h06V',GetOwningPlayer(udg_SU_Meteor[udg_SU_Temp]),udg_SU_Point[2],bj_UNIT_FACING)
-call UnitAddAbilityBJ('A0GF',GetLastCreatedUnit())
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"impale",udg_SU_Point[3])
-call UnitApplyTimedLifeBJ(1.00,'BTLF',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitAddAbilityBJ('A0GF',templastcreatedunit)
+call IssuePointOrderLocBJ(templastcreatedunit,"impale",udg_SU_Point[3])
+call UnitApplyTimedLifeBJ(1.00,'BTLF',templastcreatedunit)
 set udg_SU_Real[udg_SU_Temp]=(udg_SU_Real[udg_SU_Temp]+(360.00/ 20.00))
 call RemoveLocation(udg_SU_Point[3])
 set udg_SU_Explosion[udg_SU_Temp]=udg_SU_Explosion[udg_SU_Temp]+1
@@ -30482,6 +30722,7 @@ endloop
 if(udg_SU_Indexsize==0)then
 call DisableTrigger(udg_trg_Shattered_universe_loop)
 endif
+set templastcreatedunit = null
 endfunction
 function InitTrig_Shattered_universe_loop takes nothing returns nothing
 set udg_trg_Shattered_universe_loop=CreateTrigger()
@@ -30496,16 +30737,19 @@ endif
 return true
 endfunction
 function Trig_BlackHoleCast_Actions takes nothing returns nothing
+local unit templastcreatedunit
 if(BlackHoles==0)then
 call EnableTrigger(udg_trg_BlackHoleMoveTarget)
 endif
 set BlackHoles=BlackHoles+1
 set udg_tempPoint=GetSpellTargetLoc()
 call CreateNUnitsAtLocBonuses(1,'u02D',GetOwningPlayer(GetTriggerUnit()),udg_tempPoint,bj_UNIT_FACING)
-call SaveUnitHandleBJ(GetTriggerUnit(),StringHashBJ("BlackHoleCaster"),GetHandleIdBJ(GetLastCreatedUnit()),udg_blackHoleTable)
-call SaveUnitHandleBJ(GetLastCreatedUnit(),StringHashBJ("BlackHole"),GetHandleIdBJ(GetTriggerUnit()),udg_blackHoleTable)
+set templastcreatedunit = GetLastCreatedUnit()
+call SaveUnitHandleBJ(GetTriggerUnit(),StringHashBJ("BlackHoleCaster"),GetHandleIdBJ(templastcreatedunit),udg_blackHoleTable)
+call SaveUnitHandleBJ(templastcreatedunit,StringHashBJ("BlackHole"),GetHandleIdBJ(GetTriggerUnit()),udg_blackHoleTable)
 call GroupAddUnitSimple(GetTriggerUnit(),udg_BlackHoleUnits)
 call RemoveLocation(udg_tempPoint)
+set templastcreatedunit = null
 endfunction
 function InitTrig_BlackHoleCast takes nothing returns nothing
 set udg_trg_BlackHoleCast=CreateTrigger()
@@ -30628,6 +30872,7 @@ endif
 return true
 endfunction
 function Trig_FL_init_Actions takes nothing returns nothing
+local unit templastcreatedunit
 if(Trig_FL_init_Func001C())then
 call EnableTrigger(udg_trg_FL_loop)
 else
@@ -30649,8 +30894,9 @@ set udg_FL_FlameSFX_String="Environment\\LargeBuildingFire\\LargeBuildingFire1.m
 set udg_FL_FlameDamageSFX_String[udg_FL_LoopIndex[2]]="Abilities\\Spells\\Items\\AIfb\\AIfbSpecialArt.mdl"
 set udg_FL_Duration[udg_FL_LoopIndex[2]]=(10.00+(5.00*I2R(GetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit()))))
 call CreateNUnitsAtLocBonuses(1,'h05K',GetOwningPlayer(udg_FL_DamageDealer[udg_FL_LoopIndex[2]]),udg_FL_LeakPoint[0],udg_FL_Angle[udg_FL_LoopIndex[2]])
-call AddSpecialEffectTargetUnitBJ("chest",GetLastCreatedUnit(),udg_FL_FlameSFX_String)
-set udg_FL_Flame[udg_FL_LoopIndex[2]]=GetLastCreatedUnit()
+set templastcreatedunit = GetLastCreatedUnit()
+call AddSpecialEffectTargetUnitBJ("chest",templastcreatedunit,udg_FL_FlameSFX_String)
+set udg_FL_Flame[udg_FL_LoopIndex[2]]=templastcreatedunit
 set udg_FL_Index[1]=(udg_FL_Index[1]-1)
 call RemoveLocation(udg_FL_LeakPoint[0])
 call RemoveLocation(udg_FL_LeakPoint[1])
@@ -30658,6 +30904,7 @@ if(Trig_FL_init_Func042C())then
 set udg_FL_Index[2]=0
 else
 endif
+set templastcreatedunit = null
 endfunction
 function InitTrig_FL_init takes nothing returns nothing
 set udg_trg_FL_init=CreateTrigger()
@@ -30979,6 +31226,7 @@ endif
 return true
 endfunction
 function Trig_Projectile_Dash_by_Paladon_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_PD_Integers[3]=1
 loop
 exitwhen udg_PD_Integers[3]>udg_PD_Integers[2]
@@ -30998,9 +31246,10 @@ if(Trig_Projectile_Dash_by_Paladon_Func001Func001Func001Func021C())then
 set udg_UC_Counter[udg_PD_Integers[3]]=0
 set udg_UC_TempPoint[1]=GetUnitLoc(udg_PD_Unit[udg_PD_Integers[3]])
 call CreateNUnitsAtLocBonuses(1,'n04F',GetOwningPlayer(udg_PD_Unit[udg_PD_Integers[3]]),udg_UC_TempPoint[1],GetUnitFacing(udg_PD_Unit[udg_PD_Integers[3]]))
-call AddSpecialEffectTargetUnitBJ("chest",GetLastCreatedUnit(),"units\\creeps\\TimberWolf\\TimberWolf.mdl")
+set templastcreatedunit = GetLastCreatedUnit()
+call AddSpecialEffectTargetUnitBJ("chest",templastcreatedunit,"units\\creeps\\TimberWolf\\TimberWolf.mdl")
 call RemoveLocation(udg_UC_TempPoint[1])
-set udg_FA_Unit=GetLastCreatedUnit()
+set udg_FA_Unit=templastcreatedunit
 set udg_FA_Time=0.50
 call ConditionalTriggerExecute(udg_trg_getFaded)
 else
@@ -31032,6 +31281,7 @@ else
 endif
 set udg_PD_Integers[3]=udg_PD_Integers[3]+1
 endloop
+set templastcreatedunit = null
 endfunction
 function InitTrig_Projectile_Dash_by_Paladon takes nothing returns nothing
 set udg_trg_Projectile_Dash_by_Paladon=CreateTrigger()
@@ -31212,9 +31462,11 @@ endif
 return true
 endfunction
 function Trig_Arrow_Create_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_QJS_tempPos=GetUnitLoc(udg_QJ_Caster)
 call CreateNUnitsAtLocBonuses(1,udg_QJ_Model,GetOwningPlayer(udg_QJ_Caster),udg_QJS_tempPos,GetUnitFacing(udg_QJ_Caster))
-call SetUnitScalePercent(GetLastCreatedUnit(),(100.00*udg_QJ_Size),(100.00*udg_QJ_Size),((100.00*udg_QJ_Size)+1))
+set templastcreatedunit = GetLastCreatedUnit()
+call SetUnitScalePercent(templastcreatedunit,(100.00*udg_QJ_Size),(100.00*udg_QJ_Size),((100.00*udg_QJ_Size)+1))
 if(Trig_Arrow_Create_Func006C())then
 set udg_QJ_Homing=false
 else
@@ -31234,37 +31486,38 @@ else
 set udg_QJS_tempPos_Target=GetUnitLoc(udg_QJ_TargetUnit)
 set udg_QJS_Angle=AngleBetweenPoints(udg_QJS_tempPos,udg_QJS_tempPos_Target)
 set udg_QJS_Distance=DistanceBetweenPoints(udg_QJS_tempPos,udg_QJS_tempPos_Target)
-call SaveUnitHandleBJ(udg_QJ_TargetUnit,StringHashBJ("victim"),GetHandleIdBJ(GetLastCreatedUnit()),udg_QJS_arrowTable)
+call SaveUnitHandleBJ(udg_QJ_TargetUnit,StringHashBJ("victim"),GetHandleIdBJ(templastcreatedunit),udg_QJS_arrowTable)
 call RemoveLocation(udg_QJS_tempPos_Target)
 endif
-call SaveUnitHandleBJ(udg_QJ_Caster,StringHashBJ("caster"),GetHandleIdBJ(GetLastCreatedUnit()),udg_QJS_arrowTable)
+call SaveUnitHandleBJ(udg_QJ_Caster,StringHashBJ("caster"),GetHandleIdBJ(templastcreatedunit),udg_QJS_arrowTable)
 if(Trig_Arrow_Create_Func017C())then
-call SaveRealBJ(udg_QJS_Angle,StringHashBJ("angle"),GetHandleIdBJ(GetLastCreatedUnit()),udg_QJS_arrowTable)
-call SaveRealBJ(udg_QJS_Distance,StringHashBJ("dist"),GetHandleIdBJ(GetLastCreatedUnit()),udg_QJS_arrowTable)
+call SaveRealBJ(udg_QJS_Angle,StringHashBJ("angle"),GetHandleIdBJ(templastcreatedunit),udg_QJS_arrowTable)
+call SaveRealBJ(udg_QJS_Distance,StringHashBJ("dist"),GetHandleIdBJ(templastcreatedunit),udg_QJS_arrowTable)
 else
 endif
-call SaveRealBJ(udg_QJ_Damage,StringHashBJ("dmg"),GetHandleIdBJ(GetLastCreatedUnit()),udg_QJS_arrowTable)
-call SaveRealBJ(udg_QJ_Speed,StringHashBJ("spd"),GetHandleIdBJ(GetLastCreatedUnit()),udg_QJS_arrowTable)
-call SaveIntegerBJ(udg_QJ_attackTypeID,StringHashBJ("atkid"),GetHandleIdBJ(GetLastCreatedUnit()),udg_QJS_arrowTable)
-call SaveIntegerBJ(udg_QJ_damageTypeID,StringHashBJ("dmgid"),GetHandleIdBJ(GetLastCreatedUnit()),udg_QJS_arrowTable)
-call SaveBooleanBJ(udg_QJ_Collision,StringHashBJ("collision"),GetHandleIdBJ(GetLastCreatedUnit()),udg_QJS_arrowTable)
-call SaveBooleanBJ(udg_QJ_Homing,StringHashBJ("homing"),GetHandleIdBJ(GetLastCreatedUnit()),udg_QJS_arrowTable)
-call SaveBooleanBJ(udg_QJ_AoE,StringHashBJ("aoe"),GetHandleIdBJ(GetLastCreatedUnit()),udg_QJS_arrowTable)
+call SaveRealBJ(udg_QJ_Damage,StringHashBJ("dmg"),GetHandleIdBJ(templastcreatedunit),udg_QJS_arrowTable)
+call SaveRealBJ(udg_QJ_Speed,StringHashBJ("spd"),GetHandleIdBJ(templastcreatedunit),udg_QJS_arrowTable)
+call SaveIntegerBJ(udg_QJ_attackTypeID,StringHashBJ("atkid"),GetHandleIdBJ(templastcreatedunit),udg_QJS_arrowTable)
+call SaveIntegerBJ(udg_QJ_damageTypeID,StringHashBJ("dmgid"),GetHandleIdBJ(templastcreatedunit),udg_QJS_arrowTable)
+call SaveBooleanBJ(udg_QJ_Collision,StringHashBJ("collision"),GetHandleIdBJ(templastcreatedunit),udg_QJS_arrowTable)
+call SaveBooleanBJ(udg_QJ_Homing,StringHashBJ("homing"),GetHandleIdBJ(templastcreatedunit),udg_QJS_arrowTable)
+call SaveBooleanBJ(udg_QJ_AoE,StringHashBJ("aoe"),GetHandleIdBJ(templastcreatedunit),udg_QJS_arrowTable)
 if(Trig_Arrow_Create_Func033C())then
-call SaveRealBJ(udg_QJ_AoERadius,StringHashBJ("aoeradius"),GetHandleIdBJ(GetLastCreatedUnit()),udg_QJS_arrowTable)
-call SaveStringBJ(udg_QJ_AoESFX,StringHashBJ("aoesfx"),GetHandleIdBJ(GetLastCreatedUnit()),udg_QJS_arrowTable)
+call SaveRealBJ(udg_QJ_AoERadius,StringHashBJ("aoeradius"),GetHandleIdBJ(templastcreatedunit),udg_QJS_arrowTable)
+call SaveStringBJ(udg_QJ_AoESFX,StringHashBJ("aoesfx"),GetHandleIdBJ(templastcreatedunit),udg_QJS_arrowTable)
 else
 endif
-call SaveBooleanBJ(udg_QJ_Pierce,StringHashBJ("pierce"),GetHandleIdBJ(GetLastCreatedUnit()),udg_QJS_arrowTable)
+call SaveBooleanBJ(udg_QJ_Pierce,StringHashBJ("pierce"),GetHandleIdBJ(templastcreatedunit),udg_QJS_arrowTable)
 if(Trig_Arrow_Create_Func037C())then
 set udg_QJS_DamagedGroup=CreateGroup()
-call SaveGroupHandleBJ(udg_QJS_DamagedGroup,StringHashBJ("dgroup"),GetHandleIdBJ(GetLastCreatedUnit()),udg_QJS_arrowTable)
+call SaveGroupHandleBJ(udg_QJS_DamagedGroup,StringHashBJ("dgroup"),GetHandleIdBJ(templastcreatedunit),udg_QJS_arrowTable)
 else
 endif
-call SetUnitPathing(GetLastCreatedUnit(),false)
-call GroupAddUnitSimple(GetLastCreatedUnit(),udg_QJS_arrowGroup)
+call SetUnitPathing(templastcreatedunit,false)
+call GroupAddUnitSimple(templastcreatedunit,udg_QJS_arrowGroup)
 call EnableTrigger(udg_trg_Arrow_Move)
 call RemoveLocation(udg_QJS_tempPos)
+set templastcreatedunit = null
 endfunction
 function InitTrig_Arrow_Create takes nothing returns nothing
 set udg_trg_Arrow_Create=CreateTrigger()
@@ -31757,18 +32010,21 @@ endif
 return true
 endfunction
 function Trig_Shadow_Side_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_SSChance[GetConvertedPlayerId(GetOwningPlayer(GetAttacker()))]=(GetUnitAbilityLevelSwapped('A0DS',GetAttacker())*4)
 if(Trig_Shadow_Side_Func002C())then
 set udg_SSPoint[GetConvertedPlayerId(GetOwningPlayer(GetAttacker()))]=GetUnitLoc(GetAttackedUnitBJ())
 call CreateNUnitsAtLocBonuses(1,'h03E',GetOwningPlayer(GetAttacker()),udg_SSPoint[GetConvertedPlayerId(GetOwningPlayer(GetAttacker()))],bj_UNIT_FACING)
-call UnitApplyTimedLifeBJ(1.00,'BTLF',GetLastCreatedUnit())
-call UnitDamageTargetBJ(GetLastCreatedUnit(),GetAttackedUnitBJ(),(20.00*I2R(GetUnitAbilityLevelSwapped('A0DS',GetAttacker()))),ATTACK_TYPE_HERO,DAMAGE_TYPE_NORMAL)
-call UnitAddAbilityBJ('AInv',GetLastCreatedUnit())
-call UnitAddItemByIdSwapped('I032',GetLastCreatedUnit())
-call UnitUseItemTarget(GetLastCreatedUnit(),GetLastCreatedItem(),GetAttackedUnitBJ())
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitApplyTimedLifeBJ(1.00,'BTLF',templastcreatedunit)
+call UnitDamageTargetBJ(templastcreatedunit,GetAttackedUnitBJ(),(20.00*I2R(GetUnitAbilityLevelSwapped('A0DS',GetAttacker()))),ATTACK_TYPE_HERO,DAMAGE_TYPE_NORMAL)
+call UnitAddAbilityBJ('AInv',templastcreatedunit)
+call UnitAddItemByIdSwapped('I032',templastcreatedunit)
+call UnitUseItemTarget(templastcreatedunit,GetLastCreatedItem(),GetAttackedUnitBJ())
 call RemoveLocation(udg_SSPoint[GetConvertedPlayerId(GetOwningPlayer(GetAttacker()))])
 else
 endif
+set templastcreatedunit = null
 endfunction
 function InitTrig_Shadow_Side takes nothing returns nothing
 set udg_trg_Shadow_Side=CreateTrigger()
@@ -31789,6 +32045,7 @@ endif
 return true
 endfunction
 function Trig_PH_cast_Actions takes nothing returns nothing
+local unit templastcreatedunit
 if(Trig_PH_cast_Func001C())then
 call EnableTrigger(udg_trg_PH_Loop)
 else
@@ -31799,7 +32056,8 @@ set udg_PH_Caster[udg_PH_Index[2]]=GetTriggerUnit()
 set udg_PH_Point1[udg_PH_Index[2]]=GetUnitLoc(udg_PH_Caster[udg_PH_Index[2]])
 set udg_PH_Point2[udg_PH_Index[2]]=GetSpellTargetLoc()
 call CreateNUnitsAtLocBonuses(1,'h05I',GetOwningPlayer(udg_PH_Caster[udg_PH_Index[2]]),udg_PH_Point1[udg_PH_Index[2]],GetUnitFacing(udg_PH_Caster[udg_PH_Index[2]]))
-set udg_PH_Hook[udg_PH_Index[2]]=GetLastCreatedUnit()
+set templastcreatedunit = GetLastCreatedUnit()
+set udg_PH_Hook[udg_PH_Index[2]]=templastcreatedunit
 set udg_PH_Point4[udg_PH_Index[2]]=GetUnitLoc(udg_PH_Hook[udg_PH_Index[2]])
 call IssuePointOrderLocBJ(udg_PH_Hook[udg_PH_Index[2]],"move",udg_PH_Point2[udg_PH_Index[2]])
 call AddLightningLoc("AFOD",udg_PH_Point1[udg_PH_Index[2]],udg_PH_Point4[udg_PH_Index[2]])
@@ -31808,6 +32066,7 @@ call SetLightningColorBJ(udg_PH_lighting[udg_PH_Index[2]],0.75,0.00,1,1)
 call RemoveLocation(udg_PH_Point1[udg_PH_Index[2]])
 call RemoveLocation(udg_PH_Point2[udg_PH_Index[2]])
 call RemoveLocation(udg_PH_Point4[udg_PH_Index[2]])
+set templastcreatedunit = null
 endfunction
 function InitTrig_PH_cast takes nothing returns nothing
 set udg_trg_PH_cast=CreateTrigger()
@@ -31837,17 +32096,20 @@ endif
 return true
 endfunction
 function Trig_PH_Loop_Func001Func001Func006Func013A takes nothing returns nothing
+local unit templastcreatedunit
 set udg_PH_Point5[udg_PH_Index[3]]=GetUnitLoc(GetEnumUnit())
 call UnitDamageTargetBJ(udg_PH_Hook[udg_PH_Index[3]],GetEnumUnit(),(I2R(GetUnitAbilityLevelSwapped('A0DW',udg_PH_Caster[udg_PH_Index[3]]))*75.00),ATTACK_TYPE_NORMAL,DAMAGE_TYPE_NORMAL)
 call UnitApplyTimedLifeBJ(0.01,'BTLF',udg_PH_Hook[udg_PH_Index[3]])
 call CreateNUnitsAtLocBonuses(1,'h05H',GetOwningPlayer(udg_PH_Hook[udg_PH_Index[3]]),udg_PH_Point1[udg_PH_Index[3]],bj_UNIT_FACING)
-call UnitAddAbilityBJ('A0DV',GetLastCreatedUnit())
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"invisibility",udg_PH_Caster[udg_PH_Index[3]])
-call UnitApplyTimedLifeBJ(1.00,'BTLF',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitAddAbilityBJ('A0DV',templastcreatedunit)
+call IssueTargetOrderBJ(templastcreatedunit,"invisibility",udg_PH_Caster[udg_PH_Index[3]])
+call UnitApplyTimedLifeBJ(1.00,'BTLF',templastcreatedunit)
 call DestroyLightningBJ(udg_PH_lighting[udg_PH_Index[3]])
 call CreateNUnitsAtLocBonuses(1,'h05J',GetOwningPlayer(udg_PH_Hook[udg_PH_Index[3]]),udg_PH_Point5[udg_PH_Index[3]],bj_UNIT_FACING)
-call UnitApplyTimedLifeBJ(3.00,'BTLF',GetLastCreatedUnit())
-call SetUnitExplodedBJ(GetLastCreatedUnit(),true)
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitApplyTimedLifeBJ(3.00,'BTLF',templastcreatedunit)
+call SetUnitExplodedBJ(templastcreatedunit,true)
 set udg_PH_Index[1]=(udg_PH_Index[1]-1)
 if(Trig_PH_Loop_Func001Func001Func006Func013Func016C())then
 set udg_PH_Index[2]=0
@@ -31855,6 +32117,7 @@ call DisableTrigger(GetTriggeringTrigger())
 else
 endif
 call RemoveLocation(udg_PH_Point5[udg_PH_Index[3]])
+set templastcreatedunit = null
 endfunction
 function Trig_PH_Loop_Func001Func001Func006C takes nothing returns boolean
 if(not(DistanceBetweenPoints(udg_PH_Point4[udg_PH_Index[3]],udg_PH_Point3[udg_PH_Index[3]])>=50.00))then
@@ -31925,15 +32188,18 @@ endif
 return true
 endfunction
 function Trig_Priest_Heal_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_AAAA_GP=GetUnitLoc(GetTriggerUnit())
 set udg_AAA_Heal_Chance=GenerateInt(MainGenerator, 1,4)
 if(Trig_Priest_Heal_Func003C())then
 call CreateNUnitsAtLocBonuses(1,'h05V',GetOwningPlayer(GetTriggerUnit()),udg_AAAA_GP,bj_UNIT_FACING)
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"holybolt",GetSpellTargetUnit())
-call UnitApplyTimedLifeBJ(3.00,'BTLF',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call IssueTargetOrderBJ(templastcreatedunit,"holybolt",GetSpellTargetUnit())
+call UnitApplyTimedLifeBJ(3.00,'BTLF',templastcreatedunit)
 else
 endif
 call RemoveLocation(udg_AAAA_GP)
+set templastcreatedunit = null
 endfunction
 function InitTrig_Priest_Heal takes nothing returns nothing
 set udg_trg_Priest_Heal=CreateTrigger()
@@ -31957,15 +32223,18 @@ endif
 return true
 endfunction
 function Trig_Paladin_Heal_Copy_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_AAAA_GP=GetUnitLoc(GetTriggerUnit())
 set udg_AAA_Heal_Chance=GenerateInt(MainGenerator, 1,4)
 if(Trig_Paladin_Heal_Copy_Func003C())then
 call CreateNUnitsAtLocBonuses(1,'h05U',GetOwningPlayer(GetTriggerUnit()),udg_AAAA_GP,bj_UNIT_FACING)
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"holybolt",GetSpellTargetUnit())
-call UnitApplyTimedLifeBJ(3.00,'BTLF',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call IssueTargetOrderBJ(templastcreatedunit,"holybolt",GetSpellTargetUnit())
+call UnitApplyTimedLifeBJ(3.00,'BTLF',templastcreatedunit)
 else
 endif
 call RemoveLocation(udg_AAAA_GP)
+set templastcreatedunit = null
 endfunction
 function InitTrig_Paladin_Heal_Copy takes nothing returns nothing
 set udg_trg_Paladin_Heal_Copy=CreateTrigger()
@@ -31989,11 +32258,13 @@ endif
 return true
 endfunction
 function Trig_Fury_Peak_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_FP_Point=GetUnitLoc(GetAttackedUnitBJ())
 call CreateNUnitsAtLocBonuses(1,'h03L',GetOwningPlayer(GetAttacker()),udg_FP_Point,bj_UNIT_FACING)
-call UnitAddAbilityBJ('A0AJ',GetLastCreatedUnit())
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"creepthunderbolt",GetAttackedUnitBJ())
-call UnitApplyTimedLifeBJ(1.50,'BTLF',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitAddAbilityBJ('A0AJ',templastcreatedunit)
+call IssueTargetOrderBJ(templastcreatedunit,"creepthunderbolt",GetAttackedUnitBJ())
+call UnitApplyTimedLifeBJ(1.50,'BTLF',templastcreatedunit)
 call UnitDamageTargetBJ(GetAttacker(),GetAttackedUnitBJ(),(GetUnitMoveSpeed(GetAttacker())*(0.10*I2R(GetUnitAbilityLevelSwapped('A0AO',GetAttacker())))),ATTACK_TYPE_HERO,DAMAGE_TYPE_NORMAL)
 call CreateTextTagUnitBJ(("|c00C80000"+I2S(R2I((GetUnitMoveSpeed(GetAttacker())*(0.10*I2R(GetUnitAbilityLevelSwapped('A0AO',GetAttacker()))))))),GetAttackedUnitBJ(),0,10,100,100,100,0)
 call SetTextTagVelocityBJ(GetLastCreatedTextTag(),64,90)
@@ -32003,6 +32274,7 @@ call SetTextTagPermanentBJ(GetLastCreatedTextTag(),false)
 call AddSpecialEffectTargetUnitBJ("chest",GetAttackedUnitBJ(),"Abilities\\Weapons\\RedDragonBreath\\RedDragonMissile.mdl")
 call DestroyEffectBJ(GetLastCreatedEffectBJ())
 call RemoveLocation(udg_FP_Point)
+set templastcreatedunit = null
 endfunction
 function InitTrig_Fury_Peak takes nothing returns nothing
 set udg_trg_Fury_Peak=CreateTrigger()
@@ -32065,6 +32337,7 @@ endif
 return true
 endfunction
 function Trig_Meat_Grinder_B_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_MG=1
 loop
 exitwhen udg_MG>udg_MG_CastNumber
@@ -32074,12 +32347,13 @@ if(Trig_Meat_Grinder_B_Func001Func001Func002C())then
 set udg_MG_Count[udg_MG]=0
 set udg_MG_Point=GetUnitLoc(udg_MG_Caster[udg_MG])
 call CreateNUnitsAtLocBonuses(1,'h03K',GetOwningPlayer(udg_MG_Caster[udg_MG]),udg_MG_Point,GetUnitFacing(udg_MG_Caster[udg_MG]))
-call UnitAddAbilityBJ('A0AI',GetLastCreatedUnit())
-call SetUnitAbilityLevelSwapped('A0AI',GetLastCreatedUnit(),GetUnitAbilityLevelSwapped('A0AM',udg_MG_Caster[udg_MG]))
-call IssueImmediateOrderBJ(GetLastCreatedUnit(),"whirlwind")
-call SetUnitExplodedBJ(GetLastCreatedUnit(),true)
-call UnitApplyTimedLifeBJ(1.50,'BTLF',GetLastCreatedUnit())
-call SetUnitVertexColorBJ(GetLastCreatedUnit(),100,100,100,50.00)
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitAddAbilityBJ('A0AI',templastcreatedunit)
+call SetUnitAbilityLevelSwapped('A0AI',templastcreatedunit,GetUnitAbilityLevelSwapped('A0AM',udg_MG_Caster[udg_MG]))
+call IssueImmediateOrderBJ(templastcreatedunit,"whirlwind")
+call SetUnitExplodedBJ(templastcreatedunit,true)
+call UnitApplyTimedLifeBJ(1.50,'BTLF',templastcreatedunit)
+call SetUnitVertexColorBJ(templastcreatedunit,100,100,100,50.00)
 call AddSpecialEffectLocBJ(udg_MG_Point,"Abilities\\Spells\\Items\\AIil\\AIilTarget.mdl")
 call DestroyEffectBJ(GetLastCreatedEffectBJ())
 call RemoveLocation(udg_MG_Point)
@@ -32100,6 +32374,7 @@ else
 endif
 set udg_MG=udg_MG+1
 endloop
+set templastcreatedunit = null
 endfunction
 function InitTrig_Meat_Grinder_B takes nothing returns nothing
 set udg_trg_Meat_Grinder_B=CreateTrigger()
@@ -32153,6 +32428,7 @@ endif
 return true
 endfunction
 function Trig_Wind_Storm_A_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_WS_Chance=GenerateInt(MainGenerator, 1,2)
 if(Trig_Wind_Storm_A_Func002C())then
 if(Trig_Wind_Storm_A_Func002Func001C())then
@@ -32165,30 +32441,35 @@ set udg_WS_Off[udg_WS_CastNumber]=true
 set udg_WS_Caster[udg_WS_CastNumber]=GetSpellAbilityUnit()
 set udg_WS_Point[0]=GetUnitLoc(udg_WS_Caster[udg_WS_CastNumber])
 call CreateNUnitsAtLocBonuses(1,'h03K',GetOwningPlayer(udg_WS_Caster[udg_WS_CastNumber]),udg_WS_Point[0],bj_UNIT_FACING)
-set udg_WS_Effect1[udg_WS_CastNumber]=GetLastCreatedUnit()
-call UnitAddAbilityBJ('A0AK',GetLastCreatedUnit())
-call SetUnitAbilityLevelSwapped('A0AK',GetLastCreatedUnit(),GetUnitAbilityLevelSwapped('A0AN',udg_WS_Caster[udg_WS_CastNumber]))
-call SetUnitAnimation(GetLastCreatedUnit(),"spin")
+set templastcreatedunit = GetLastCreatedUnit()
+set udg_WS_Effect1[udg_WS_CastNumber]=templastcreatedunit
+call UnitAddAbilityBJ('A0AK',templastcreatedunit)
+call SetUnitAbilityLevelSwapped('A0AK',templastcreatedunit,GetUnitAbilityLevelSwapped('A0AN',udg_WS_Caster[udg_WS_CastNumber]))
+call SetUnitAnimation(templastcreatedunit,"spin")
 call CreateNUnitsAtLocBonuses(1,'h03K',GetOwningPlayer(udg_WS_Caster[udg_WS_CastNumber]),udg_WS_Point[0],bj_UNIT_FACING)
-set udg_WS_Effect2[udg_WS_CastNumber]=GetLastCreatedUnit()
-call UnitAddAbilityBJ('A0AK',GetLastCreatedUnit())
-call SetUnitAbilityLevelSwapped('A0AK',GetLastCreatedUnit(),GetUnitAbilityLevelSwapped('A0AN',udg_WS_Caster[udg_WS_CastNumber]))
-call SetUnitAnimation(GetLastCreatedUnit(),"spin")
+set templastcreatedunit = GetLastCreatedUnit()
+set udg_WS_Effect2[udg_WS_CastNumber]=templastcreatedunit
+call UnitAddAbilityBJ('A0AK',templastcreatedunit)
+call SetUnitAbilityLevelSwapped('A0AK',templastcreatedunit,GetUnitAbilityLevelSwapped('A0AN',udg_WS_Caster[udg_WS_CastNumber]))
+call SetUnitAnimation(templastcreatedunit,"spin")
 call CreateNUnitsAtLocBonuses(1,'h03K',GetOwningPlayer(udg_WS_Caster[udg_WS_CastNumber]),udg_WS_Point[0],bj_UNIT_FACING)
-set udg_WS_Effect3[udg_WS_CastNumber]=GetLastCreatedUnit()
-call UnitAddAbilityBJ('A0AK',GetLastCreatedUnit())
-call SetUnitAbilityLevelSwapped('A0AK',GetLastCreatedUnit(),GetUnitAbilityLevelSwapped('A0AN',udg_WS_Caster[udg_WS_CastNumber]))
-call SetUnitAnimation(GetLastCreatedUnit(),"spin")
+set templastcreatedunit = GetLastCreatedUnit()
+set udg_WS_Effect3[udg_WS_CastNumber]=templastcreatedunit
+call UnitAddAbilityBJ('A0AK',templastcreatedunit)
+call SetUnitAbilityLevelSwapped('A0AK',templastcreatedunit,GetUnitAbilityLevelSwapped('A0AN',udg_WS_Caster[udg_WS_CastNumber]))
+call SetUnitAnimation(templastcreatedunit,"spin")
 set udg_WS_Point[1]=PolarProjectionBJ(udg_WS_Point[0],600.00,0)
 set udg_WS_Angle[udg_WS_CastNumber]=AngleBetweenPoints(udg_WS_Point[0],udg_WS_Point[1])
 set udg_WS_Distance[udg_WS_CastNumber]=0.00
 set udg_WS_Speed[udg_WS_CastNumber]=10.00
 call CreateNUnitsAtLocBonuses(1,'h03L',GetOwningPlayer(udg_WS_Caster[udg_WS_CastNumber]),udg_WS_Point[0],bj_UNIT_FACING)
-set udg_WS_Dummie[udg_WS_CastNumber]=GetLastCreatedUnit()
+set templastcreatedunit = GetLastCreatedUnit()
+set udg_WS_Dummie[udg_WS_CastNumber]=templastcreatedunit
 call RemoveLocation(udg_WS_Point[0])
 call RemoveLocation(udg_WS_Point[1])
 else
 endif
+set templastcreatedunit = null
 endfunction
 function InitTrig_Wind_Storm_A takes nothing returns nothing
 set udg_trg_Wind_Storm_A=CreateTrigger()
@@ -32365,6 +32646,7 @@ endif
 return true
 endfunction
 function Trig_Cast_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_OWL_MBLevel_OwlLevel=2
 set udg_OWL_MB_Level_X_INT=15
 set udg_OWL_AOE=650.00
@@ -32378,13 +32660,15 @@ set udg_OWL_TargetPoint[udg_OWL_CastCountInt]=GetSpellTargetLoc()
 set udg_OWL_CasterPoint=GetUnitLoc(GetTriggerUnit())
 set udg_OWL_Distance[udg_OWL_CastCountInt]=DistanceBetweenPoints(udg_OWL_CasterPoint,udg_OWL_TargetPoint[udg_OWL_CastCountInt])
 call CreateNUnitsAtLocBonuses(1,'N04M',GetTriggerPlayer(),udg_OWL_CasterPoint,GetUnitFacing(GetTriggerUnit()))
-call SetHeroInt(GetLastCreatedUnit(),GetHeroInt(GetTriggerUnit(),true),true)
-set udg_OWL_Dummy[udg_OWL_CastCountInt]=GetLastCreatedUnit()
+set templastcreatedunit = GetLastCreatedUnit()
+call SetHeroInt(templastcreatedunit,GetHeroInt(GetTriggerUnit(),true),true)
+set udg_OWL_Dummy[udg_OWL_CastCountInt]=templastcreatedunit
 call SetUnitAnimation(udg_OWL_Dummy[udg_OWL_CastCountInt],"birth")
 call GroupAddUnitSimple(udg_OWL_Dummy[udg_OWL_CastCountInt],udg_OWL_UnitGroup)
 call GroupAddUnitSimple(udg_OWL_Dummy[udg_OWL_CastCountInt],udg_OWL_UnitGroup3)
 call RemoveLocation(udg_OWL_CasterPoint)
 call EnableTrigger(udg_trg_Loop_v101)
+set templastcreatedunit = null
 endfunction
 function InitTrig_Cast takes nothing returns nothing
 set udg_trg_Cast=CreateTrigger()
@@ -32564,6 +32848,7 @@ endif
 return true
 endfunction
 function Trig_Loop_v101_Actions takes nothing returns nothing
+local unit templastcreatedunit
 if(Trig_Loop_v101_Func001C())then
 set udg_OWL_LoopInt=1
 loop
@@ -32609,19 +32894,21 @@ call SetUnitAnimation(udg_OWL_Dummy[udg_OWL_LoopInt2],"walk")
 set udg_OWL_ManaBurnCastMax[udg_OWL_LoopInt2]=(udg_OWL_DurationBase+(udg_OWL_DurationPerLevel*GetUnitAbilityLevelSwapped('A0EC',udg_OWL_Caster[udg_OWL_LoopInt2])))
 set udg_OWL_ManaBurnCastCount[udg_OWL_LoopInt2]=(udg_OWL_ManaBurnCastCount[udg_OWL_LoopInt2]+1)
 call CreateNUnitsAtLocBonuses(1,'N04L',GetOwningPlayer(udg_OWL_Dummy[udg_OWL_LoopInt2]),udg_OWL_Point2,bj_UNIT_FACING)
-call SetHeroInt(GetLastCreatedUnit(),GetHeroInt(udg_OWL_Dummy[udg_OWL_LoopInt2],true),true)
-call UnitAddAbilityBJ('A0M5',GetLastCreatedUnit())
-call IssueImmediateOrder(GetLastCreatedUnit(),"starfall")
-call UnitApplyTimedLifeBJ(1.30,'BTLF',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call SetHeroInt(templastcreatedunit,GetHeroInt(udg_OWL_Dummy[udg_OWL_LoopInt2],true),true)
+call UnitAddAbilityBJ('A0M5',templastcreatedunit)
+call IssueImmediateOrder(templastcreatedunit,"starfall")
+call UnitApplyTimedLifeBJ(1.30,'BTLF',templastcreatedunit)
 call RemoveLocation(udg_OWL_Point2)
 else
 if(Trig_Loop_v101_Func003Func002Func001Func002Func001C())then
 set udg_OWL_Point2=GetUnitLoc(udg_OWL_Dummy[udg_OWL_LoopInt2])
 call CreateNUnitsAtLocBonuses(1,'N04L',GetOwningPlayer(udg_OWL_Dummy[udg_OWL_LoopInt2]),udg_OWL_Point2,bj_UNIT_FACING)
-call UnitAddAbilityBJ('A0M5',GetLastCreatedUnit())
-call SetHeroInt(GetLastCreatedUnit(),GetHeroInt(udg_OWL_Dummy[udg_OWL_LoopInt2],true),true)
-call IssueImmediateOrder(GetLastCreatedUnit(),"starfall")
-call UnitApplyTimedLifeBJ(1.30,'BTLF',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitAddAbilityBJ('A0M5',templastcreatedunit)
+call SetHeroInt(templastcreatedunit,GetHeroInt(udg_OWL_Dummy[udg_OWL_LoopInt2],true),true)
+call IssueImmediateOrder(templastcreatedunit,"starfall")
+call UnitApplyTimedLifeBJ(1.30,'BTLF',templastcreatedunit)
 set udg_OWL_ManaBurnCastCount[udg_OWL_LoopInt2]=(udg_OWL_ManaBurnCastCount[udg_OWL_LoopInt2]+1)
 call RemoveLocation(udg_OWL_Point2)
 else
@@ -32644,6 +32931,7 @@ call RemoveLocation(udg_OWL_MovePoint)
 call DisableTrigger(GetTriggeringTrigger())
 else
 endif
+set templastcreatedunit = null
 endfunction
 function InitTrig_Loop_v101 takes nothing returns nothing
 set udg_trg_Loop_v101=CreateTrigger()
@@ -32762,6 +33050,7 @@ endif
 return true
 endfunction
 function Trig_TOT_Loop_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_TOT_Integer=1
 loop
 exitwhen udg_TOT_Integer>udg_TOT_CasterNumber
@@ -32770,9 +33059,11 @@ if(Trig_TOT_Loop_Func002Func001Func001C())then
 if(Trig_TOT_Loop_Func002Func001Func001Func002C())then
 set udg_TOT_Point[1]=GetUnitLoc(udg_TOT_Caster[udg_TOT_Integer])
 call CreateNUnitsAtLocBonuses(1,'h04B',GetOwningPlayer(udg_TOT_Caster[udg_TOT_Integer]),udg_TOT_Point[1],bj_UNIT_FACING)
-call UnitApplyTimedLifeBJ(udg_TOT_OrbDuration,'BTLF',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitApplyTimedLifeBJ(udg_TOT_OrbDuration,'BTLF',templastcreatedunit)
 call CreateNUnitsAtLocBonuses(1,'h04C',GetOwningPlayer(udg_TOT_Caster[udg_TOT_Integer]),udg_TOT_Point[1],bj_UNIT_FACING)
-call UnitApplyTimedLifeBJ(I2R(udg_TOT_TreeDuration),'BTLF',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitApplyTimedLifeBJ(I2R(udg_TOT_TreeDuration),'BTLF',templastcreatedunit)
 call RemoveLocation(udg_TOT_Point[1])
 set udg_TOT_TreeCount[udg_TOT_Integer]=(udg_TOT_TreeCount[udg_TOT_Integer]+1)
 if(Trig_TOT_Loop_Func002Func001Func001Func002Func008C())then
@@ -32800,6 +33091,7 @@ call DisableTrigger(GetTriggeringTrigger())
 endif
 set udg_TOT_Integer=udg_TOT_Integer+1
 endloop
+set templastcreatedunit = null
 endfunction
 function InitTrig_TOT_Loop takes nothing returns nothing
 set udg_trg_TOT_Loop=CreateTrigger()
@@ -32940,6 +33232,7 @@ endif
 return true
 endfunction
 function Trig_Spell_Loop_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_DashInteger[2]=1
 loop
 exitwhen udg_DashInteger[2]>udg_DashInteger[1]
@@ -32948,9 +33241,10 @@ set udg_DashPoint3[udg_DashInteger[2]]=GetUnitLoc(udg_DashCaster[udg_DashInteger
 set udg_DashPoint4[udg_DashInteger[2]]=PolarProjectionBJ(udg_DashPoint3[udg_DashInteger[2]],udg_DashSpeed[udg_DashInteger[2]],udg_DashReal1[udg_DashInteger[2]])
 call SetUnitPositionLoc(udg_DashCaster[udg_DashInteger[2]],udg_DashPoint4[udg_DashInteger[2]])
 call CreateNUnitsAtLocBonuses(1,'h05M',GetOwningPlayer(udg_DashCaster[udg_DashInteger[2]]),udg_DashPoint4[udg_DashInteger[2]],GetUnitFacing(udg_DashCaster[udg_DashInteger[2]]))
-call UnitApplyTimedLifeBJ(0.50,'BTLF',GetLastCreatedUnit())
-call GroupAddUnitSimple(GetLastCreatedUnit(),udg_DashGroup3)
-call SetUnitAnimation(GetLastCreatedUnit(),"walk")
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitApplyTimedLifeBJ(0.50,'BTLF',templastcreatedunit)
+call GroupAddUnitSimple(templastcreatedunit,udg_DashGroup3)
+call SetUnitAnimation(templastcreatedunit,"walk")
 call ForGroupBJ(udg_DashGroup3,function Trig_Spell_Loop_Func001Func014A)
 set udg_DashGroup1=GetUnitsInRangeOfLocMatching(150.00,udg_DashPoint4[udg_DashInteger[2]],Condition(function Trig_Spell_Loop_Func001Func016002003))
 call ForGroupBJ(udg_DashGroup1,function Trig_Spell_Loop_Func001Func017A)
@@ -32976,6 +33270,7 @@ call RemoveLocation(udg_DashPoint4[udg_DashInteger[2]])
 call DestroyGroup(udg_DashGroup1)
 set udg_DashInteger[2]=udg_DashInteger[2]+1
 endloop
+set templastcreatedunit = null
 endfunction
 function InitTrig_Spell_Loop takes nothing returns nothing
 set udg_trg_Spell_Loop=CreateTrigger()
@@ -33063,12 +33358,6 @@ endfunction
 function Trig_Cutting_Edge_Knock_Func004Func007Func011002003 takes nothing returns boolean
 return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(IsPlayerEnemy(GetOwningPlayer(GetFilterUnit()),GetOwningPlayer(GetEnumUnit()))==true))))
 endfunction
-function Trig_Cutting_Edge_Knock_Func004Func007Func012Func001Func001Func005C takes nothing returns boolean
-if(not(GetUnitCurrentOrder(GetLastCreatedUnit())==String2OrderIdBJ("harvest")))then
-return false
-endif
-return true
-endfunction
 function Trig_Cutting_Edge_Knock_Func004Func007Func012Func001Func001C takes nothing returns boolean
 if(not(IsDestructableAliveBJ(GetEnumDestructable())==true))then
 return false
@@ -33077,15 +33366,9 @@ return true
 endfunction
 function Trig_Cutting_Edge_Knock_Func004Func007Func012Func001A takes nothing returns nothing
 if(Trig_Cutting_Edge_Knock_Func004Func007Func012Func001Func001C())then
-call CreateNUnitsAtLocBonuses(1,'h026',GetOwningPlayer(GetEnumUnit()),udg_CE_Knock_Loc1,bj_UNIT_FACING)
-call UnitApplyTimedLifeBJ(0.50,'BTLF',GetLastCreatedUnit())
-call ShowUnitHide(GetLastCreatedUnit())
-call IssueTargetDestructableOrder(GetLastCreatedUnit(),"harvest",GetEnumDestructable())
-if(Trig_Cutting_Edge_Knock_Func004Func007Func012Func001Func001Func005C())then
+if(IsTree(GetEnumDestructable()))then
 call KillDestructable(GetEnumDestructable())
-else
 endif
-else
 endif
 endfunction
 function Trig_Cutting_Edge_Knock_Func004Func007Func012C takes nothing returns boolean
@@ -33175,6 +33458,7 @@ endif
 return true
 endfunction
 function Trig_Cutting_Edge_Knock_Func004A takes nothing returns nothing
+local unit templastcreatedunit
 set udg_CE_Knock_Angle=LoadRealBJ(StringHashBJ("angle"),GetHandleIdBJ(GetEnumUnit()),udg_CE_Knocktable)
 set udg_CE_Knock_Speed=LoadRealBJ(StringHashBJ("speed"),GetHandleIdBJ(GetEnumUnit()),udg_CE_Knocktable)
 set udg_CE_Knock_Distance=LoadRealBJ(StringHashBJ("distance"),GetHandleIdBJ(GetEnumUnit()),udg_CE_Knocktable)
@@ -33220,10 +33504,11 @@ call SetUnitPositionLoc(GetEnumUnit(),udg_CE_Knock_Loc2)
 call SetUnitFacingTimed(GetEnumUnit(),udg_CE_Knock_Angle,0)
 call SetUnitAnimation(GetEnumUnit(),"attack")
 call CreateNUnitsAtLocBonuses(1,'h026',GetOwningPlayer(GetEnumUnit()),udg_CE_Knock_Loc2,udg_CE_Knock_Angle)
-call UnitApplyTimedLifeBJ(0.50,'BTLF',GetLastCreatedUnit())
-call SetUnitVertexColorBJ(GetLastCreatedUnit(),100,100,100,85.00)
-call SetUnitTimeScalePercent(GetLastCreatedUnit(),200.00)
-call SetUnitAnimation(GetLastCreatedUnit(),"attack")
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitApplyTimedLifeBJ(0.50,'BTLF',templastcreatedunit)
+call SetUnitVertexColorBJ(templastcreatedunit,100,100,100,85.00)
+call SetUnitTimeScalePercent(templastcreatedunit,200.00)
+call SetUnitAnimation(templastcreatedunit,"attack")
 call ForGroupBJ(udg_CE_Damage_Group,function Trig_Cutting_Edge_Knock_Func004Func007Func013Func014Func001Func018A)
 call SaveRealBJ((udg_CE_Knock_Distance-udg_CE_Knock_Speed),StringHashBJ("distance"),GetHandleIdBJ(GetEnumUnit()),udg_CE_Knocktable)
 call RemoveLocation(udg_CE_Knock_Loc1)
@@ -33236,10 +33521,11 @@ call SetUnitPositionLoc(GetEnumUnit(),udg_CE_Knock_Loc2)
 call SetUnitFacingTimed(GetEnumUnit(),udg_CE_Knock_Angle,0)
 call SetUnitAnimation(GetEnumUnit(),"attack")
 call CreateNUnitsAtLocBonuses(1,'h026',GetOwningPlayer(GetEnumUnit()),udg_CE_Knock_Loc2,udg_CE_Knock_Angle)
-call UnitApplyTimedLifeBJ(0.50,'BTLF',GetLastCreatedUnit())
-call SetUnitVertexColorBJ(GetLastCreatedUnit(),100,100,100,85.00)
-call SetUnitTimeScalePercent(GetLastCreatedUnit(),200.00)
-call SetUnitAnimation(GetLastCreatedUnit(),"attack")
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitApplyTimedLifeBJ(0.50,'BTLF',templastcreatedunit)
+call SetUnitVertexColorBJ(templastcreatedunit,100,100,100,85.00)
+call SetUnitTimeScalePercent(templastcreatedunit,200.00)
+call SetUnitAnimation(templastcreatedunit,"attack")
 call ForGroupBJ(udg_CE_Damage_Group,function Trig_Cutting_Edge_Knock_Func004Func007Func013Func009A)
 call SaveRealBJ((udg_CE_Knock_Distance-udg_CE_Knock_Speed),StringHashBJ("distance"),GetHandleIdBJ(GetEnumUnit()),udg_CE_Knocktable)
 call RemoveLocation(udg_CE_Knock_Loc1)
@@ -33259,6 +33545,7 @@ call DisableTrigger(udg_trg_Cutting_Edge_Knock)
 else
 endif
 endif
+set templastcreatedunit = null
 endfunction
 function Trig_Cutting_Edge_Knock_Actions takes nothing returns nothing
 call ForGroupBJ(udg_CE_Knock_Group,function Trig_Cutting_Edge_Knock_Func004A)
@@ -33540,6 +33827,7 @@ endif
 return true
 endfunction
 function Trig_Ball_Lighting_Setings_Actions takes nothing returns nothing
+local unit templastcreatedunit
 if(Trig_Ball_Lighting_Setings_Func006C())then
 call EnableTrigger(udg_trg_Ball_Llighting_Loop)
 else
@@ -33558,7 +33846,8 @@ set udg_BL_AoE[udg_BL_Times]=(100.00+(50.00*I2R(GetUnitAbilityLevelSwapped('A0CU
 set udg_BL_Collision[udg_BL_Times]=(50.00+(15.00*I2R(GetUnitAbilityLevelSwapped('A0CU',udg_BL_Hero[udg_BL_Times]))))
 set udg_BL_Scale=(100.00+(20.00*I2R(GetUnitAbilityLevelSwapped('A0CU',udg_BL_Hero[udg_BL_Times]))))
 call CreateNUnitsAtLocBonuses(1,'n045',GetOwningPlayer(udg_BL_Hero[udg_BL_Times]),udg_BL_Point[0],udg_BL_Angle[udg_BL_Times])
-set udg_BL_Missile[udg_BL_Times]=GetLastCreatedUnit()
+set templastcreatedunit = GetLastCreatedUnit()
+set udg_BL_Missile[udg_BL_Times]=templastcreatedunit
 call SetUnitFlyHeightBJ(udg_BL_Missile[udg_BL_Times],30.00,0.00)
 call SetUnitScalePercent(udg_BL_Missile[udg_BL_Times],udg_BL_Scale,udg_BL_Scale,udg_BL_Scale)
 call AddSpecialEffectTargetUnitBJ("chest",udg_BL_Missile[udg_BL_Times],"Abilities\\Weapons\\DragonHawkMissile\\DragonHawkMissile.mdl")
@@ -33569,6 +33858,7 @@ call AddSpecialEffectTargetUnitBJ("chest",udg_BL_Missile[udg_BL_Times],"Abilitie
 set udg_BL_Effect3[udg_BL_Times]=GetLastCreatedEffectBJ()
 call RemoveLocation(udg_BL_Point[0])
 call RemoveLocation(udg_BL_Point[1])
+set templastcreatedunit = null
 endfunction
 function InitTrig_Ball_Lighting_Setings takes nothing returns nothing
 set udg_trg_Ball_Lighting_Setings=CreateTrigger()
@@ -33736,6 +34026,7 @@ endif
 return true
 endfunction
 function Trig_Fire_Ball_Setings_Actions takes nothing returns nothing
+local unit templastcreatedunit
 if(Trig_Fire_Ball_Setings_Func003C())then
 call EnableTrigger(udg_trg_Fire_Ball_Loop)
 else
@@ -33756,7 +34047,8 @@ set udg_FB_Colision[udg_FB_Times]=(50.00+(20.00*I2R(GetUnitAbilityLevelSwapped('
 set udg_FB_Fragments[udg_FB_Times]=(2+(1*GetUnitAbilityLevelSwapped('A0CV',GetSpellAbilityUnit())))
 set udg_FB_Scale=(90.00+(10.00*I2R(GetUnitAbilityLevelSwapped('A0CV',GetSpellAbilityUnit()))))
 call CreateNUnitsAtLocBonuses(1,'n045',GetOwningPlayer(udg_FB_Hero[udg_FB_Times]),udg_FB_Point[0],udg_FB_Angle[udg_FB_Times])
-set udg_FB_Missile[udg_FB_Times]=GetLastCreatedUnit()
+set templastcreatedunit = GetLastCreatedUnit()
+set udg_FB_Missile[udg_FB_Times]=templastcreatedunit
 call SetUnitFlyHeightBJ(udg_FB_Missile[udg_FB_Times],30.00,0.00)
 call SetUnitScalePercent(udg_FB_Missile[udg_FB_Times],udg_FB_Scale,udg_FB_Scale,udg_FB_Scale)
 call AddSpecialEffectTargetUnitBJ("chest",udg_FB_Missile[udg_FB_Times],"Abilities\\Weapons\\RedDragonBreath\\RedDragonMissile.mdl")
@@ -33765,6 +34057,7 @@ call AddSpecialEffectTargetUnitBJ("chest",udg_FB_Missile[udg_FB_Times],"Abilitie
 set udg_FB_Effect2[udg_FB_Times]=GetLastCreatedEffectBJ()
 call RemoveLocation(udg_FB_Point[0])
 call RemoveLocation(udg_FB_Point[1])
+set templastcreatedunit = null
 endfunction
 function InitTrig_Fire_Ball_Setings takes nothing returns nothing
 set udg_trg_Fire_Ball_Setings=CreateTrigger()
@@ -33910,6 +34203,7 @@ endif
 return true
 endfunction
 function Trig_Fire_Ball_Loop_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_FB=1
 loop
 exitwhen udg_FB>udg_FB_Times
@@ -33959,7 +34253,8 @@ set udg_FB_Damage[udg_FB_Times]=(udg_FB_Damage[udg_FB]/ 4.00)
 set udg_FB_AoE[udg_FB_Times]=150.00
 set udg_FB_Scale=50.00
 call CreateNUnitsAtLocBonuses(1,'n045',GetOwningPlayer(udg_FB_Hero[udg_FB_Times]),udg_FB_Point[4],udg_FB_Angle[udg_FB_Times])
-set udg_FB_Missile[udg_FB_Times]=GetLastCreatedUnit()
+set templastcreatedunit = GetLastCreatedUnit()
+set udg_FB_Missile[udg_FB_Times]=templastcreatedunit
 call SetUnitScalePercent(udg_FB_Missile[udg_FB_Times],udg_FB_Scale,udg_FB_Scale,udg_FB_Scale)
 call AddSpecialEffectTargetUnitBJ("chest",udg_FB_Missile[udg_FB_Times],"Abilities\\Weapons\\RedDragonBreath\\RedDragonMissile.mdl")
 set udg_FB_Effect1[udg_FB_Times]=GetLastCreatedEffectBJ()
@@ -33986,6 +34281,7 @@ else
 endif
 set udg_FB=udg_FB+1
 endloop
+set templastcreatedunit = null
 endfunction
 function InitTrig_Fire_Ball_Loop takes nothing returns nothing
 set udg_trg_Fire_Ball_Loop=CreateTrigger()
@@ -34361,25 +34657,31 @@ function Trig_deceiver_slam_Func003002003 takes nothing returns boolean
 return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_Antidesync_temp_unit),GetOwningPlayer(GetFilterUnit()))==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitType(GetTriggerUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))))
 endfunction
 function Trig_deceiver_slam_Func004A takes nothing returns nothing
+local unit templastcreatedunit
 call UnitDamageTargetBJ(udg_Antidesync_temp_unit,GetEnumUnit(),150.00,ATTACK_TYPE_NORMAL,DAMAGE_TYPE_NORMAL)
 call CreateNUnitsAtLocBonuses(1,'e018',GetOwningPlayer(udg_Antidesync_temp_unit),udg_TempPoint,bj_UNIT_FACING)
-call UnitAddAbilityBJ('A0JW',GetLastCreatedUnit())
-call SetUnitAbilityLevelSwapped('A0JW',GetLastCreatedUnit(),8)
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"slow",GetEnumUnit())
-call UnitApplyTimedLifeBJ(1.00,'BTLF',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitAddAbilityBJ('A0JW',templastcreatedunit)
+call SetUnitAbilityLevelSwapped('A0JW',templastcreatedunit,8)
+call IssueTargetOrderBJ(templastcreatedunit,"slow",GetEnumUnit())
+call UnitApplyTimedLifeBJ(1.00,'BTLF',templastcreatedunit)
+set templastcreatedunit = null
 endfunction
 function Trig_deceiver_slam_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_Antidesync_temp_unit=GetTriggerUnit()
 set udg_TempPoint=GetUnitLoc(udg_Antidesync_temp_unit)
 set udg_TempGroup=GetUnitsInRangeOfLocMatching(300.00,udg_TempPoint,Condition(function Trig_deceiver_slam_Func003002003))
 call ForGroupBJ(udg_TempGroup,function Trig_deceiver_slam_Func004A)
 call CreateNUnitsAtLocBonuses(1,'h03E',GetOwningPlayer(udg_Antidesync_temp_unit),udg_TempPoint,bj_UNIT_FACING)
-call UnitApplyTimedLifeBJ(1.00,'BTLF',GetLastCreatedUnit())
-call UnitAddAbilityBJ('AInv',GetLastCreatedUnit())
-call UnitAddItemByIdSwapped('I032',GetLastCreatedUnit())
-call UnitUseItemTarget(GetLastCreatedUnit(),GetLastCreatedItem(),GetTriggerUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitApplyTimedLifeBJ(1.00,'BTLF',templastcreatedunit)
+call UnitAddAbilityBJ('AInv',templastcreatedunit)
+call UnitAddItemByIdSwapped('I032',templastcreatedunit)
+call UnitUseItemTarget(templastcreatedunit,GetLastCreatedItem(),GetTriggerUnit())
 call RemoveLocation(udg_TempPoint)
 call DestroyGroup(udg_TempGroup)
+set templastcreatedunit = null
 endfunction
 function InitTrig_deceiver_slam takes nothing returns nothing
 set udg_trg_deceiver_slam=CreateTrigger()
@@ -34445,6 +34747,7 @@ else
 endif
 endfunction
 function Trig_Zombie_Bloodlust_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_ZA_Point[9]=GenerateRandomLocInRect(MainGenerator,udg_rct_Random_Events_Bandit_Spawn)
 set bj_wantDestroyGroup=true
 call ForGroupBJ(GetUnitsInRectAll(GetEntireMapRect()),function Trig_Zombie_Bloodlust_Func003A)
@@ -34453,11 +34756,13 @@ set udg_ZB_Integer=1
 loop
 exitwhen udg_ZB_Integer>udg_ZB_NumberOfZombies
 call CreateNUnitsAtLocBonuses(1,'h053',GetOwningPlayer(GetTriggerUnit()),udg_ZA_Point[9],bj_UNIT_FACING)
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"bloodlust",GroupPickRandomUnit(udg_ZB_ZombieUnitGroup))
-call RemoveUnit(GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call IssueTargetOrderBJ(templastcreatedunit,"bloodlust",GroupPickRandomUnit(udg_ZB_ZombieUnitGroup))
+call RemoveUnit(templastcreatedunit)
 set udg_ZB_Integer=udg_ZB_Integer+1
 endloop
 call RemoveLocation(udg_ZA_Point[9])
+set templastcreatedunit = null
 endfunction
 function InitTrig_Zombie_Bloodlust takes nothing returns nothing
 set udg_trg_Zombie_Bloodlust=CreateTrigger()
@@ -34493,24 +34798,28 @@ endif
 return true
 endfunction
 function Trig_Zombie_apocalypse_Actions takes nothing returns nothing
+local unit templastcreatedunit
 if(Trig_Zombie_apocalypse_Func001C())then
 set udg_ZA_Point[2]=GenerateRandomLocInRect(MainGenerator,udg_rct_Entire_map_excluding_outa_bounds_2)
 call CreateNUnitsAtLocBonuses(1,'ndmu',GetOwningPlayer(GetTriggerUnit()),udg_ZA_Point[2],bj_UNIT_FACING)
-call UnitApplyTimedLifeBJ(240.00,'BTLF',GetLastCreatedUnit())
-call SetUnitAnimation(GetLastCreatedUnit(),"birth")
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitApplyTimedLifeBJ(240.00,'BTLF',templastcreatedunit)
+call SetUnitAnimation(templastcreatedunit,"birth")
 call RemoveLocation(udg_ZA_Point[2])
 set udg_ZA_Integer=1
 loop
 exitwhen udg_ZA_Integer>14
 set udg_ZA_Point[1]=GenerateRandomLocInRect(MainGenerator,udg_rct_Entire_map_excluding_out_of_bounds)
 call CreateNUnitsAtLocBonuses(1,'ndmu',GetOwningPlayer(GetTriggerUnit()),udg_ZA_Point[1],bj_UNIT_FACING)
-call UnitApplyTimedLifeBJ(240.00,'BTLF',GetLastCreatedUnit())
-call SetUnitAnimation(GetLastCreatedUnit(),"birth")
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitApplyTimedLifeBJ(240.00,'BTLF',templastcreatedunit)
+call SetUnitAnimation(templastcreatedunit,"birth")
 call RemoveLocation(udg_ZA_Point[1])
 set udg_ZA_Integer=udg_ZA_Integer+1
 endloop
 else
 endif
+set templastcreatedunit = null
 endfunction
 function InitTrig_Zombie_apocalypse takes nothing returns nothing
 set udg_trg_Zombie_apocalypse=CreateTrigger()
@@ -34590,10 +34899,13 @@ endif
 return true
 endfunction
 function Trig_nuke_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_Nuke_Point[1]=GetSpellTargetLoc()
 call CreateNUnitsAtLocBonuses(1,'h04A',GetOwningPlayer(GetTriggerUnit()),udg_Nuke_Point[1],bj_UNIT_FACING)
-call UnitApplyTimedLifeBJ(6.00,'BTLF',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitApplyTimedLifeBJ(6.00,'BTLF',templastcreatedunit)
 call RemoveLocation(udg_Nuke_Point[1])
+set templastcreatedunit = null
 endfunction
 function InitTrig_nuke takes nothing returns nothing
 set udg_trg_nuke=CreateTrigger()
@@ -34608,11 +34920,14 @@ endif
 return true
 endfunction
 function Trig_nuke_pt_2_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_Nuke_Point[2]=GetUnitLoc(GetTriggerUnit())
 call CreateNUnitsAtLocBonuses(1,'h04Q',GetOwningPlayer(GetTriggerUnit()),udg_Nuke_Point[2],bj_UNIT_FACING)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"flamestrike",udg_Nuke_Point[2])
-call UnitApplyTimedLifeBJ(10.00,'BTLF',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call IssuePointOrderLocBJ(templastcreatedunit,"flamestrike",udg_Nuke_Point[2])
+call UnitApplyTimedLifeBJ(10.00,'BTLF',templastcreatedunit)
 call RemoveLocation(udg_Nuke_Point[2])
+set templastcreatedunit = null
 endfunction
 function InitTrig_nuke_pt_2 takes nothing returns nothing
 set udg_trg_nuke_pt_2=CreateTrigger()
@@ -34727,9 +35042,12 @@ endif
 return true
 endfunction
 function Trig_Smokescreen_Actions takes nothing returns nothing
+local unit templastcreatedunit
 call CreateNUnitsAtLocBonuses(1,'h01W',GetOwningPlayer(GetSpellAbilityUnit()),GetUnitLoc(GetSpellAbilityUnit()),bj_UNIT_FACING)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"cloudoffog",GetSpellTargetLoc())
-call UnitApplyTimedLifeBJ(7.00,'BTLF',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call IssuePointOrderLocBJ(templastcreatedunit,"cloudoffog",GetSpellTargetLoc())
+call UnitApplyTimedLifeBJ(7.00,'BTLF',templastcreatedunit)
+set templastcreatedunit = null
 endfunction
 function InitTrig_Smokescreen takes nothing returns nothing
 set udg_trg_Smokescreen=CreateTrigger()
@@ -34772,9 +35090,12 @@ endif
 return true
 endfunction
 function Trig_Rock_Fountain_Actions takes nothing returns nothing
+local unit templastcreatedunit
 call CreateNUnitsAtLocBonuses(1,'h02W',GetOwningPlayer(GetSpellAbilityUnit()),GetUnitLoc(GetSpellAbilityUnit()),bj_UNIT_FACING)
-call UnitApplyTimedLifeBJ(10.00,'BTLF',GetLastCreatedUnit())
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"clusterrockets",GetUnitLoc(GetSpellAbilityUnit()))
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitApplyTimedLifeBJ(10.00,'BTLF',templastcreatedunit)
+call IssuePointOrderLocBJ(templastcreatedunit,"clusterrockets",GetUnitLoc(GetSpellAbilityUnit()))
+set templastcreatedunit = null
 endfunction
 function InitTrig_Rock_Fountain takes nothing returns nothing
 set udg_trg_Rock_Fountain=CreateTrigger()
@@ -34795,13 +35116,16 @@ endif
 return true
 endfunction
 function Trig_Living_Rocks_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_LivingRocks=GenerateInt(MainGenerator, 1,4)
 if(Trig_Living_Rocks_Func002C())then
 call CreateNUnitsAtLocBonuses(1,'n02H',ForcePickRandomPlayer(udg_Evil),GetDestructableLoc(GetDyingDestructable()),bj_UNIT_FACING)
-call UnitApplyTimedLifeBJ(20.00,'BTLF',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitApplyTimedLifeBJ(20.00,'BTLF',templastcreatedunit)
 else
 call DoNothing()
 endif
+set templastcreatedunit = null
 endfunction
 function InitTrig_Living_Rocks takes nothing returns nothing
 set udg_trg_Living_Rocks=CreateTrigger()
@@ -34997,8 +35321,11 @@ endif
 return true
 endfunction
 function Trig_Volcano_Actions takes nothing returns nothing
+local unit templastcreatedunit
 call CreateNUnitsAtLocBonuses(1,'h01K',GetOwningPlayer(GetTriggerUnit()),GetUnitLoc(GetTriggerUnit()),bj_UNIT_FACING)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"volcano",GetUnitLoc(GetTriggerUnit()))
+set templastcreatedunit = GetLastCreatedUnit()
+call IssuePointOrderLocBJ(templastcreatedunit,"volcano",GetUnitLoc(GetTriggerUnit()))
+set templastcreatedunit = null
 endfunction
 function InitTrig_Volcano takes nothing returns nothing
 set udg_trg_Volcano=CreateTrigger()
@@ -35037,12 +35364,15 @@ endif
 return true
 endfunction
 function Trig_Entangling_roots_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_General_attacking_unit_pos=GetUnitLoc(GetAttacker())
 call CreateNUnitsAtLoc(1,'dDUM',GetOwningPlayer(GetAttacker()),udg_General_attacking_unit_pos,bj_UNIT_FACING)
-call UnitAddAbility(GetLastCreatedUnit(),'AE03')
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"entanglingroots",GetAttackedUnitBJ())
-call UnitApplyTimedLife(GetLastCreatedUnit(),'BTLF',2)
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitAddAbility(templastcreatedunit,'AE03')
+call IssueTargetOrderBJ(templastcreatedunit,"entanglingroots",GetAttackedUnitBJ())
+call UnitApplyTimedLife(templastcreatedunit,'BTLF',2)
 call RemoveLocation(udg_General_attacking_unit_pos)
+set templastcreatedunit = null
 endfunction
 function InitTrig_Entangling_roots takes nothing returns nothing
 set udg_trg_Entangling_roots=CreateTrigger()
@@ -35123,22 +35453,26 @@ endif
 return false
 endfunction
 function Trig_Firelord_Attacks_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_Firelord_Pos=GetUnitLoc(GetAttacker())
 set udg_Firelord_Temp_Region=RectFromCenterSizeBJ(udg_Firelord_Pos,600.00,600.00)
 set udg_Firelord_Rand_Point=GenerateRandomLocInRect(MainGenerator,udg_Firelord_Temp_Region)
 set udg_Firelord_Attacked_Pos=GetUnitLoc(GetAttackedUnitBJ())
 call CreateNUnitsAtLocBonuses(1,'dDUM',GetOwningPlayer(GetAttacker()),udg_Firelord_Attacked_Pos,bj_UNIT_FACING)
-call UnitAddAbility(GetLastCreatedUnit(),'AHfs')
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"flamestrike",udg_Firelord_Attacked_Pos)
-call UnitApplyTimedLife(GetLastCreatedUnit(),'BTLF',2)
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitAddAbility(templastcreatedunit,'AHfs')
+call IssuePointOrderLocBJ(templastcreatedunit,"flamestrike",udg_Firelord_Attacked_Pos)
+call UnitApplyTimedLife(templastcreatedunit,'BTLF',2)
 call CreateNUnitsAtLocBonuses(1,'dDUM',GetOwningPlayer(GetAttacker()),udg_Firelord_Pos,bj_UNIT_FACING)
-call UnitAddAbility(GetLastCreatedUnit(),'a0KD')
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"carrionswarm",udg_Firelord_Rand_Point)
-call UnitApplyTimedLife(GetLastCreatedUnit(),'BTLF',2)
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitAddAbility(templastcreatedunit,'a0KD')
+call IssuePointOrderLocBJ(templastcreatedunit,"carrionswarm",udg_Firelord_Rand_Point)
+call UnitApplyTimedLife(templastcreatedunit,'BTLF',2)
 call RemoveLocation(udg_Firelord_Pos)
 call RemoveRect(udg_Firelord_Temp_Region)
 call RemoveLocation(udg_Firelord_Rand_Point)
 call RemoveLocation(udg_Firelord_Attacked_Pos)
+set templastcreatedunit = null
 endfunction
 function InitTrig_Firelord_Attacks takes nothing returns nothing
 set udg_trg_Firelord_Attacks=CreateTrigger()
@@ -35353,16 +35687,19 @@ endif
 return true
 endfunction
 function Trig_Flame_Sniper_2_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_Sniper_Chance=GenerateInt(MainGenerator, 1,10)
 if(Trig_Flame_Sniper_2_Func002C())then
 set udg_General_attacking_unit_pos=GetUnitLoc(GetAttacker())
 call CreateNUnitsAtLocBonuses(1,'dDUM',GetOwningPlayer(GetAttacker()),udg_General_attacking_unit_pos,bj_UNIT_FACING)
-call UnitAddAbility(GetLastCreatedUnit(),'Awfb')
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"firebolt",GetAttackedUnitBJ())
-call UnitApplyTimedLife(GetLastCreatedUnit(),'BTLF',2)
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitAddAbility(templastcreatedunit,'Awfb')
+call IssueTargetOrderBJ(templastcreatedunit,"firebolt",GetAttackedUnitBJ())
+call UnitApplyTimedLife(templastcreatedunit,'BTLF',2)
 call RemoveLocation(udg_General_attacking_unit_pos)
 else
 endif
+set templastcreatedunit = null
 endfunction
 function InitTrig_Flame_Sniper_2 takes nothing returns nothing
 set udg_trg_Flame_Sniper_2=CreateTrigger()
@@ -35389,9 +35726,12 @@ endif
 return true
 endfunction
 function Trig_Skele_Spell_Wraith_Actions takes nothing returns nothing
+local unit templastcreatedunit
 call CreateNUnitsAtLocBonuses(1,'h004',GetOwningPlayer(GetSpellAbilityUnit()),GenerateRandomLocInRect(MainGenerator,udg_rct_Entire_map_excluding_out_of_bounds),bj_UNIT_FACING)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"stasistrap",GenerateRandomLocInRect(MainGenerator,udg_rct_Entire_map_excluding_out_of_bounds))
-call RemoveUnit(GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call IssuePointOrderLocBJ(templastcreatedunit,"stasistrap",GenerateRandomLocInRect(MainGenerator,udg_rct_Entire_map_excluding_out_of_bounds))
+call RemoveUnit(templastcreatedunit)
+set templastcreatedunit = null
 endfunction
 function InitTrig_Skele_Spell_Wraith takes nothing returns nothing
 set udg_trg_Skele_Spell_Wraith=CreateTrigger()
@@ -35409,10 +35749,13 @@ endif
 return true
 endfunction
 function Trig_Skeleton_spell_wraith_pt2_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_General_attacked_unit_pos=GetUnitLoc(GetAttackedUnitBJ())
 call CreateNUnitsAtLocBonuses(1,'u00F',GetOwningPlayer(GetAttacker()),udg_General_attacked_unit_pos,bj_UNIT_FACING)
-call AddSpecialEffectLocBJ(GetUnitLoc(GetLastCreatedUnit()),"Abilities\\Spells\\Demon\\DarkPortal\\DarkPortalTarget.mdl")
+set templastcreatedunit = GetLastCreatedUnit()
+call AddSpecialEffectLocBJ(GetUnitLoc(templastcreatedunit),"Abilities\\Spells\\Demon\\DarkPortal\\DarkPortalTarget.mdl")
 call RemoveLocation(udg_General_attacked_unit_pos)
+set templastcreatedunit = null
 endfunction
 function InitTrig_Skeleton_spell_wraith_pt2 takes nothing returns nothing
 set udg_trg_Skeleton_spell_wraith_pt2=CreateTrigger()
@@ -35430,10 +35773,13 @@ endif
 return true
 endfunction
 function Trig_Skeleton_spell_pt_2_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_General_attacked_unit_pos=GetUnitLoc(GetAttackedUnitBJ())
 call CreateNUnitsAtLocBonuses(1,'uske',GetOwningPlayer(GetAttacker()),udg_General_attacked_unit_pos,bj_UNIT_FACING)
-call AddSpecialEffectLocBJ(GetUnitLoc(GetLastCreatedUnit()),"Abilities\\Spells\\Demon\\DarkPortal\\DarkPortalTarget.mdl")
+set templastcreatedunit = GetLastCreatedUnit()
+call AddSpecialEffectLocBJ(GetUnitLoc(templastcreatedunit),"Abilities\\Spells\\Demon\\DarkPortal\\DarkPortalTarget.mdl")
 call RemoveLocation(udg_General_attacked_unit_pos)
+set templastcreatedunit = null
 endfunction
 function InitTrig_Skeleton_spell_pt_2 takes nothing returns nothing
 set udg_trg_Skeleton_spell_pt_2=CreateTrigger()
@@ -35451,9 +35797,12 @@ endif
 return true
 endfunction
 function Trig_Skele_Spell_Actions takes nothing returns nothing
+local unit templastcreatedunit
 call CreateNUnitsAtLocBonuses(1,'h004',GetOwningPlayer(GetSpellAbilityUnit()),GenerateRandomLocInRect(MainGenerator,udg_rct_Entire_map_excluding_out_of_bounds),bj_UNIT_FACING)
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"ward",GenerateRandomLocInRect(MainGenerator,udg_rct_Entire_map_excluding_out_of_bounds))
-call RemoveUnit(GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call IssuePointOrderLocBJ(templastcreatedunit,"ward",GenerateRandomLocInRect(MainGenerator,udg_rct_Entire_map_excluding_out_of_bounds))
+call RemoveUnit(templastcreatedunit)
+set templastcreatedunit = null
 endfunction
 function InitTrig_Skele_Spell takes nothing returns nothing
 set udg_trg_Skele_Spell=CreateTrigger()
@@ -35722,11 +36071,14 @@ function Trig_Tauren_Stomp_Func003002003 takes nothing returns boolean
 return GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_ANCIENT)==false),(GetBooleanAnd((IsPlayerEnemy(GetOwningPlayer(udg_Antidesync_temp_unit),GetOwningPlayer(GetFilterUnit()))==true),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false),(GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_FLYING)==false),(IsUnitType(GetTriggerUnit(),UNIT_TYPE_MAGIC_IMMUNE)==false))))))))))
 endfunction
 function Trig_Tauren_Stomp_Func004A takes nothing returns nothing
+local unit templastcreatedunit
 call UnitDamageTargetBJ(udg_Antidesync_temp_unit,GetEnumUnit(),100.00,ATTACK_TYPE_NORMAL,DAMAGE_TYPE_NORMAL)
 call CreateNUnitsAtLocBonuses(1,'e018',GetOwningPlayer(udg_Antidesync_temp_unit),udg_TempPoint,bj_UNIT_FACING)
-call UnitAddAbilityBJ('A0JW',GetLastCreatedUnit())
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"slow",GetEnumUnit())
-call UnitApplyTimedLifeBJ(1.00,'BTLF',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitAddAbilityBJ('A0JW',templastcreatedunit)
+call IssueTargetOrderBJ(templastcreatedunit,"slow",GetEnumUnit())
+call UnitApplyTimedLifeBJ(1.00,'BTLF',templastcreatedunit)
+set templastcreatedunit = null
 endfunction
 function Trig_Tauren_Stomp_Func008002003001 takes nothing returns boolean
 return(IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)==false)
@@ -35795,13 +36147,16 @@ endif
 return true
 endfunction
 function Trig_Tauren_Taunt_Actions takes nothing returns nothing
+local unit templastcreatedunit
     local location loc = GetUnitLoc(GetSpellAbilityUnit())
 call CreateNUnitsAtLocBonuses(1,'dDUM',GetOwningPlayer(GetSpellAbilityUnit()),loc,bj_UNIT_FACING)
-call UnitAddAbility(GetLastCreatedUnit(),'Ablo')
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"bloodlust",GetSpellAbilityUnit())
-call RemoveUnit(GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitAddAbility(templastcreatedunit,'Ablo')
+call IssueTargetOrderBJ(templastcreatedunit,"bloodlust",GetSpellAbilityUnit())
+call RemoveUnit(templastcreatedunit)
 call RemoveLocation(loc)
 set loc = null
+set templastcreatedunit = null
 endfunction
 function InitTrig_Tauren_Taunt takes nothing returns nothing
 set udg_trg_Tauren_Taunt=CreateTrigger()
@@ -35816,12 +36171,15 @@ endif
 return true
 endfunction
 function Trig_Tauren_Earthquake_Actions takes nothing returns nothing
+local unit templastcreatedunit
     local location loc = GetUnitLoc(GetSpellAbilityUnit())
 call CreateNUnitsAtLocBonuses(1,'dDUM',GetOwningPlayer(GetAttacker()),loc,bj_UNIT_FACING)
-call UnitAddAbility(GetLastCreatedUnit(),'AOeq')
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"earthquake",GetUnitLoc(GetSpellTargetUnit()))
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitAddAbility(templastcreatedunit,'AOeq')
+call IssuePointOrderLocBJ(templastcreatedunit,"earthquake",GetUnitLoc(GetSpellTargetUnit()))
 call RemoveLocation(loc)
 set loc = null
+set templastcreatedunit = null
 endfunction
 function InitTrig_Tauren_Earthquake takes nothing returns nothing
 set udg_trg_Tauren_Earthquake=CreateTrigger()
@@ -35929,12 +36287,15 @@ endif
 return true
 endfunction
 function Trig_GSkeleWarriorMETA_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_General_attacking_unit_pos=GetUnitLoc(GetAttacker())
 call CreateNUnitsAtLocBonuses(1,'dDUM',GetOwningPlayer(GetAttacker()),udg_General_attacking_unit_pos,bj_UNIT_FACING)
-call UnitAddAbility(GetLastCreatedUnit(),'ANfi')
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"forkedlightning",GetAttackedUnitBJ())
-call RemoveUnit(GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitAddAbility(templastcreatedunit,'ANfi')
+call IssueTargetOrderBJ(templastcreatedunit,"forkedlightning",GetAttackedUnitBJ())
+call RemoveUnit(templastcreatedunit)
 call RemoveLocation(udg_General_attacking_unit_pos)
+set templastcreatedunit = null
 endfunction
 function InitTrig_GSkeleWarriorMETA takes nothing returns nothing
 set udg_trg_GSkeleWarriorMETA=CreateTrigger()
@@ -35965,12 +36326,14 @@ endif
 return true
 endfunction
 function Trig_HydroJetWater_Func001A takes nothing returns nothing
+local unit templastcreatedunit
 if(Trig_HydroJetWater_Func001Func001C())then
 set udg_Caster=GetEnumUnit()
 set udg_TempPoint=GetUnitLoc(udg_Caster)
 call CreateNUnitsAtLocBonuses(1,'n00W',GetOwningPlayer(udg_Caster),udg_TempPoint,GetUnitFacing(udg_Caster))
-call SaveUnitHandleBJ(udg_Caster,GetHandleIdBJ(GetLastCreatedUnit()),0,udg_Hashtable)
-set udg_TempUnit=GetLastCreatedUnit()
+set templastcreatedunit = GetLastCreatedUnit()
+call SaveUnitHandleBJ(udg_Caster,GetHandleIdBJ(templastcreatedunit),0,udg_Hashtable)
+set udg_TempUnit=templastcreatedunit
 call GroupAddUnitSimple(udg_TempUnit,udg_HydroJetProjectiles)
 call PauseUnitBJ(true,udg_TempUnit)
 call SetUnitUserData(udg_TempUnit,GetUnitAbilityLevelSwapped('A027',GetEnumUnit()))
@@ -35979,6 +36342,7 @@ call RemoveLocation(udg_TempPoint)
 else
 call GroupRemoveUnitSimple(GetTriggerUnit(),udg_HydroJetCasters)
 endif
+set templastcreatedunit = null
 endfunction
 function Trig_HydroJetWater_Func002Func023Func009C takes nothing returns boolean
 if(not(DistanceBetweenPoints(udg_TempPoint,udg_TempPoint2)>=10))then
@@ -36113,6 +36477,7 @@ endif
 return true
 endfunction
 function Trig_SandStormCast_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_TempPoint=GetUnitLoc(GetTriggerUnit())
 set udg_TempInteger=0
 set udg_TempGroup=CreateGroup()
@@ -36121,16 +36486,18 @@ exitwhen udg_TempInteger==3
 set udg_TempInteger=(udg_TempInteger+1)
 set udg_TempPoint2=PolarProjectionBJ(udg_TempPoint,((150.00*I2R(udg_TempInteger))-300.00),(GetUnitFacing(GetTriggerUnit())+90.00))
 call CreateNUnitsAtLocBonuses(1,'n00X',GetOwningPlayer(GetTriggerUnit()),udg_TempPoint2,GetUnitFacing(GetTriggerUnit()))
-call SaveUnitHandleBJ(GetTriggerUnit(),GetHandleIdBJ(GetLastCreatedUnit()),0,udg_Hashtable)
-call SaveGroupHandleBJ(udg_TempGroup,GetHandleIdBJ(GetLastCreatedUnit()),1,udg_Hashtable)
-call SetUnitManaBJ(GetLastCreatedUnit(),((50.00*I2R(GetUnitAbilityLevelSwapped('A00F',GetTriggerUnit())))+40.00))
-call GroupAddUnitSimple(GetLastCreatedUnit(),udg_SandStorm)
-call UnitApplyTimedLifeBJ(2.00,'BTLF',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call SaveUnitHandleBJ(GetTriggerUnit(),GetHandleIdBJ(templastcreatedunit),0,udg_Hashtable)
+call SaveGroupHandleBJ(udg_TempGroup,GetHandleIdBJ(templastcreatedunit),1,udg_Hashtable)
+call SetUnitManaBJ(templastcreatedunit,((50.00*I2R(GetUnitAbilityLevelSwapped('A00F',GetTriggerUnit())))+40.00))
+call GroupAddUnitSimple(templastcreatedunit,udg_SandStorm)
+call UnitApplyTimedLifeBJ(2.00,'BTLF',templastcreatedunit)
 call RemoveLocation(udg_TempPoint2)
 endloop
 call RemoveLocation(udg_TempPoint)
 set udg_TempInteger=0
 call EnableTrigger(udg_trg_SandStormMovement)
+set templastcreatedunit = null
 endfunction
 function InitTrig_SandStormCast takes nothing returns nothing
 set udg_trg_SandStormCast=CreateTrigger()
@@ -36218,6 +36585,7 @@ endif
 return true
 endfunction
 function Trig_SandStormMovement_Func001A takes nothing returns nothing
+local unit templastcreatedunit
 set udg_TempUnit=GetEnumUnit()
 if(Trig_SandStormMovement_Func001Func002C())then
 call GroupRemoveUnitSimple(udg_TempUnit,udg_SandStorm)
@@ -36228,8 +36596,9 @@ else
 set udg_TempPoint=GetUnitLoc(udg_TempUnit)
 set udg_TempPoint2=PolarProjectionBJ(udg_TempPoint,16.00,GetUnitFacing(udg_TempUnit))
 call CreateNUnitsAtLocBonuses(1,'n00Y',GetOwningPlayer(udg_TempUnit),udg_TempPoint,bj_UNIT_FACING)
-call SetUnitVertexColorBJ(GetLastCreatedUnit(),100,100,100,100.00)
-call KillUnit(GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call SetUnitVertexColorBJ(templastcreatedunit,100,100,100,100.00)
+call KillUnit(templastcreatedunit)
 call RemoveLocation(udg_TempPoint)
 call SetUnitPositionLoc(udg_TempUnit,udg_TempPoint2)
 set udg_TempPoint=GetUnitLoc(udg_TempUnit)
@@ -36254,6 +36623,7 @@ call DisableTrigger(GetTriggeringTrigger())
 else
 endif
 endif
+set templastcreatedunit = null
 endfunction
 function Trig_SandStormMovement_Actions takes nothing returns nothing
 call ForGroupBJ(udg_SandStorm,function Trig_SandStormMovement_Func001A)
@@ -36271,16 +36641,19 @@ endif
 return true
 endfunction
 function Trig_blizzard_Actions takes nothing returns nothing
+local unit templastcreatedunit
 local location loc = GetUnitLoc(GetAttacker())
 local location loc2 = GetUnitLoc(GetAttackedUnitBJ())
 call CreateNUnitsAtLocBonuses(1,'dDUM',GetOwningPlayer(GetAttacker()),loc,bj_UNIT_FACING)
-call UnitAddAbility(GetLastCreatedUnit(),'AHbz')
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"blizzard",loc2)
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitAddAbility(templastcreatedunit,'AHbz')
+call IssuePointOrderLocBJ(templastcreatedunit,"blizzard",loc2)
 call RemoveLocation(loc)
 call RemoveLocation(loc2)
 set loc = null
 set loc2 = null
-call UnitApplyTimedLife(GetLastCreatedUnit(),'BTLF',2)
+call UnitApplyTimedLife(templastcreatedunit,'BTLF',2)
+set templastcreatedunit = null
 endfunction
 function InitTrig_blizzard takes nothing returns nothing
 set udg_trg_blizzard=CreateTrigger()
@@ -36295,16 +36668,19 @@ endif
 return true
 endfunction
 function Trig_blizzard_Copy_Actions takes nothing returns nothing
+local unit templastcreatedunit
 local location loc = GetUnitLoc(GetAttacker())
 local location loc2 = GetUnitLoc(GetAttackedUnitBJ())
 call CreateNUnitsAtLocBonuses(1,'dDUM',GetOwningPlayer(GetAttacker()),loc,bj_UNIT_FACING)
-call UnitAddAbility(GetLastCreatedUnit(),'AHbz')
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"blizzard",loc2)
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitAddAbility(templastcreatedunit,'AHbz')
+call IssuePointOrderLocBJ(templastcreatedunit,"blizzard",loc2)
 call RemoveLocation(loc)
 call RemoveLocation(loc2)
 set loc = null
 set loc2 = null
-call UnitApplyTimedLife(GetLastCreatedUnit(),'BTLF',2)
+call UnitApplyTimedLife(templastcreatedunit,'BTLF',2)
+set templastcreatedunit = null
 endfunction
 function InitTrig_blizzard_Copy takes nothing returns nothing
 set udg_trg_blizzard_Copy=CreateTrigger()
@@ -36319,16 +36695,19 @@ endif
 return true
 endfunction
 function Trig_blizzard_Copy_Copy_Actions takes nothing returns nothing
+local unit templastcreatedunit
 local location loc = GetUnitLoc(GetAttacker())
 local location loc2 = GetUnitLoc(GetAttackedUnitBJ())
 call CreateNUnitsAtLocBonuses(1,'dDUM',GetOwningPlayer(GetAttacker()),loc,bj_UNIT_FACING)
+set templastcreatedunit = GetLastCreatedUnit()
 call RemoveLocation(loc)
-call UnitAddAbility(GetLastCreatedUnit(),'AHbz')
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"blizzard",loc2)
+call UnitAddAbility(templastcreatedunit,'AHbz')
+call IssuePointOrderLocBJ(templastcreatedunit,"blizzard",loc2)
 call RemoveLocation(loc2)
 set loc = null
 set loc2 = null
-call UnitApplyTimedLife(GetLastCreatedUnit(),'BTLF',2)
+call UnitApplyTimedLife(templastcreatedunit,'BTLF',2)
+set templastcreatedunit = null
 endfunction
 function InitTrig_blizzard_Copy_Copy takes nothing returns nothing
 set udg_trg_blizzard_Copy_Copy=CreateTrigger()
@@ -36343,22 +36722,25 @@ endif
 return true
 endfunction
 function Trig_Poison_Nova_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_TargetLoc=GetUnitLoc(GetTriggerUnit())
 call CreateNUnitsAtLocBonuses(1,'h02R',GetOwningPlayer(GetTriggerUnit()),udg_TargetLoc,bj_UNIT_FACING)
-call SetUnitTimeScalePercent(GetLastCreatedUnit(),25.00)
-call UnitApplyTimedLifeBJ(0.25,'BTLF',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call SetUnitTimeScalePercent(templastcreatedunit,25.00)
+call UnitApplyTimedLifeBJ(0.25,'BTLF',templastcreatedunit)
 set udg_PN_Int=1
 loop
 exitwhen udg_PN_Int>13
 set udg_TempLoc=PolarProjectionBJ(udg_TargetLoc,-600.00,(I2R(udg_PN_Int)*28.00))
 call CreateNUnitsAtLocFacingLocBJ(1,'h02Q',GetOwningPlayer(GetTriggerUnit()),udg_TargetLoc,udg_TempLoc)
-call SetUnitAbilityLevelSwapped('A07N',GetLastCreatedUnit(),GetUnitAbilityLevelSwapped('A07O',GetTriggerUnit()))
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"move",udg_TempLoc)
-call UnitApplyTimedLifeBJ(1.50,'BTLF',GetLastCreatedUnit())
+call SetUnitAbilityLevelSwapped('A07N',templastcreatedunit,GetUnitAbilityLevelSwapped('A07O',GetTriggerUnit()))
+call IssuePointOrderLocBJ(templastcreatedunit,"move",udg_TempLoc)
+call UnitApplyTimedLifeBJ(1.50,'BTLF',templastcreatedunit)
 call RemoveLocation(udg_TempLoc)
 set udg_PN_Int=udg_PN_Int+1
 endloop
 call RemoveLocation(udg_TargetLoc)
+set templastcreatedunit = null
 endfunction
 function InitTrig_Poison_Nova takes nothing returns nothing
 set udg_trg_Poison_Nova=CreateTrigger()
@@ -36562,6 +36944,7 @@ endif
 return true
 endfunction
 function Trig_Taste_of_Death_Actions takes nothing returns nothing
+local unit templastcreatedunit
 local integer heal = 0
 set udg_ToD_Caster=GetTriggerUnit()
 set udg_ToD_Owner=GetOwningPlayer(udg_ToD_Caster)
@@ -36579,9 +36962,10 @@ loop
 exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
 set udg_ToD_Target_Location=PolarProjectionBJ(udg_ToD_Position,50.00,(10.00*I2R(GetForLoopIndexA())))
 call CreateNUnitsAtLocBonuses(1,'h054',udg_ToD_Owner,udg_ToD_Position,bj_UNIT_FACING)
-call UnitApplyTimedLifeBJ(1.50,'BTLF',GetLastCreatedUnit())
-call UnitAddAbilityBJ(udg_ToD_Dummy_Ability,GetLastCreatedUnit())
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"carrionswarm",udg_ToD_Target_Location)
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitApplyTimedLifeBJ(1.50,'BTLF',templastcreatedunit)
+call UnitAddAbilityBJ(udg_ToD_Dummy_Ability,templastcreatedunit)
+call IssuePointOrderLocBJ(templastcreatedunit,"carrionswarm",udg_ToD_Target_Location)
 call RemoveLocation(udg_ToD_Target_Location)
 set bj_forLoopAIndex=bj_forLoopAIndex+1
 endloop
@@ -36603,13 +36987,15 @@ set udg_ToD_Unit_Counter=0
 call DestroyGroup(udg_ToD_Heal_Group)
 if(Trig_Taste_of_Death_Func041C())then
 call CreateNUnitsAtLocBonuses(1,'h054',udg_ToD_Owner,udg_ToD_Position,bj_UNIT_FACING)
-call UnitApplyTimedLifeBJ(1.50,'BTLF',GetLastCreatedUnit())
-call UnitAddAbilityBJ(udg_ToD_Dummy_Ability_Frenzy,GetLastCreatedUnit())
-call SetUnitAbilityLevelSwapped(udg_ToD_Dummy_Ability_Frenzy,GetLastCreatedUnit(),udg_ToD_Ability)
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"unholyfrenzy",udg_ToD_Caster)
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitApplyTimedLifeBJ(1.50,'BTLF',templastcreatedunit)
+call UnitAddAbilityBJ(udg_ToD_Dummy_Ability_Frenzy,templastcreatedunit)
+call SetUnitAbilityLevelSwapped(udg_ToD_Dummy_Ability_Frenzy,templastcreatedunit,udg_ToD_Ability)
+call IssueTargetOrderBJ(templastcreatedunit,"unholyfrenzy",udg_ToD_Caster)
 else
 endif
 call RemoveLocation(udg_ToD_Position)
+set templastcreatedunit = null
 endfunction
 function InitTrig_Taste_of_Death takes nothing returns nothing
 set udg_trg_Taste_of_Death=CreateTrigger()
@@ -36752,6 +37138,7 @@ endif
 return true
 endfunction
 function Trig_Freezing_Spiral_Actions takes nothing returns nothing
+local unit templastcreatedunit
 if(Trig_Freezing_Spiral_Func003C())then
 call EnableTrigger(udg_trg_Freezing_Spiral_Loop)
 else
@@ -36773,7 +37160,9 @@ set udg_FD_TempLoc[udg_FD_TempInt]=GetUnitLoc(GetTriggerUnit())
 set udg_FD_TempLoc3[udg_FD_TempInt]=PolarProjectionBJ(GetUnitLoc(GetTriggerUnit()),udg_FD_Offset[udg_FD_TempInt],udg_FD_Degrees[udg_FD_TempInt])
 set udg_FD_Caster[udg_FD_TempInt]=GetTriggerUnit()
 call CreateNUnitsAtLocBonuses(1,'n01R',GetOwningPlayer(GetTriggerUnit()),udg_FD_TempLoc3[udg_FD_TempInt],bj_UNIT_FACING)
-set udg_FD_Dummy[udg_FD_TempInt]=GetLastCreatedUnit()
+set templastcreatedunit = GetLastCreatedUnit()
+set udg_FD_Dummy[udg_FD_TempInt]=templastcreatedunit
+set templastcreatedunit = null
 endfunction
 function InitTrig_Freezing_Spiral takes nothing returns nothing
 set udg_trg_Freezing_Spiral=CreateTrigger()
@@ -36901,6 +37290,7 @@ endif
 return true
 endfunction
 function Trig_init_Actions takes nothing returns nothing
+local unit templastcreatedunit
 if(Trig_init_Func001C())then
 call EnableTrigger(udg_trg_loop)
 else
@@ -36917,10 +37307,12 @@ set udg_damage[udg_BE_array]=(GetUnitAbilityLevelSwapped('A0B8',udg_BE_caster[ud
 set udg_damage1[udg_BE_array]=(GetUnitAbilityLevelSwapped('A0B8',udg_BE_caster[udg_BE_array])*150)
 set udg_BE_angle[udg_BE_array]=AngleBetweenPoints(udg_BE_point1[0],udg_BE_target[0])
 call CreateNUnitsAtLocBonuses(1,'h047',GetOwningPlayer(udg_BE_caster[udg_BE_array]),udg_BE_point1[0],udg_BE_angle[udg_BE_array])
-set udg_BE_dummy[udg_BE_array]=GetLastCreatedUnit()
+set templastcreatedunit = GetLastCreatedUnit()
+set udg_BE_dummy[udg_BE_array]=templastcreatedunit
 set udg_BE_distance[udg_BE_array]=DistanceBetweenPoints(udg_BE_point1[0],udg_BE_target[0])
 call RemoveLocation(udg_BE_point1[0])
 call RemoveLocation(udg_BE_target[0])
+set templastcreatedunit = null
 endfunction
 function InitTrig_init2 takes nothing returns nothing
 set udg_trg_init=CreateTrigger()
@@ -36969,6 +37361,7 @@ endif
 return true
 endfunction
 function Trig_loop_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_BE_array2=1
 loop
 exitwhen udg_BE_array2>udg_BE_integer
@@ -36990,7 +37383,8 @@ call DestroyGroup(udg_BE_group[udg_BE_array2])
 set udg_bounces[udg_BE_array2]=0
 call RemoveUnit(udg_BE_dummy[udg_BE_array2])
 call CreateNUnitsAtLocBonuses(1,'h048',GetOwningPlayer(udg_BE_caster[udg_BE_array2]),udg_BE_move[udg_BE_array2],bj_UNIT_FACING)
-call UnitApplyTimedLifeBJ(2.00,'BTLF',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitApplyTimedLifeBJ(2.00,'BTLF',templastcreatedunit)
 else
 endif
 call RemoveLocation(udg_BE_point1[udg_BE_array2])
@@ -37010,6 +37404,7 @@ else
 endif
 set udg_BE_array2=udg_BE_array2+1
 endloop
+set templastcreatedunit = null
 endfunction
 function InitTrig_loop takes nothing returns nothing
 set udg_trg_loop=CreateTrigger()
@@ -37024,6 +37419,7 @@ endif
 return true
 endfunction
 function Trig_OOW_Main_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_OOW_CastCount=(udg_OOW_CastCount+1)
 set udg_OOW_OrbLifeTime=20.00
 set udg_OOW_MaxFlyHeight=150.00
@@ -37036,14 +37432,16 @@ set udg_OOW_Angle[udg_OOW_CastCount]=GetRandomDirectionDeg()
 set udg_OOW_HitGroup[udg_OOW_CastCount]=CreateGroup()
 set udg_OOW_LeakPoint[1]=GetUnitLoc(GetTriggerUnit())
 call CreateNUnitsAtLocBonuses(1,'h049',GetOwningPlayer(GetTriggerUnit()),udg_OOW_LeakPoint[1],bj_UNIT_FACING)
-set udg_OOW_Dummy[udg_OOW_CastCount]=GetLastCreatedUnit()
-call UnitApplyTimedLifeBJ(udg_OOW_OrbLifeTime,'BTLF',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+set udg_OOW_Dummy[udg_OOW_CastCount]=templastcreatedunit
+call UnitApplyTimedLifeBJ(udg_OOW_OrbLifeTime,'BTLF',templastcreatedunit)
 set udg_OOW_LeakPoint[2]=PolarProjectionBJ(udg_OOW_LeakPoint[1],udg_OOW_SphereRadius,udg_OOW_Angle[udg_OOW_CastCount])
 call SetUnitPositionLoc(udg_OOW_Dummy[udg_OOW_CastCount],udg_OOW_LeakPoint[2])
 call RemoveLocation(udg_OOW_LeakPoint[1])
 call RemoveLocation(udg_OOW_LeakPoint[2])
 call EnableTrigger(udg_trg_OOW_Dummies)
 call EnableTrigger(udg_trg_OOW_Units)
+set templastcreatedunit = null
 endfunction
 function InitTrig_OOW_Main takes nothing returns nothing
 set udg_trg_OOW_Main=CreateTrigger()
@@ -37284,6 +37682,7 @@ endif
 return true
 endfunction
 function Trig_Elune_Arrow_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_Arrow_Counts=(udg_Arrow_Counts+1)
 set udg_Arrow_CountMaxSize=8191
 if(Trig_Elune_Arrow_Func003C())then
@@ -37295,8 +37694,9 @@ set udg_Arrow_CasterLoc=GetUnitLoc(udg_Arrow_Caster[udg_Arrow_Counts])
 set udg_Arrow_TargetPoint=GetSpellTargetLoc()
 set udg_Arrow_Angle=AngleBetweenPoints(udg_Arrow_CasterLoc,udg_Arrow_TargetPoint)
 call CreateNUnitsAtLocBonuses(1,'e00A',GetOwningPlayer(udg_Arrow_Caster[udg_Arrow_Counts]),udg_Arrow_CasterLoc,udg_Arrow_Angle)
-call SetUnitUserData(GetLastCreatedUnit(),udg_Arrow_Counts)
-call GroupAddUnitSimple(GetLastCreatedUnit(),udg_Arrow_StartGroup)
+set templastcreatedunit = GetLastCreatedUnit()
+call SetUnitUserData(templastcreatedunit,udg_Arrow_Counts)
+call GroupAddUnitSimple(templastcreatedunit,udg_Arrow_StartGroup)
 set udg_Arrow_Distance[udg_Arrow_Counts]=2300.00
 set udg_Arrow_DistanceTravel[udg_Arrow_Counts]=0.00
 set udg_Arrow_StunDuration[udg_Arrow_Counts]=1
@@ -37304,6 +37704,7 @@ set udg_Arrow_DistanceCount[udg_Arrow_Counts]=0.00
 call EnableTrigger(udg_trg_Elune_Arrow_Move)
 call RemoveLocation(udg_Arrow_CasterLoc)
 call RemoveLocation(udg_Arrow_TargetPoint)
+set templastcreatedunit = null
 endfunction
 function InitTrig_Elune_Arrow takes nothing returns nothing
 set udg_trg_Elune_Arrow=CreateTrigger()
@@ -37333,12 +37734,15 @@ function Trig_Elune_Arrow_Move_Func001Func008002003 takes nothing returns boolea
 return GetBooleanAnd((IsUnitType(GetFilterUnit(),UNIT_TYPE_STRUCTURE)!=true),(GetBooleanAnd((UnitAlive(GetFilterUnit())==true),(IsUnitEnemy(GetFilterUnit(),GetOwningPlayer(udg_Arrow_Caster[udg_Arrow_CusValue]))==true))))
 endfunction
 function Trig_Elune_Arrow_Move_Func001Func010A takes nothing returns nothing
+local unit templastcreatedunit
 call UnitDamageTargetBJ(udg_Arrow_Caster[udg_Arrow_CusValue],GetEnumUnit(),(90.00*I2R(GetUnitAbilityLevelSwapped('A05U',udg_Arrow_Caster[udg_Arrow_CusValue]))),ATTACK_TYPE_NORMAL,DAMAGE_TYPE_NORMAL)
 call CreateNUnitsAtLocBonuses(1,'e009',GetOwningPlayer(udg_Arrow_Caster[udg_Arrow_CusValue]),udg_Arrow_Movement,bj_UNIT_FACING)
-call UnitAddAbilityBJ('A05V',GetLastCreatedUnit())
-call SetUnitAbilityLevelSwapped('A05V',GetLastCreatedUnit(),udg_Arrow_StunDuration[udg_Arrow_CusValue])
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"thunderbolt",GetEnumUnit())
-call UnitApplyTimedLifeBJ(1.50,'BTLF',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitAddAbilityBJ('A05V',templastcreatedunit)
+call SetUnitAbilityLevelSwapped('A05V',templastcreatedunit,udg_Arrow_StunDuration[udg_Arrow_CusValue])
+call IssueTargetOrderBJ(templastcreatedunit,"thunderbolt",GetEnumUnit())
+call UnitApplyTimedLifeBJ(1.50,'BTLF',templastcreatedunit)
+set templastcreatedunit = null
 endfunction
 function Trig_Elune_Arrow_Move_Func001Func011Func001C takes nothing returns boolean
 if((udg_Arrow_DistanceTravel[udg_Arrow_CusValue]>=udg_Arrow_Distance[udg_Arrow_CusValue]))then
@@ -38689,6 +39093,7 @@ endif
 return true
 endfunction
 function Trig_Death_Fall_Actions takes nothing returns nothing
+local unit templastcreatedunit
 if(Trig_Death_Fall_Func003C())then
 call EnableTrigger(udg_trg_Death_Fall_loop)
 else
@@ -38709,17 +39114,20 @@ set udg_DF_Damage2[udg_DF_index[2]]=15.00
 set udg_DF_Range[udg_DF_index[2]]=550.00
 set udg_DF_FriendlyDamage[udg_DF_index[2]]=false
 call CreateNUnitsAtLocBonuses(1,'h07C',Player(PLAYER_NEUTRAL_PASSIVE),udg_DF_Target[udg_DF_index[2]],270.00)
-set udg_DF_Dummy[udg_DF_index[2]]=GetLastCreatedUnit()
+set templastcreatedunit = GetLastCreatedUnit()
+set udg_DF_Dummy[udg_DF_index[2]]=templastcreatedunit
 call SetUnitFlyHeightBJ(udg_DF_Dummy[udg_DF_index[2]],800.00,999999.00)
 call AddSpecialEffectTargetUnitBJ("origin",udg_DF_Dummy[udg_DF_index[2]],"Abilities\\Spells\\Undead\\DeathCoil\\DeathCoilMissile.mdl")
 set udg_DF_SEffect1[udg_DF_index[2]]=GetLastCreatedEffectBJ()
 call SetUnitScalePercent(udg_DF_Dummy[udg_DF_index[2]],600.00,600.00,600.00)
 call CreateNUnitsAtLocBonuses(1,'h07C',Player(PLAYER_NEUTRAL_PASSIVE),udg_DF_Target[udg_DF_index[2]],bj_UNIT_FACING)
-call UnitApplyTimedLifeBJ(6.00,'BTLF',GetLastCreatedUnit())
-call SetUnitFlyHeightBJ(GetLastCreatedUnit(),0.00,0.00)
-call SetUnitScalePercent(GetLastCreatedUnit(),800.00,800.00,800.00)
-call AddSpecialEffectTargetUnitBJ("origin",GetLastCreatedUnit(),"Abilities\\Spells\\NightElf\\TargetArtLumber\\TargetArtLumber.mdl")
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitApplyTimedLifeBJ(6.00,'BTLF',templastcreatedunit)
+call SetUnitFlyHeightBJ(templastcreatedunit,0.00,0.00)
+call SetUnitScalePercent(templastcreatedunit,800.00,800.00,800.00)
+call AddSpecialEffectTargetUnitBJ("origin",templastcreatedunit,"Abilities\\Spells\\NightElf\\TargetArtLumber\\TargetArtLumber.mdl")
 set udg_DF_SEffect2[udg_DF_index[2]]=GetLastCreatedEffectBJ()
+set templastcreatedunit = null
 endfunction
 function InitTrig_Death_Fall takes nothing returns nothing
 set udg_trg_Death_Fall=CreateTrigger()
@@ -38832,6 +39240,7 @@ endif
 return true
 endfunction
 function Trig_Death_Fall_loop_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_DF_index[3]=1
 loop
 exitwhen udg_DF_index[3]>udg_DF_index[2]
@@ -38859,10 +39268,11 @@ call DestroyGroup(udg_DF_Group[1])
 call KillUnit(udg_DF_Dummy[udg_DF_index[3]])
 call DestroyEffectBJ(udg_DF_SEffect1[udg_DF_index[3]])
 call CreateNUnitsAtLocBonuses(1,'h07C',Player(PLAYER_NEUTRAL_PASSIVE),udg_DF_Target[udg_DF_index[3]],bj_UNIT_FACING)
-call UnitApplyTimedLifeBJ(5.00,'BTLF',GetLastCreatedUnit())
-call SetUnitFlyHeightBJ(GetLastCreatedUnit(),0.00,0.00)
-call SetUnitScalePercent(GetLastCreatedUnit(),400.00,400.00,400.00)
-call AddSpecialEffectTargetUnitBJ("chest",GetLastCreatedUnit(),"Objects\\Spawnmodels\\Undead\\UCancelDeath\\UCancelDeath.mdl")
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitApplyTimedLifeBJ(5.00,'BTLF',templastcreatedunit)
+call SetUnitFlyHeightBJ(templastcreatedunit,0.00,0.00)
+call SetUnitScalePercent(templastcreatedunit,400.00,400.00,400.00)
+call AddSpecialEffectTargetUnitBJ("chest",templastcreatedunit,"Objects\\Spawnmodels\\Undead\\UCancelDeath\\UCancelDeath.mdl")
 set udg_DF_SEffect1[udg_DF_index[3]]=GetLastCreatedEffectBJ()
 set udg_DF_Timer[udg_DF_index[3]]=1
 else
@@ -38914,6 +39324,7 @@ endif
 endif
 set udg_DF_index[3]=udg_DF_index[3]+1
 endloop
+set templastcreatedunit = null
 endfunction
 function InitTrig_Death_Fall_loop takes nothing returns nothing
 set udg_trg_Death_Fall_loop=CreateTrigger()
@@ -38946,6 +39357,7 @@ endif
 return true
 endfunction
 function Trig_Thunderwrath_Actions takes nothing returns nothing
+local unit templastcreatedunit
 if((IsTriggerEnabled(udg_trg_Thunderwrath_Loop)==false))then
 call EnableTrigger(udg_trg_Thunderwrath_Loop)
 else
@@ -38961,8 +39373,9 @@ set udg_TW_Damage=(25.00+(25.00*I2R(GetUnitAbilityLevelSwapped('A0CL',udg_TW_Cas
 set udg_TW_MissileSpeed=25.00
 set udg_TW_Return=false
 call CreateNUnitsAtLocBonuses(1,'h055',GetOwningPlayer(udg_TW_Caster),udg_TW_Point[0],udg_TW_Angle)
-set udg_TW_Dummy=GetLastCreatedUnit()
-set udg_TW_Handle=GetLastCreatedUnit()
+set templastcreatedunit = GetLastCreatedUnit()
+set udg_TW_Dummy=templastcreatedunit
+set udg_TW_Handle=templastcreatedunit
 call GroupAddUnitSimple(udg_TW_Dummy,udg_TW_Group)
 call AddSpecialEffectLocBJ(udg_TW_Point[2],"Abilities\\Weapons\\FarseerMissile\\FarseerMissile.mdl")
 call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -38971,8 +39384,9 @@ set udg_TW_SFX=GetLastCreatedEffectBJ()
 set udg_ThunderWrath_Chance=GenerateInt(MainGenerator, 1,4)
 if(Trig_Thunderwrath_Func021C())then
 call CreateNUnitsAtLocBonuses(1,'h056',GetOwningPlayer(udg_TW_Caster),udg_TW_Point[0],udg_TW_Angle)
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"bloodlust",GetTriggerUnit())
-call RemoveUnit(GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call IssueTargetOrderBJ(templastcreatedunit,"bloodlust",GetTriggerUnit())
+call RemoveUnit(templastcreatedunit)
 else
 endif
 call SaveRealBJ(udg_TW_Angle,StringHashBJ("angle"),GetHandleIdBJ(udg_TW_Handle),udg_TW_Hashtable)
@@ -38987,6 +39401,7 @@ set udg_TW_DamagedUnits[LoadInteger(udg_TW_Hashtable,GetHandleId(udg_TW_Handle),
 call RemoveLocation(udg_TW_Point[0])
 call RemoveLocation(udg_TW_Point[1])
 call RemoveLocation(udg_TW_Point[2])
+set templastcreatedunit = null
 endfunction
 function InitTrig_Thunderwrath takes nothing returns nothing
 set udg_trg_Thunderwrath=CreateTrigger()
@@ -39197,6 +39612,7 @@ endif
 return true
 endfunction
 function Trig_Sheep_Cast_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_ES_Counter=(udg_ES_Counter+1)
 set udg_ES_Cast=GetTriggerUnit()
 set udg_ES_Targ=GetSpellTargetUnit()
@@ -39213,38 +39629,41 @@ set udg_ES_DetectInvis=true
 if(Trig_Sheep_Cast_Func031C())then
 set udg_ES_Point[4]=GetUnitLoc(udg_ES_Targ)
 call CreateNUnitsAtLoc(1,'h01Z',GetOwningPlayer(udg_ES_Cast),udg_ES_Point[4],bj_UNIT_FACING)
+set templastcreatedunit = GetLastCreatedUnit()
 call RemoveLocation(udg_ES_Point[4])
-call UnitAddAbilityBJ('A04J',GetLastCreatedUnit())
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"attack",udg_ES_Targ)
-set udg_ES_Sheep=GetLastCreatedUnit()
+call UnitAddAbilityBJ('A04J',templastcreatedunit)
+call IssueTargetOrderBJ(templastcreatedunit,"attack",udg_ES_Targ)
+set udg_ES_Sheep=templastcreatedunit
 else
 endif
 call RemoveLocation(udg_ES_Point[1])
 call CreateNUnitsAtLoc(1,'H0SD',GetOwningPlayer(udg_ES_Cast),udg_ES_Point[2],bj_UNIT_FACING)
+set templastcreatedunit = GetLastCreatedUnit()
 if(GetUnitTypeId(udg_ES_Cast)!=0) then
-    call SetHeroInt(GetLastCreatedUnit(),GetHeroInt(udg_ES_Cast,true),true)
+    call SetHeroInt(templastcreatedunit,GetHeroInt(udg_ES_Cast,true),true)
 endif
 call RemoveLocation(udg_ES_Point[2])
-call GroupAddUnitSimple(GetLastCreatedUnit(),udg_ES_Sheeps)
-call SaveUnitHandleBJ(udg_ES_Targ,1,GetHandleIdBJ(GetLastCreatedUnit()),udg_ES_Hash)
-call SaveIntegerBJ(udg_ES_MaxTimer,2,GetHandleIdBJ(GetLastCreatedUnit()),udg_ES_Hash)
-call SaveIntegerBJ(0,3,GetHandleIdBJ(GetLastCreatedUnit()),udg_ES_Hash)
-call SaveRealBJ(udg_ES_AoE,4,GetHandleIdBJ(GetLastCreatedUnit()),udg_ES_Hash)
-call SaveRealBJ(udg_ES_Damage,5,GetHandleIdBJ(GetLastCreatedUnit()),udg_ES_Hash)
+call GroupAddUnitSimple(templastcreatedunit,udg_ES_Sheeps)
+call SaveUnitHandleBJ(udg_ES_Targ,1,GetHandleIdBJ(templastcreatedunit),udg_ES_Hash)
+call SaveIntegerBJ(udg_ES_MaxTimer,2,GetHandleIdBJ(templastcreatedunit),udg_ES_Hash)
+call SaveIntegerBJ(0,3,GetHandleIdBJ(templastcreatedunit),udg_ES_Hash)
+call SaveRealBJ(udg_ES_AoE,4,GetHandleIdBJ(templastcreatedunit),udg_ES_Hash)
+call SaveRealBJ(udg_ES_Damage,5,GetHandleIdBJ(templastcreatedunit),udg_ES_Hash)
 if(Trig_Sheep_Cast_Func056C())then
-call SaveUnitHandleBJ(udg_ES_Sheep,6,GetHandleIdBJ(GetLastCreatedUnit()),udg_ES_Hash)
+call SaveUnitHandleBJ(udg_ES_Sheep,6,GetHandleIdBJ(templastcreatedunit),udg_ES_Hash)
 else
 endif
-call SaveUnitHandleBJ(udg_ES_Cast,7,GetHandleIdBJ(GetLastCreatedUnit()),udg_ES_Hash)
-call SaveBooleanBJ(udg_ES_KillDestructables,8,GetHandleIdBJ(GetLastCreatedUnit()),udg_ES_Hash)
-call SaveBooleanBJ(udg_ES_CreateText,9,GetHandleIdBJ(GetLastCreatedUnit()),udg_ES_Hash)
-call SaveStringBJ(udg_ES_0Text,10,GetHandleIdBJ(GetLastCreatedUnit()),udg_ES_Hash)
-call SaveBooleanBJ(udg_ES_KillIfDead,11,GetHandleIdBJ(GetLastCreatedUnit()),udg_ES_Hash)
-call SaveBooleanBJ(udg_ES_DetectInvis,12,GetHandleIdBJ(GetLastCreatedUnit()),udg_ES_Hash)
+call SaveUnitHandleBJ(udg_ES_Cast,7,GetHandleIdBJ(templastcreatedunit),udg_ES_Hash)
+call SaveBooleanBJ(udg_ES_KillDestructables,8,GetHandleIdBJ(templastcreatedunit),udg_ES_Hash)
+call SaveBooleanBJ(udg_ES_CreateText,9,GetHandleIdBJ(templastcreatedunit),udg_ES_Hash)
+call SaveStringBJ(udg_ES_0Text,10,GetHandleIdBJ(templastcreatedunit),udg_ES_Hash)
+call SaveBooleanBJ(udg_ES_KillIfDead,11,GetHandleIdBJ(templastcreatedunit),udg_ES_Hash)
+call SaveBooleanBJ(udg_ES_DetectInvis,12,GetHandleIdBJ(templastcreatedunit),udg_ES_Hash)
 if(Trig_Sheep_Cast_Func066C())then
 call EnableTrigger(udg_trg_Sheep_Loop)
 else
 endif
+set templastcreatedunit = null
 endfunction
 function InitTrig_Sheep_Cast takes nothing returns nothing
 set udg_trg_Sheep_Cast=CreateTrigger()
@@ -39342,9 +39761,10 @@ function SheepDamageArea takes nothing returns nothing
 if(IsPlayerAlly(GetOwningPlayer(DamagingSheep),GetOwningPlayer(GetEnumUnit()))) then
 return
 endif
-call UnitDamageTarget(GetLastCreatedUnit(),GetEnumUnit(),GetHeroInt(DamagingSheep,false),true,false,ATTACK_TYPE_MAGIC,DAMAGE_TYPE_MAGIC, WEAPON_TYPE_WHOKNOWS )
+call UnitDamageTarget(DamagingSheep,GetEnumUnit(),GetHeroInt(DamagingSheep,false),true,false,ATTACK_TYPE_MAGIC,DAMAGE_TYPE_MAGIC, WEAPON_TYPE_WHOKNOWS )
 endfunction
 function Trig_Sheep_Loop_Func004A takes nothing returns nothing
+local unit templastcreatedunit
 local group g
 set udg_ES_Targ=LoadUnitHandleBJ(1,GetHandleIdBJ(GetEnumUnit()),udg_ES_Hash)
 set udg_ES_Cast=LoadUnitHandleBJ(7,GetHandleIdBJ(GetEnumUnit()),udg_ES_Hash)
@@ -39358,7 +39778,7 @@ else
 if(Trig_Sheep_Loop_Func004Func013Func001C())then
 set udg_ES_Units=GetUnitsInRangeOfLocMatching(LoadRealBJ(4,GetHandleIdBJ(GetEnumUnit()),udg_ES_Hash),udg_ES_Point[6],Condition(function Trig_Sheep_Loop_Func004Func013Func001Func001002003))
 if(Trig_Sheep_Loop_Func004Func013Func001Func002C())then
-call SaveUnitHandleBJ(GroupPickRandomUnit(udg_ES_Units),1,GetHandleIdBJ(GetLastCreatedUnit()),udg_ES_Hash)
+call SaveUnitHandleBJ(GroupPickRandomUnit(udg_ES_Units),1,GetHandleIdBJ(GetEnumUnit()),udg_ES_Hash)
 else
 call SaveIntegerBJ(-1,2,GetHandleIdBJ(GetEnumUnit()),udg_ES_Hash)
 endif
@@ -39406,10 +39826,11 @@ call RemoveUnit(LoadUnitHandleBJ(6,GetHandleIdBJ(GetEnumUnit()),udg_ES_Hash))
 else
 endif
 call CreateNUnitsAtLocBonuses(1,'h01Z',GetOwningPlayer(udg_ES_Sheep),udg_ES_Point[6],bj_UNIT_FACING)
-call UnitApplyTimedLifeBJ(1.00,'BTLF',GetLastCreatedUnit())
-call UnitAddAbilityBJ('A04I',GetLastCreatedUnit())
-call SetUnitAbilityLevelSwapped('A04I',GetLastCreatedUnit(),GetUnitAbilityLevelSwapped('A04K',udg_ES_Cast))
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"flamestrike",udg_ES_Point[6])
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitApplyTimedLifeBJ(1.00,'BTLF',templastcreatedunit)
+call UnitAddAbilityBJ('A04I',templastcreatedunit)
+call SetUnitAbilityLevelSwapped('A04I',templastcreatedunit,GetUnitAbilityLevelSwapped('A04K',udg_ES_Cast))
+call IssuePointOrderLocBJ(templastcreatedunit,"flamestrike",udg_ES_Point[6])
 set g = CreateGroup()
 call GroupEnumUnitsInRangeOfLoc(g,udg_ES_Point[6],200,Filter(function GeneralTargetFilterEnum))
 set DamagingSheep = udg_ES_Sheep
@@ -39427,6 +39848,7 @@ else
 endif
 call RemoveLocation(udg_ES_Point[6])
 call RemoveLocation(udg_ES_Point[3])
+set templastcreatedunit = null
 endfunction
 function Trig_Sheep_Loop_Func008C takes nothing returns boolean
 if(not(udg_ES_Counter<=0))then
@@ -39758,12 +40180,15 @@ call TriggerRegisterTimerEventPeriodic(udg_trg_Heroic_Leap_Loop,0.04)
 call TriggerAddAction(udg_trg_Heroic_Leap_Loop,function Trig_Heroic_Leap_Loop_Actions)
 endfunction
 function Trig_heroic_leap_stomp_Func001A takes nothing returns nothing
+local unit templastcreatedunit
 call UnitDamageTargetBJ(udg_Antidesync_temp_unit,GetEnumUnit(),(80.00*I2R(GetUnitAbilityLevelSwapped('A0A3',udg_Antidesync_temp_unit))),ATTACK_TYPE_NORMAL,DAMAGE_TYPE_NORMAL)
 call CreateNUnitsAtLocBonuses(1,'h03E',GetOwningPlayer(udg_Caster),udg_Points[1],bj_UNIT_FACING)
-call UnitAddAbilityBJ('A0JW',GetLastCreatedUnit())
-call SetUnitAbilityLevelSwapped('A0JW',GetLastCreatedUnit(),(3+GetUnitAbilityLevelSwapped('A0A3',udg_Antidesync_temp_unit)))
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"slow",GetEnumUnit())
-call UnitApplyTimedLifeBJ(2.00,'BTLF',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitAddAbilityBJ('A0JW',templastcreatedunit)
+call SetUnitAbilityLevelSwapped('A0JW',templastcreatedunit,(3+GetUnitAbilityLevelSwapped('A0A3',udg_Antidesync_temp_unit)))
+call IssueTargetOrderBJ(templastcreatedunit,"slow",GetEnumUnit())
+call UnitApplyTimedLifeBJ(2.00,'BTLF',templastcreatedunit)
+set templastcreatedunit = null
 endfunction
 function Trig_heroic_leap_stomp_Actions takes nothing returns nothing
 call ForGroupBJ(udg_TempGroup,function Trig_heroic_leap_stomp_Func001A)
@@ -39940,6 +40365,7 @@ endif
 return true
 endfunction
 function Trig_TOS_Loop_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_TOS_Integer=1
 loop
 exitwhen udg_TOS_Integer>udg_TOS_CasterNumber
@@ -39948,8 +40374,9 @@ if(Trig_TOS_Loop_Func002Func001Func001C())then
 if(Trig_TOS_Loop_Func002Func001Func001Func002C())then
 set udg_TOS_Point[1]=GetUnitLoc(udg_TOS_Caster[udg_TOS_Integer])
 call CreateNUnitsAtLocBonuses(1,'h052',GetOwningPlayer(udg_TOS_Caster[udg_TOS_Integer]),udg_TOS_Point[1],bj_UNIT_FACING)
-call SetUnitAnimation(GetLastCreatedUnit(),"birth")
-call UnitApplyTimedLifeBJ(udg_TOS_Grave_Duration,'BTLF',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call SetUnitAnimation(templastcreatedunit,"birth")
+call UnitApplyTimedLifeBJ(udg_TOS_Grave_Duration,'BTLF',templastcreatedunit)
 call RemoveLocation(udg_TOS_Point[1])
 set udg_TOS_Grave_Count[udg_TOS_Integer]=(udg_TOS_Grave_Count[udg_TOS_Integer]+1)
 if(Trig_TOS_Loop_Func002Func001Func001Func002Func007C())then
@@ -39977,6 +40404,7 @@ call DisableTrigger(GetTriggeringTrigger())
 endif
 set udg_TOS_Integer=udg_TOS_Integer+1
 endloop
+set templastcreatedunit = null
 endfunction
 function InitTrig_TOS_Loop takes nothing returns nothing
 set udg_trg_TOS_Loop=CreateTrigger()
@@ -39991,12 +40419,15 @@ endif
 return true
 endfunction
 function Trig_TOS_Skeletons_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_TOS_Point[2]=GetUnitLoc(GetTriggerUnit())
 call AddSpecialEffectLocBJ(udg_TOS_Point[2],udg_TOS_Speicaleffects)
 call DestroyEffectBJ(GetLastCreatedEffectBJ())
 call CreateNUnitsAtLocBonuses(1,'u01N',GetOwningPlayer(GetTriggerUnit()),udg_TOS_Point[2],bj_UNIT_FACING)
-call SetUnitAnimation(GetLastCreatedUnit(),"birth")
+set templastcreatedunit = GetLastCreatedUnit()
+call SetUnitAnimation(templastcreatedunit,"birth")
 call RemoveLocation(udg_TOS_Point[2])
+set templastcreatedunit = null
 endfunction
 function InitTrig_TOS_Skeletons takes nothing returns nothing
 set udg_trg_TOS_Skeletons=CreateTrigger()
@@ -40112,8 +40543,10 @@ endif
 return true
 endfunction
 function Trig_Insanity_Actions takes nothing returns nothing
+local unit templastcreatedunit
 call CreateNUnitsAtLocBonuses(1,'h02Z',GetOwningPlayer(GetSpellTargetUnit()),GetUnitLoc(GetSpellTargetUnit()),bj_UNIT_FACING)
-call UnitApplyTimedLifeBJ(8.00,'BTLF',GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitApplyTimedLifeBJ(8.00,'BTLF',templastcreatedunit)
 if(Trig_Insanity_Func003C())then
 call ForForce(udg_Humans,function Trig_Insanity_Func003Func001A)
 else
@@ -40133,9 +40566,9 @@ exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
 set udg_Insanity_Point=OffsetLocation(udg_loc_UnitEnemy,GenerateReal(MainGenerator, -1000.00,1000.00),GenerateReal(MainGenerator, -1000.00,1000.00))
 call CreateNUnitsAtLocFacingLocBJ(1,'h02Y',GetOwningPlayer(GetSpellTargetUnit()),udg_Insanity_Point,udg_Insanity_Point)
 call RemoveLocation(udg_Insanity_Point)
-call SetUnitPathing(GetLastCreatedUnit(),false)
+call SetUnitPathing(templastcreatedunit,false)
 set udg_Insanity_Point=OffsetLocation(udg_loc_UnitEnemy,GenerateReal(MainGenerator, -2000.00,2000.00),GenerateReal(MainGenerator, -2000.00,2000.00))
-call IssuePointOrderLocBJ(GetLastCreatedUnit(),"move",udg_Insanity_Point)
+call IssuePointOrderLocBJ(templastcreatedunit,"move",udg_Insanity_Point)
 call RemoveLocation(udg_Insanity_Point)
 set bj_forLoopAIndex=bj_forLoopAIndex+1
 endloop
@@ -40145,18 +40578,21 @@ loop
 exitwhen bj_forLoopBIndex>bj_forLoopBIndexEnd
 set udg_Insanity_Point=OffsetLocation(udg_loc_UnitEnemy,GenerateReal(MainGenerator, -1000.00,1000.00),GenerateReal(MainGenerator, -1000.00,1000.00))
 call CreateNUnitsAtLocFacingLocBJ(1,'h02Y',GetOwningPlayer(GetSpellAbilityUnit()),udg_Insanity_Point,udg_Insanity_Point)
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"attack",GetSpellTargetUnit())
+call IssueTargetOrderBJ(templastcreatedunit,"attack",GetSpellTargetUnit())
 call RemoveLocation(udg_Insanity_Point)
 set bj_forLoopBIndex=bj_forLoopBIndex+1
 endloop
 set udg_loc_Unit=GetUnitLoc(GetSpellAbilityUnit())
 call CreateNUnitsAtLocBonuses(1,'h02X',GetOwningPlayer(GetSpellAbilityUnit()),udg_loc_Unit,bj_UNIT_FACING)
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"invisibility",GetSpellAbilityUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call IssueTargetOrderBJ(templastcreatedunit,"invisibility",GetSpellAbilityUnit())
 call RemoveLocation(udg_loc_Unit)
 set udg_loc_UnitEnemy=GetUnitLoc(GetSpellTargetUnit())
 call CreateNUnitsAtLocBonuses(1,'h02X',GetOwningPlayer(GetSpellAbilityUnit()),udg_loc_UnitEnemy,bj_UNIT_FACING)
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"slow",GetSpellTargetUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call IssueTargetOrderBJ(templastcreatedunit,"slow",GetSpellTargetUnit())
 call RemoveLocation(udg_loc_UnitEnemy)
+set templastcreatedunit = null
 endfunction
 function InitTrig_Insanity takes nothing returns nothing
 set udg_trg_Insanity=CreateTrigger()
@@ -40313,6 +40749,7 @@ endif
 return true
 endfunction
 function Trig_Rock_Creation_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_RFS_DummyIntegers[3]=1
 loop
 exitwhen udg_RFS_DummyIntegers[3]>udg_RFS_DummyIntegers[1]
@@ -40322,8 +40759,9 @@ if(Trig_Rock_Creation_Func003Func001Func002C())then
 set udg_RFS_Timer[udg_RFS_DummyIntegers[3]]=0.00
 set udg_RFS_ConjurPoint=PolarProjectionBJ(udg_RFS_TempPoint[udg_RFS_DummyIntegers[3]],GenerateReal(MainGenerator, 0,udg_RF_AoE),GetRandomDirectionDeg())
 call CreateNUnitsAtLocBonuses(1,'n01C',GetOwningPlayer(udg_RFS_Caster[udg_RFS_DummyIntegers[3]]),udg_RFS_ConjurPoint,GetRandomDirectionDeg())
-call SetUnitFlyHeightBJ(GetLastCreatedUnit(),450.00,0.00)
-call SetUnitTimeScalePercent(GetLastCreatedUnit(),0.00)
+set templastcreatedunit = GetLastCreatedUnit()
+call SetUnitFlyHeightBJ(templastcreatedunit,450.00,0.00)
+call SetUnitTimeScalePercent(templastcreatedunit,0.00)
 call RemoveLocation(udg_RFS_ConjurPoint)
 if(Trig_Rock_Creation_Func003Func001Func002Func009C())then
 call EnableTrigger(udg_trg_callFadeEffect)
@@ -40331,7 +40769,7 @@ else
 endif
 set udg_F_Integers[1]=(udg_F_Integers[1]+1)
 set udg_F_Integers[2]=(udg_F_Integers[2]+1)
-set udg_F_Unit[udg_F_Integers[2]]=GetLastCreatedUnit()
+set udg_F_Unit[udg_F_Integers[2]]=templastcreatedunit
 set udg_F_Time[udg_F_Integers[2]]=1.00
 set udg_F_SetFadeValue[udg_F_Integers[2]]=true
 call SetUnitVertexColorBJ(udg_F_Unit[udg_F_Integers[2]],100,100,100,100.00)
@@ -40355,6 +40793,7 @@ else
 endif
 set udg_RFS_DummyIntegers[3]=udg_RFS_DummyIntegers[3]+1
 endloop
+set templastcreatedunit = null
 endfunction
 function InitTrig_Rock_Creation takes nothing returns nothing
 set udg_trg_Rock_Creation=CreateTrigger()
@@ -40498,6 +40937,7 @@ endif
 return true
 endfunction
 function Trig_Sine_Fall_and_Damage_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_RFSine_Integers[3]=1
 loop
 exitwhen udg_RFSine_Integers[3]>udg_RFSine_Integers[1]
@@ -40518,10 +40958,11 @@ set udg_RFSine_Integers[4]=1
 loop
 exitwhen udg_RFSine_Integers[4]>GenerateInt(MainGenerator, 2,3)
 call CreateNUnitsAtLocBonuses(1,'n01C',GetOwningPlayer(udg_RFSine_Caster[udg_RFSine_Integers[3]]),udg_RF_DamagePoint,GetRandomDirectionDeg())
-call SetUnitScalePercent(GetLastCreatedUnit(),30.00,30.00,30.00)
+set templastcreatedunit = GetLastCreatedUnit()
+call SetUnitScalePercent(templastcreatedunit,30.00,30.00,30.00)
 set udg_RFAA_JumpHigh_Distance=GenerateReal(MainGenerator, 0.30,0.70)
 set udg_RFAA_TargetPoint=PolarProjectionBJ(udg_RF_DamagePoint,GenerateReal(MainGenerator, 150.00,250.00),GetRandomDirectionDeg())
-set udg_RFAA_Unit=GetLastCreatedUnit()
+set udg_RFAA_Unit=templastcreatedunit
 set udg_RFAA_Speed=GenerateReal(MainGenerator, 7.00,10.00)
 set udg_RFA_Caster[(udg_RFA_Integers[2]+1)]=udg_RFSine_Caster[udg_RFSine_Integers[3]]
 set udg_RFA_MaxDmg[(udg_RFA_Integers[2]+1)]=udg_RFSine_MaxDamage[udg_RFSine_Integers[3]]
@@ -40553,6 +40994,7 @@ else
 endif
 set udg_RFSine_Integers[3]=udg_RFSine_Integers[3]+1
 endloop
+set templastcreatedunit = null
 endfunction
 function InitTrig_Sine_Fall_and_Damage takes nothing returns nothing
 set udg_trg_Sine_Fall_and_Damage=CreateTrigger()
@@ -40700,6 +41142,7 @@ endif
 return true
 endfunction
 function Trig_VO_Start_Actions takes nothing returns nothing
+local unit templastcreatedunit
 if(Trig_VO_Start_Func004C())then
 call EnableTrigger(udg_trg_VO_Loop)
 else
@@ -40721,10 +41164,12 @@ if(Trig_VO_Start_Func026C())then
 set udg_VO_Point[3]=GetUnitLoc(udg_VO_Victom[udg_VO_index[2]])
 call UnitDamageTargetBJ(udg_VO_Caster[udg_VO_index[2]],udg_VO_Victom[udg_VO_index[2]],udg_VO_Damage[udg_VO_index[2]],ATTACK_TYPE_NORMAL,DAMAGE_TYPE_LIGHTNING)
 call CreateNUnitsAtLocBonuses(1,'e00X',GetOwningPlayer(udg_VO_Caster[udg_VO_index[2]]),udg_VO_Point[udg_VO_index[2]],bj_UNIT_FACING)
-call KillUnit(GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call KillUnit(templastcreatedunit)
 call RemoveLocation(udg_VO_Point[3])
 else
 endif
+set templastcreatedunit = null
 endfunction
 function InitTrig_VO_Start takes nothing returns nothing
 set udg_trg_VO_Start=CreateTrigger()
@@ -40871,6 +41316,7 @@ endif
 return true
 endfunction
 function Trig_TS_Loop_Actions takes nothing returns nothing
+local unit templastcreatedunit
 set udg_TS_Index[3]=1
 loop
 exitwhen udg_TS_Index[3]>udg_TS_Index[2]
@@ -40884,9 +41330,10 @@ call DestroyEffectBJ(GetLastCreatedEffectBJ())
 call AddSpecialEffectTargetUnitBJ("origin",udg_TS_Caster[udg_TS_Index[3]],"Abilities\\Weapons\\Bolt\\BoltImpact.mdl")
 call DestroyEffectBJ(GetLastCreatedEffectBJ())
 call CreateNUnitsAtLocBonuses(1,'e00W',GetOwningPlayer(udg_TS_Caster[udg_TS_Index[3]]),udg_TS_Point[1],bj_UNIT_FACING)
+set templastcreatedunit = GetLastCreatedUnit()
 call UnitDamageTargetBJ(udg_TS_Caster[udg_TS_Index[3]],udg_TS_Victom[udg_TS_Index[3]],udg_TS_Damage[udg_TS_Index[3]],ATTACK_TYPE_NORMAL,DAMAGE_TYPE_LIGHTNING)
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"purge",udg_TS_Victom[udg_TS_Index[3]])
-call UnitApplyTimedLifeBJ(0.75,'BTLF',GetLastCreatedUnit())
+call IssueTargetOrderBJ(templastcreatedunit,"purge",udg_TS_Victom[udg_TS_Index[3]])
+call UnitApplyTimedLifeBJ(0.75,'BTLF',templastcreatedunit)
 set udg_TS=1
 loop
 exitwhen udg_TS>udg_TS_NumE[udg_TS_Index[3]]
@@ -40919,6 +41366,7 @@ else
 endif
 set udg_TS_Index[3]=udg_TS_Index[3]+1
 endloop
+set templastcreatedunit = null
 endfunction
 function InitTrig_TS_Loop takes nothing returns nothing
 set udg_trg_TS_Loop=CreateTrigger()
@@ -41161,9 +41609,12 @@ endif
 return true
 endfunction
 function Trig_Add_On_To_Above_Ability_Actions takes nothing returns nothing
+local unit templastcreatedunit
 call CreateNUnitsAtLocBonuses(1,'h00C',GetOwningPlayer(GetSpellAbilityUnit()),GetUnitLoc(GetSpellAbilityUnit()),bj_UNIT_FACING)
-call IssueImmediateOrderBJ(GetLastCreatedUnit(),"thunderclap")
-call RemoveUnit(GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call IssueImmediateOrderBJ(templastcreatedunit,"thunderclap")
+call RemoveUnit(templastcreatedunit)
+set templastcreatedunit = null
 endfunction
 function InitTrig_Add_On_To_Above_Ability takes nothing returns nothing
 set udg_trg_Add_On_To_Above_Ability=CreateTrigger()
@@ -41202,19 +41653,22 @@ endif
 return true
 endfunction
 function Trig_Passive_Death_Coil_Func001A takes nothing returns nothing
+local unit templastcreatedunit
 if(Trig_Passive_Death_Coil_Func001Func001C())then
 set udg_DarkSylv=GetEnumUnit()
 if(Trig_Passive_Death_Coil_Func001Func001Func002C())then
 set udg_AAAA_GP=GetUnitLoc(udg_DarkSylv)
 set udg_AAAA_Random_Enemy=GroupPickRandomUnit(GetUnitsInRangeOfLocMatching(800.00,udg_AAAA_GP,Condition(function Trig_Passive_Death_Coil_Func001Func001Func002Func002002001003)))
 call CreateNUnitsAtLocBonuses(1,'h06I',GetOwningPlayer(udg_DarkSylv),udg_AAAA_GP,bj_UNIT_FACING)
-call IssueTargetOrderBJ(GetLastCreatedUnit(),"deathcoil",udg_AAAA_Random_Enemy)
-call RemoveUnit(GetLastCreatedUnit())
+set templastcreatedunit = GetLastCreatedUnit()
+call IssueTargetOrderBJ(templastcreatedunit,"deathcoil",udg_AAAA_Random_Enemy)
+call RemoveUnit(templastcreatedunit)
 call RemoveLocation(udg_AAAA_GP)
 else
 endif
 else
 endif
+set templastcreatedunit = null
 endfunction
 function Trig_Passive_Death_Coil_Actions takes nothing returns nothing
 call ForGroupBJ(GetUnitsInRectAll(GetEntireMapRect()),function Trig_Passive_Death_Coil_Func001A)
@@ -42622,6 +43076,7 @@ endif
 return true
 endfunction
 function Trig_Dialogue_pt4_Func001A takes nothing returns nothing
+local unit templastcreatedunit
 if(Trig_Dialogue_pt4_Func001Func001C())then
 if(Trig_Dialogue_pt4_Func001Func001Func001C())then
 call DisplayTimedTextToForce(GetPlayersAll(),30,"|cff32cd32Normal Mode|r")
@@ -42634,8 +43089,9 @@ set udg_SatyrBarracks_Point=GetRectCenter(udg_rct_Satyr_Barracks)
 set udg_Hard_Mode=true
 call CreateUnitBonuses(Neutral_Satyrs,'h01G',-6628,3892,270.000)
 call CreateNUnitsAtLoc(1,'o00M',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
+set templastcreatedunit = GetLastCreatedUnit()
 
-set udg_Satyr_Barracks=GetLastCreatedUnit()
+set udg_Satyr_Barracks=templastcreatedunit
 call EnableTrigger(udg_trg_Satyr_Research_upgrades)
 call EnableTrigger(udg_trg_Satyr_Spawn)
 call DisplayTimedTextToForce(GetPlayersAll(),30,"|cff32cd32Hard Mode|r")
@@ -42649,7 +43105,8 @@ endif
 if(Trig_Dialogue_pt4_Func001Func001Func003C())then
 set udg_SatyrBarracks_Point=GetRectCenter(udg_rct_Satyr_Barracks)
 call CreateNUnitsAtLoc(1,'o00M',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
-set udg_Satyr_Barracks=GetLastCreatedUnit()
+set templastcreatedunit = GetLastCreatedUnit()
+set udg_Satyr_Barracks=templastcreatedunit
 call EnableTrigger(udg_trg_Satyr_Research_upgrades)
 call EnableTrigger(udg_trg_Satyr_Spawn)
 set udg_Extreme_Mode=true
@@ -42660,6 +43117,7 @@ endif
 else
 endif
 call Trig_Create3rdTeam_Actions()
+set templastcreatedunit = null
 endfunction
 function HumanAdd2LivesEnum takes nothing returns nothing
 call AddLivesP(GetEnumPlayer(),2)
@@ -42741,6 +43199,7 @@ call TriggerAddCondition(udg_trg_Game_settings_5_NEW,Condition(function Trig_Gam
 call TriggerAddAction(udg_trg_Game_settings_5_NEW,function Trig_Game_settings_5_NEW_Actions)
 endfunction
 function ApplyHCLSettings takes nothing returns nothing
+local unit templastcreatedunit
 local integer i=0
 local integer nfmode
 if(HCLCompleted)then
@@ -42799,8 +43258,9 @@ set udg_Hard_Mode=true
 set udg_PirateChance = 6
 call CreateUnitBonuses(Neutral_Satyrs,'h01G',-6628,3892,270.000)
 call CreateNUnitsAtLoc(1,'o00M',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
+set templastcreatedunit = GetLastCreatedUnit()
 
-set udg_Satyr_Barracks=GetLastCreatedUnit()
+set udg_Satyr_Barracks=templastcreatedunit
 call EnableTrigger(udg_trg_Satyr_Research_upgrades)
 call EnableTrigger(udg_trg_Satyr_Spawn)
 set udg_PirateChance = 6
@@ -42810,7 +43270,8 @@ elseif(SubString(HCLcommand,3,4)=="e")then
 set udg_PirateChance = 6
 set udg_SatyrBarracks_Point=GetRectCenter(udg_rct_Satyr_Barracks)
 call CreateNUnitsAtLoc(1,'o00M',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
-set udg_Satyr_Barracks=GetLastCreatedUnit()
+set templastcreatedunit = GetLastCreatedUnit()
+set udg_Satyr_Barracks=templastcreatedunit
 call EnableTrigger(udg_trg_Satyr_Research_upgrades)
 call EnableTrigger(udg_trg_Satyr_Spawn)
 set udg_Extreme_Mode=true
@@ -42822,7 +43283,8 @@ else
 set udg_PirateChance = 6
 set udg_SatyrBarracks_Point=GetRectCenter(udg_rct_Satyr_Barracks)
 call CreateNUnitsAtLoc(1,'o00M',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
-set udg_Satyr_Barracks=GetLastCreatedUnit()
+set templastcreatedunit = GetLastCreatedUnit()
+set udg_Satyr_Barracks=templastcreatedunit
 call EnableTrigger(udg_trg_Satyr_Research_upgrades)
 call EnableTrigger(udg_trg_Satyr_Spawn)
 set udg_Extreme_Mode=true
@@ -42908,6 +43370,7 @@ call DisableTrigger(udg_trg_Builder_Lumber_Income_Every_Five_Secconds)
 endif
 call Trig_Create3rdTeam_Actions()
 set HCLcommand="Hcl successfully worked"
+set templastcreatedunit = null
 endfunction
 function Trig_Game_settings_Conditions takes nothing returns boolean
 if(not(GetPlayerColor(GetTriggerPlayer())==PLAYER_COLOR_RED))then
