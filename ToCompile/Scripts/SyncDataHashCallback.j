@@ -5,13 +5,14 @@ library SyncData requires APIMemoryBitwise, CheaterNicknames
     public integer previousgroups[];
     public integer prevpreviousgroups[];
     public integer no_data_marker=0;
-    public constant real SyncDataTimeout = 2;
+    public constant real SyncDataTimeout = 0.1;
 
     public constant integer si__Sync=1;
     public integer si__Sync_F=0;
     public integer si__Sync_I=0;
     public integer si__Sync_V[];
     public integer s__Sync_sync_offset=8192;
+    public integer SyncData_sync_cnt = 0;
 
     boolean Prevoiousdesync = false;
 
@@ -43,6 +44,7 @@ library SyncData requires APIMemoryBitwise, CheaterNicknames
             DisplayTimedTextToPlayer(GetLocalPlayer(),0,0,1000.,"Double free of type: Sync");
             return;
         }
+        SyncData_sync_cnt = SyncData_sync_cnt - 1;
         si__Sync_V[this]=si__Sync_F;
         si__Sync_F=this;
     }
@@ -167,6 +169,8 @@ library SyncData requires APIMemoryBitwise, CheaterNicknames
     function onInit()
     {
         integer i;
+
+        SyncData_sync_cnt = 0;
         PlayerDataCache=InitGameCache("Sync");
         SyncHashTable=InitHashtable();
         for(0<=i<=11)
