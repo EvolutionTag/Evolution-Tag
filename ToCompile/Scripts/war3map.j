@@ -36733,6 +36733,7 @@ loop
 exitwhen udg_PN_Int>13
 set udg_TempLoc=PolarProjectionBJ(udg_TargetLoc,-600.00,(I2R(udg_PN_Int)*28.00))
 call CreateNUnitsAtLocFacingLocBJ(1,'h02Q',GetOwningPlayer(GetTriggerUnit()),udg_TargetLoc,udg_TempLoc)
+set templastcreatedunit = GetLastCreatedUnit()
 call SetUnitAbilityLevelSwapped('A07N',templastcreatedunit,GetUnitAbilityLevelSwapped('A07O',GetTriggerUnit()))
 call IssuePointOrderLocBJ(templastcreatedunit,"move",udg_TempLoc)
 call UnitApplyTimedLifeBJ(1.50,'BTLF',templastcreatedunit)
@@ -40565,6 +40566,7 @@ loop
 exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
 set udg_Insanity_Point=OffsetLocation(udg_loc_UnitEnemy,GenerateReal(MainGenerator, -1000.00,1000.00),GenerateReal(MainGenerator, -1000.00,1000.00))
 call CreateNUnitsAtLocFacingLocBJ(1,'h02Y',GetOwningPlayer(GetSpellTargetUnit()),udg_Insanity_Point,udg_Insanity_Point)
+set templastcreatedunit = GetLastCreatedUnit()
 call RemoveLocation(udg_Insanity_Point)
 call SetUnitPathing(templastcreatedunit,false)
 set udg_Insanity_Point=OffsetLocation(udg_loc_UnitEnemy,GenerateReal(MainGenerator, -2000.00,2000.00),GenerateReal(MainGenerator, -2000.00,2000.00))
@@ -40578,6 +40580,7 @@ loop
 exitwhen bj_forLoopBIndex>bj_forLoopBIndexEnd
 set udg_Insanity_Point=OffsetLocation(udg_loc_UnitEnemy,GenerateReal(MainGenerator, -1000.00,1000.00),GenerateReal(MainGenerator, -1000.00,1000.00))
 call CreateNUnitsAtLocFacingLocBJ(1,'h02Y',GetOwningPlayer(GetSpellAbilityUnit()),udg_Insanity_Point,udg_Insanity_Point)
+set templastcreatedunit = GetLastCreatedUnit()
 call IssueTargetOrderBJ(templastcreatedunit,"attack",GetSpellTargetUnit())
 call RemoveLocation(udg_Insanity_Point)
 set bj_forLoopBIndex=bj_forLoopBIndex+1
