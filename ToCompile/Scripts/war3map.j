@@ -8745,7 +8745,7 @@ endfunction
 
 function AddUnitBonusesCreatedInit takes nothing returns nothing
     local trigger t = CreateTrigger()
-    call TriggerRegisterEnterRectSimple( t, GetPlayableMapRect() )
+    call TriggerRegisterEnterRectSimple( t, Rect(-999999,-999999,999999,999999) )
     call TriggerAddCondition(t,function GeneralTargetCondition)
     call TriggerAddAction( t, function AddUnitBonusesCreated )
 endfunction
