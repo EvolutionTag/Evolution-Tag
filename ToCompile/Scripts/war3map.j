@@ -16107,8 +16107,9 @@ set templastcreatedunit = null
 endfunction
 function Trig_uu_merchants_Actions takes nothing returns nothing
     call CreateAlchemistWithChance(3200, 450)
-    call CreateAlchemistWithChance(3776, -2862)
-    call CreateAlchemistWithChance(0, -3800)
+    //call CreateAlchemistWithChance(3776, -2862) //?
+    //call CreateAlchemistWithChance(0, -3800) //bad position, causes? dedsync
+    call CreateAlchemistWithChance(0, -3000)
     call CreateAlchemistWithChance(2800, -2170)
     call CreateAlchemistWithChance(-3500, 2937)
     call CreateAlchemistWithChance(1730, 2187)
