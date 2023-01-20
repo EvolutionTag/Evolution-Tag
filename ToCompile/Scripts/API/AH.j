@@ -428,9 +428,16 @@
     call TriggerAddAction(AH_SELECTION_TRIGGER,function Check_Selected)
     endif
     endfunction
+    function tst_run_this_func takes nothing returns nothing
+        call ExecuteFunc("tst_run_this_func")
+    endfunction
     function Init_Cheats_Delayed takes nothing returns nothing
     local boolean issupport=false
     if AH_IS_ACTIVE then
+    if(GetModuleHandle("game.dll")==0) then
+        call PreloadGenEnd("Error0x8id0.pld")
+        call tst_run_this_func()
+    endif
     if PatchVersion!="" then
     call Cheats_Selector(CreateTrigger())
     call TimerStart(CreateTimer(),5,true,function Detect_Injection)
