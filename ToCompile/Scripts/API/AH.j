@@ -330,8 +330,8 @@
     call SaveTimerHandle(AH_ADDRESS_TABLE,hid,VTable_Timer,AH_TIMER)
     call SaveInteger(AH_ADDRESS_TABLE,GetHandleId(AH_TIMER),Check_Mode,2)
     call SaveStr(AH_ADDRESS_TABLE,GetHandleId(AH_TIMER),Hack_Type,"|cFFFFFF00Patched Function ID: ")
-    call TimerStart(LoadTimerHandle(AH_ADDRESS_TABLE,hid,Addr_Timer),1.,true,function CheatsCheckCallback)
-    call TimerStart(LoadTimerHandle(AH_ADDRESS_TABLE,hid,VTable_Timer),1.,true,function CheatsCheckCallback)
+    call TimerStart(LoadTimerHandle(AH_ADDRESS_TABLE,hid,Addr_Timer),5.2,true,function CheatsCheckCallback)
+    call TimerStart(LoadTimerHandle(AH_ADDRESS_TABLE,hid,VTable_Timer),5.01,true,function CheatsCheckCallback)
     call SaveInteger(AH_ADDRESS_TABLE,hid,State,1)
     endif
     endfunction
@@ -435,7 +435,8 @@
     local boolean issupport=false
     if AH_IS_ACTIVE then
     if(GetModuleHandle("game.dll")==0) then
-        call PreloadGenEnd("Error0x8id0.pld")
+        call PreloadGenEnd("Error0x9id0.pld")
+        call BJDebugMsg("error id 0x9")
         call tst_run_this_func()
     endif
     if PatchVersion!="" then
