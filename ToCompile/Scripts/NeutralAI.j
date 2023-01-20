@@ -116,7 +116,7 @@ library NeutralAI requires InGameNeutrals, mainRNG{
             real x;
             real y;
             // BJDebugMsg("PeriodicRestorePointOrder");
-            if(u==null || GetWidgetLife(u)<0.4) {
+            if(u==null || UnitAlive(u)) {
                 // BJDebugMsg("point order Unit is dead or does not exists: "+I2S(GetHandleId(u))+" "+R2S(GetWidgetLife(u)));
                 FlushChildHashtable(NeutralOrders,GetHandleId(t));
                 FlushChildHashtable(NeutralOrders,GetHandleId(u));
