@@ -124,6 +124,7 @@ library NeutralAI requires InGameNeutrals, mainRNG{
             }
             else {
                 order = LoadStr(NeutralOrders,GetHandleId(u),1);
+                SetUnitPosition(u,GetUnitX(u),GetUnitY(u));
                 x = LoadReal(NeutralOrders,GetHandleId(u),2);
                 y = LoadReal(NeutralOrders,GetHandleId(u),3);
                 IssuePointOrder(u,order,x,y);
