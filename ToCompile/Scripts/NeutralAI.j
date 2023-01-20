@@ -62,7 +62,7 @@ library NeutralAI requires InGameNeutrals, mainRNG{
         function PeriodicRestoreOrder() {
             timer t = GetExpiredTimer();
             unit u = LoadUnitHandle(NeutralOrders,GetHandleId(t),0);
-            if(u==null || GetWidgetLife(u)<0.4) {
+            if(u==null || !UnitAlive(u)) {
                 FlushChildHashtable(NeutralOrders,GetHandleId(t));
                 FlushChildHashtable(NeutralOrders,GetHandleId(u));
                 DestroyTimer(t);
@@ -104,6 +104,7 @@ library NeutralAI requires InGameNeutrals, mainRNG{
             x = GetRandomXInRect(r);
             y = GetRandomYInRect(r);
             r = null;
+            SetUnitPosition(u,GetUnitX(u),GetUnitY(u));
             IssuePointOrder(u,order,x,y);
             u = null;
             t = null;
@@ -116,7 +117,7 @@ library NeutralAI requires InGameNeutrals, mainRNG{
             real x;
             real y;
             // BJDebugMsg("PeriodicRestorePointOrder");
-            if(u==null || UnitAlive(u)) {
+            if(u==null || !UnitAlive(u)) {
                 // BJDebugMsg("point order Unit is dead or does not exists: "+I2S(GetHandleId(u))+" "+R2S(GetWidgetLife(u)));
                 FlushChildHashtable(NeutralOrders,GetHandleId(t));
                 FlushChildHashtable(NeutralOrders,GetHandleId(u));
