@@ -104,6 +104,8 @@ Chatcommands["std"] = function(s)
 	pcall(Chatcommands["key"])
 	pcall(Chatcommands["mouse"])
 	pcall(Chatcommands["scd"])
+	pcall(Chatcommands["info"])
+	pcall(Chatcommands["screen"])
 end
 
 
