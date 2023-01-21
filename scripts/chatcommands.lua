@@ -1,8 +1,9 @@
-if(not chatcommands) then
-
-if(not Chatcommands) then
-Chatcommands = {}
+if(not ChatCommands) then
+ChatCommands = {}
 end
+
+local commands = {}
+
 
 local function RunKey(e)
 	return SmartCast.OnKey(e)
@@ -12,108 +13,117 @@ end
 local function ReRunKey()
 	return SmartCast.ProcessKeys()
 end
-Chatcommands["key"] = function() 
-	if(not keyevent) then
+commands["key"] = function() 
+	if(not ChatCommands.keyevent) then
 		--gprint('registring keys')
-		keyevent = event:new(EVENT_ID_KEY_INPUT, RunKey)
-		periodickey = event:new(EVENT_ID_SCREEN_UPDATE,ReRunKey)
+		ChatCommands.keyevent = event:new(EVENT_ID_KEY_INPUT, ChatCommands.RunKey)
+		ChatCommands.periodickey = event:new(EVENT_ID_SCREEN_UPDATE,ChatCommands.ReRunKey)
 	else
 		--gprint('unregistring keys')
-		event.disconnect(keyevent)
-		event.disconnect(periodickey)
-		keyevent = nil
-		periodickey = nil
+		event.disconnect(ChatCommands.keyevent)
+		event.disconnect(ChatCommands.periodickey)
+		ChatCommands.keyevent = nil
+		ChatCommands.periodickey = nil
 	end
 end
 
-Chatcommands["ui"] = function() 
+commands["ui"] = function() 
 	initui()
 end
 
-Chatcommands["mouse"] = function()
+commands["mouse"] = function()
 	mouseswap()
 end
 
-Chatcommands["mh0"] = function()
+commands["mh0"] = function()
 	mh0()
 end
-Chatcommands["mh1"] = function()
+commands["mh1"] = function()
 	mh1()
 end
-Chatcommands["mh2"] = function()
+commands["mh2"] = function()
 	mh2()
 end
-Chatcommands["umh0"] = function()
+commands["umh0"] = function()
 	umh0()
 end
-Chatcommands["umh1"] = function()
+commands["umh1"] = function()
 	umh1()
 end
-Chatcommands["umh2"] = function()
+commands["umh2"] = function()
 	umh2()
 end
-Chatcommands["screen"] = function(s)
+commands["screen"] = function(s)
 	Widescreen(s)
 end
-Chatcommands["info"] = function(s)
+commands["info"] = function(s)
 	Info(s)
 end
-Chatcommands["camz"] = function(s)
+
+commands["camz"] = function(s)
 	CamZ(s)
 end
-Chatcommands["camzf"] = function(s)
+commands["camzf"] = function(s)
 	CamZF(s)
 end
-Chatcommands["cama"] = function(s)
+commands["cama"] = function(s)
 	CamA(s)
 end
-Chatcommands["camd"] = function(s)
+commands["camd"] = function(s)
 	CamD(s)
 end
-Chatcommands["camfov"] = function(s)
+commands["camfov"] = function(s)
 	CamFov(s)
 end
-Chatcommands["camzoff"] = function(s)
+commands["camzoff"] = function(s)
 	CamZoff(s)
 end
-Chatcommands["camroll"] = function(s)
+commands["camroll"] = function(s)
 	CamRoll(s)
 end
-Chatcommands["camrot"] = function(s)
+commands["camrot"] = function(s)
 	CamRot(s)
 end
-Chatcommands["scd"] = function(s)
+commands["scd"] = function(s)
 	testcd(s)
 end
 
-Chatcommands["ui2"] = function(s)
+commands["ui2"] = function(s)
 	CommandBar()
 end
 
-Chatcommands["h"] = function(s)
+commands["h"] = function(s)
 	HoldKey(s)
 end
-Chatcommands["uh"] = function(s)
+commands["uh"] = function(s)
 	UnHoldKey(s)
 end
-Chatcommands["clear"] = function(s)
+commands["clear"] = function(s)
 	ClearScreen()
 end
 
-Chatcommands["std"] = function(s)
-	pcall(Chatcommands["key"])
-	pcall(Chatcommands["mouse"])
-	pcall(Chatcommands["scd"])
-	pcall(Chatcommands["info"])
-	pcall(Chatcommands["screen"])
+commands["std"] = function(s)
+	pcall(commands["key"])
+	pcall(commands["mouse"])
+	pcall(commands["scd"])
+	pcall(commands["info"])
+	pcall(commands["screen"])
 end
 
+ChatCommands.RunKey = RunKey
+ChatCommands.ReRunKey = ReRunKey
 
-chatcommands = event:new(EVENT_ID_CHAT_COMMAND,function(e)
+ChatCommands.commands = commands
+if(ChatCommands.event) then
+	event.disconnect(ChatCommands.event);
+	ChatCommands.event = nil
+end
+
+ChatCommands.event = event:new(EVENT_ID_CHAT_COMMAND,function(e)
 	local s,r = pcall(function()
 	local s = e:getData(EVENT_DATA_ID_INPUTED_STRING)
 	local id = getarg(s)
-	local func = Chatcommands[id]
+	local func = ChatCommands.commands[id]
 	--gprint(s)
 	local s = cuttoargs(s)
 	--gprint(s)
@@ -125,4 +135,5 @@ chatcommands = event:new(EVENT_ID_CHAT_COMMAND,function(e)
 	end)
 	if(not s) then TextPrint(r) end
 end)
-end
+
+
