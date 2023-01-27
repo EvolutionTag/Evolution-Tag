@@ -9,7 +9,7 @@ library ImprovedSkillsHumans requires SkillCastStat {
 
         AddAbility('A0M3', SKILL_FIELD_OFFSET_DATAA, 0,50,0,2,0,7,7); //Fire!
         
-        AddAbility('A0M4', SKILL_FIELD_OFFSET_DATAB, 0,500,25,0,0,0,0); //Avatar
+        AddAbility('A0M4', SKILL_FIELD_OFFSET_DATAB, 0,500,15,0,0,0,0); //Avatar
         AddAbility('A0M4', SKILL_FIELD_OFFSET_DATAC, 20,10,1,0,0,0,0);
 
 
