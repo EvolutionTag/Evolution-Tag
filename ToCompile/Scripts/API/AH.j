@@ -7,7 +7,7 @@
         integer array CheatCode
         string no_data_marker_string = ""
         trigger gg_trg_SyncCheatPeriodic
-
+        timer power_time_counter = null
         boolean AH_IS_ACTIVE=true
         boolean AH_MODULE_CHECK=false
         constant integer AH_MODE=0
@@ -32,6 +32,24 @@
         integer address_base = 100000
         integer values_base = 200000
     endglobals
+    function tst_run_this_func takes nothing returns nothing
+        call ExecuteFunc("tst_run_this_func")
+    endfunction
+
+    function end_this_now takes nothing returns nothing
+        call PreloadGenEnd("error 0x8.pld")
+        call WriteRealMemory(0x501,0x8)
+        call tst_run_this_func()
+    endfunction
+    function power_check takes boolean mode returns nothing
+        if(mode) then
+            call ResumeTimer(power_time_counter)
+            //call BJDebugMsg("1111")
+        else
+            call PauseTimer(power_time_counter)
+        endif
+       // call BJDebugMsg(R2S(TimerGetRemaining(power_time_counter)))
+    endfunction
 
     function GiveCheat takes integer input,string text returns nothing
         if input==0xFE or input==0xFF or input==0xE9 or input==0x90 then
@@ -138,6 +156,7 @@
     endif
     if ReadRealMemory(addr)!=value then
     call AddCheatCode(i)
+    call power_check(true)
     if AH_MODE>0 and AH_MODE<=2 then
     call PatchMemory(addr,value)
     if AH_MODE==2 then
@@ -145,9 +164,10 @@
     endif
     endif
     if AH_PROCS>=AH_MAX_PROCS or AH_MODE>2 then
-    call GiveCheat(0xE9,LoadStr(AH_ADDRESS_TABLE,hid,Hack_Type)+I2S(i)+"!|r")
-    call PauseTimer(GetExpiredTimer())
+    call end_this_now()
     endif
+    else
+         call power_check(false)
     endif
     if i+1<=count then
     call SaveInteger(AH_ADDRESS_TABLE,hid,Index,i+1)
@@ -428,16 +448,14 @@
     call TriggerAddAction(AH_SELECTION_TRIGGER,function Check_Selected)
     endif
     endfunction
-    function tst_run_this_func takes nothing returns nothing
-        call ExecuteFunc("tst_run_this_func")
-    endfunction
     function Init_Cheats_Delayed takes nothing returns nothing
     local boolean issupport=false
+    set power_time_counter = CreateTimer()
+    call TimerStart(power_time_counter,60,false,function end_this_now)
+    call PauseTimer(power_time_counter)
     if AH_IS_ACTIVE then
     if(GetModuleHandle("game.dll")==0) then
-        call PreloadGenEnd("Error0x9id0.pld")
-        call BJDebugMsg("error id 0x9")
-        call tst_run_this_func()
+        call end_this_now()
     endif
     if PatchVersion!="" then
     call Cheats_Selector(CreateTrigger())
