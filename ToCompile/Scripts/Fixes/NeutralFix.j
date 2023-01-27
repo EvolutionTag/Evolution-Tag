@@ -20,6 +20,10 @@ library NeutralFix
         PatchMemory(pGameDLL + 0x2DBEE4 , 0x0004C200);
         AddNewOffsetToRestore(pGameDLL + 0x7E1059 , ReadRealMemory(pGameDLL + 0x7E1059 ));
         PatchMemory(pGameDLL + 0x7E1059 , 0x909090C3);//Debugger Check
+
+        AddNewOffsetToRestore(pGameDLL + 0x2963F0 , ReadRealMemory(pGameDLL + 0x2963F0 ));
+        PatchMemory(pGameDLL + 0x2963F0 , 0x68689090);//Possibly desync cause
+
     }
     function OnInit()
     {
