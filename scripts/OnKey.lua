@@ -17,12 +17,17 @@ s[VK.Q]={0,0};s[VK.W] = {0,1};s[ VK.E] = {0,2};s[VK.R] = {0,3};s[ VK.T]=0;s[VK.Y
 s[VK.A] = {1,0};s[VK.S]= {1,1};s[VK.D] = {1,2};s[ VK.F] = {1,3};s[VK.G]=2;s[VK.H]=3;
 s[VK.Z] = {2,0};s[VK.X]={2,1};s[VK.C]={2,2};s[VK.V] = {2,3};s[VK.B]=4;s[VK.N]=5;
 s[0x20a] = function()
-	if(FS()==0 or FS()==nil) then 
+	local targ = RRS()
+	if(not targ or targ == 0) then
+		targ = FS()
+	end
+	if(not targ or targ == 0) then 
 		SetCameraPosition(GetCameraTargetPositionX(),GetCameraTargetPositionY())
 		SmartCast.follow = false
 	else
-		if(SmartCast.follow) then SetCameraTargetController(FS(),0,0,false)
-			else SetCameraPosition(GetUnitX(FS()),GetUnitY(FS()))
+		
+		if(not SmartCast.follow) then SetCameraTargetController(targ,0,0,false)
+			else SetCameraPosition(GetUnitX(targ),GetUnitY(targ))
 		end
 		SmartCast.follow = not follow
 	end
