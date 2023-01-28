@@ -37,6 +37,35 @@ s = {}
 local ALTKey = s
 s = nil
 
+SmartCast.SCKey = SCKey
+SmartCast.ALTKey = ALTKey
+
+
+SCKey[273] = function()
+	if(IsKeyPressed(VK.CTRL)) then
+		SetCameraField(CAMERA_FIELD_TARGET_DISTANCE,GetCameraField(CAMERA_FIELD_TARGET_DISTANCE)+100,0)
+		return false
+	end
+end
+SCKey[272] = function()
+	if(IsKeyPressed(VK.CTRL)) then
+		SetCameraField(CAMERA_FIELD_TARGET_DISTANCE,GetCameraField(CAMERA_FIELD_TARGET_DISTANCE)-100,0)
+		return false
+	end
+end
+
+local rotation = 0
+ALTKey[273] = function()
+	rotation = rotation - 1
+	SetCameraField(CAMERA_FIELD_ROTATION,rotation,0)
+	return false
+end
+ALTKey[272] = function()
+	rotation = rotation + 1
+	SetCameraField(CAMERA_FIELD_ROTATION,rotation,0)
+	return false
+end
+
 local VirtualEvent = {}
 SmartCast.VirtualEvent = VirtualEvent
 
