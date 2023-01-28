@@ -5,34 +5,29 @@ end
 local commands = {}
 
 
-local function RunKey(e)
-	return SmartCast.OnKey(e)
-end
 
-
-local function ReRunKey()
-	return SmartCast.ProcessKeys()
-end
 commands["key"] = function() 
-	if(not ChatCommands.keyevent) then
-		--gprint('registring keys')
-		ChatCommands.keyevent = event:new(EVENT_ID_KEY_INPUT, ChatCommands.RunKey)
-		ChatCommands.periodickey = event:new(EVENT_ID_SCREEN_UPDATE,ChatCommands.ReRunKey)
-	else
-		--gprint('unregistring keys')
-		event.disconnect(ChatCommands.keyevent)
-		event.disconnect(ChatCommands.periodickey)
-		ChatCommands.keyevent = nil
-		ChatCommands.periodickey = nil
-	end
+	pcall(function ()
+		local setting = Settings.get("HotKey")
+		if(setting) then
+			setting = false
+		else
+			setting = true
+		end
+		Settings.set("HotKey",setting)
+	end)
 end
 
 commands["ui"] = function() 
-	initui()
+	ImprovedUI.switch(true)
+	UpdateGameUI()
+	ImprovedUI.switch(true)
 end
 
 commands["mouse"] = function()
-	mouseswap()
+	pcall(function ()
+		Settings.set("LockMouse",true)
+	end)
 end
 
 commands["mh0"] = function()
@@ -54,10 +49,17 @@ commands["umh2"] = function()
 	umh2()
 end
 commands["screen"] = function(s)
-	Widescreen(s)
+	local factor,s = getarg(s)
+	local r,factor = pcall(function() return tonumber(factor) end)
+	if(not r or not factor) then factor = 0.7 end
+	pcall(function ()
+		Settings.set("ScreenWidth",factor)
+	end)
 end
 commands["info"] = function(s)
-	Info(s)
+	pcall(function ()
+		Settings.set("ShowInfo",true)
+	end)
 end
 
 commands["camz"] = function(s)
@@ -85,11 +87,16 @@ commands["camrot"] = function(s)
 	CamRot(s)
 end
 commands["scd"] = function(s)
-	testcd(s)
+	pcall(function ()
+		Settings.set("ShowCD",not Settings.get("ShowCD"))
+	end)
 end
 
-commands["ui2"] = function(s)
-	CommandBar()
+commands["ui2"] = function()
+	print("running ui2")
+	pcall(function()
+		Settings.set("AllyCommands",true)
+	end)
 end
 
 commands["h"] = function(s)
@@ -103,11 +110,24 @@ commands["clear"] = function(s)
 end
 
 commands["std"] = function(s)
-	pcall(commands["key"])
-	pcall(commands["mouse"])
-	pcall(commands["scd"])
-	pcall(commands["info"])
-	pcall(commands["screen"])
+	pcall(function ()
+		Settings.set("HotKey",true)
+	end)
+	pcall(function ()
+		Settings.set("LockMouse",true)
+	end)
+	pcall(function ()
+		Settings.set("ShowCD",true)
+	end)
+	pcall(function ()
+		Settings.set("ShowInfo",true)
+	end)
+	pcall(function ()
+		Settings.set("ScreenWidth",true)
+	end)
+	pcall(function()
+		Settings.set("AllyCommands",true)
+	end)
 end
 
 ChatCommands.RunKey = RunKey

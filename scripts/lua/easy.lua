@@ -44,23 +44,6 @@ function umh2()
 	RenderStageEnable(1,true)
 end
 
-function CommandBar()
-	ShowAllyPanel(true)
-end
-function Info()
-	HookSpeedText(true)
-end
-function Widescreen(s)
-	if(not widescreen) then
-		widescreen = true
-		EnableWidescreen(true)
-	end
-	i = getarg(s)
-	if(i) then
-		SetCustomFovFix(tonumber(i))
-	end
-end
-
 function CamZF(s)
 	local i = getarg(s)
 	SetCameraField(CAMERA_FIELD_FARZ,tonumber(i),0)

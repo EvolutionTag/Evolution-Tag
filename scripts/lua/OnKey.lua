@@ -65,6 +65,19 @@ SmartCast.CancelCurrentModeSafe = function()
 		CancelCurrentMode()
 	end
 end
+
+local function RunKey(e)
+	return SmartCast.OnKey(e)
+end
+
+
+local function ReRunKey()
+	return SmartCast.ProcessKeys()
+end
+
+SmartCast.RunKey = RunKey
+SmartCast.ReRunKey = ReRunKey
+
 SmartCast.PressedKey = function(key,code,e)
 	if(not IsInGame()) then return end
 	--gprint(1)
@@ -220,3 +233,36 @@ SmartCast.OnKey = function(e)
 
 end
 
+SmartCast.mode = false
+
+local function switch(mode)
+	if(mode==nil) then
+		mode = not SmartCast.mode
+	end
+
+	if(mode==SmartCast.mode) then
+		return
+	end
+
+	SmartCast.mode = mode
+
+	if(mode) then
+		SmartCast.keyevent = event:new(EVENT_ID_KEY_INPUT, SmartCast.RunKey)
+		SmartCast.periodickey = event:new(EVENT_ID_SCREEN_UPDATE,SmartCast.ReRunKey)
+	else
+
+		if(SmartCast.keyevent) then
+			event.disconnect(SmartCast.keyevent)
+			SmartCast.keyevent = nil
+		end
+		if(SmartCast.periodickey) then
+			event.disconnect(SmartCast.periodickey)
+			SmartCast.periodickey = nil
+		end
+	end
+	
+end
+
+SmartCast.switch = switch
+
+Settings.addReact("HotKey",function(mode) SmartCast.switch(mode) end)

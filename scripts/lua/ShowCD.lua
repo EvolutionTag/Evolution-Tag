@@ -1,5 +1,7 @@
 local INTBUFFER = malloc(4)
 
+ImprovedUI = {}
+
 function IsCommandBarButtonShown(pCommandBarButton)
 	if(pCommandBarButton==0) then return false end
 	local data = ReadInt(pCommandBarButton+0x90)
@@ -298,3 +300,5 @@ function testcd()
 		end)
 	end
 end
+
+Settings.addReact("ShowCD",function(mode) testcd() end)

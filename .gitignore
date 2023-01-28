@@ -5,3 +5,4 @@ desktop.ini
 .vscode/extensions.json
 workspace.code-workspace
 scripts/wenhooks.lua
+scripts/lua/wenhooks.lua

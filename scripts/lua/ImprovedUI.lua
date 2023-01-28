@@ -1,4 +1,9 @@
-function initui()
+local initialized = false
+local function initui()
+    if(initialized) then
+        return
+    end
+    initialized = true
     local pCommandFrame
     local command_frame_delta_y= - 0.038
     local command_frame_start_y= - 0.145
@@ -106,3 +111,21 @@ function initui()
         SetUIFramePoint(pUberTip , ANCHOR_BOTTOMRIGHT , pRootFrame , ANCHOR_BOTTOMRIGHT , -0.01 , 0.14)
     end
 end
+
+
+
+ImprovedUI = {}
+
+ImprovedUI.init = initui
+
+
+local function UIMode(mode)
+    if(mode) then
+        ImprovedUI.init()
+    else
+    end
+end
+
+ImprovedUI.switch = UIMode
+
+
