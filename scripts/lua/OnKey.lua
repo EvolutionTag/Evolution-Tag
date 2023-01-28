@@ -55,14 +55,25 @@ SCKey[272] = function()
 end
 
 local rotation = 0
+local attack_angle = -90
 ALTKey[273] = function()
-	rotation = rotation - 1
-	SetCameraField(CAMERA_FIELD_ROTATION,rotation,0)
+	if(IsKeyPressed(VK.CTRL)) then
+		attack_angle = attack_angle - 1
+		SetCameraField(CAMERA_FIELD_ANGLE_OF_ATTACK,attack_angle,0)
+	else
+		rotation = rotation - 1
+		SetCameraField(CAMERA_FIELD_ROTATION,rotation,0)
+	end
 	return false
 end
 ALTKey[272] = function()
-	rotation = rotation + 1
-	SetCameraField(CAMERA_FIELD_ROTATION,rotation,0)
+	if(IsKeyPressed(VK.CTRL)) then
+		attack_angle = attack_angle + 1
+		SetCameraField(CAMERA_FIELD_ANGLE_OF_ATTACK,attack_angle,0)
+	else
+		rotation = rotation + 1
+		SetCameraField(CAMERA_FIELD_ROTATION,rotation,0)
+	end
 	return false
 end
 
