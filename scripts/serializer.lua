@@ -66,7 +66,12 @@ persistence =
 			f, e = path:read('*a')
 		end
 		if f then
-			return f();
+			do
+				local debug = nil
+				local os = nil
+				local io = nil
+				return f();
+			end
 		else
 			return nil, e;
 		end;
