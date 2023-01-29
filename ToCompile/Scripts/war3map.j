@@ -43632,7 +43632,7 @@ call InitTrig_Time_up_for_setting_settings()
 call InitTrig_Game_settings_5_NEW()
 call InitTrig_Game_settings()
 call InitTrig_Game_settings_2()
-call InitTrig_Game_settings_3_give_gold()
+//call InitTrig_Game_settings_3_give_gold()
 call InitTrig_First_Dialogue_Out_of_Time()
 endfunction
 function InitCustomPlayerSlots takes nothing returns nothing
