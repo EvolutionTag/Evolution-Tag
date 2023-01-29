@@ -29884,7 +29884,7 @@ endif
 return true
 endfunction
 function Trig_Healing_Salve_Actions takes nothing returns nothing
-call CreateItemLoc('hslv',GetUnitLoc(GetTriggerUnit()))
+call UnitAddItemById(GetTriggerUnit(),'hslv')
 endfunction
 function InitTrig_Healing_Salve takes nothing returns nothing
 set udg_trg_Healing_Salve=CreateTrigger()
@@ -29899,7 +29899,7 @@ endif
 return true
 endfunction
 function Trig_Healing_Potion_Actions takes nothing returns nothing
-call CreateItemLoc('I01L',GetUnitLoc(GetTriggerUnit()))
+call UnitAddItemById(GetTriggerUnit(),'I01L')
 endfunction
 function InitTrig_Healing_Potion takes nothing returns nothing
 set udg_trg_Healing_Potion=CreateTrigger()
@@ -29914,7 +29914,7 @@ endif
 return true
 endfunction
 function Trig_Healing_Potion_Copy_Actions takes nothing returns nothing
-call CreateItemLoc('I01N',GetUnitLoc(GetTriggerUnit()))
+call UnitAddItemById(GetTriggerUnit(),'I01N')
 endfunction
 function InitTrig_Healing_Potion_Copy takes nothing returns nothing
 set udg_trg_Healing_Potion_Copy=CreateTrigger()
@@ -29929,7 +29929,7 @@ endif
 return true
 endfunction
 function Trig_Healing_Potion_Copy_Copy_Actions takes nothing returns nothing
-call CreateItemLoc('pres',GetUnitLoc(GetTriggerUnit()))
+call UnitAddItemById(GetTriggerUnit(),'pres')
 endfunction
 function InitTrig_Healing_Potion_Copy_Copy takes nothing returns nothing
 set udg_trg_Healing_Potion_Copy_Copy=CreateTrigger()
@@ -29944,7 +29944,7 @@ endif
 return true
 endfunction
 function Trig_Mana_Potion_Actions takes nothing returns nothing
-call CreateItemLoc('I01M',GetUnitLoc(GetTriggerUnit()))
+call UnitAddItemById(GetTriggerUnit(),'I01M')
 endfunction
 function InitTrig_Mana_Potion takes nothing returns nothing
 set udg_trg_Mana_Potion=CreateTrigger()
@@ -29959,7 +29959,7 @@ endif
 return true
 endfunction
 function Trig_Mana_Potion_Copy_Actions takes nothing returns nothing
-call CreateItemLoc('pgma',GetUnitLoc(GetTriggerUnit()))
+call UnitAddItemById(GetTriggerUnit(),'pgma')
 endfunction
 function InitTrig_Mana_Potion_Copy takes nothing returns nothing
 set udg_trg_Mana_Potion_Copy=CreateTrigger()
@@ -29974,7 +29974,7 @@ endif
 return true
 endfunction
 function Trig_Dust_Actions takes nothing returns nothing
-call CreateItemLoc('dust',GetUnitLoc(GetTriggerUnit()))
+call UnitAddItemById(GetTriggerUnit(),'dust')
 endfunction
 function InitTrig_Dust takes nothing returns nothing
 set udg_trg_Dust=CreateTrigger()
@@ -29989,7 +29989,7 @@ endif
 return true
 endfunction
 function Trig_Invis_Actions takes nothing returns nothing
-call CreateItemLoc('pinv',GetUnitLoc(GetTriggerUnit()))
+call UnitAddItemById(GetTriggerUnit(),'pinv')
 endfunction
 function InitTrig_Invis takes nothing returns nothing
 set udg_trg_Invis=CreateTrigger()
@@ -30004,7 +30004,7 @@ endif
 return true
 endfunction
 function Trig_Invuln_Actions takes nothing returns nothing
-call CreateItemLoc('pnvl',GetUnitLoc(GetTriggerUnit()))
+call UnitAddItemById(GetTriggerUnit(),'pnvl')
 endfunction
 function InitTrig_Invuln takes nothing returns nothing
 set udg_trg_Invuln=CreateTrigger()
