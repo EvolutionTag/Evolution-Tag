@@ -18838,10 +18838,7 @@ endif
 return true
 endfunction
 function Trig_Pirate_Coin_Spell_Actions takes nothing returns nothing
-set udg_AAAA_GP=GetUnitLoc(GetTriggerUnit())
-call UnitAddItem(GetTriggerUnit(),CreateItemLoc('gold',udg_AAAA_GP))
-call RemoveLocation(udg_AAAA_GP)
-
+call UnitAddItemById(GetTriggerUnit(),'gold')
 endfunction
 function InitTrig_Pirate_Coin_Spell takes nothing returns nothing
 set udg_trg_Pirate_Coin_Spell=CreateTrigger()
