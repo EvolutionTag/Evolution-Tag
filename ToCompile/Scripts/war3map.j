@@ -3162,6 +3162,7 @@ native UnitAlive takes unit id returns boolean
 //! import zinc "..\ToCompile\Scripts\ImprovedSkills_undeads.zn"
 //! import zinc "..\ToCompile\Scripts\Improved_windwalk.zn"
 //! import zinc "..\ToCompile\Scripts\RNG.zn"
+//! import zinc "..\ToCompile\Scripts\resourcesend.zn"
 
 //////////////////////////////////////////////////
 // //! import zinc "..\ToCompile\Scripts\Fixes\TerrainDeformFix.j"

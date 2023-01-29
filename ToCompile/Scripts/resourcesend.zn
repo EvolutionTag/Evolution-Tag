@@ -1,0 +1,97 @@
+library resourcesend {
+    trigger sendwood = null;
+    trigger sendgold = null;
+
+    function DisplayTextToPlayerTrue(player p, string s) {
+        if(GetLocalPlayer()==p) {
+            DisplayTextToPlayer(p,0,0,s);
+        }
+    }
+    function SendWood() {
+        integer target;
+        integer number = S2I(SubString(GetEventPlayerChatString(),6,8));
+        integer count = S2I(SubString(GetEventPlayerChatString(),8,999));
+        if(number<1 || number>12) {
+            DisplayTextToPlayerTrue(GetTriggerPlayer(),"incorrect player number: "+I2S(number));
+            return;
+        }
+        if(count<0) {
+            DisplayTextToPlayerTrue(GetTriggerPlayer(),"incorrect resource amount: "+I2S(count));
+            return;
+        }
+        
+        number = number - 1;
+
+        if(IsMapFlagSet(MAP_LOCK_RESOURCE_TRADING)) {
+            DisplayTextToPlayerTrue(GetTriggerPlayer(),"unable to send resources, because of flag");
+            return;
+        }
+        if(!IsPlayerAlly(GetTriggerPlayer(),Player(number))) {
+            DisplayTextToPlayerTrue(GetTriggerPlayer(),"must send to ally");
+            return;
+        }
+        if(GetPlayerController(Player(number))!=MAP_CONTROL_USER) {
+            DisplayTextToPlayerTrue(GetTriggerPlayer(),"resource target must be player");
+            return;
+        }
+        if(GetPlayerState(GetTriggerPlayer(),PLAYER_STATE_RESOURCE_LUMBER)<count) {
+            count = GetPlayerState(GetTriggerPlayer(),PLAYER_STATE_RESOURCE_LUMBER);
+        }
+        SetPlayerState(GetTriggerPlayer(),PLAYER_STATE_RESOURCE_LUMBER,GetPlayerState(GetTriggerPlayer(),PLAYER_STATE_RESOURCE_LUMBER)-count);
+        SetPlayerState(Player(number),PLAYER_STATE_RESOURCE_LUMBER,GetPlayerState(Player(number),PLAYER_STATE_RESOURCE_LUMBER)+count);
+
+        DisplayTextToPlayerTrue(Player(number),"|c00088619Recieved "+I2S(count)+" wood from player: "+GetPlayerName(GetTriggerPlayer()));
+    }
+
+    function SendGold() {
+        integer target;
+        integer number = S2I(SubString(GetEventPlayerChatString(),6,8));
+        integer count = S2I(SubString(GetEventPlayerChatString(),8,999));
+        if(number<1 || number>12) {
+            DisplayTextToPlayerTrue(GetTriggerPlayer(),"incorrect player number: "+I2S(number));
+            return;
+        }
+        if(count<0) {
+            DisplayTextToPlayerTrue(GetTriggerPlayer(),"incorrect resource amount: "+I2S(count));
+            return;
+        }
+
+        number = number - 1;
+        
+
+        if(IsMapFlagSet(MAP_LOCK_RESOURCE_TRADING)) {
+            DisplayTextToPlayerTrue(GetTriggerPlayer(),"unable to send resources, because of flag");
+            return;
+        }
+        if(!IsPlayerAlly(GetTriggerPlayer(),Player(number))) {
+            DisplayTextToPlayerTrue(GetTriggerPlayer(),"must send to ally");
+            return;
+        }
+        if(GetPlayerController(Player(number))!=MAP_CONTROL_USER) {
+            DisplayTextToPlayerTrue(GetTriggerPlayer(),"resource target must be player");
+            return;
+        }
+        if(GetPlayerState(GetTriggerPlayer(),PLAYER_STATE_RESOURCE_GOLD)<count) {
+            count = GetPlayerState(GetTriggerPlayer(),PLAYER_STATE_RESOURCE_GOLD);
+        }
+        SetPlayerState(GetTriggerPlayer(),PLAYER_STATE_RESOURCE_GOLD,GetPlayerState(GetTriggerPlayer(),PLAYER_STATE_RESOURCE_GOLD)-count);
+        SetPlayerState(Player(number),PLAYER_STATE_RESOURCE_GOLD,GetPlayerState(Player(number),PLAYER_STATE_RESOURCE_GOLD)+count);
+    
+        DisplayTextToPlayerTrue(Player(number),"|c00dfd116Recieved "+I2S(count)+" gold from player: "+GetPlayerName(GetTriggerPlayer()));
+    }
+
+    function onInit() {
+        integer i = 0;
+        sendwood = CreateTrigger();
+        sendgold = CreateTrigger();
+        for (0<=i<=11) {
+            TriggerRegisterPlayerChatEvent(sendwood,Player(i),"-wood",false);//-wood 11 
+            TriggerRegisterPlayerChatEvent(sendgold,Player(i),"-gold",false);
+
+
+        }
+
+        TriggerAddAction(sendwood,function SendWood);
+        TriggerAddAction(sendgold,function SendGold);
+    }
+}
