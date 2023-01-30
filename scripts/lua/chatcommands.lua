@@ -31,9 +31,8 @@ commands["keyq"] = function(s)
 end
 
 commands["ui"] = function() 
-	ImprovedUI.switch(true)
+	ImprovedUI.init()
 	UpdateGameUI()
-	ImprovedUI.switch(true)
 end
 
 commands["mouse"] = function()

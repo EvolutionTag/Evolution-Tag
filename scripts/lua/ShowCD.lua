@@ -1,6 +1,5 @@
 local INTBUFFER = malloc(4)
 
-ImprovedUI = {}
 
 function IsCommandBarButtonShown(pCommandBarButton)
 	if(pCommandBarButton==0) then return false end

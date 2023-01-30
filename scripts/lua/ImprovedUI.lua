@@ -1,9 +1,4 @@
-local initialized = false
 local function initui()
-    if(initialized) then
-        return
-    end
-    initialized = true
     local pCommandFrame
     local command_frame_delta_y= - 0.038
     local command_frame_start_y= - 0.145
