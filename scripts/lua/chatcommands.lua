@@ -140,6 +140,9 @@ commands["std"] = function(s)
 	pcall(function()
 		Settings.set("AllyCommands",true)
 	end)
+	pcall(function()
+		Settings.set("HotKey_QuickCast",true)
+	end)
 end
 
 ChatCommands.RunKey = RunKey
