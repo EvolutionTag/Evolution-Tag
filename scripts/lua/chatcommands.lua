@@ -6,7 +6,7 @@ local commands = {}
 
 
 
-commands["key"] = function() 
+commands["key"] = function(s) 
 	pcall(function ()
 		local setting = Settings.get("HotKey")
 		if(setting) then
@@ -15,6 +15,18 @@ commands["key"] = function()
 			setting = true
 		end
 		Settings.set("HotKey",setting)
+	end)
+end
+
+commands["keyq"] = function(s) 
+	pcall(function ()
+		local setting = Settings.get("HotKey_QuickCast")
+		if(setting) then
+			setting = false
+		else
+			setting = true
+		end
+		Settings.set("HotKey_QuickCast",setting)
 	end)
 end
 

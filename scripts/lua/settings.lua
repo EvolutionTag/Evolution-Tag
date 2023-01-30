@@ -4,6 +4,7 @@ local reacts = {}
 
 Settings.reacts = reacts
 Settings.modes = {}
+Settings.registry = {}
 
 
 local settings_path = "GoodTool/settings/settings.lua"
@@ -61,7 +62,7 @@ local function AddReact(key,callback)
 end
 
 local function get(key)
-    return reacts[key]
+    return Settings.modes[key]
 end
 
 Settings.save = Save

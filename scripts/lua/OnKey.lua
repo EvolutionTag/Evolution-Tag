@@ -199,6 +199,10 @@ SmartCast.PressedKey = function(key,code,e)
 		end
 		return
 	end
+	if(not Settings.get("HotKey_QuickCast")) then
+		e:cancel()
+		return;
+	end
 	--gprint(12)
 	curr = ReadRealMemory(ui+0x1b4)
 	if(curr~=tmode) then return  end
