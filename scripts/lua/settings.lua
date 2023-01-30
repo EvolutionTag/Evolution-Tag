@@ -40,6 +40,9 @@ end
 
 local function load() 
     local loaded = persistence.load(settings_path)
+    if(not loaded) then
+        return;
+    end
     --print("loading data")
     for key,mode in pairs(loaded) do
 
