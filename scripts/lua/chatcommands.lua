@@ -30,6 +30,32 @@ commands["keyq"] = function(s)
 	end)
 end
 
+commands["keyc"] = function(s) 
+	pcall(function ()
+		local setting = Settings.get("HotKey_CustomScheme")
+		if(setting) then
+			setting = false
+		else
+			setting = true
+		end
+		Settings.set("HotKey_CustomScheme",setting)
+	end)
+end
+
+commands["keycr"] = function(s) 
+	pcall(function()
+		Settings.set("HotKey_CustomScheme",false)
+		Settings.set("HotKey_CustomScheme",true)
+	end)
+end
+
+commands["keycd"] = function(s) 
+	pcall(function()
+		Settings.set("HotKey_CustomScheme",true)
+		Settings.set("HotKey_CustomScheme",false)
+	end)
+end
+
 commands["ui"] = function() 
 	ImprovedUI.init()
 	UpdateGameUI()

@@ -13,10 +13,65 @@ local s = {}
 
 SmartCast.PressedKeys = {}
 
-s[VK.Q]={0,0};s[VK.W] = {0,1};s[ VK.E] = {0,2};s[VK.R] = {0,3};s[ VK.T]=0;s[VK.Y]=1;
-s[VK.A] = {1,0};s[VK.S]= {1,1};s[VK.D] = {1,2};s[ VK.F] = {1,3};s[VK.G]=2;s[VK.H]=3;
-s[VK.Z] = {2,0};s[VK.X]={2,1};s[VK.C]={2,2};s[VK.V] = {2,3};s[VK.B]=4;s[VK.N]=5;
-s[0x20a] = function()
+local function AbilityButton(x,y) 
+	local dat = {}
+	dat.type = "ability"
+	dat.x = x
+	dat.y = y
+	return dat
+end
+
+local function InventoryButton(n)
+	local dat = {}
+	dat.type = "inventory"
+	dat.n = n
+	return dat
+end
+
+
+s[VK.Q]=AbilityButton(0,0)
+s[VK.W]=AbilityButton(0,1)
+s[VK.E]=AbilityButton(0,2)
+s[VK.R]=AbilityButton(0,3)
+s[VK.A]=AbilityButton(1,0)
+s[VK.S]=AbilityButton(1,1)
+s[VK.D]=AbilityButton(1,2)
+s[VK.F]=AbilityButton(1,3)
+s[VK.Z]=AbilityButton(2,0)
+s[VK.X]=AbilityButton(2,1)
+s[VK.C]=AbilityButton(2,2)
+s[VK.V]=AbilityButton(2,3)
+s[VK.T]=InventoryButton(0)
+s[VK.Y]=InventoryButton(1)
+s[VK.G]=InventoryButton(2)
+s[VK.H]=InventoryButton(3)
+s[VK.B]=InventoryButton(4)
+s[VK.N]=InventoryButton(5)
+
+local SCKey = s
+s = {}
+local ALTKey = s
+s = nil
+
+local scheme = {}
+SmartCast.scheme = scheme
+
+local default = {}
+default.SCKey = SCKey
+default.ALTKey = ALTKey
+
+scheme.default = default
+
+local features = {}
+scheme.features = features
+
+features.SCKey = {}
+features.ALTKey = {}
+
+SmartCast.SCKey = SCKey
+SmartCast.ALTKey = ALTKey
+
+features.SCKey[0x20a] = function()
 	local targ = RRS()
 	if(not targ or targ == 0) then
 		targ = FS()
@@ -31,23 +86,16 @@ s[0x20a] = function()
 		end
 		SmartCast.follow = not follow
 	end
-   end
-local SCKey = s
-s = {}
-local ALTKey = s
-s = nil
-
-SmartCast.SCKey = SCKey
-SmartCast.ALTKey = ALTKey
+end
 
 
-SCKey[273] = function()
+features.SCKey[273] = function()
 	if(IsKeyPressed(VK.CTRL)) then
 		SetCameraField(CAMERA_FIELD_TARGET_DISTANCE,GetCameraField(CAMERA_FIELD_TARGET_DISTANCE)+100,0)
 		return false
 	end
 end
-SCKey[272] = function()
+features.SCKey[272] = function()
 	if(IsKeyPressed(VK.CTRL)) then
 		SetCameraField(CAMERA_FIELD_TARGET_DISTANCE,GetCameraField(CAMERA_FIELD_TARGET_DISTANCE)-100,0)
 		return false
@@ -56,7 +104,7 @@ end
 
 local rotation = 0
 local attack_angle = -90
-ALTKey[273] = function()
+features.ALTKey[273] = function()
 	if(IsKeyPressed(VK.CTRL)) then
 		attack_angle = attack_angle - 1
 		SetCameraField(CAMERA_FIELD_ANGLE_OF_ATTACK,attack_angle,0)
@@ -66,7 +114,7 @@ ALTKey[273] = function()
 	end
 	return false
 end
-ALTKey[272] = function()
+features.ALTKey[272] = function()
 	if(IsKeyPressed(VK.CTRL)) then
 		attack_angle = attack_angle + 1
 		SetCameraField(CAMERA_FIELD_ANGLE_OF_ATTACK,attack_angle,0)
@@ -84,7 +132,14 @@ VirtualEvent.cancel = function() end
 
 VirtualEvent.__index = VirtualEvent
 
+local SafeToCancel = {}
+SmartCast.SafeToCancel = SafeToCancel
 
+SafeToCancel[0x935DEC] = true --TargetMode
+SafeToCancel[0x941748] = true --BuildMode
+SafeToCancel[0x934B58] = true --SignalMode
+SafeToCancel[0x934AF8] = true --DragSelectMode
+SafeToCancel[0x934B28] = true --DragScrollMode
 
 SmartCast.CancelCurrentModeSafe = function()
 	local pGameUi = GetGameUI(0,0)
@@ -95,13 +150,9 @@ SmartCast.CancelCurrentModeSafe = function()
 	if(not pMode or pMode==0) then
 		return
 	end
-	SafeToCancel = {}
-	SafeToCancel[0x935DEC] = true --TargetMode
-	SafeToCancel[0x941748] = true --BuildMode
-	SafeToCancel[0x934B58] = true --SignalMode
-	SafeToCancel[0x934AF8] = true --DragSelectMode
-	SafeToCancel[0x934B28] = true --DragScrollMode
-	if(SafeToCancel[ReadInt(pMode)-AC.game]) then
+	
+	
+	if(SmartCast.SafeToCancel[ReadInt(pMode)-AC.game]) then
 		CancelCurrentMode()
 	end
 end
@@ -127,10 +178,20 @@ SmartCast.PressedKey = function(key,code,e)
 	
 	--gprint(3)
 	local data
+	local basescheme = SmartCast.scheme.default
+	if(Settings.get("HotKey_CustomScheme")) then
+		basescheme = SmartCast.scheme.custom
+		if(not basescheme) then
+			basescheme = SmartCast.scheme.features
+		end
+	end
+	if(not basescheme) then
+		return
+	end
 	if(not IsKeyPressed(VK.ALT)) then
-		data = SCKey[key]
+		data = basescheme.SCKey[key] or SmartCast.scheme.features.SCKey[key]
 	else
-		data = ALTKey[key]
+		data = basescheme.ALTKey[key] or SmartCast.scheme.features.ALTKey[key]
 	end
 	--gprint(4)
 	if(data==nil) then return end
@@ -153,17 +214,20 @@ SmartCast.PressedKey = function(key,code,e)
 	--gprint(10)
 	 
 	local btn
-	if(type(data)=="table") then
-	   
-		if(data[1]==nil or data[2]==nil) then return end
-		btn = GetCommandBarButton(data[1],data[2]) 
-	elseif(type(data)=="number") then
-		btn = GetItemBarButton(data)
-	elseif(type(data)=="function") then
-		data(key)
+	if(type(data)=="function") then
+		pcall(data,key)
+		e:cancel()
+		return;
 	else
-		   return
+		if(data.type=="ability") then
+			btn = GetCommandBarButton(data.x,data.y) 
+		elseif (data.type=="inventory") then
+			btn = GetItemBarButton(data.n)
+		else
+			return;
+		end
 	end
+
 	--gprint(11)
 	ClickButton(btn)
 	e:cancel()
@@ -309,4 +373,18 @@ end
 
 SmartCast.switch = switch
 
+function SmartCast.EnableCustomScheme(mode)
+	if(mode==true) then
+		local r,s = pcall(function()
+			SmartCast.scheme.custom = persistence.load("GoodTool/settings/scheme.lua")
+		end)
+		if(not r) then
+			gprint(s)
+		end
+	else
+		SmartCast.scheme.custom = nil
+	end
+end
+
 Settings.addReact("HotKey",function(mode) SmartCast.switch(mode) end)
+Settings.addReact("HotKey_CustomScheme",function(mode) SmartCast.EnableCustomScheme(mode) end)

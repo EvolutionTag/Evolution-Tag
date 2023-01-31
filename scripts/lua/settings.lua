@@ -23,7 +23,9 @@ local function rawset(key,mode)
         local r,s = pcall(react,mode);
         if(not r) then
             --print("error",s)
-            Log(string.format("editing setting: %s, error: \n==========\n%s\n=================\n",s))
+            pcall(function()
+                print(string.format("editing setting: %s, error: \n==========\n%s\n=================\n",key,s))
+            end)
         else
             --print("unk result")
         end
