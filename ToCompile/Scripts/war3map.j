@@ -43116,10 +43116,12 @@ set udg_Satyr_Barracks=templastcreatedunit
 call EnableTrigger(udg_trg_Satyr_Research_upgrades)
 call EnableTrigger(udg_trg_Satyr_Spawn)
 call DisplayTimedTextToForce(GetPlayersAll(),30,"|cff32cd32Hard Mode|r")
+call SetPlayerName(Neutral_Satyrs,"Satyrs")
 call DialogDisplayBJ(false,udg_CHOOSE_SETTINGS_3,GetEnumPlayer())
 else
 call DialogDisplayBJ(false,udg_CHOOSE_SETTINGS_3,GetEnumPlayer())
 call DisplayTimedTextToForce(GetPlayersAll(),30,"|cff32cd32Normal Mode|r")
+call SetPlayerName(Neutral_Satyrs,"Pirates")
 endif
 else
 endif
@@ -43131,7 +43133,8 @@ set udg_Satyr_Barracks=templastcreatedunit
 call EnableTrigger(udg_trg_Satyr_Research_upgrades)
 call EnableTrigger(udg_trg_Satyr_Spawn)
 set udg_Extreme_Mode=true
-call DisplayTimedTextToForce(GetPlayersAll(),30,"|cff32cd32Extreme Mode: +1 lives!|r")
+call SetPlayerName(Neutral_Satyrs,"Satyrs")
+call DisplayTimedTextToForce(GetPlayersAll(),30,"|cff32cd32Extreme Mode: +1/2 lives!|r")
 call DialogDisplayBJ(false,udg_CHOOSE_SETTINGS_3,GetEnumPlayer())
 else
 endif
