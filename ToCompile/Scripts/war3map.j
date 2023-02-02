@@ -18966,14 +18966,30 @@ if(Trig_Pigs_lvl_1_spawn_Func003C())then
 call CreateNUnitsAtLocBonuses(1,'n05Y',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
 set templastcreatedunit = GetLastCreatedUnit()
 call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
-
-
 call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
 call CreateNUnitsAtLocBonuses(1,'n05Y',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
 set templastcreatedunit = GetLastCreatedUnit()
 call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
-
-
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
+call CreateNUnitsAtLocBonuses(1,'n05Y',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
+call CreateNUnitsAtLocBonuses(1,'n05Y',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
+call CreateNUnitsAtLocBonuses(1,'n05Y',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
+call CreateNUnitsAtLocBonuses(1,'n05Y',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
+call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
+call CreateNUnitsAtLocBonuses(1,'n05Y',Neutral_Satyrs,udg_SatyrBarracks_Point,bj_UNIT_FACING)
+set templastcreatedunit = GetLastCreatedUnit()
+call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
 call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
 else
 endif
