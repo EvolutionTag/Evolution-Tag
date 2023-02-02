@@ -23891,15 +23891,18 @@ set udg_trg_Enable_Bunny_Spawn=CreateTrigger()
 call TriggerRegisterTimerEventSingle(udg_trg_Enable_Bunny_Spawn,300.00)
 call TriggerAddAction(udg_trg_Enable_Bunny_Spawn,function Trig_Enable_Bunny_Spawn_Actions)
 endfunction
+function SpawnBunnyAtPos takes real x, real y returns nothing
+    local unit templastcreatedunit
+    set templastcreatedunit = CreateUnit(Player(PLAYER_NEUTRAL_PASSIVE),'necr',x,y,bj_UNIT_FACING)
+    call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
+    call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
+    call UnitApplyTimedLife(templastcreatedunit,'Bmec',9999999)
+    set templastcreatedunit = null
+endfunction
 function Trig_Spawn_Bunnies_Actions takes nothing returns nothing
-local unit templastcreatedunit
-set udg_Rabbit_Point=GenerateRandomLocInRect(MainGenerator,udg_rct_The_ring_of_trees)
-call CreateNUnitsAtLoc(1,'necr',Player(PLAYER_NEUTRAL_PASSIVE),udg_Rabbit_Point,bj_UNIT_FACING)
-set templastcreatedunit = GetLastCreatedUnit()
-call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
-call RemoveLocation(udg_Rabbit_Point)
-set templastcreatedunit = null
+    set udg_Rabbit_Point=GenerateRandomLocInRect(MainGenerator,udg_rct_The_ring_of_trees)
+    call SpawnBunnyAtPos(GetLocationX(udg_Rabbit_Point),GetLocationY(udg_Rabbit_Point))
+    call RemoveLocation(udg_Rabbit_Point)
 endfunction
 function InitTrig_Spawn_Bunnies takes nothing returns nothing
 set udg_trg_Spawn_Bunnies=CreateTrigger()
@@ -23929,18 +23932,10 @@ local unit templastcreatedunit
 set udg_Topleft_integer_chance2=GenerateInt(MainGenerator, 1,18)
 if(Trig_Spawn_Special_Bunny_Func002C())then
 set udg_Rabbit_Point=GenerateRandomLocInRect(MainGenerator,udg_rct_Entire_map_excluding_outa_bounds_2)
-call CreateNUnitsAtLocBonuses(1,'necr',Player(PLAYER_NEUTRAL_PASSIVE),udg_Rabbit_Point,bj_UNIT_FACING)
-set templastcreatedunit = GetLastCreatedUnit()
-call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
-call SetUnitVertexColorBJ(templastcreatedunit,66.00,25.00,100,0)
+call SpawnBunnyAtPos(GetLocationX(udg_Rabbit_Point),GetLocationY(udg_Rabbit_Point))
 else
 set udg_Rabbit_Point=GenerateRandomLocInRect(MainGenerator,udg_rct_Entire_map_excluding_out_of_bounds)
-call CreateNUnitsAtLocBonuses(1,'necr',Player(PLAYER_NEUTRAL_PASSIVE),udg_Rabbit_Point,bj_UNIT_FACING)
-set templastcreatedunit = GetLastCreatedUnit()
-call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
-call SetUnitVertexColorBJ(templastcreatedunit,66.00,25.00,100,0)
+call SpawnBunnyAtPos(GetLocationX(udg_Rabbit_Point),GetLocationY(udg_Rabbit_Point))
 endif
 call RemoveLocation(udg_Rabbit_Point)
 set templastcreatedunit = null
@@ -25707,10 +25702,7 @@ set udg_General_Index=1
 loop
 exitwhen udg_General_Index>20
 set udg_AAAA_GP=GenerateRandomLocInRect(MainGenerator,udg_rct_Entire_map_excluding_out_of_bounds)
-call CreateNUnitsAtLoc(1,'necr',Player(PLAYER_NEUTRAL_PASSIVE),udg_AAAA_GP,bj_UNIT_FACING)
-set templastcreatedunit = GetLastCreatedUnit()
-call UnitImmediateUseAbility(templastcreatedunit,'A0M6',"windwalk")
-call NeutralIssueOrderRandomLocInRect(templastcreatedunit,"patrol",udg_rct_Entire_map_AI_TARGEt)
+call SpawnBunnyAtPos(GetLocationX(udg_AAAA_GP),GetLocationY(udg_AAAA_GP))
 call RemoveLocation(udg_AAAA_GP)
 set udg_General_Index=udg_General_Index+1
 endloop
