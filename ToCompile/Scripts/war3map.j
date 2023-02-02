@@ -42250,7 +42250,7 @@ call ConditionalTriggerExecute(udg_trg_QJS_Hash_Table)
 endfunction
 function UpdateNeutrals takes nothing returns nothing
 call SetPlayerName(Neutral_Nagas,"Naga Team")
-call SetPlayerName(Neutral_Satyrs,"Pirates")
+call SetPlayerName(Neutral_Satyrs,"Satyrs")
 call SetPlayerName(Neutral_Bottom,"Bottom Team")
 call SetPlayerState(Neutral_Nagas,PLAYER_STATE_GIVES_BOUNTY,1)
 call SetPlayerState(Neutral_Satyrs,PLAYER_STATE_GIVES_BOUNTY,1)
