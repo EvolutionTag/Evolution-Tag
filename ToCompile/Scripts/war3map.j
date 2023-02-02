@@ -9399,7 +9399,7 @@ if(IsUnitType(u,UNIT_TYPE_HERO))then
 call SetHeroXP(u2,GetHeroXP(u),false)
 endif
 call smelter_UnregUnitBonuses(u)
-call ApplyAllBonuses1_timed(u2)
+//call ApplyAllBonuses1_timed(u2)
 loop
 call UnitAddItem(u2,UnitItemInSlotBJ(u,idx))
 set idx=idx+1
