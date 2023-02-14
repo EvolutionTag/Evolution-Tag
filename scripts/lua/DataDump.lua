@@ -61,6 +61,7 @@ function DumpData(name)
 	FuncTable[GetIdFromName('CUnit')] = function(u,handle)
 		--Log("unit has id: ",handleid)
 		--gprint(i2id(GetUnitTypeId(handleid)))
+		local punit = ConvertHandle(u)
 		handle["type"] = "unit"
 		handle["id"] = i2id(GetUnitTypeId(u))
 		handle["hp"] = GetWidgetLife(u)
@@ -76,6 +77,11 @@ function DumpData(name)
 		handle["name"] = GetUnitName(u)
 		handle["facing"] = GetUnitFacing(u)
 		handle["MS"] = GetUnitMoveSpeed(u)
+
+		local presence = {}
+		handle["presence"] = presence
+		presence["presence"] = ReadRealMemory(punit+0xC)
+		presence["born"] =  ReadRealMemory(punit+0x10)
 		local orderid =  GetUnitCurrentOrder(u)
 		if(orderid~=0) then
 			handle["orderid"] = orderid
