@@ -8338,6 +8338,8 @@ local integer uh=GetHandleId(u)
 local integer max=Smelter_max
 local integer rind=max*plr+l__cnt
 local integer ucnt
+local item i1 = UnitItemInSlot(u,0)
+call UnitRemoveItem(u,i1)
 if(u==null)then
 return
 endif
@@ -8361,6 +8363,8 @@ set rind=rind-1
 endloop
 set smg=null
 set smh=null
+call UnitAddItem(u,i1)
+set i1 = null
 endfunction
 public function UnitApplyAvailiableBonusesAny takes unit u returns nothing
 if(GetUnitAbilityLevel(u,'AInv')>0)then
