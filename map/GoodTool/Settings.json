@@ -19,6 +19,7 @@
 		"Scripts\\lua\\SFFDebug.lua",
 		"Scripts\\lua\\stdsettings.lua",
 		"Scripts\\lua\\loadsettings.lua",
-		"Scripts\\lua\\basesettings.lua"
+		"Scripts\\lua\\basesettings.lua",
+		"Scripts\\lua\\DistantFiles.lua"
 	]
 }
