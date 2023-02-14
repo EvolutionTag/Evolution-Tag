@@ -1,0 +1,36 @@
+library masochist requires MemoryHackUnitNormalAPI, mainRNG {
+    integer masoid = 'U02T';
+    public trigger maso_trigger = null;
+    public trigger maso_created_trigger = null;
+    
+    function masochance(real dmg)->boolean {
+        return (dmg>100) || (dmg>GenerateReal(MainGenerator,0,100));
+    }
+    
+    function masoDamaged() {
+        real dmg = GetEventDamage();
+        if(masochance(dmg)) {
+            AddUnitExtraAttack(GetTriggerUnit());
+        }
+    }
+    
+    function masoAdd(unit u) {
+        TriggerRegisterUnitEvent(maso_trigger,u,EVENT_UNIT_DAMAGED);
+    }
+    
+    function onInit()
+    {
+        region ALL = CreateRegion();
+        rect r = Rect(-99999,-99999,999999,9999999);
+        RegionAddRect(ALL,r);
+        maso_trigger = CreateTrigger();
+        TriggerAddAction(maso_trigger,function masoDamaged);
+        maso_created_trigger = CreateTrigger();
+        TriggerRegisterEnterRegion(maso_created_trigger,ALL,null);
+        TriggerAddCondition(maso_created_trigger,function()->boolean {return GetUnitTypeId(GetTriggerUnit())==masoid;});
+        TriggerAddAction(maso_created_trigger,function(){ masoAdd(GetEnteringUnit()); });
+
+    }
+    
+    
+}
