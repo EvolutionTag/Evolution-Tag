@@ -14457,6 +14457,7 @@ function CreateShops takes nothing returns nothing
     call CreateNUnitsAtLocBonuses(1,'n01Y',Player(PLAYER_NEUTRAL_PASSIVE),GetRectCenter(udg_rct_Recipe_Shop),bj_UNIT_FACING)
     call CreateNUnitsAtLocBonuses(1,'ngad',Player(PLAYER_NEUTRAL_PASSIVE),GetRectCenter(udg_rct_Goblin_Lab_Shop),bj_UNIT_FACING)
     call CreateUnit(Player(PLAYER_NEUTRAL_PASSIVE),'n06Y',375.,-5128,bj_UNIT_FACING)
+    call CreateUnit(Player(PLAYER_NEUTRAL_PASSIVE),'n081',3914,4741,bj_UNIT_FACING)
     call CreateNUnitsAtLocBonuses(1,'n023',Player(PLAYER_NEUTRAL_PASSIVE),GetRectCenter(udg_rct_Naga_Shop),bj_UNIT_FACING)
     call CreateNUnitsAtLocBonuses(1,'n032',Player(PLAYER_NEUTRAL_PASSIVE),GetRectCenter(udg_rct_Tool_Shop_Spawn),bj_UNIT_FACING)
     call CreateNUnitsAtLocBonuses(1,'nshp',Player(PLAYER_NEUTRAL_PASSIVE),GetRectCenter(udg_rct_shipyard_spawn),bj_UNIT_FACING)
