@@ -34,3 +34,25 @@ library masochist requires MemoryHackUnitNormalAPI, mainRNG {
     
     
 }
+
+library MasochistSelfdamage {
+    integer spell_Id = 'A0MC';
+    real damage = 500;
+    public trigger masochist_self_harm = null;
+
+    function OnUse() {
+        UnitDamageTarget(GetTriggerUnit(),GetTriggerUnit(),damage,false,false,ATTACK_TYPE_CHAOS,DAMAGE_TYPE_UNKNOWN,WEAPON_TYPE_WHOKNOWS);
+    }
+
+    function Condition()->boolean {
+        return GetSpellAbilityId()==spell_Id;
+    }
+
+    function onInit() {
+        masochist_self_harm = CreateTrigger();
+        TriggerAddCondition(masochist_self_harm,function Condition);
+        TriggerAddAction(masochist_self_harm,function OnUse);
+        TriggerRegisterAnyUnitEventBJ(masochist_self_harm,EVENT_PLAYER_UNIT_SPELL_ENDCAST);
+    }
+    
+}
