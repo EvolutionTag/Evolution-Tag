@@ -78,10 +78,7 @@ function DumpData(name)
 		handle["facing"] = GetUnitFacing(u)
 		handle["MS"] = GetUnitMoveSpeed(u)
 
-		local presence = {}
-		handle["presence"] = presence
-		presence["presence"] = ReadRealMemory(punit+0xC)
-		presence["born"] =  ReadRealMemory(punit+0x10)
+		
 		local orderid =  GetUnitCurrentOrder(u)
 		if(orderid~=0) then
 			handle["orderid"] = orderid
@@ -243,6 +240,12 @@ function DumpData(name)
 			end
 			counts[baseid] = typecnt + 1
 			handles[handleid] = handle
+			if(ptr~=0) then	
+				local presence = {}
+				handle["tags"] = presence
+				presence["presence"] = ReadRealMemory(ptr+0xC)
+				presence["born"] =  ReadRealMemory(ptr+0x10)
+			end
 			local specfunc = FuncTable[baseid]
 			if(specfunc) then
 				local r,s = pcall(specfunc,handleid,handle)
