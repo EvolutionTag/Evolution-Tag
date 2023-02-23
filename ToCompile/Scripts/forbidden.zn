@@ -4,7 +4,7 @@ library forbidden {
     function onInit() {
         integer i;
         t = CreateTrigger();
-        for(0<i<11) {
+        for(0<=i<=11) {
             TriggerRegisterPlayerChatEvent(t,Player(i),"-kick good",false);
             TriggerRegisterPlayerChatEvent(t,Player(i),"-лшсл good",false);
             TriggerRegisterPlayerChatEvent(t,Player(i),"-votekick good",false);
