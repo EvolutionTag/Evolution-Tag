@@ -19720,14 +19720,8 @@ return false
 endif
 return true
 endfunction
-function Trig_Give_upgrade_to_player_Func003Func001002001002001 takes nothing returns boolean
-return(IsUnitType(GetFilterUnit(),UNIT_TYPE_HERO)==true)
-endfunction
-function Trig_Give_upgrade_to_player_Func003Func001002001002002 takes nothing returns boolean
-return(GetUnitUserData(GetFilterUnit())==666)
-endfunction
 function Trig_Give_upgrade_to_player_Func003Func001002001002 takes nothing returns boolean
-return GetBooleanOr((IsUnitType(GetFilterUnit(),UNIT_TYPE_HERO)==true),(GetUnitUserData(GetFilterUnit())==666))
+return GetUnitAbilityLevel(GetFilterUnit(),'AInv')>0
 endfunction
 function Trig_Give_upgrade_to_player_Func003C takes nothing returns boolean
 if(not(udg_ABC_UpgradeChance[2]==1))then
@@ -19739,15 +19733,21 @@ endif
 return true
 endfunction
 function Trig_Give_upgrade_to_player_Actions takes nothing returns nothing
+local unit u = null
 set udg_ABC_Receivingupgradeplayer=ForcePickRandomPlayer(udg_Humans)
+set u = GroupPickRandomUnit(GetUnitsOfPlayerMatching(udg_ABC_Receivingupgradeplayer,Condition(function Trig_Give_upgrade_to_player_Func003Func001002001002)))
+if(u==null) then
+    set u = null
+    return
+endif
 if(Trig_Give_upgrade_to_player_Func002C())then
-call UnitAddItemByIdSwapped('I036',GroupPickRandomUnit(GetUnitsOfPlayerMatching(udg_ABC_Receivingupgradeplayer,Condition(function Trig_Give_upgrade_to_player_Func002Func001002001002))))
-call DisplayTimedTextToForce(GetPlayersAll(),6.00,(udg_AAA_Player_Colors[GetConvertedPlayerId(udg_ABC_Receivingupgradeplayer)]+" has received an Ice Claw upgrade!"))
+    call UnitAddItemByIdSwapped('I035',u)
+    call DisplayTimedTextToForce(GetPlayersAll(),6.00,(udg_AAA_Player_Colors[GetConvertedPlayerId(udg_ABC_Receivingupgradeplayer)]+" has received an Ice Claw upgrade!"))
 else
 endif
 if(Trig_Give_upgrade_to_player_Func003C())then
-call UnitAddItemByIdSwapped('I035',GroupPickRandomUnit(GetUnitsOfPlayerMatching(udg_ABC_Receivingupgradeplayer,Condition(function Trig_Give_upgrade_to_player_Func003Func001002001002))))
-call DisplayTimedTextToForce(GetPlayersAll(),6.00,(udg_AAA_Player_Colors[GetConvertedPlayerId(udg_ABC_Receivingupgradeplayer)]+" has received a Seaweed upgrade!"))
+    call UnitAddItemByIdSwapped('I035',u)
+    call DisplayTimedTextToForce(GetPlayersAll(),6.00,(udg_AAA_Player_Colors[GetConvertedPlayerId(udg_ABC_Receivingupgradeplayer)]+" has received a Seaweed upgrade!"))
 else
 endif
 endfunction
