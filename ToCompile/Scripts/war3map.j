@@ -20683,9 +20683,6 @@ call DoNothing()
 endif
 endfunction
 function Trig_Duel_Copy_2_Func015Func001C takes nothing returns boolean
-if(not(IsUnitAlly(GetEnumUnit(),Neutral_Bottom)==true))then
-return false
-endif
 if(not(IsPlayerInForce(GetOwningPlayer(GetEnumUnit()),udg_Humans)==false))then
 return false
 endif
@@ -20718,7 +20715,7 @@ return false
 endif
 return true
 endfunction
-function Trig_Duel_Copy_2_Func015A takes nothing returns nothing
+function CreateDuelAllies takes nothing returns nothing
 if(Trig_Duel_Copy_2_Func015Func001C())then
 call CreateNUnitsAtLocBonuses(1,GetUnitTypeId(GetEnumUnit()),GetOwningPlayer(GetEnumUnit()),GenerateRandomLocInRect(MainGenerator,udg_rct_Creep_duel_spawn),bj_UNIT_FACING)
 else
@@ -20914,10 +20911,10 @@ call ForForce(udg_PG2,function Trig_Duel_Copy_2_Func011A)
 set bj_wantDestroyGroup=true
 call ForGroupBJ(GetUnitsInRectMatchingFilteredExcludeObservers(GetEntireMapRect()),function Trig_Duel_Copy_2_Func013A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectMatchingFilteredExcludeObservers(GetEntireMapRect()),function Trig_Duel_Copy_2_Func015A)
+call ForGroupBJ(GetUnitsInRectMatchingFilteredExcludeObservers(GetEntireMapRect()),function CreateDuelAllies)
 call ForForce(GetPlayersAllies(Neutral_Bottom),function Trig_Duel_Copy_2_Func016A)
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRectMatchingFilteredExcludeObservers(GetEntireMapRect()),function Trig_Duel_Copy_2_Func018A)
+//call ForGroupBJ(GetUnitsInRectMatchingFilteredExcludeObservers(GetEntireMapRect()),function Trig_Duel_Copy_2_Func018A)
 call ForForce(GetPlayersAllies(Neutral_Satyrs),function Trig_Duel_Copy_2_Func019A)
 set bj_wantDestroyGroup=true
 call ForGroupBJ(GetUnitsInRectMatchingFilteredExcludeObservers(GetEntireMapRect()),function Trig_Duel_Copy_2_Func021A)
