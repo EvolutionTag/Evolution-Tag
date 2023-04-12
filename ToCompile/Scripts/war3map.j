@@ -43988,12 +43988,12 @@ call DefineStartLocation(2,512.0,-320.0)
 call DefineStartLocation(3,-384.0,-320.0)
 call DefineStartLocation(4,-448.0,-704.0)
 call DefineStartLocation(5,448.0,-704.0)
-call DefineStartLocation(6,-192.0,-960.0)
-call DefineStartLocation(7,128.0,-960.0)
+//call DefineStartLocation(6,-192.0,-960.0)
+//call DefineStartLocation(7,128.0,-960.0)
 call DefineStartLocation(8,64.0,-512.0)
 call DefineStartLocation(9,64.0,-512.0)
 call DefineStartLocation(10,64.0,-512.0)
-call DefineStartLocation(11,64.0,-512.0)
+//call DefineStartLocation(11,64.0,-512.0)
 call InitCustomPlayerSlots()
 call InitCustomTeams()
 call InitAllyPriorities()
@@ -44006,7 +44006,6 @@ hook RemoveUnit onRemoval
 //! zinc
     library checkdeathbonuses requires smelter{
         trigger t;
-        
         function onInit() {
             TimerStart(CreateTimer(),0.1,false,function(){
             t = CreateTrigger();
