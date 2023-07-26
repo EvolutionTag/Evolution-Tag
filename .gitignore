@@ -6,3 +6,6 @@ desktop.ini
 workspace.code-workspace
 scripts/wenhooks.lua
 scripts/lua/wenhooks.lua
+src/logs
+src/backups
+__pycache__/
