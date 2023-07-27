@@ -9,4 +9,6 @@ scripts/lua/wenhooks.lua
 src/logs
 src/backups
 __pycache__/
+backups/
+logs/
 build/settings.py
