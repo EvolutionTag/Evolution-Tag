@@ -2977,8 +2977,7 @@ group Psychos=CreateGroup()
 trigger trg_Psycho_sold
 trigger udg_trg_Display_mode
 force neutral_humans=CreateForce()
-integer array Egg_Evolutions
-integer Egg_Evocnt = 0
+
 integer treant_count=0
 unit tmp_unit_smelter=null
 unit udg_destructableLib___dummy
@@ -3165,6 +3164,9 @@ native UnitAlive takes unit id returns boolean
 //! import zinc "src\Scripts\resourcesend.zn"
 //! import zinc "src\Scripts\masochist.zn"
 //! import zinc "src\Scripts\forbidden.zn"
+//! import zinc "src\Scripts\egg.zn"
+//! import zinc "src\Scripts\typeFeatures.zn"
+
 
 //////////////////////////////////////////////////
 // //! import zinc "src\Scripts\Fixes\TerrainDeformFix.j"
@@ -11308,37 +11310,8 @@ local trigger t=CreateTrigger()
 call TriggerRegisterTimerEventSingle(t,420.)
 call TriggerAddAction(t,function EnableTrade_Actions)
 endfunction
-function AddEggEvolution takes integer id returns nothing
-    set Egg_Evolutions[Egg_Evocnt] = id
-    set Egg_Evocnt = Egg_Evocnt + 1
-endfunction
 function InitGlobals2 takes nothing returns nothing
 local integer i=0
-call AddEggEvolution('H03G')
-call AddEggEvolution('H03J')
-call AddEggEvolution('H03C')
-call AddEggEvolution('Hant')
-call AddEggEvolution('u01Z')
-call AddEggEvolution('h068') //Terrorist 5
-call AddEggEvolution('Hblm')
-call AddEggEvolution('e00N') //Ancient of Wind 2
-call AddEggEvolution('E013')
-call AddEggEvolution('H03W')
-// call AddEggEvolution('E00D')
-call AddEggEvolution('H07A')
-// call AddEggEvolution('H01Y')
-//call AddEggEvolution('H06K') //Iron Knight
-call AddEggEvolution('H05L')
-call AddEggEvolution('h04W') //Tinker 5
-call AddEggEvolution('N01X')
-call AddEggEvolution('N04D')
-call AddEggEvolution('Hmbr')
-call AddEggEvolution('nvlk')
-call AddEggEvolution('Ogrh')
-call AddEggEvolution('Orex')
-call AddEggEvolution('Nalc')
-call AddEggEvolution('Ntin')
-call AddEggEvolution('O00U')
 set rct_Trees_Naga=Rect(1216,4736,1632,4960)
 set rct_Trees_FB1=Rect(-256,9088,-32,9696)
 set rct_Trees_FB2=Rect(-256,8288,0,8896)
@@ -16915,12 +16888,6 @@ elseif(GetUnitTypeId(GetSoldUnit())=='Z00E' and udg_NO_FLYING_UNITS)then
 set created=ChangeUnit2(GetSellingUnit(),'Z00I')
 elseif(GetUnitTypeId(GetSoldUnit())=='h07T')then
 set created=ChangeUnit2(GetSellingUnit(),'h07T')
-set idx=1
-loop
-call AddUnitToStock(created,Egg_Evolutions[GenerateInt(MainGenerator, 0,Egg_Evocnt)],1,1)
-set idx=idx+1
-exitwhen idx>6
-endloop
 set damageBonuses[GetPlayerId(GetOwningPlayer(GetTriggerUnit()))]=damageBonuses[GetPlayerId(GetOwningPlayer(GetTriggerUnit()))]+40
 set HPBonuses[GetPlayerId(GetOwningPlayer(GetTriggerUnit()))]=HPBonuses[GetPlayerId(GetOwningPlayer(GetTriggerUnit()))]+500
 set idx=1

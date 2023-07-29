@@ -1,0 +1,52 @@
+library egg requires AdditionalEvols,classFeatures,mainRNG{
+
+    public integer Egg_Evolutions[];
+    public integer Egg_Evocnt = 0;
+    
+    function AddEggEvolution (integer id )
+    {
+        Egg_Evolutions[Egg_Evocnt] = id;
+        Egg_Evocnt = Egg_Evocnt + 1;
+    }
+
+    public function Egg_addUnits() {
+        integer idx=1;
+        for(1<=idx<=9)  {
+            AddUnitToStock(classFeatures_unit,Egg_Evolutions[GenerateInt(MainGenerator, 0,Egg_Evocnt)],1,1);
+        }
+    }
+
+    function onInit() {
+        SaveInteger(AdditionalEvolutions,'e01F',0,'h07T');
+
+        
+        AddEggEvolution('N01X');
+        AddEggEvolution('Hant');
+        AddEggEvolution('Hmbr');
+        AddEggEvolution('Nalc');
+        AddEggEvolution('Orex');
+        AddEggEvolution('Ogrh');
+        AddEggEvolution('Hblm');
+        AddEggEvolution('O00U');
+
+        addClassFeature('h07T',"Egg_addUnits");
+
+        // AddEggEvolution('H03G');
+        // AddEggEvolution('H03J');
+        // AddEggEvolution('H03C');
+        // AddEggEvolution('u01Z');
+        // AddEggEvolution('h068'); //Terrorist 5
+        // AddEggEvolution('e00N'); //Ancient of Wind 2
+        // AddEggEvolution('E013');
+        // AddEggEvolution('H03W');
+        // // AddEggEvolution('E00D')
+        // AddEggEvolution('H07A');
+        // // AddEggEvolution('H01Y')
+        // //AddEggEvolution('H06K') //Iron Knight
+        // AddEggEvolution('H05L');
+        // AddEggEvolution('h04W'); //Tinker 5
+        // AddEggEvolution('N04D');
+        // AddEggEvolution('nvlk');
+        // AddEggEvolution('Ntin');
+    }
+}
