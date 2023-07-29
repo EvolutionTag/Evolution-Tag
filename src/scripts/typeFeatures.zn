@@ -1,0 +1,46 @@
+library classFeatures {
+    public hashtable classFeatures_ht;
+
+    public unit classFeatures_unit;
+
+    public function addClassFeature(integer id,string callback) {
+        integer number = 0;
+        if(HaveSavedInteger(classFeatures_ht,id,0)) {
+            number = LoadInteger(classFeatures_ht,id,0);
+        }
+        number = number + 1;
+        SaveStr(classFeatures_ht,id,number,callback);
+        SaveInteger(classFeatures_ht,id,0,number);
+    }
+
+    function runFeature(unit u,string callback) {
+        classFeatures_unit = u;
+        ExecuteFunc(callback);
+        classFeatures_unit = null;
+    }
+
+    function runClassFeatures(unit u) {
+        integer top = 1;
+        integer i;
+        integer id;
+        id = GetUnitTypeId(u);
+        if(HaveSavedInteger(classFeatures_ht,id,0)) {
+            top = LoadInteger(classFeatures_ht,id,0);
+            for(1<=i<=top) {
+                runFeature(u,LoadStr(classFeatures_ht,id,i));
+            }
+        }
+    }
+    
+
+    function onInit() {
+        trigger t = CreateTrigger();
+        region rectRegion=CreateRegion();
+        RegionAddRect(rectRegion,Rect(-999999,-999999,999999,999999));
+        TriggerRegisterEnterRegion(t,rectRegion,null);
+        TriggerAddAction(t,function() {
+            runClassFeatures(GetTriggerUnit());
+        });
+        classFeatures_ht = InitHashtable();
+    }
+}
