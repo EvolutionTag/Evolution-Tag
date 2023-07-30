@@ -1,0 +1,9 @@
+library AnnihilatorFix requires classFeatures,MemoryHackUnitNormalAPI{
+
+    public function fixAnnihilatorWeaponType() {
+        SetUnitWeaponType(classFeatures_unit,1);
+    }
+    function onInit() {
+        addClassFeature('O00X',"fixAnnihilatorWeaponType");
+    }
+}

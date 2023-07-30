@@ -3166,7 +3166,7 @@ native UnitAlive takes unit id returns boolean
 //! import zinc "src\Scripts\forbidden.zn"
 //! import zinc "src\Scripts\egg.zn"
 //! import zinc "src\Scripts\typeFeatures.zn"
-
+//! import zinc "src\Scripts\AnnihilatorFix.zn"
 
 //////////////////////////////////////////////////
 // //! import zinc "src\Scripts\Fixes\TerrainDeformFix.j"
