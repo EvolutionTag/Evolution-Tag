@@ -2137,7 +2137,7 @@ unit udg_unit_h01G_0215=null
 unit udg_unit_ehip_0092=null
 unit udg_unit_hhdl_0060=null
 unit udg_unit_hhdl_0061=null
-unit udg_unit_npng_0034=null
+unit udg_unit_npig_0034=null
 unit udg_unit_ntn2_0046=null
 unit udg_unit_nten_0048=null
 unit udg_unit_h01G_0084=null
@@ -14446,19 +14446,19 @@ local unit templastcreatedunit
 	call CreateUnitBonuses( Player(15) , 'npig', -3297.143 , -3982.730 , 103.971 )
 	set udg_unit_ehip_0093 =  CreateUnitBonuses( Player(15) , 'ehip', -4505.223 , 1269.555 , 213.965 )
 	set udg_unit_ehip_0092 =  CreateUnitBonuses( Player(15) , 'ehip', 987.336 , 290.636 , 104.035 )
-	call CreateUnitBonuses( Player(15) , 'npng', 3309.917 , -3326.557 , 11.348 )
-	call CreateUnitBonuses( Player(15) , 'npng', 3235.246 , -2991.540 , 96.651 )
-	call CreateUnitBonuses( Player(15) , 'npng', 3036.940 , -2091.736 , 119.586 )
-	call CreateUnitBonuses( Player(15) , 'npng', 2171.290 , -3373.388 , 298.066 )
-	call CreateUnitBonuses( Player(15) , 'npng', 2555.361 , -3057.947 , 359.812 )
-	call CreateUnitBonuses( Player(15) , 'npng', 3300.551 , -3718.431 , 3.516 )
-	call CreateUnitBonuses( Player(15) , 'npng', 3587.834 , -2213.259 , 194.924 )
-	call CreateUnitBonuses( Player(15) , 'npng', 2581.059 , -3564.266 , 37.776 )
+	call CreateUnitBonuses( Player(15) , 'npig', 3309.917 , -3326.557 , 11.348 )
+	call CreateUnitBonuses( Player(15) , 'npig', 3235.246 , -2991.540 , 96.651 )
+	call CreateUnitBonuses( Player(15) , 'npig', 3036.940 , -2091.736 , 119.586 )
+	call CreateUnitBonuses( Player(15) , 'npig', 2171.290 , -3373.388 , 298.066 )
+	call CreateUnitBonuses( Player(15) , 'npig', 2555.361 , -3057.947 , 359.812 )
+	call CreateUnitBonuses( Player(15) , 'npig', 3300.551 , -3718.431 , 3.516 )
+	call CreateUnitBonuses( Player(15) , 'npig', 3587.834 , -2213.259 , 194.924 )
+	call CreateUnitBonuses( Player(15) , 'npig', 2581.059 , -3564.266 , 37.776 )
 	call CreateUnitBonuses( Player(15) , 'npig', -3572.479 , -2236.050 , 132.513 )
 	call CreateUnitBonuses( Player(15) , 'npig', -3854.408 , -3520.899 , 321.279 )
-	call CreateUnitBonuses( Player(15) , 'npng', 2789.271 , -2888.513 , 284.704 )
-	call CreateUnitBonuses( Player(15) , 'npng', 2084.646 , -3589.821 , 314.415 )
-	call CreateUnitBonuses( Player(15) , 'npng', 1909.250 , -3302.000 , 305.666 )
+	call CreateUnitBonuses( Player(15) , 'npig', 2789.271 , -2888.513 , 284.704 )
+	call CreateUnitBonuses( Player(15) , 'npig', 2084.646 , -3589.821 , 314.415 )
+	call CreateUnitBonuses( Player(15) , 'npig', 1909.250 , -3302.000 , 305.666 )
 	call CreateUnitBonuses( Player(15) , 'n067', -1047.750 , -2451.500 , 230.000 )
 	call CreateUnitBonuses( Player(15) , 'n068', 1072.000 , -2352.000 , 30.000 )
 	call CreateUnitBonuses( Player(15) , 'nfro', -1869.302 , -542.688 , 8.064 )
@@ -14823,7 +14823,7 @@ set udg_rct_Dangerous_water_event=Rect(5632.0,-5056.0,6048.0,-4672.0)
 set udg_rct_Rabbit_spawn_event=Rect(6080.0,-5088.0,6528.0,-4672.0)
 set udg_rct_Bottom_Right_Snow=Rect(1856.0,-5952.0,4096.0,-2304.0)
 set we=AddWeatherEffect(udg_rct_Bottom_Right_Snow,'SNhs')
-call EnableWeatherEffect(we,true)
+call EnableWeatherEffect(we,false)
 set udg_rct_Boot_drop_event=Rect(6112.0,-5536.0,6272.0,-5120.0)
 set udg_rct_Far_Sight_Evil_Event=Rect(5888.0,-5536.0,6080.0,-5088.0)
 set udg_rct_Slow_Event=Rect(6304.0,-5536.0,6528.0,-5120.0)
@@ -25928,7 +25928,7 @@ endif
 return true
 endfunction
 function Trig_New_random_events_Func003Func001C takes nothing returns boolean
-if(not(UnitAlive(udg_unit_npng_0034)==true))then
+if(not(UnitAlive(udg_unit_npig_0034)==true))then
 return false
 endif
 return true
@@ -25981,7 +25981,7 @@ endif
 if(Trig_New_random_events_Func003C())then
 if(Trig_New_random_events_Func003Func001C())then
 call DisplayTimedTextToForce(GetPlayersAll(),10.00,"|cffff00ffA penguin has become angry!!|r")
-call ReplaceUnitBJ(udg_unit_npng_0034,'n05L',bj_UNIT_STATE_METHOD_RELATIVE)
+call ReplaceUnitBJ(udg_unit_npig_0034,'n05L',bj_UNIT_STATE_METHOD_RELATIVE)
 set udg_AAAA_ANGRY_PENGU=GetLastReplacedUnitBJ()
 call SetUnitOwner(udg_AAAA_ANGRY_PENGU,Neutral_Satyrs,true)
 set udg_AAAA_GP=GetRectCenter(udg_rct_human_tower_2)
