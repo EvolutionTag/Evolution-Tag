@@ -36,7 +36,7 @@ library classFeatures {
     function onInit() {
         trigger t = CreateTrigger();
         region rectRegion=CreateRegion();
-        RegionAddRect(rectRegion,Rect(-999999,-999999,999999,999999));
+        RegionAddRect(rectRegion,GetWorldBounds());
         TriggerRegisterEnterRegion(t,rectRegion,null);
         TriggerAddAction(t,function() {
             runClassFeatures(GetTriggerUnit());
