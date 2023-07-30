@@ -1,4 +1,4 @@
-library classFeatures {
+library classFeatures requires GeneralFilters {
     public hashtable classFeatures_ht;
 
     public unit classFeatures_unit;
@@ -19,11 +19,9 @@ library classFeatures {
         classFeatures_unit = null;
     }
 
-    function runClassFeatures(unit u) {
+    function runClassFeatures_id(unit u,integer id) {
         integer top = 1;
         integer i;
-        integer id;
-        id = GetUnitTypeId(u);
         if(HaveSavedInteger(classFeatures_ht,id,0)) {
             top = LoadInteger(classFeatures_ht,id,0);
             for(1<=i<=top) {
@@ -31,13 +29,18 @@ library classFeatures {
             }
         }
     }
+
+    function runClassFeatures(unit u) {
+        runClassFeatures_id(u,GetUnitTypeId(u));
+        runClassFeatures_id(u,0);
+    }
     
 
     function onInit() {
         trigger t = CreateTrigger();
         region rectRegion=CreateRegion();
         RegionAddRect(rectRegion,GetWorldBounds());
-        TriggerRegisterEnterRegion(t,rectRegion,null);
+        TriggerRegisterEnterRegion(t,rectRegion,function GeneralTargetCondition);
         TriggerAddAction(t,function() {
             runClassFeatures(GetTriggerUnit());
         });
