@@ -1,0 +1,18 @@
+library GeneralFilters {
+    public function GeneralTargetFilter( unit u) -> boolean {
+        if(GetUnitAbilityLevel(u,'ACC7')>0) {
+        return false;
+        }
+        if(GetUnitAbilityLevel(u,'Aloc')>0) {
+        return false;
+        }
+        return true;
+    }
+    function GeneralTargetCondition_unit(unit u)-> boolean {
+        return GeneralTargetFilter(u) && (! IsUnitIllusion(u));
+    }
+
+    public function GeneralTargetCondition()-> boolean {
+        return GeneralTargetCondition_unit(GetTriggerUnit());
+    }
+}

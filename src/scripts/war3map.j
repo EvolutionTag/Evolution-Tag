@@ -3167,6 +3167,7 @@ native UnitAlive takes unit id returns boolean
 //! import zinc "src\Scripts\egg.zn"
 //! import zinc "src\Scripts\typeFeatures.zn"
 //! import zinc "src\Scripts\AnnihilatorFix.zn"
+//! import zinc "src\Scripts\GeneralTargetCondition.zn"
 
 //////////////////////////////////////////////////
 // //! import zinc "src\Scripts\Fixes\TerrainDeformFix.j"
@@ -8040,15 +8041,7 @@ endfunction
 function EnableAnyDmgReturnTriggers takes nothing returns nothing
 call EnableTrigger(gg_trg_revenge)
 endfunction
-function GeneralTargetFilter takes unit u returns boolean
-    if(GetUnitAbilityLevel(u,'ACC7')>0) then
-    return false
-    endif
-    if(GetUnitAbilityLevel(u,'Aloc')>0) then 
-    return false
-    endif
-    return true
-endfunction
+
 function Trig_Dwarf_spell_Condition takes nothing returns boolean
 local unit atacked=GetTriggerUnit()
 local unit atacker=GetEventDamageSource()
@@ -8745,10 +8738,6 @@ function AddUnitBonusesCreated takes nothing returns nothing
         call AddFlyingUnits(GetTriggerUnit())
     endif
     call UnitApplyAdditionalEvolutions(GetTriggerUnit())
-endfunction
-function GeneralTargetCondition takes nothing returns boolean
-    return GeneralTargetFilter(GetTriggerUnit()) and (not IsUnitIllusion(GetTriggerUnit()))
-
 endfunction
 
 
