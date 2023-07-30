@@ -1,0 +1,13 @@
+library NewYear requires classFeatures
+    {
+        public function SantaHatFeature() {
+            UnitAddAbility(classFeatures_unit,'ACCU');
+        }
+
+        public function NewYear_Event()
+        {
+            DisplayTimedTextToForce(GetPlayersAll(),10.00,"|cffb5d837Happy New Year!|r");
+            addClassFeature(0,"SantaHatFeature");
+            
+        }
+    }

@@ -3150,6 +3150,7 @@ native UnitAlive takes unit id returns boolean
 //! import zinc "src\Scripts\AdditionalEvols.j"
 //! import zinc "src\Scripts\Holidays.j"
 //! import zinc "src\Scripts\Holidays\Easter.j"
+//! import zinc "src\Scripts\Holidays\NewYear.zn"
 //! import zinc "src\Scripts\DeathUnitTypeCheck.j"
 //! import zinc "src\Scripts\DoNotUseRabbitLure.j"
 //! import zinc "src\Scripts\ShoppingDrones.j"
