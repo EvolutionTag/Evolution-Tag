@@ -28,6 +28,8 @@ library egg requires AdditionalEvols,classFeatures,mainRNG{
         AddEggEvolution('Ogrh');
         AddEggEvolution('Hblm');
         AddEggEvolution('O00U');
+        AddEggEvolution('O00X');
+        
 
         addClassFeature('h07T',"Egg_addUnits");
 
