@@ -11,9 +11,9 @@ library ImprovedSkillsUndeads requires SkillCastStat {
 
         AddAbility('ANdr', SKILL_FIELD_OFFSET_DATAA, 35,15,0.25,0.25,0.25,0,0);  //suck this hp (mannoroth)
 
-        AddAbility('A0GB', SKILL_FIELD_OFFSET_DATAB, 0,75,0,0,0.7,0,0);  //frost blizzard
+        AddAbility('A0GB', SKILL_FIELD_OFFSET_DATAB, 0,75,0,0,0.5,0,0);  //frost blizzard
 
-        AddAbility('A0GC', SKILL_FIELD_OFFSET_DATAA, 0,75,0,0,1,0,0);  //Breath of Frost
+        AddAbility('A0GC', SKILL_FIELD_OFFSET_DATAA, 0,75,0,0,0.75,0,0);  //Breath of Frost
 
         AddAbility('A0E7', SKILL_FIELD_OFFSET_DATAA, 0,400,0,0,2,0,0);  //Breath of Frost boo
 
