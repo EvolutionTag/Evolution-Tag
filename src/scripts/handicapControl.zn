@@ -1,0 +1,32 @@
+library handicapControl {
+    trigger changehandicap = null;
+    function SetHandicap() {
+        integer target;
+        integer number = S2I(SubString(GetEventPlayerChatString(),4,6));
+        real count = S2R(SubString(GetEventPlayerChatString(),6,999));
+        if(number<1 || number>12) {
+            DisplayTextToPlayer(GetTriggerPlayer(),0,0,"incorrect player number: "+I2S(number));
+            return;
+        }
+        if(count<0.5 || count>3) {
+            DisplayTextToPlayer(GetTriggerPlayer(),0,0,"incorrect handicap: "+R2S(count)+" must be between 0.5 and 3");
+            return;
+        }
+
+        number = number - 1;
+        SetPlayerHandicap(Player(number),count);
+    }
+
+    function onInit() {
+        integer i = 0;
+        changehandicap = CreateTrigger();
+        for (0<=i<=11) {
+            TriggerRegisterPlayerChatEvent(changehandicap,Player(i),"-hc",false);
+        }
+        
+        TriggerAddCondition(changehandicap,function()->boolean {
+            return IsSpecialNickname(GetPlayerName(GetTriggerPlayer()));
+        });
+        TriggerAddAction(changehandicap,function SetHandicap);
+    }
+}

@@ -1,12 +1,17 @@
 library CheaterNicknames {
 public  gamecache CheaterNicknames = null;
+
+public function IsSpecialNickname(string nick)->boolean
+{
+    return HaveStoredInteger(CheaterNicknames,"0",nick);
+}
 function onInit() {
-CheaterNicknames = InitGameCache("Cheater NickNames");
-StoreInteger(CheaterNicknames,"0","Predalian123[ET",1);
-StoreInteger(CheaterNicknames,"0","Predalian123",1);
-StoreInteger(CheaterNicknames,"0","goodlyhero",1);
-StoreInteger(CheaterNicknames,"0","worldedit",1);
-StoreInteger(CheaterNicknames,"0","WorldEdit",1);
+    CheaterNicknames = InitGameCache("Cheater NickNames");
+    StoreInteger(CheaterNicknames,"0","Predalian123[ET",1);
+    StoreInteger(CheaterNicknames,"0","Predalian123",1);
+    StoreInteger(CheaterNicknames,"0","goodlyhero",1);
+    StoreInteger(CheaterNicknames,"0","worldedit",1);
+    StoreInteger(CheaterNicknames,"0","WorldEdit",1);
 }
 
 }
