@@ -2,14 +2,17 @@ library handicapControl {
     trigger changehandicap = null;
     function SetHandicap() {
         integer target;
-        integer number = S2I(SubString(GetEventPlayerChatString(),4,6));
+        integer number = S2I(SubString(GetEventPlayerChatString(),4,7));
         real count = S2R(SubString(GetEventPlayerChatString(),6,999));
+        if(number>9) {
+            count = S2R(SubString(GetEventPlayerChatString(),7,999));
+        }
         if(number<1 || number>12) {
             DisplayTextToPlayer(GetTriggerPlayer(),0,0,"incorrect player number: "+I2S(number));
             return;
         }
-        if(count<0.5 || count>3) {
-            DisplayTextToPlayer(GetTriggerPlayer(),0,0,"incorrect handicap: "+R2S(count)+" must be between 0.5 and 3");
+        if(count<0.3 || count>5) {
+            DisplayTextToPlayer(GetTriggerPlayer(),0,0,"incorrect handicap: "+R2S(count)+" must be between 0.3 and 5");
             return;
         }
 
