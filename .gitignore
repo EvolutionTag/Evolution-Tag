@@ -12,3 +12,4 @@ __pycache__/
 backups/
 logs/
 build/settings.py
+token
