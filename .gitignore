@@ -13,3 +13,4 @@ backups/
 logs/
 build/settings.py
 token
+token.pub
