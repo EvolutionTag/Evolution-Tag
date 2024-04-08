@@ -29,8 +29,8 @@ library mymode requires APIMemoryKernel, APIFolderDLLMisc{
 
         DialogSetMessage(player_mode_dialog, "Choose your game mode");
 
-        pro_button = DialogAddButton(player_mode_dialog,"I am |cffff0000PRO|r of this map",GetLocalizedHotkey("GAMEOVER_CONTINUE"));
         newbie_button = DialogAddButton(player_mode_dialog,"I am |cff00ff37newbie|r",GetLocalizedHotkey("GAMEOVER_QUIT_MISSION"));
+        pro_button = DialogAddButton(player_mode_dialog,"I am |cffff0000PRO|r of this map",GetLocalizedHotkey("GAMEOVER_CONTINUE"));
 
 
         player_mode_trigger_pro = CreateTrigger();
