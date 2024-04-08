@@ -10,7 +10,7 @@ library mymode requires APIMemoryKernel, APIFolderDLLMisc{
 
     public function SetProMode(player p) {
         if(GetPlayerGameMode(p)==MODE_PLAYER_PRO) {
-            return
+            return;
         }
         SetPlayerGameMode(p,MODE_PLAYER_PRO);
 
@@ -21,7 +21,7 @@ library mymode requires APIMemoryKernel, APIFolderDLLMisc{
 
     public function SetNewbieMode(player p) {
         if(GetPlayerGameMode(p)==MODE_PLAYER_NEWBIE) {
-            return
+            return;
         }
         SetPlayerHandicap(p,1.5);
         SetPlayerHandicapXP(p,1.5);
