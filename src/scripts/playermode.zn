@@ -1,8 +1,8 @@
 library playermode {
     integer modes[];
 
-    integer MODE_PLAYER_PRO = 0;
-    integer MODE_PLAYER_NEWBIE = 1;
+    public integer MODE_PLAYER_PRO = 0;
+    public integer MODE_PLAYER_NEWBIE = 1;
 
     public function SetPlayerGameMode(player p, integer mode) {
         integer id = GetPlayerId(p);
