@@ -8998,6 +8998,9 @@ else
     call Bounty(p,20,GetUnitX(GetDyingUnit()),GetUnitY(GetDyingUnit()))
 endif
 endfunction
+function AddLivesForNewbie takes nothing returns nothing
+    call AddLivesP(GetTriggerPlayer(),2)
+endfunction
 function CheckBonusesForKiller takes nothing returns nothing
 local unit killer=GetKillingUnit()
 local player killp=GetOwningPlayer(killer)

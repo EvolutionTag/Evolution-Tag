@@ -17,6 +17,7 @@ library mymode requires APIMemoryKernel, APIFolderDLLMisc{
     public function SetNewbieMode(player p) {
         SetPlayerHandicap(p,1.5);
         SetPlayerHandicapXP(p,1.5);
+        ExecuteFunc("AddLivesForNewbie");
     }
 
     public function init_player_mode_dialogue() {
@@ -57,12 +58,9 @@ library mymode requires APIMemoryKernel, APIFolderDLLMisc{
         CreateDirectory("Mapdata");
         CreateDirectory("Mapdata/ET");
 
-        cnt_loaded = ReadStringFromFile("Mapdata/ET/game.ini","game","played_games","");
+        cnt_loaded = ReadStringFromFile("Mapdata/ET/game.ini","game","played_games","0");
+        cnt_games = S2I(cnt_loaded);
 
-        if(cnt_loaded != "") {
-            cnt_games = S2I(cnt_loaded);
-        }
-        PreloadGenStart();
         WriteStringToFile("Mapdata/ET/game.ini","game","played_games",I2S(cnt_games+1));
         if(cnt_games>3) {
             DialogDisplay(GetLocalPlayer(),player_mode_dialog,false);
