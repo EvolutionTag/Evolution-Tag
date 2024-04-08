@@ -43116,6 +43116,7 @@ else
 endif
 call Trig_Create3rdTeam_Actions()
 set templastcreatedunit = null
+call init_player_mode_dialogue()
 endfunction
 function HumanAdd2LivesEnum takes nothing returns nothing
 call AddLivesP(GetEnumPlayer(),2)
@@ -43370,6 +43371,7 @@ endif
 call Trig_Create3rdTeam_Actions()
 set HCLcommand="Hcl successfully worked"
 set templastcreatedunit = null
+call init_player_mode_dialogue()
 endfunction
 function Trig_Game_settings_Conditions takes nothing returns boolean
 if(not(GetPlayerColor(GetTriggerPlayer())==PLAYER_COLOR_RED))then
