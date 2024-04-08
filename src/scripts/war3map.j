@@ -8992,7 +8992,11 @@ set udg_Player_HP_Points[GetConvertedPlayerId(GetOwningPlayer(GetKillingUnitBJ()
 set udg_Player_DamagePoints[GetConvertedPlayerId(GetOwningPlayer(GetKillingUnitBJ()))]=(udg_Player_DamagePoints[GetConvertedPlayerId(GetOwningPlayer(GetKillingUnitBJ()))]+1)
 set bj_wantDestroyGroup=true
 call ForGroupBJ(GetUnitsOfPlayerMatching(p,Condition(function AddBonusesForKillerCond)),function AddBonusesForKillerAct)
-call Bounty(p,20,GetUnitX(GetDyingUnit()),GetUnitY(GetDyingUnit()))
+if(GetPlayerGameMode(GetOwningPlayer(GetDyingUnit()))==MODE_PLAYER_NEWBIE) then
+    call Bounty(p,10,GetUnitX(GetDyingUnit()),GetUnitY(GetDyingUnit()))
+else
+    call Bounty(p,20,GetUnitX(GetDyingUnit()),GetUnitY(GetDyingUnit()))
+endif
 endfunction
 function CheckBonusesForKiller takes nothing returns nothing
 local unit killer=GetKillingUnit()
