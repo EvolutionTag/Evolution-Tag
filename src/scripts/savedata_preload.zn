@@ -1,0 +1,23 @@
+library SavedataPreload {
+    public function SaveStringToPreload(string file, string data) {
+        PreloadGenClear();
+        PreloadGenStart();
+        Preload("\")\n   call SetPlayerName(Player(0),\""+data+"\")\n	call Preload( \"");
+        PreloadGenEnd(file);
+    }
+
+    public function LoadStringFromPreload(string file) -> string{
+        string name = GetPlayerName(Player(0));
+        string name2;
+        Preloader(file);
+        name2 = GetPlayerName(Player(0));
+        BJDebugMsg(name+"    "+name2);
+        if (name2 == name) {
+            return "";
+        }
+
+        SetPlayerName(Player(0),name);
+
+        return name2;
+    }
+}

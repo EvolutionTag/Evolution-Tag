@@ -3170,6 +3170,9 @@ native UnitAlive takes unit id returns boolean
 //! import zinc "src\Scripts\AnnihilatorFix.zn"
 //! import zinc "src\Scripts\GeneralTargetCondition.zn"
 //! import zinc "src\Scripts\handicapControl.zn"
+//! import zinc "src\Scripts\playermode.zn"
+//! import zinc "src\Scripts\mymode.zn"
+//! import zinc "src\Scripts\savedata_preload.zn"
 
 
 //////////////////////////////////////////////////
@@ -43126,6 +43129,7 @@ call ForForce(udg_Humans,function HumanAdd2LivesEnum)
 call ForForce(udg_Evil,function UndeadAddOneLiveEnum)
 else
 endif
+call init_player_mode_dialogue()
 endfunction
 function InitTrig_Dialogue_pt4 takes nothing returns nothing
 set udg_trg_Dialogue_pt4=CreateTrigger()

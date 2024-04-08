@@ -1,0 +1,72 @@
+library mymode requires SavedataPreload{
+
+    button pro_button;
+    button newbie_button;
+
+    dialog player_mode_dialog;
+
+    trigger player_mode_trigger_pro;
+    trigger player_mode_trigger_newbie;
+
+    public function SetProMode(player p) {
+        SetPlayerHandicap(p,1);
+        SetPlayerHandicapXP(p,1);
+    }
+
+
+    public function SetNewbieMode(player p) {
+        SetPlayerHandicap(p,1.5);
+        SetPlayerHandicapXP(p,1.5);
+    }
+
+    public function init_player_mode_dialogue() {
+        string cnt_loaded = LoadStringFromPreload("ET/player_games.pld");
+        integer cnt_games = 0;
+
+        player_mode_dialog = DialogCreate();
+
+
+        DialogSetMessage(player_mode_dialog, "Choose your game mode");
+
+        pro_button = DialogAddButton(player_mode_dialog,"I am |cffff0000PRO|r of this map",GetLocalizedHotkey("GAMEOVER_CONTINUE"));
+        newbie_button = DialogAddButton(player_mode_dialog,"I am |cff00ff37newbie|r",GetLocalizedHotkey("GAMEOVER_QUIT_MISSION"));
+
+
+        player_mode_trigger_pro = CreateTrigger();
+        player_mode_trigger_newbie = CreateTrigger();
+
+        TriggerRegisterDialogButtonEvent(player_mode_trigger_pro, pro_button);
+        TriggerRegisterDialogButtonEvent(player_mode_trigger_newbie, newbie_button);
+
+        TriggerAddAction(player_mode_trigger_pro, function() {
+            dialog trigger_dialog = player_mode_dialog;
+
+            DisableTrigger(GetTriggeringTrigger());
+            DialogDisplay(GetLocalPlayer(),trigger_dialog, false);
+        });
+
+        TriggerAddAction(player_mode_trigger_newbie, function() {
+            dialog trigger_dialog = player_mode_dialog;
+
+            DisableTrigger(GetTriggeringTrigger());
+            DialogDisplay(GetLocalPlayer(),trigger_dialog, false);
+
+            SetNewbieMode(GetTriggerPlayer());
+        });
+
+        if(cnt_loaded != "") {
+            cnt_games = S2I(cnt_loaded);
+        }
+        SaveStringToPreload("ET/player_games.pld",I2S(cnt_games+1));
+        if(cnt_games>3) {
+            return;
+        }
+
+        DialogDisplay(GetLocalPlayer(),player_mode_dialog,true);
+
+
+    }
+    
+
+    
+}

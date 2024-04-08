@@ -1,0 +1,24 @@
+library playermode {
+    integer modes[];
+
+    integer MODE_PLAYER_PRO = 0;
+    integer MODE_PLAYER_NEWBIE = 1;
+
+    public function SetPlayerGameMode(player p, integer mode) {
+        integer id = GetPlayerId(p);
+        modes[id] = mode;
+    }
+
+    public function GetPlayerGameMode(player p) -> integer{
+        integer id = GetPlayerId(p);
+
+        return modes[id];
+    }
+
+    function onInit() {
+        integer i;
+        for (0<=i<bj_MAX_PLAYERS) {
+            modes[i] = MODE_PLAYER_PRO;
+        }
+    }
+}
