@@ -1,4 +1,4 @@
-library mymode requires SavedataPreload{
+library mymode requires APIMemoryKernel, APIFolderDLLMisc{
 
     button pro_button;
     button newbie_button;
@@ -20,7 +20,7 @@ library mymode requires SavedataPreload{
     }
 
     public function init_player_mode_dialogue() {
-        string cnt_loaded = LoadStringFromPreload("ET/player_games.pld");
+        string cnt_loaded = "";
         integer cnt_games = 0;
 
         player_mode_dialog = DialogCreate();
@@ -54,11 +54,18 @@ library mymode requires SavedataPreload{
             SetNewbieMode(GetTriggerPlayer());
         });
 
+        CreateDirectory("Mapdata");
+        CreateDirectory("Mapdata/ET");
+
+        cnt_loaded = ReadStringFromFile("Mapdata/ET/game.ini","game","played_games","");
+
         if(cnt_loaded != "") {
             cnt_games = S2I(cnt_loaded);
         }
-        SaveStringToPreload("ET/player_games.pld",I2S(cnt_games+1));
+        PreloadGenStart();
+        WriteStringToFile("Mapdata/ET/game.ini","game","played_games",I2S(cnt_games+1));
         if(cnt_games>3) {
+            DialogDisplay(GetLocalPlayer(),player_mode_dialog,false);
             return;
         }
 
