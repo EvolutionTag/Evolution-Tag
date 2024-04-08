@@ -9,14 +9,23 @@ library mymode requires APIMemoryKernel, APIFolderDLLMisc{
     trigger player_mode_trigger_newbie;
 
     public function SetProMode(player p) {
+        if(GetPlayerGameMode(p)==MODE_PLAYER_PRO) {
+            return
+        }
+        SetPlayerGameMode(p,MODE_PLAYER_PRO);
+
         SetPlayerHandicap(p,1);
         SetPlayerHandicapXP(p,1);
     }
 
 
     public function SetNewbieMode(player p) {
+        if(GetPlayerGameMode(p)==MODE_PLAYER_NEWBIE) {
+            return
+        }
         SetPlayerHandicap(p,1.5);
         SetPlayerHandicapXP(p,1.5);
+        SetPlayerGameMode(p,MODE_PLAYER_NEWBIE);
         ExecuteFunc("AddLivesForNewbie");
     }
 
@@ -42,15 +51,13 @@ library mymode requires APIMemoryKernel, APIFolderDLLMisc{
         TriggerAddAction(player_mode_trigger_pro, function() {
             dialog trigger_dialog = player_mode_dialog;
 
-            DisableTrigger(GetTriggeringTrigger());
-            DialogDisplay(GetLocalPlayer(),trigger_dialog, false);
+            DialogDisplay(GetTriggerPlayer(),trigger_dialog, false);
         });
 
         TriggerAddAction(player_mode_trigger_newbie, function() {
             dialog trigger_dialog = player_mode_dialog;
 
-            DisableTrigger(GetTriggeringTrigger());
-            DialogDisplay(GetLocalPlayer(),trigger_dialog, false);
+            DialogDisplay(GetTriggerPlayer(),trigger_dialog, false);
 
             SetNewbieMode(GetTriggerPlayer());
         });
