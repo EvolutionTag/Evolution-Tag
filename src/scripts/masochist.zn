@@ -37,7 +37,7 @@ library masochist requires MemoryHackUnitNormalAPI, mainRNG {
 
 library MasochistSelfdamage {
     integer spell_Id = 'A0MC';
-    real damage = 500;
+    real damage = 100;
     public trigger masochist_self_harm = null;
 
     function OnUse() {
