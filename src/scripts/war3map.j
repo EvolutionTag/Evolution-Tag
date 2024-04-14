@@ -8060,7 +8060,7 @@ if((not IsUnitType(atacker,UNIT_TYPE_HERO) and (GetEventDamage()>0.4)) or (GetEv
 set dumy=CreateDumy(GetOwningPlayer(atacked),GetUnitX(atacked),GetUnitY(atacked))
 call UnitAddAbility(dumy,RevengeThunderbolt)
 call SetUnitAbilityLevel(dumy,RevengeThunderbolt,GetUnitAbilityLevel(atacked,revengeid))
-call SetThunderboltData(dumy,RevengeThunderbolt,lvl*0.05,lvl*0.05,lvl*5+GetHeroStr(atacked,true)*0.3)
+call SetThunderboltData(dumy,RevengeThunderbolt,lvl*0.05,lvl*0.05,lvl*5+GetHeroStr(atacked,true)*0.26)
 call UnitApplyTimedLife(dumy,'BTLF',2)
 call IssueTargetOrder(dumy,"thunderbolt",atacker)
 endif
