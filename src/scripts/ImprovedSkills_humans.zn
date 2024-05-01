@@ -46,7 +46,7 @@ library ImprovedSkillsHumans requires SkillCastStat {
 
         AddAbility('A0KK', SKILL_FIELD_OFFSET_DATAA, 150,50,0,0,0,0,0);  //Fire!
 
-        AddAbility('ACmf', SKILL_FIELD_OFFSET_DATAA, 0,1,0,0.02,0,0,0);  //magic shield marine
+        AddAbility('ACmf', SKILL_FIELD_OFFSET_DATAA, 0,1,0.02,0,0,0,0);  //magic shield marine
         
         
         AddAbility('AE0E', SKILL_FIELD_OFFSET_DATAA, 50,20,0,2,0,0,0);  //Sheep guy ability
