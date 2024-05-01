@@ -21,7 +21,7 @@ library egg requires AdditionalEvols,classFeatures,mainRNG{
 
         
         AddEggEvolution('N01X');
-        AddEggEvolution('Hant');
+        // AddEggEvolution('Hant'); //Antonidas
         AddEggEvolution('Hmbr');
         AddEggEvolution('Nalc');
         AddEggEvolution('Orex');
