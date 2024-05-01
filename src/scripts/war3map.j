@@ -42678,7 +42678,52 @@ return false
 endif
 return true
 endfunction
+function SetSubString takes string source, integer idx, string value returns string
+    return SubString(source, 0, idx) + value + SubString(source, idx+1, 9999) 
+endfunction
+function ReRandomHCLCommand takes nothing returns nothing
+    local integer r_idx = 0
+    if (SubString(HCLcommand,0,1)=="r") then
+        set r_idx = GetRandomInt(0,1)
+        if (r_idx == 0) then
+            set HCLcommand = SetSubString(HCLcommand, 0, "n")
+        else
+            set HCLcommand = SetSubString(HCLcommand, 0, "a")
+        endif
+    endif
+    if (SubString(HCLcommand,1,2)=="r") then
+        set r_idx = GetRandomInt(0,2)
+        if (r_idx == 0) then
+            set HCLcommand = SetSubString(HCLcommand, 1, "n")
+        elseif(r_idx == 1) then
+            set HCLcommand = SetSubString(HCLcommand, 1, "l")
+        else
+            set HCLcommand = SetSubString(HCLcommand, 1, "p")
+        endif
+    endif
+    if (SubString(HCLcommand,2,3)=="r") then
+        set r_idx = GetRandomInt(0,1)
+        if (r_idx == 0) then
+            set HCLcommand = SetSubString(HCLcommand, 2, "n")
+        elseif(r_idx == 1) then
+            set HCLcommand = SetSubString(HCLcommand, 2, "a")
+        endif
+    endif
+    if (SubString(HCLcommand,3,4)=="r") then
+        set r_idx = GetRandomInt(0,3)
+        if (r_idx == 0) then
+            set HCLcommand = SetSubString(HCLcommand, 3, "n")
+        elseif(r_idx == 1) then
+            set HCLcommand = SetSubString(HCLcommand, 3, "h")
+        elseif(r_idx == 2) then
+            set HCLcommand = SetSubString(HCLcommand, 3, "e")
+        else
+            set HCLcommand = SetSubString(HCLcommand, 3, "f")
+        endif
+    endif
+endfunction
 function Trig_MAP_INIT_2_Func073A takes nothing returns nothing
+call ReRandomHCLCommand()
 if(((SubString(HCLcommand,0,1)=="m")and(S2I(SubString(HCLcommand,1,12))>0))or((SubString(HCLcommand,0,1)=="n")or(SubString(HCLcommand,0,1)=="a"))and((SubString(HCLcommand,1,2)=="n")or(SubString(HCLcommand,1,2)=="l")or(SubString(HCLcommand,1,2)=="p"))and((SubString(HCLcommand,2,3)=="n")or(SubString(HCLcommand,2,3)=="a"))and((SubString(HCLcommand,3,4)=="n")or(SubString(HCLcommand,3,4)=="h")or(SubString(HCLcommand,3,4)=="e")or(SubString(HCLcommand,3,4)=="f")))then
 call DisableTrigger(GetTriggeringTrigger())
 call ExecuteFunc("ApplyHCLSettings")
