@@ -3030,7 +3030,7 @@ hashtable morph_table=InitHashtable()
 integer morph_base_type='U02P'
 real morph_cd=45
 integer morph_spell='A0LJ'
-real morph_length=45
+real morph_length=60
 string morphing_name="morphing"
 integer protects_with_abilcode='ACC6'
 string array fmode
